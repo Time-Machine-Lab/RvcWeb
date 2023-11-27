@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -34,19 +34,19 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t your-docker-username/your-image-name .
+        run: docker build -t TmlLab/RvcWeb .
 
       - name: Push Docker image
-        run: docker push your-docker-username/your-image-name
+        run: docker push TmlLab/RvcWeb
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@master
         with:
-          host: your-server-hostname
-          username: your-server-username
+          host: 62.234.54.176
+          username: ubuntu
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
-            docker stop your-container-name || true
-            docker rm your-container-name || true
-            docker pull your-docker-username/your-image-name
-            docker run -d --name your-container-name -p 80:80 your-docker-username/your-image-name
+            docker stop RvcContainer || true
+            docker rm RvcContainer || true
+            docker pull TmlLab/RvcWeb
+            docker run -d --name RvcContainer -p 8090:80 TmlLab/RvcWeb
