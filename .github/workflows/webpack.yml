@@ -1,4 +1,4 @@
-name: Build and Deploy RvcWeb
+name: Build and Deploy rvcweb
 
 on:
   push:
@@ -34,10 +34,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t TmlLab/RvcWeb .
+        run: docker build -t tmllab/rvcweb .
 
       - name: Push Docker image
-        run: docker push TmlLab/RvcWeb
+        run: docker push tmllab/rvcweb
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@master
@@ -48,5 +48,5 @@ jobs:
           script: |
             docker stop RvcContainer || true
             docker rm RvcContainer || true
-            docker pull TmlLab/RvcWeb
-            docker run -d --name RvcContainer -p 8090:80 TmlLab/RvcWeb
+            docker pull tmllab/rvcweb
+            docker run -d --name RvcContainer -p 8090:80 tmllab/rvcweb
