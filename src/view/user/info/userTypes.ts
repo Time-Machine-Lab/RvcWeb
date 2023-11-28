@@ -15,3 +15,10 @@ export type profileForm = {
     sex: '',
     birthday: ''
 }
+
+export type otherUser = {
+    id: number,
+    avatar: string,
+    nickName: string,
+    description: string,
+}
