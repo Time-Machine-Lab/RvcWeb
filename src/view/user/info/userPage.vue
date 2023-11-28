@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import BaseInfo from './pages/baseInfo.vue'
+import BaseInfo from '@/view/user/info/pages/baseInfo.vue'
 </script>
 <template>
   <div class="userPage">
