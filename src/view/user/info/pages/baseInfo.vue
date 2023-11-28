@@ -5,32 +5,38 @@ import { profile } from '../userTypes'
 import { ref } from 'vue'
 import { getUserInfo } from '../../../../api/user/userApi.js'
 const userStore = useUserStore()
-const userProfile: profile = userStore.getProfile
 const style = false
 const loaded = ref(true)
 let drawer = ref(false)
-const figures = [
+let figures = ref([
   {
-    desc: 'LIKES',
-    number: userProfile.fans_num
-  },
-  {
-    desc: 'FOLLOWERS',
-    number: userProfile.follow_num
+    desc: '',
+    number: 0
   }
-]
+])
 const open = () => {
   drawer.value = true
 }
 getUserInfo().then((res) => {
   userStore.setProfile(<profile>{
-    avatar: res.avatar,
-    nickName: res.nickName,
-    description: res.description,
-    register_date: res.register_date,
-    fans_num: res.fans_num,
-    follow_num: res.follow_num,
+    avatar: res.data.avatar,
+    nickName: res.data.nickName,
+    description: res.data.description,
+    register_date: res.data.register_date,
+    fans_num: res.data.fans_num,
+    sex: res.data.sex,
+    follow_num: res.data.follow_num,
   })
+  figures.value = [
+    {
+      desc: 'LIKES',
+      number: userStore.getProfile.fans_num
+    },
+    {
+      desc: 'FOLLOWERS',
+      number: userStore.getProfile.follow_num
+    }
+  ]
 })
 setTimeout(function () {
   loaded.value = false
@@ -39,18 +45,18 @@ setTimeout(function () {
 <template>
   <div class="base-info">
     <div class="avatar-container">
-      <div class="avatar">
+      <div class="avatar" :style="{backgroundImage:'url('+userStore.getProfile.avatar+')'}">
       </div>
     </div>
     <div class="information">
       <div class="username-container">
         <span class="username">
-          USERNAME
+          {{ userStore.getProfile.nickName }}
         </span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          Joined May 08,2023
+          Joined {{ userStore.getProfile.register_date }}
         </span>
       </div>
     </div>
@@ -63,7 +69,7 @@ setTimeout(function () {
       </span>
     </div>
     <div class="line"></div>
-    <div class="figures-container" v-if="style">
+    <div class="figures-container">
       <div class="figures" v-for="(figure, index) in figures" :key="index">
         <div class="number">
           {{ figure.number }}
@@ -102,7 +108,6 @@ setTimeout(function () {
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 30px;
-  background-image: url("/src/assets/picture/image (6).png");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -194,5 +199,6 @@ setTimeout(function () {
 
 :deep .el-drawer__body {
   background-color: rgba(40, 42, 54) !important
-}</style>
+}
+</style>
 ../userStore

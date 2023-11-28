@@ -1,14 +1,12 @@
+<script lang="ts" setup>
+
+</script>
 <template>
   <div>
     favoriteModels
   </div>
 </template>
 
-<script>
-export default {
-  name: 'favoriteModel'
-}
-</script>
 
 <style scoped>
 

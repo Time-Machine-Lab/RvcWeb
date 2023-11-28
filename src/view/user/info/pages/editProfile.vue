@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { editUserInfo } from '../../../../api/user/userApi.ts'
+import { useUserStore } from '../userStore.js'
+
 import {profileForm} from '../userTypes'
+const userStore = useUserStore()
 
 const form = ref<profileForm>({
-  avatar: '',
-  nickName: '',
-  description: '',
-  sex: '',
+  avatar: userStore.getProfile.avatar,
+  nickName: userStore.getProfile.nickName,
+  description: userStore.getProfile.description,
+  sex: userStore.getProfile.sex,
   birthday: ''
 })
 const sexOptions = ref([
