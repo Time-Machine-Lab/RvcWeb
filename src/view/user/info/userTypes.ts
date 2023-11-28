@@ -3,8 +3,9 @@ export type profile = {
     nickName: '', //昵称
     description: '', //简介
     register_date: '', //注册时间
-    fans_num: '', //粉丝数量
-    follow_num: '', //关注数
+    sex: '', //性别
+    fans_num: 0, //粉丝数量
+    follow_num: 0, //关注数
 }
 
 export type profileForm = {

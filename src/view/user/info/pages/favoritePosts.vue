@@ -1,14 +1,13 @@
+<script lang="ts" setup>
+
+</script>
 <template>
   <div>
     favoritePosts
   </div>
 </template>
 
-<script>
-export default {
-  name: 'favoritePosts'
-}
-</script>
+
 
 <style scoped>
 

@@ -1,3 +1,6 @@
+<script lang="ts" setup>
+import BaseInfo from './pages/baseInfo.vue'
+</script>
 <template>
   <div class="userPage">
     <div class="base-info-container">
@@ -28,13 +31,7 @@
   </div>
 </template>
 
-<script>
-import BaseInfo from './pages/baseInfo.vue'
-export default {
-  name: 'userPage',
-  components: {BaseInfo}
-}
-</script>
+
 
 <style scoped>
   .userPage{
