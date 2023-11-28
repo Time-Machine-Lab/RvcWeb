@@ -1,18 +1,18 @@
 import { createRouter,createWebHashHistory,RouteRecordRaw,RouterOptions, Router} from 'vue-router'
-import userRoute from '@/view/user/info/userRoute'
+import userRoute from '../view/user/info/userRoute'
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
         redirect: '/home',
     },
     {
-        path: '/home', 
-        name: 'home', 
-        component: ()=> import('../view/home/HomePage.vue')
+        path: '/home',
+        name: 'home',
+        component: ()=> import('../view/home/index.vue')
     },
     {
-        path: '/test', 
-        name: 'test', 
+        path: '/test',
+        name: 'test',
         component: ()=> import('../test/routeTest.vue')
     },
     {

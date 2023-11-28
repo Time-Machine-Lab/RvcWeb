@@ -1,0 +1,55 @@
+name: Build and Deploy rvcweb
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with Vite
+        run: npm run build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          # username: ${{ secrets.DOCKER_USERNAME }}
+          # password: ${{ secrets.DOCKER_PASSWORD }}
+          username: TmlLab
+          password: Tml123456
+
+      - name: Build Docker image
+        run: docker build -t tmllab/rvcweb .
+
+      - name: Push Docker image
+        run: docker push tmllab/rvcweb
+
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: 1.94.28.8
+          username: root
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: |
+            docker stop RvcContainer || true
+            docker rm RvcContainer || true
+            docker pull tmllab/rvcweb
+            docker run -d --name RvcContainer -p 8090:8090 tmllab/rvcweb
