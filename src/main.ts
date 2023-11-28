@@ -2,6 +2,10 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router'
+import ElementPluls from 'element-plus'
+import 'element-plus/dist/index.css'
+import { createPinia } from 'pinia'
+const pinia = createPinia()
 import axios from 'axios'
 // import myAxios from './axios.ts'
 
@@ -11,4 +15,6 @@ app.config.globalProperties.$api = axios
 app.provide('axios', axios);
 // app.provide('myAxios', myAxios);
 app.use(router)
+app.use(ElementPluls)
+app.use(pinia)
 app.mount('#app')
