@@ -3,6 +3,8 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 // import myAxios from './axios.ts'
 
 const app = createApp(App);
@@ -11,4 +13,5 @@ app.config.globalProperties.$api = axios
 app.provide('axios', axios);
 // app.provide('myAxios', myAxios);
 app.use(router)
+app.use(ElementPlus)
 app.mount('#app')
