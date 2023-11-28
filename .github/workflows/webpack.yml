@@ -43,7 +43,7 @@ jobs:
         with:
           host: 1.94.28.8
           username: root
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
             docker stop RvcContainer || true
             docker rm RvcContainer || true
