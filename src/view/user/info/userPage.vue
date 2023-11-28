@@ -43,6 +43,8 @@ import BaseInfo from '@/view/user/info/pages/baseInfo.vue'
     position: absolute;
     top: 0;
     left: 0;
+    background-color: rgba(50, 52, 64);
+
   }
   .userPage .base-info-container{
     display: inline-block;
@@ -54,17 +56,13 @@ import BaseInfo from '@/view/user/info/pages/baseInfo.vue'
   .userPage .other-info-container{
     display: inline-block;
     width: 85%;
-    background-color: rgba(0,0,0,0.1);
   }
   .userPage .other-info-container .router-link-container{
     height: 100px;
     width: 100%;
-    background-color: rgba(0,0,0,0.2);
   }
   .userPage .other-info-container .router-view-container{
     height: calc(100% - 100px);
     width: 100%;
-    background-color: rgba(0,0,0,0.1);
-
   }
 </style>
