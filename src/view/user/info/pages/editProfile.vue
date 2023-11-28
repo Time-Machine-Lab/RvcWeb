@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { editUserInfo } from '../../../../api/user/userApi.ts'
-import { useUserStore } from '../userStore.js'
+import { editUserInfo } from '@/api/user/userApi.ts'
+import { useUserStore } from '@/view/user/info/userStore.js'
 
-import {profileForm} from '../userTypes'
+import {profileForm} from '@/view/user/info/userTypes'
 const userStore = useUserStore()
 
 const form = ref<profileForm>({

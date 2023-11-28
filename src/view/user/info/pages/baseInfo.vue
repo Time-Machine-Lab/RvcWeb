@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import editProfile from './editProfile.vue'
-import { useUserStore } from '../userStore.js'
-import { profile } from '../userTypes'
+import editProfile from '@/view/user/info/pages/editProfile.vue'
+import { useUserStore } from '@/view/user/info/userStore.js'
+import { profile } from '@/view/user/info/userTypes'
 import { ref } from 'vue'
-import { getUserInfo } from '../../../../api/user/userApi.js'
+import { getUserInfo } from '@/api/user/userApi.js'
 const userStore = useUserStore()
 const style = false
 const loaded = ref(true)
