@@ -1,0 +1,116 @@
+{
+  "hash": "b709513a",
+  "browserHash": "042c7ff2",
+  "optimized": {
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "ab37c9eb",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "05dcf088",
+      "needsInterop": false
+    },
+    "pinia": {
+      "src": "../../node_modules/pinia/dist/pinia.mjs",
+      "file": "pinia.js",
+      "fileHash": "978dfbc5",
+      "needsInterop": false
+    },
+    "vue": {
+      "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "ea305f79",
+      "needsInterop": false
+    },
+    "vue-router": {
+      "src": "../../node_modules/vue-router/dist/vue-router.mjs",
+      "file": "vue-router.js",
+      "fileHash": "86391624",
+      "needsInterop": false
+    },
+    "element-plus/es": {
+      "src": "../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus_es.js",
+      "fileHash": "aa4b2d05",
+      "needsInterop": false
+    },
+    "element-plus/es/components/base/style/css": {
+      "src": "../../node_modules/element-plus/es/components/base/style/css.mjs",
+      "file": "element-plus_es_components_base_style_css.js",
+      "fileHash": "67ea12ed",
+      "needsInterop": false
+    },
+    "element-plus/es/components/carousel/style/css": {
+      "src": "../../node_modules/element-plus/es/components/carousel/style/css.mjs",
+      "file": "element-plus_es_components_carousel_style_css.js",
+      "fileHash": "132fb437",
+      "needsInterop": false
+    },
+    "element-plus/es/components/carousel-item/style/css": {
+      "src": "../../node_modules/element-plus/es/components/carousel-item/style/css.mjs",
+      "file": "element-plus_es_components_carousel-item_style_css.js",
+      "fileHash": "fe1198e9",
+      "needsInterop": false
+    },
+    "element-plus/es/components/tabs/style/css": {
+      "src": "../../node_modules/element-plus/es/components/tabs/style/css.mjs",
+      "file": "element-plus_es_components_tabs_style_css.js",
+      "fileHash": "515fecdc",
+      "needsInterop": false
+    },
+    "element-plus/es/components/tab-pane/style/css": {
+      "src": "../../node_modules/element-plus/es/components/tab-pane/style/css.mjs",
+      "file": "element-plus_es_components_tab-pane_style_css.js",
+      "fileHash": "dbc81d59",
+      "needsInterop": false
+    },
+    "element-plus/es/components/table/style/css": {
+      "src": "../../node_modules/element-plus/es/components/table/style/css.mjs",
+      "file": "element-plus_es_components_table_style_css.js",
+      "fileHash": "33998f23",
+      "needsInterop": false
+    },
+    "element-plus/es/components/table-column/style/css": {
+      "src": "../../node_modules/element-plus/es/components/table-column/style/css.mjs",
+      "file": "element-plus_es_components_table-column_style_css.js",
+      "fileHash": "22dc1080",
+      "needsInterop": false
+    },
+    "element-plus/es/components/card/style/css": {
+      "src": "../../node_modules/element-plus/es/components/card/style/css.mjs",
+      "file": "element-plus_es_components_card_style_css.js",
+      "fileHash": "81a0d7e5",
+      "needsInterop": false
+    },
+    "element-plus/es/components/button/style/css": {
+      "src": "../../node_modules/element-plus/es/components/button/style/css.mjs",
+      "file": "element-plus_es_components_button_style_css.js",
+      "fileHash": "15cae083",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-VKB3QOBR": {
+      "file": "chunk-VKB3QOBR.js"
+    },
+    "chunk-3GOOGFKQ": {
+      "file": "chunk-3GOOGFKQ.js"
+    },
+    "chunk-UQLH6NSE": {
+      "file": "chunk-UQLH6NSE.js"
+    },
+    "chunk-PZQHA7UU": {
+      "file": "chunk-PZQHA7UU.js"
+    },
+    "chunk-ZS7NZCD4": {
+      "file": "chunk-ZS7NZCD4.js"
+    },
+    "chunk-B4XZZODF": {
+      "file": "chunk-B4XZZODF.js"
+    }
+  }
+}
