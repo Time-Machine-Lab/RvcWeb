@@ -19,7 +19,7 @@
             <img :src="ImgItem.img" alt="Team Member Image">
           </el-carousel-item>
         </el-carousel>
-        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" stretch="true">
+        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="" stretch="true">
           <el-tab-pane label="综合" name="first">
             <el-card class="box-card">
               <template #header>
@@ -81,7 +81,7 @@
 import '../../assets/css/HomePage.css'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
-import type { TabsPaneContext } from 'element-plus'
+// import type { TabsPaneContext } from 'element-plus'
 // 公告栏
 const NoticeImg = [
   { img: 'src/assets/teamPic/daocaoren.jpg' },
@@ -94,9 +94,9 @@ const NoticeImg = [
 ]
 const activeName = ref('first')
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
-}
+// const handleClick = (tab: TabsPaneContext, event: Event) => {
+//   console.log(tab, event)
+// }
 const tableData = [
   {date: '2016-05-03', name: 'Tom', address: 'No. 189, Grove St, Los Angeles'},
   {date: '2016-05-02', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',},

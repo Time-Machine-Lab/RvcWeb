@@ -40,7 +40,7 @@ const beforeAvatarUpload = function () {
 }
 const submitChange = function () {
   editUserInfo(form.value).then(() => {
-    console.log(res)
+    // console.log(res)
   })
 }
 </script>
