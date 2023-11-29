@@ -13,12 +13,29 @@
         </div>
       </div>
       <!--公告栏-->
-      <div class="NoticeBoard">
-        <el-carousel>
-          <el-carousel-item></el-carousel-item>
-          <el-carousel-item></el-carousel-item>
-          <el-carousel-item></el-carousel-item>
+      <div class="NoticeBoard flex">
+        <el-carousel height="auto" autoplay>
+          <el-carousel-item v-for="(ImgItem, index) in NoticeImg" :key="index" style="height: 500px">
+            <img :src="ImgItem.img" alt="Team Member Image">
+          </el-carousel-item>
         </el-carousel>
+        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick" stretch="true">
+          <el-tab-pane label="综合" name="first">
+            <el-card class="box-card">
+              <template #header>
+                <div class="card-header">
+                  <div class="cardName">Card name</div>
+                  <el-button class="button" text>查看更多</el-button>
+                </div>
+              </template>
+              <div v-for="(item, index) in tableData" :key="index" class="text item">{{ item.date }}</div>
+              <template #footer>Footer content</template>
+            </el-card>
+          </el-tab-pane>
+          <el-tab-pane label="Config" name="second">公告</el-tab-pane>
+          <el-tab-pane label="Role" name="third">攻略</el-tab-pane>
+          <el-tab-pane label="Task" name="fourth">社区</el-tab-pane>
+        </el-tabs>
       </div>
       <!--社区介绍板块-->
       <div class="Introduction">
@@ -54,7 +71,9 @@
       <div class="Versions">
         <div class="VersionMessage flex">版本信息</div>
         <div class="VersionContain flex">RVC已经到来</div>
-        <div class="VersionsBtn flex">了解更多</div>
+        <div class="VersionsBtn flex">
+          <a href="https://github.com/Time-Machine-Lab">了解更多</a>
+        </div>
       </div>
     </div>
 </template>
@@ -62,36 +81,52 @@
 import '../../assets/css/HomePage.css'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
+import type { TabsPaneContext } from 'element-plus'
+// 公告栏
+const NoticeImg = [
+  { img: 'src/assets/teamPic/daocaoren.jpg' },
+  { img: 'src/assets/teamPic/dhx.jpg' },
+  { img: 'src/assets/teamPic/Genius.png' },
+  { img: 'src/assets/teamPic/huaerbuku.jpg' },
+  { img: 'src/assets/teamPic/jq.png' },
+  { img: 'src/assets/teamPic/lishiming.webp' },
+  { img: 'src/assets/teamPic/wangyoucao.jpg' },
+]
+const activeName = ref('first')
+
+const handleClick = (tab: TabsPaneContext, event: Event) => {
+  console.log(tab, event)
+}
+const tableData = [
+  {date: '2016-05-03', name: 'Tom', address: 'No. 189, Grove St, Los Angeles'},
+  {date: '2016-05-02', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',},
+  {date: '2016-05-04', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',},
+  {date: '2016-05-01', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',},
+  {date: '2016-05-08', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',},
+  {date: '2016-05-06', name: 'Tom', address: 'No. 189, Grove St, Los Angeles',}
+]
 // 社区功能板块
 const functionArray = [
-  { function: '个人账号', img: 'src/assets/picture/daocaoren.jpg' },
-  { function: '畅所欲言', img: 'src/assets/picture/dhx.jpg' },
-  { function: '在线试音', img: 'src/assets/picture/Genius.png' },
-  { function: '模型大全', img: 'src/assets/picture/huaerbuku.jpg' },
-  { function: '在线交易', img: 'src/assets/picture/jq.png' },
-  { function: '虚拟对话', img: 'src/assets/picture/lishiming.webp' },
-  { function: '语音聊天室', img: 'src/assets/picture/wangyoucao.jpg' },
+  { function: '个人账号', img: 'src/assets/teamPic/daocaoren.jpg' },
+  { function: '畅所欲言', img: 'src/assets/teamPic/dhx.jpg' },
+  { function: '在线试音', img: 'src/assets/teamPic/Genius.png' },
+  { function: '模型大全', img: 'src/assets/teamPic/huaerbuku.jpg' },
+  { function: '在线交易', img: 'src/assets/teamPic/jq.png' },
+  { function: '虚拟对话', img: 'src/assets/teamPic/lishiming.webp' },
+  { function: '语音聊天室', img: 'src/assets/teamPic/wangyoucao.jpg' },
 ]
-// const functionArray = ref([
-//   '个人账号',
-//   '畅所欲言',
-//   '在线试音',
-//   '模型大全',
-//   '在线交易',
-//   '虚拟对话',
-//   '语音聊天室',
-// ]);
+
 const teamMembers = [
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/daocaoren.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/dhx.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/Genius.png' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/huaerbuku.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/jq.png' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/lishiming.webp' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/wangyoucao.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/welsir.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/xi.jpg' },
-  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/picture/xiangzong.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/daocaoren.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/dhx.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/Genius.png' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/huaerbuku.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/jq.png' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/lishiming.webp' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/wangyoucao.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/welsir.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/xi.jpg' },
+  { nickName: 'Member1', description: 'Description1', role: 'Role1', img: 'src/assets/teamPic/xiangzong.jpg' },
   // Add more team members as needed
 ]
 

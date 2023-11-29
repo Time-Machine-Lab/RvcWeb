@@ -6,18 +6,22 @@
 .HomePage{
     display: flex;
     flex-flow: column;
-    width:100vw;
-    background: #8c8c8c;
+    width:100%;
+    background: #545454;
 }
 /*欢迎板块*/
 .Welcome{
-    width:100vw;
+    position: relative;
+    width:100%;
     height:500px;
     color:#ffffff;
+    background-image: url("src/assets/backPic/welcome.png");
+    background-size: cover;
 
     .WelcomeCard{
-        margin-left:100px;
-        margin-top:150px;
+        position: absolute;
+        top:100px;
+        right:0px;
         width:500px;
         height:250px;
 
@@ -50,27 +54,77 @@
     }
 }
 .NoticeBoard{
-    width:100vw;
+    width:100%;
     height:600px;
+    flex-direction: row;
+    background-image: url("src/assets/backPic/wallhaven-kxlzw6_5262x3720.png");
+    background-size: cover;
+    .el-carousel{
+        height:500px;
+        width:55%;
+    }
+    .el-carousel img{
+        width:100%;
+    }
+    .demo-tabs{
+        margin-left: 20px;
+        background: white;
+        width:30%;
+        height:500px;
+    }
+    .el-tabs__item{
+        height:50px;
+    }
+    .el-tabs__content {
+        color: #6b778c;
+        font-size: 32px;
+        font-weight: 600;
+    }
+    .box-card{
+        height:100%;
+    }
+    .card-header{
+        display: flex;
+        flex-direction: row;
+        font-size: 20px;
+        width:100%;
+    }
+    .cardName{
+        width:70%;
+    }
+    .item {
+        font-size: 17px;
+    }
+    .button{
+        width:30%;
+        background: #efefef;
+    }
+
+    .el-card__footer{
+        font-size: 20px;
+    }
 }
+
 .Introduction{
     display: flex;
     flex-direction: row;
-    width:100vw;
+    width:100%;
     height:700px;
 
     .IntroductionPic{
-        margin-left:20px;
-        background: #b9f5a8;
-        width:70%;
-        height:90%;
+        margin-left:5%;
+        margin-top:5%;
+        background-image: url("src/assets/backPic/wallhaven-5gme17_4075x2292.png");
+        background-size: cover;
+        width:100%;
+        height:80%;
     }
     .IntroductionCard{
         position: relative;
         flex-direction: column;
-        top:20%;
+        top:25%;
         right:10%;
-        width:30%;
+        width:50%;
         height:35%;
         background: #ffffff;
         box-shadow: 2px 1px 3px #8c8c8c;
@@ -90,15 +144,16 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 100px 1fr 1fr;
-    width:100vw;
+    width:100%;
     height:600px;
     .FunctionsTitle{
         grid-column: 1 / span 4;
         font-size: 30px;
+        color:white;
     }
     .Function{
-        margin-left: 40px;
-        width:300px;
+        margin-left: 5%;
+        width:90%;
         height:200px;
         text-align: center;
         background: #797979;
@@ -120,7 +175,7 @@
 .Team{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width:100vw;
+    width:100%;
     height:1000px;
     .TeamTitle{
         grid-column: 1 / span 2;
@@ -130,9 +185,9 @@
         background: #797979;
         display: grid;
         grid-template-columns: 1fr 3fr;
-        width:650px;
-        height:150px;
-        margin-left:40px;
+        width:90%;
+        height:130px;
+        margin-left:5%;
         .Img{
             grid-row: 1 / span 3;
             overflow: hidden;
@@ -149,7 +204,7 @@
     }
 }
 .Versions{
-    width:100vw;
+    width:100%;
     height:500px;
     .VersionMessage{
         position: relative;
@@ -177,7 +232,7 @@
         width:150px;
         height:50px;
         font-size: 20px;
-        background: azure;
+        background: #ffffff;
         border-radius: 50px;
     }
 }

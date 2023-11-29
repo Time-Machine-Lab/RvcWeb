@@ -39,7 +39,7 @@ const beforeAvatarUpload = function () {
 
 }
 const submitChange = function () {
-  editUserInfo(form.value).then((res) => {
+  editUserInfo(form.value).then(() => {
     console.log(res)
   })
 }
@@ -173,7 +173,7 @@ const submitChange = function () {
   background-color: rgba(50, 52, 66);
 }
 
-::deep .el-select-dropdown {
+:deep .el-select-dropdown {
   background-color: rgba(50, 52, 66);
 }
 
