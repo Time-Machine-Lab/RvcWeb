@@ -1,5 +1,5 @@
 import { createRouter,createWebHashHistory,RouteRecordRaw,RouterOptions, Router} from 'vue-router'
-import userRoute from '@/view/user/info/userRoute'
+// import userRoute from '@/view/user/info/userRoute'
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
@@ -8,19 +8,19 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/home', 
         name: 'home', 
-        component: ()=> import('@/view/home/HomePage.vue')
+        component: ()=> import('../view/home/HomePage.vue')
     },
     {
         path: '/test', 
         name: 'test', 
-        component: ()=> import('@/test/routeTest.vue')
+        component: ()=> import('../test/routeTest.vue')
     },
-    {
-        path: '/user',
-        name: 'user',
-        component: ()=> import('@/view/user/info/userPage.vue'),
-        children: [...userRoute]
-    }
+    // {
+    //     path: '/user',
+    //     name: 'user',
+    //     component: ()=> import('../view/user/info/userPage.vue'),
+    //     children: [...userRoute]
+    // }
 ]
 const options: RouterOptions = {
     history: createWebHashHistory(),
