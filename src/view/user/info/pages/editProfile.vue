@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { editUserInfo } from '@/api/user/userApi.ts'
-import { useUserStore } from '@/view/user/info/userStore.js'
-
-import {profileForm} from '@/view/user/info/userTypes'
-const userStore = useUserStore()
-
-const form = ref<profileForm>({
-  avatar: userStore.getProfile.avatar,
-  nickName: userStore.getProfile.nickName,
-  description: userStore.getProfile.description,
-  sex: userStore.getProfile.sex,
+import {Profile, ProfileForm} from '@/view/user/info/userTypes'
+const props = defineProps<{
+  userProfile:Profile
+}>()
+const form = ref<ProfileForm>({
+  avatar: props.userProfile.avatar,
+  nickName: props.userProfile.nickName,
+  description: props.userProfile.description,
+  sex: props.userProfile.sex,
   birthday: ''
 })
 const sexOptions = ref([
@@ -29,7 +28,6 @@ const sexOptions = ref([
 ])
 const inputStyle = ref({
   backgroundColor: 'rgba(50,52,66)',
-  border: 'rgba(65,67,81) 1px solid',
   color: 'white'
 })
 const handleAvatarSuccess = function () {
@@ -39,8 +37,8 @@ const beforeAvatarUpload = function () {
 
 }
 const submitChange = function () {
-  editUserInfo(form.value).then(() => {
-    // console.log(res)
+  editUserInfo(form.value).then((res) => {
+    console.log(res + 'res')
   })
 }
 </script>
@@ -171,6 +169,9 @@ const submitChange = function () {
 
 :deep .el-input__inner {
   background-color: rgba(50, 52, 66);
+}
+:deep .el-input__wrapper{
+  background-color: rgba(50,52,66);
 }
 
 :deep .el-select-dropdown {

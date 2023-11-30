@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import editProfile from '@/view/user/info/pages/editProfile.vue'
+import { Profile } from '@/view/user/info/userTypes'
+import { reactive, ref } from 'vue'
+import { getUserInfoById } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
-import { profile } from '@/view/user/info/userTypes'
-import { ref } from 'vue'
-import { getUserInfo } from '@/api/user/userApi.js'
+
+import router from '@/router'
 const userStore = useUserStore()
-const style = false
+
+let style = true
+let hasFollow = ref(false)
 const loaded = ref(true)
 let drawer = ref(false)
 let figures = ref([
@@ -17,16 +21,26 @@ let figures = ref([
 const open = () => {
   drawer.value = true
 }
-getUserInfo().then((res) => {
-  userStore.setProfile(<profile>{
-    avatar: res.data.avatar,
-    nickName: res.data.nickName,
-    description: res.data.description,
-    register_date: res.data.register_date,
-    fans_num: res.data.fans_num,
-    sex: res.data.sex,
-    follow_num: res.data.follow_num,
-  })
+let userProfile = reactive<Profile>({
+  id: 0,
+    avatar: '', //头像链接
+    nickName: '', //昵称
+    description: '', //简介
+    register_date: '', //注册时间
+    sex: '', //性别
+    fans_num: 0, //粉丝数量
+    follow_num: 0, //关注数
+})
+
+const follow = function () {
+  hasFollow.value = !hasFollow.value
+}
+
+
+setTimeout(function () {
+  if(router.currentRoute.value.query.id as string == userStore.getProfile.id as unknown as string || router.currentRoute.value.query.id == undefined) {
+  
+  userProfile = userStore.getProfile
   figures.value = [
     {
       desc: 'LIKES',
@@ -37,32 +51,50 @@ getUserInfo().then((res) => {
       number: userStore.getProfile.follow_num
     }
   ]
+  style = false
+} else {
+  getUserInfoById(router.currentRoute.value.query.id as string).then((res) => {
+  userProfile = res.data
+  figures.value = [
+    {
+      desc: 'LIKES',
+      number: res.data.fans_num
+    },
+    {
+      desc: 'FOLLOWERS',
+      number: res.data.follow_num
+    }
+  ]
 })
-setTimeout(function () {
+}
+
   loaded.value = false
-}, 2000)
+}, 1000)
 </script>
 <template>
   <div class="base-info">
     <div class="avatar-container">
-      <div class="avatar" :style="{backgroundImage:'url('+userStore.getProfile.avatar+')'}">
+      <div class="avatar" :style="{backgroundImage:'url('+userProfile?.avatar+')'}">
       </div>
     </div>
     <div class="information">
       <div class="username-container">
         <span class="username">
-          {{ userStore.getProfile.nickName }}
+          {{ userProfile?userProfile.nickName:'unknow' }}
         </span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          Joined {{ userStore.getProfile.register_date }}
+          Joined {{ userProfile?userProfile.register_date:'1970-01-01' }}
         </span>
       </div>
     </div>
     <div class="button-container">
-      <span class="button" v-if="style">
+      <span class="button" v-if="style && !hasFollow" @click="follow">
         关注
+      </span>
+      <span class="greybutton" v-if="style && hasFollow" @click="follow">
+        已关注
       </span>
       <span class="button" v-if="!style" @click="open">
         编辑资料
@@ -80,7 +112,7 @@ setTimeout(function () {
       </div>
     </div>
     <el-drawer v-model="drawer" :with-header="false">
-      <edit-profile v-loading="loaded" element-loading-background="transparent"></edit-profile>
+      <edit-profile v-loading="loaded" :userProfile="userProfile!" element-loading-background="transparent"></edit-profile>
     </el-drawer>
   </div>
 </template>
@@ -146,6 +178,20 @@ setTimeout(function () {
   border-radius: 5px;
   margin: 20px auto auto;
   background-color: #646cff;
+  line-height: 60px;
+  font-size: 18px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+.button-container .greybutton {
+  display: block;
+  width: 90%;
+  height: 60px;
+  border-radius: 5px;
+  margin: 20px auto auto;
+  background-color: #757686;
   line-height: 60px;
   font-size: 18px;
   color: white;

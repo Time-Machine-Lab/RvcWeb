@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
-import { profile } from '@/view/user/info/userTypes'
+import { Profile } from '@/view/user/info/userTypes'
 export const useUserStore = defineStore({
     id: 'profileStore',
     state: () => ({
-        profile: <profile>({
+        profile: <Profile>({
 
         })
     }),
     getters: {
-        getProfile():profile {
+        getProfile():Profile {
             return this.profile
         }
     },
     actions: {
-        setProfile(profile: profile) {
+        setProfile(profile: Profile) {
             this.profile = profile
         }
     }

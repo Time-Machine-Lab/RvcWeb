@@ -1,5 +1,15 @@
 <script lang="ts" setup>
+import router from '@/router'
 import BaseInfo from '@/view/user/info/pages/baseInfo.vue'
+import { useUserStore } from '@/view/user/info/userStore.js'
+const userStore = useUserStore()
+
+setTimeout(function(){
+  if(router.currentRoute.value.query.id == undefined && userStore.getProfile.id) {
+    router.push({query:{id:userStore.getProfile.id}})
+  }
+},1000)
+
 </script>
 <template>
   <div class="userPage">
@@ -8,19 +18,19 @@ import BaseInfo from '@/view/user/info/pages/baseInfo.vue'
     </div>
     <div class="other-info-container">
       <div class="router-link-container">
-        <router-link to="/user/followUser">
+        <router-link :to="{path:'/user/followUser',query:$route.query}">
           <button>follow</button>
         </router-link>
-        <router-link to="/user/likeModels">
+        <router-link :to="{path:'/user/likeModels',query:$route.query}">
           <button>likeModels</button>
         </router-link>
-        <router-link to="/user/favoriteModels">
+        <router-link :to="{path:'/user/favoriteModels',query:$route.query}">
           <button>favoriteModels</button>
         </router-link>
-        <router-link to="/user/likePosts">
+        <router-link :to="{path:'/user/likePosts',query:$route.query}">
           <button>likePosts</button>
         </router-link>
-        <router-link to="/user/favoritePosts">
+        <router-link :to="{path:'/user/favoritePosts',query:$route.query}">
           <button>favoritePosts</button>
         </router-link>
       </div>
