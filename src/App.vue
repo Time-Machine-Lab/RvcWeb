@@ -1,21 +1,42 @@
 <script setup lang="ts">
-import { getUserInfoById } from '@/api/user/userApi.js'
-import { useUserStore } from '@/view/user/info/userStore.js'
-import { Profile } from '@/view/user/info/userTypes'
-
-const userStore = useUserStore()
-
-if(userStore.getProfile.id == undefined){
-  getUserInfoById('1').then((res: { data: Profile; }) => {
-  userStore.setProfile(<Profile>res.data)  
-})
-}
+import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 
 </script>
 
 <template>
-    <RouterView :key="($router.currentRoute.value.query.id as string)"/>
+    <el-scrollbar style="overflow: auto;height: 100vh;">
+        <div class="common-layout">
+            <el-container>
+            <el-header class="header">
+                <LayoutHeader></LayoutHeader>
+            </el-header>
+            <el-main class="main">
+                <RouterView :key="($router.currentRoute.value.query.id as string)" />
+            </el-main>
+            <el-footer style="margin: 0;padding:0">Footer</el-footer>
+        </el-container>
+        
+    </div>
+    </el-scrollbar>
+    
 </template>
 <style scoped>
-
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.header{
+    height: 50px;
+    width: 100%;
+    position:fixed;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+.main{
+    height: 100vh;
+    margin-top: 50px;
+    padding:0;
+}
 </style>

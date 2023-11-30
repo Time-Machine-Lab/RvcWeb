@@ -48,9 +48,9 @@ setTimeout(function(){
     display: flex;
     /*height: 100%;*/
     /*width: 100%;*/
-    height: 100vh;
-    width: 100vw;
-    position: absolute;
+    height: 100%;
+    width: 100%;
+    position: relative;
     top: 0;
     left: 0;
     background-color: rgba(50, 52, 64);
