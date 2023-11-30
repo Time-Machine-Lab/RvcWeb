@@ -21,8 +21,6 @@ export default defineConfig({
     proxy: {
       '/api':{
         target:'https://mock.apifox.com/',
-        changeOrigin:true,
-        rewrite: (path) => path.replace(/^\/api/,'')
       }
     }
   },
