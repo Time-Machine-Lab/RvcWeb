@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
-
+import './style.css'
 </script>
 
 <template>
@@ -13,9 +13,9 @@ import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
             <el-main class="main">
                 <RouterView :key="($router.currentRoute.value.query.id as string)" />
             </el-main>
-            <el-footer style="margin: 0;padding:0">Footer</el-footer>
+<!--            <el-footer style="margin: 0;padding:0">Footer</el-footer>-->
         </el-container>
-        
+
     </div>
     </el-scrollbar>
     

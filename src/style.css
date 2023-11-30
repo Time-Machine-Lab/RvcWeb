@@ -5,3 +5,8 @@ html, body {
   padding: 0;
   min-width:1080px;
 }
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
