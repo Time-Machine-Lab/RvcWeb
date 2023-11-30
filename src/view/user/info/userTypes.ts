@@ -1,4 +1,5 @@
-export type profile = {
+export type Profile = {
+    id: 0,
     avatar: '', //头像链接
     nickName: '', //昵称
     description: '', //简介
@@ -8,7 +9,7 @@ export type profile = {
     follow_num: 0, //关注数
 }
 
-export type profileForm = {
+export type ProfileForm = {
     avatar: '',
     nickName: '',
     description: '',
@@ -16,7 +17,7 @@ export type profileForm = {
     birthday: ''
 }
 
-export type otherUser = {
+export type OtherUser = {
     id: number,
     avatar: string,
     nickName: string,
