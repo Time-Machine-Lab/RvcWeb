@@ -1,6 +1,6 @@
 <script setup lang="ts" >
 import {OtherUser} from '@/view/user/info/userTypes'
-import FollowUserCard from '../components/followUserCard.vue'
+import FollowUserCard from '@/components/user/followUserCardComponent.vue'
 import { getFollowUsers } from '@/api/user/userApi'
 import router from '@/router'
 import { useUserStore } from '@/view/user/info/userStore.js'
