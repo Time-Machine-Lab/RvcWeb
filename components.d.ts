@@ -22,6 +22,8 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    FollowUserCardComponent: typeof import('./src/components/user/followUserCardComponent.vue')['default']
+    ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
