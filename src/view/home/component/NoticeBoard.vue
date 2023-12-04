@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "NoticeBoard",
+  name: 'NoticeBoard',
   data(){
     return{
       NoticeImg : [
@@ -39,11 +39,11 @@ export default defineComponent({
       </el-carousel-item>
     </el-carousel>
     <!--公告栏-->
-    <el-tabs class="demo-tabs" @tab-click="" stretch="stretch">
+    <el-tabs class="demo-tabs"  stretch="stretch">
       <el-tab-pane label="综合" name="first">
         <el-card class="box-card">
-          <div v-for="(item, index) in tableData" :key="index" class="item flex">
-            <router-link :to="{ name: 'NoticeDetail', params: { id: index } }">
+          <div v-for="(item, index) in tableData" :key="index"  class="item flex">
+            <router-link :to="{ name: 'NoticeDetail', params: { id: index } }" target="_blank">
               {{ item.date }}
             </router-link>
           </div>
