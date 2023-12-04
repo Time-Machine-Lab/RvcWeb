@@ -1,5 +1,3 @@
-<!--By XMY-->
-<!--2023/11/27-->
 <template>
   <div class="HomePage">
       <div class="Welcome">
@@ -7,7 +5,12 @@
           <div class="WelcomeTitle">RVC社区</div>
           <div class="WelcomeContain">RVC模型交流社区<br/>2022-2023<br/>一起探索声音变换的无限可能,你梦想的声音从现在开始!</div>
           <div class="WelcomeBtn flex">
-            <div class="RegisterBtn flex">立即注册</div>
+            <div class="RegisterBtn flex">
+              <router-link to="/login" target="_blank">
+                立即注册
+              </router-link>
+            </div>
+
             <div class="EnterBtn flex">进入社区</div>
           </div>
         </div>
@@ -58,7 +61,7 @@
 import '../../assets/css/HomePage.css'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
-import NoticeBoard from './component/NoticeBoard.vue';
+import NoticeBoard from './component/NoticeBoard.vue'
 
 // 社区功能板块
 const functionArray = [

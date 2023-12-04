@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import '@/assets/css/NoticeDetail.css'
 let contain = {
-  noticeId : "5bcd73d6-8546-42a7-8afe-1819643aac6c",
-  title : "欢迎来到RVC社区",
-  author : "RVC社区官方",
-  content : "欢迎来到RVC社区",
-  cover : "public/backPic/NoticeBack.png",
-  createAt : "2023-11-29 01:47:50",
+  noticeId : '5bcd73d6-8546-42a7-8afe-1819643aac6c',
+  title : '欢迎来到RVC社区',
+  author : 'RVC社区官方',
+  content : '欢迎来到RVC社区',
+  cover : 'public/backPic/NoticeBack.png',
+  createAt : '2023-11-29 01:47:50',
   likeNum : 0,
   watchNum : 0
 }
