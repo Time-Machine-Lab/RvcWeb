@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/axios/request'
 export function getModels (start:number,end:number) {
     return request({
         url:'m1/3628624-0-default/getModels',

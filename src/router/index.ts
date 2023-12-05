@@ -1,5 +1,6 @@
 import { createRouter,createWebHashHistory,RouteRecordRaw,RouterOptions, Router} from 'vue-router'
 import userRoute from '@/view/user/info/userRoute'
+import  testRoutes from './testRoutes'
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
@@ -43,7 +44,9 @@ const routes: RouteRecordRaw[] = [
         name: 'user',
         component: ()=> import('../view/user/info/userPage.vue'),
         children: [...userRoute]
-    }
+    },
+    ...testRoutes
+
 ]
 const options: RouterOptions = {
     history: createWebHashHistory(),

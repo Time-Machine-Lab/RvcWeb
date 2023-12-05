@@ -36,11 +36,13 @@ module.exports = {
        // 在 vue 文件的 script 代码中只能使用单引号
         'vue/singleline-html-element-content-newline': 'off',
         'quotes': ['error', 'single', { 'avoidEscape': true }],
+        // 在 html 代码中不能使用单引号，只能用双引号
         'vue/html-quotes': ['error', 'double'],
         // 在 vue 文件的 script 代码中句尾不能加分号
         'semi': ['error', 'never'],
         // 在 vue 文件的 script 代码中等号左右要有空格
         'space-infix-ops': 'error',
-        // 在 html 代码中不能使用单引号，只能用双引号
+        // 允许使用 any 类型
+        '@typescript-eslint/no-explicit-any': 'off', 
     }
 }
