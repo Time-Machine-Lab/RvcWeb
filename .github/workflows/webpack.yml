@@ -1,4 +1,4 @@
-name: Build and Deploy rvcweb
+name: Build and Deploy rvc-web
 
 on:
   push:
@@ -33,10 +33,10 @@ jobs:
         
 
       - name: Build Docker image
-        run: docker build -t tmllab/rvcweb .
+        run: docker build -t tmllab/rvc-web .
 
       - name: Push Docker image
-        run: docker push tmllab/rvcweb
+        run: docker push tmllab/rvc-web
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@master
@@ -47,6 +47,7 @@ jobs:
           script: |
             docker stop RvcGatewayContainer || true
             docker rm RvcGatewayContainer || true
-            sleep 5
-            docker pull tmllab/rvcweb
-            docker run -d --name RvcGatewayContainer -p 8090:8090 tmllab/rvcweb
+            docker rmi $(docker images tmllab/rvc-web -q) || true 
+            sleep 3
+            docker pull tmllab/rvc-web
+            docker run -d --name RvcGatewayContainer -p 8090:8090 tmllab/rvc-web
