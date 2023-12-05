@@ -3,10 +3,8 @@ import {storage} from '@/utils/storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
 import router from '@/router/index'
 import { message } from '@/utils/message'
-import { log } from 'console'
 const request = axios.create({
-  // baseURL: 'https://mock.apifox.com', 
-  baseURL: 'http://127.0.0.1:8080',
+  baseURL: 'https://mock.apifox.com', 
   timeout: 5000
 })
 
