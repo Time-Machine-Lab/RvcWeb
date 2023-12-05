@@ -10,17 +10,13 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any> ) => {
-    const { method, data, headers } = config 
-    if (['post', 'put', 'delete'].includes(method as string)) {
-      config.data = JSON.parse(data) //序列化
+    // 从storage中获取token
+    const token = storage.get<string>('token')
+    if (token) {
+      // 将token添加到请求头中
+      config.headers.accessToken = token
     }
-
-    if (storage.get('token')) {
-      if (headers) {
-        headers.Authorization = storage.get('token') as string
-      }
-    }
-    return config
+  return config
   },
   error => {
     message.error(error.data.error.message)
@@ -31,12 +27,22 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (res: AxiosResponse<any>) => {
+     // 如果是返回的文件
+     if (res.config.responseType === 'blob') {
+      return res
+    }
+    // 兼容服务端返回的字符串数据
+    if (typeof res === 'string') {
+        res = res ? JSON.parse(res) : res
+    }
   
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
-    if (res.status === 200 || res.data.statusCode === 200) {
-      return Promise.resolve(res)
+    if (res.data.success === true) {    
+      return Promise.resolve(res.data)
+    } else {
+      message.error(res.data.message)
+      return Promise.reject(res)
     }
-    return Promise.reject(res)
   },
   error => {
     const statusTextMap: Record<number, string> = {
@@ -65,6 +71,7 @@ request.interceptors.response.use(
     }
     return Promise.reject(new Error('网络请求失败，请稍后重试'))
   }
+
 )
 
 export default request

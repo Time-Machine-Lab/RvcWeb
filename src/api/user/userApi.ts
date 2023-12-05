@@ -1,4 +1,4 @@
-import request from '../../axios/request'
+import request from '../../utils/request'
 import {ProfileForm} from '../../view/user/info/userTypes'
 
 export function editUserInfo (form:ProfileForm) {
