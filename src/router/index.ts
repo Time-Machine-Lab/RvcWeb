@@ -1,5 +1,5 @@
 import { createRouter,createWebHashHistory,RouteRecordRaw,RouterOptions, Router} from 'vue-router'
-import userRoute from '@/view/user/info/userRoute'
+import userRoute from '@/router/userRoute'
 import  testRoutes from './testRoutes'
 const routes: RouteRecordRaw[] = [
     {

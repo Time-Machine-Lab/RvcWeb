@@ -18,11 +18,11 @@ const props = defineProps<{
             <div class="model-card__info__creatAt">
                 {{ props.model.create_at }}
             </div>
-            <div class="model-card__info__userInfo">
-                <div class="model-card__info__userInfo__avatar" :style="{backgroundImage:'url('+props.model.avatar+')'}">
+            <div class="user-info">
+                <div class="user-info__avatar" :style="{backgroundImage:'url('+props.model.avatar+')'}">
 
                 </div>
-                <div class="model-card__info__userInfo__usename">
+                <div class="user-info__usename">
                     {{ props.model.nickname }}
                 </div>
             </div>
@@ -112,14 +112,14 @@ const props = defineProps<{
     padding-left: 10px;
 }
 
-.model-card__info__userInfo {
+.user-info {
     height: 30px;
     width: 100%;
     display: flex;
     margin-top: 5px;
 }
 
-.model-card__info__userInfo__avatar {
+.user-info__avatar {
     height: 20px;
     min-width: 20px;
     position: relative;
@@ -134,7 +134,7 @@ const props = defineProps<{
 
 }
 
-.model-card__info__userInfo__usename {
+.user-info__usename {
     height: 30px;
     width: calc(100% - 30px);
     line-height: 30px;
