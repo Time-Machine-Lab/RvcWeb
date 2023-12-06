@@ -1,3 +1,13 @@
+/*
+ * @Author: LisianthusLeaf 3106334435@qq.com
+ * @Date: 2023-12-06 23:31:30
+ * @LastEditors: LisianthusLeaf 3106334435@qq.com
+ * @LastEditTime: 2023-12-06 23:47:09
+ * @FilePath: \RvcWeb\src\router\index.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ */
 import {
     createRouter,
     createWebHashHistory,
@@ -5,8 +15,8 @@ import {
     RouterOptions,
     Router,
 } from "vue-router";
-import userRoute from "@/view/user/info/userRoute";
-import introRoute from "./introRoutes.ts";
+import userRoute from './userRoute.ts';
+import introRoute from './introRoutes.ts';
 const routes: RouteRecordRaw[] = [
     {
         path: "/",

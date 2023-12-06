@@ -1,3 +1,13 @@
+<!--
+ * @Author: LisianthusLeaf 3106334435@qq.com
+ * @Date: 2023-12-06 14:33:46
+ * @LastEditors: LisianthusLeaf 3106334435@qq.com
+ * @LastEditTime: 2023-12-06 23:45:48
+ * @FilePath: \RvcWeb\src\view\home\LoginView.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <div class="login flex">
     <div class="contain flex">

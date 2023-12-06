@@ -1,3 +1,13 @@
+<!--
+ * @Author: LisianthusLeaf 3106334435@qq.com
+ * @Date: 2023-12-06 14:34:13
+ * @LastEditors: LisianthusLeaf 3106334435@qq.com
+ * @LastEditTime: 2023-12-06 23:47:51
+ * @FilePath: \RvcWeb\src\components\intro\CardComponent.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+-->
 <template>
   <div class="card-container" @mouseover="flip(true)" @mouseout="flip(false)">
     <div class="card" :class="{ flipped: isFlipped }">

@@ -27,6 +27,7 @@ declare module 'vue' {
     LoginComponent: typeof import('./src/components/intro/LoginComponent.vue')['default']
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
     NoticeBoardComponent: typeof import('./src/components/intro/NoticeBoardComponent.vue')['default']
+    PostCardComponent: typeof import('./src/components/modelCommunication/postCardComponent.vue')['default']
     RegisterComponent: typeof import('./src/components/intro/RegisterComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
