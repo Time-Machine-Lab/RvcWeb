@@ -1,7 +1,13 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\pages\favoriteModels.vue
+-->
 <script setup lang="ts">
 import modelCard from '@/components/rvcModel/modelCardComponent.vue'
 import { getModels } from '@/api/model/modelApi'
-import { RvcModelVo } from '@/view/rvcModel/ModelType'
+import { RvcModelVo } from '@/view/rvcModel/modelType'
 import { ref } from 'vue'
 let scrollDisabled = ref<boolean>(false)
 const models = ref<RvcModelVo[]>([])

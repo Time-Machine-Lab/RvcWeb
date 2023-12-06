@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-06 17:23:40
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\rvcModel\modelType.ts
+ */
 export type RvcModelVo = {
     model_id: string;
     uid: string;

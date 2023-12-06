@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {RvcModelVo} from '@/view/rvcModel/ModelType'
+import {RvcModelVo} from '@/view/rvcModel/modelType'
 
 const props = defineProps<{
     model:RvcModelVo
