@@ -1,13 +1,6 @@
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 <template>
-  <div>
-    likePosts
-  </div>
+  <div>likePosts</div>
 </template>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>
