@@ -1,91 +1,97 @@
 <script setup lang="ts">
-import editProfile from '@/view/user/info/pages/editProfile.vue'
-import { Profile } from '@/view/user/info/userTypes'
-import { reactive, ref } from 'vue'
-import { getUserInfoById } from '@/api/user/userApi.js'
-import { useUserStore } from '@/view/user/info/userStore.js'
+import editProfile from "@/view/user/info/pages/editProfile.vue";
+import { Profile } from "@/view/user/info/userTypes";
+import { reactive, ref } from "vue";
+import { getUserInfoById } from "@/api/user/userApi.js";
+import { useUserStore } from "@/view/user/info/userStore.js";
 
-import router from '@/router'
-const userStore = useUserStore()
+import router from "@/router/index.ts";
+const userStore = useUserStore();
 
-let style = true
-let hasFollow = ref(false)
-const loaded = ref(true)
-let drawer = ref(false)
+let style = true;
+let hasFollow = ref(false);
+const loaded = ref(true);
+let drawer = ref(false);
 let figures = ref([
   {
-    desc: '',
-    number: 0
-  }
-])
+    desc: "",
+    number: 0,
+  },
+]);
 const open = () => {
-  drawer.value = true
-}
+  drawer.value = true;
+};
 let userProfile = reactive<Profile>({
   id: 0,
-    avatar: '', //头像链接
-    nickName: '', //昵称
-    description: '', //简介
-    register_date: '', //注册时间
-    sex: '', //性别
-    fans_num: 0, //粉丝数量
-    follow_num: 0, //关注数
-})
+  avatar: "", //头像链接
+  nickName: "", //昵称
+  description: "", //简介
+  register_date: "", //注册时间
+  sex: "", //性别
+  fans_num: 0, //粉丝数量
+  follow_num: 0, //关注数
+});
 
 const follow = function () {
-  hasFollow.value = !hasFollow.value
-}
-
+  hasFollow.value = !hasFollow.value;
+};
 
 setTimeout(function () {
-  if(router.currentRoute.value.query.id as string == userStore.getProfile.id as unknown as string || router.currentRoute.value.query.id == undefined) {
-  
-  userProfile = userStore.getProfile
-  figures.value = [
-    {
-      desc: 'LIKES',
-      number: userStore.getProfile.fans_num
-    },
-    {
-      desc: 'FOLLOWERS',
-      number: userStore.getProfile.follow_num
-    }
-  ]
-  style = false
-} else {
-  getUserInfoById(router.currentRoute.value.query.id as string).then((res) => {
-  userProfile = res.data
-  figures.value = [
-    {
-      desc: 'LIKES',
-      number: res.data.fans_num
-    },
-    {
-      desc: 'FOLLOWERS',
-      number: res.data.follow_num
-    }
-  ]
-})
-}
+  if (
+    (router.currentRoute.value.query.id as string) ==
+      (userStore.getProfile.id as unknown as string) ||
+    router.currentRoute.value.query.id == undefined
+  ) {
+    userProfile = userStore.getProfile;
+    figures.value = [
+      {
+        desc: "LIKES",
+        number: userStore.getProfile.fans_num,
+      },
+      {
+        desc: "FOLLOWERS",
+        number: userStore.getProfile.follow_num,
+      },
+    ];
+    style = false;
+  } else {
+    getUserInfoById(router.currentRoute.value.query.id as string).then(
+      (res) => {
+        userProfile = res.data;
+        figures.value = [
+          {
+            desc: "LIKES",
+            number: res.data.fans_num,
+          },
+          {
+            desc: "FOLLOWERS",
+            number: res.data.follow_num,
+          },
+        ];
+      },
+    );
+  }
 
-  loaded.value = false
-}, 1000)
+  loaded.value = false;
+}, 1000);
 </script>
 <template>
   <div class="base-info">
     <div class="avatar-container">
-      <div class="avatar" :style="{backgroundImage:'url('+userProfile?.avatar+')'}">
-      </div>
+      <div
+        class="avatar"
+        :style="{ backgroundImage: 'url(' + userProfile?.avatar + ')' }"
+      ></div>
     </div>
     <div class="information">
       <div class="username-container">
         <span class="username">
-          {{ userProfile?userProfile.nickName:'unknow' }}
+          {{ userProfile ? userProfile.nickName : "unknow" }}
         </span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          Joined {{ userProfile?userProfile.register_date:'1970-01-01' }}
+          Joined {{ userProfile ? userProfile.register_date : "1970-01-01" }}
         </span>
       </div>
     </div>
@@ -96,9 +102,7 @@ setTimeout(function () {
       <span class="greybutton" v-if="style && hasFollow" @click="follow">
         已关注
       </span>
-      <span class="button" v-if="!style" @click="open">
-        编辑资料
-      </span>
+      <span class="button" v-if="!style" @click="open"> 编辑资料 </span>
     </div>
     <div class="line"></div>
     <div class="figures-container">
@@ -112,12 +116,14 @@ setTimeout(function () {
       </div>
     </div>
     <el-drawer v-model="drawer" :with-header="false">
-      <edit-profile v-loading="loaded" :userProfile="userProfile!" element-loading-background="transparent"></edit-profile>
+      <edit-profile
+        v-loading="loaded"
+        :userProfile="userProfile!"
+        element-loading-background="transparent"
+      ></edit-profile>
     </el-drawer>
   </div>
 </template>
-
-
 
 <style scoped>
 .base-info {
@@ -231,7 +237,6 @@ setTimeout(function () {
   line-height: 30px;
   color: rgba(255, 255, 255, 0.6);
   margin: 0 7px;
-
 }
 
 .figures-container .figures .desc {
@@ -244,7 +249,7 @@ setTimeout(function () {
 }
 
 :deep .el-drawer__body {
-  background-color: rgba(40, 42, 54) !important
+  background-color: rgba(40, 42, 54) !important;
 }
 </style>
 ../userStore

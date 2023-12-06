@@ -1,13 +1,16 @@
 import axios from 'axios'
-import {storage} from '@/utils/storage'
+import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
-import router from '@/router/index'
-import { message } from '@/utils/message'
+import router from '@/router/index.ts'
+import { message } from './message'
+
+
 const request = axios.create({
-  baseURL: 'https://mock.apifox.com', 
+  baseURL: 'http://1.94.28.8:9300',
   timeout: 5000
 })
 
+// 请求拦截
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any> ) => {
     // 从storage中获取token
@@ -24,7 +27,7 @@ request.interceptors.request.use(
   }
 )
 
-
+// 响应拦截
 request.interceptors.response.use(
   (res: AxiosResponse<any>) => {
      // 如果是返回的文件
@@ -35,9 +38,8 @@ request.interceptors.response.use(
     if (typeof res === 'string') {
         res = res ? JSON.parse(res) : res
     }
-  
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
-    if (res.data.success === true) {    
+    if (res.data.success === true) {
       return Promise.resolve(res.data)
     } else {
       message.error(res.data.message)

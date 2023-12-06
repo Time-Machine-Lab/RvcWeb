@@ -1,46 +1,42 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { editUserInfo } from '@/api/user/userApi.ts'
-import {Profile, ProfileForm} from '@/view/user/info/userTypes'
+import { ref } from "vue";
+import { editUserInfo } from "@/api/user/userApi.ts";
+import { Profile, ProfileForm } from "@/view/user/info/userTypes";
 const props = defineProps<{
-  userProfile:Profile
-}>()
+  userProfile: Profile;
+}>();
 const form = ref<ProfileForm>({
   avatar: props.userProfile.avatar,
   nickName: props.userProfile.nickName,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
-  birthday: ''
-})
+  birthday: "",
+});
 const sexOptions = ref([
   {
-    value: 'm',
-    label: '男'
+    value: "m",
+    label: "男",
   },
   {
-    value: 'f',
-    label: '女'
+    value: "f",
+    label: "女",
   },
   {
-    value: 'u',
-    label: '未知'
-  }
-])
+    value: "u",
+    label: "未知",
+  },
+]);
 const inputStyle = ref({
-  backgroundColor: 'rgba(50,52,66)',
-  color: 'white'
-})
-const handleAvatarSuccess = function () {
-
-}
-const beforeAvatarUpload = function () {
-
-}
+  backgroundColor: "rgba(50,52,66)",
+  color: "white",
+});
+const handleAvatarSuccess = function () {};
+const beforeAvatarUpload = function () {};
 const submitChange = function () {
   editUserInfo(form.value).then((res) => {
-    console.log(res + 'res')
-  })
-}
+    console.log(res + "res");
+  });
+};
 </script>
 <template>
   <div class="edit-profile-container">
@@ -51,58 +47,71 @@ const submitChange = function () {
 
     <div class="content">
       <el-row :gutter="20" class="row">
-        <span class="label">
-          头像
-        </span>
+        <span class="label"> 头像 </span>
         <div class="upload-container">
-          <el-upload class="avatar-uploader" action="http://124.71.107.76" :show-file-list="false"
-          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="form.avatar" :src="form.avatar" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon">
-            +
-          </el-icon>
-        </el-upload>
+          <el-upload
+            class="avatar-uploader"
+            action="http://124.71.107.76"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="form.avatar" :src="form.avatar" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"> + </el-icon>
+          </el-upload>
         </div>
-         </el-row>
-      <el-row :gutter="20" class="row">
-        <span class="label">
-          昵称
-        </span>
-        <el-input v-model="form.nickName" class="input" placeholder="nickname" :input-style="inputStyle" />
       </el-row>
       <el-row :gutter="20" class="row">
-        <span class="label">
-          简介
-        </span>
-        <el-input v-model="form.description" class="input" placeholder="description" :input-style="inputStyle" />
+        <span class="label"> 昵称 </span>
+        <el-input
+          v-model="form.nickName"
+          class="input"
+          placeholder="nickname"
+          :input-style="inputStyle"
+        />
       </el-row>
       <el-row :gutter="20" class="row">
-        <span class="label">
-          性别
-        </span>
+        <span class="label"> 简介 </span>
+        <el-input
+          v-model="form.description"
+          class="input"
+          placeholder="description"
+          :input-style="inputStyle"
+        />
+      </el-row>
+      <el-row :gutter="20" class="row">
+        <span class="label"> 性别 </span>
         <div class="select">
-          <el-select v-model="form.sex" class="m-2" placeholder="Select" :style="inputStyle">
-            <el-option v-for="item in sexOptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-select
+            v-model="form.sex"
+            class="m-2"
+            placeholder="Select"
+            :style="inputStyle"
+          >
+            <el-option
+              v-for="item in sexOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
           </el-select>
         </div>
-
       </el-row>
       <el-row :gutter="20" class="row">
-        <span class="label">
-          生日
-        </span>
+        <span class="label"> 生日 </span>
         <div class="select">
           <div class="block">
-            <el-date-picker v-model="form" type="date" placeholder="Pick a day" />
+            <el-date-picker
+              v-model="form"
+              type="date"
+              placeholder="Pick a day"
+            />
           </div>
         </div>
-
       </el-row>
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 .edit-profile-container {
@@ -170,8 +179,8 @@ const submitChange = function () {
 :deep .el-input__inner {
   background-color: rgba(50, 52, 66);
 }
-:deep .el-input__wrapper{
-  background-color: rgba(50,52,66);
+:deep .el-input__wrapper {
+  background-color: rgba(50, 52, 66);
 }
 
 :deep .el-select-dropdown {
@@ -203,4 +212,5 @@ const submitChange = function () {
   width: 178px;
   height: 178px;
   text-align: center;
-}</style>
+}
+</style>
