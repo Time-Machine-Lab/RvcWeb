@@ -6,6 +6,7 @@ const userStore = useUserStore()
 
 const login = function () {
     getUserInfoById('1').then((res: { data: Profile; }) => {
+        console.log(res.data)
         userStore.setProfile(<Profile>res.data)
     })
 }
