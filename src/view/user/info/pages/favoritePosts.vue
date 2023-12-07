@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\pages\favoritePosts.vue
+-->
 <script lang="ts" setup>
 import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
 import { getPosts } from '@/api/post/postApi'

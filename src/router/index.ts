@@ -17,6 +17,8 @@ import {
 } from "vue-router";
 import userRoute from './userRoute.ts';
 import introRoute from './introRoutes.ts';
+import testRoutes from "./testRoutes.ts";
+import communicationRoutes from "./communicationRoutes.ts";
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
@@ -34,6 +36,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import("../view/user/info/userPage.vue"),
         children: [...userRoute],
     },
+    ...testRoutes,
+    ...communicationRoutes
+
 ];
 const options: RouterOptions = {
     history: createWebHashHistory(),

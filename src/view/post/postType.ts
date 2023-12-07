@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-06 17:26:28
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\post\postType.ts
+ */
 export type PostVo = {
     post_id: number;
     uid: number;
