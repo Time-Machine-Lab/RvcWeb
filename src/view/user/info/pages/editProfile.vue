@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\pages\editProfile.vue
+-->
 <script setup lang="ts">
 import { ref } from "vue";
 import { editUserInfo } from "@/api/user/userApi.ts";
