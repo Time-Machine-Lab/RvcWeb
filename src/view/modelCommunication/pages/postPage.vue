@@ -36,7 +36,12 @@ let figures = ref([
 </script>
 <template>
     <div class="post-page">
-        <div class="post-page__post">
+
+        <div class="post-page__post" >
+            <el-breadcrumb :separator="'>'">
+                <el-breadcrumb-item :to="{ path: '/communication' }">交流区</el-breadcrumb-item>
+                <el-breadcrumb-item>贴子</el-breadcrumb-item>
+            </el-breadcrumb>
             <div class="post-page__post__title">
                 <span class="scroll-text">
                     标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
@@ -151,6 +156,9 @@ let figures = ref([
     min-width: 450px;
     /* background-color: rgba(0,0,0,0.1); */
 }
+.post-page__post :deep .el-breadcrumb__inner{
+    color: white;
+}
 
 .post-page__sidebar {
     width: 25%;
@@ -235,19 +243,22 @@ let figures = ref([
     transform: translate(0, -50%);
     margin: 0 40px;
 }
-.post-page__post__operation__item__svg{
+
+.post-page__post__operation__item__svg {
     height: 50px;
     width: 50px;
 }
-.post-page__post__operation__item__num{
+
+.post-page__post__operation__item__num {
     width: 50px;
     height: 10px;
     font-size: 14px;
-    color:rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     text-align: center;
     line-height: 10px;
 
 }
+
 .post-page__post__commentBox {
     user-select: none;
     position: relative;
@@ -507,4 +518,5 @@ let figures = ref([
 
 .target-box__target:hover {
     background-color: rgba(255, 255, 255, 0.2);
-}</style>
+}
+</style>
