@@ -181,6 +181,7 @@ options.value = [
     position: relative;
     height: 50px;
     width: 100%;
+    margin-top: 20px;
     display: flex;
 }
 
