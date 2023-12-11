@@ -8,159 +8,169 @@
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default defineComponent({
-  name: "NoticeBoard",
-  data() {
-    return {
-      NoticeImg: [
-        { img: "../../../public/teamPic/dhx.jpg" },
-        { img: "../../../public/teamPic/dhx.jpg" },
-        { img: "../../../public/teamPic/Genius.png" },
-        { img: "../../../public/teamPic/huaerbuku.jpg" },
-        { img: "../../../public/teamPic/jq.png" },
-        { img: "../../../public/teamPic/lishiming.webp" },
-        { img: "../../../public/teamPic/wangyoucao.jpg" },
-      ],
+const NoticeImg = ref([
+  { img: "../../../public/teamPic/dhx.jpg" },
+  { img: "../../../public/teamPic/dhx.jpg" },
+  { img: "../../../public/teamPic/Genius.png" },
+  { img: "../../../public/teamPic/huaerbuku.jpg" },
+  { img: "../../../public/teamPic/jq.png" },
+  { img: "../../../public/teamPic/lishiming.webp" },
+  { img: "../../../public/teamPic/wangyoucao.jpg" },
+]);
 
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-04",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-01",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-08",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-06",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-      ],
-    };
-  },
-});
-// 公告栏
+const tableData = ref([
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+]);
+const listAll = ref([
+  { date: "2017-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
+]);
+const currentTab = ref('new');
+const changeTab = (tab: any) => {
+  currentTab.value = tab;
+};
+
 </script>
 
 <template>
-  <div class="NoticeBoard flex">
+  <div class="notice flex">
     <!--轮播图-->
     <el-carousel height="auto" autoplay>
       <el-carousel-item
         v-for="(ImgItem, index) in NoticeImg"
         :key="index"
-        style="height: 500px"
-      >
+        style="height: 500px">
         <img :src="ImgItem.img" alt="Team Member Image" />
       </el-carousel-item>
     </el-carousel>
     <!--公告栏-->
-    <el-tabs class="demo-tabs" stretch="stretch">
-      <el-tab-pane label="综合" name="first">
-        <el-card class="box-card">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="item flex"
-          >
-            <router-link
-              :to="{ name: 'NoticeDetail', params: { id: index } }"
-              target="_blank"
-            >
-              {{ item.date }}
-            </router-link>
-          </div>
-          <template #footer>
-            <div class="card-header">
-              <div class="cardName">Card name</div>
-              <el-button class="button" text>查看更多</el-button>
-            </div>
-          </template>
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane label="Config" name="second">公告</el-tab-pane>
-      <el-tab-pane label="Role" name="third">攻略</el-tab-pane>
-      <el-tab-pane label="Task" name="fourth">社区</el-tab-pane>
-    </el-tabs>
+    <div class="notice-board flex">
+      <div class="notice-board__tabs flex">
+        <button class="notice-board__tab flex" @click="changeTab('new')" :class="{ active: currentTab === 'new' }"><p>最新公告</p></button>
+        <button class="notice-board__tab flex" @click="changeTab('hot')" :class="{ active: currentTab === 'hot' }">最热公告</button>
+        <button class="notice-board__tab flex" @click="changeTab('all')" :class="{ active: currentTab === 'all' }">全部公告</button>
+      </div>
+      <div class="notice-board__list flex" v-if="currentTab === 'new'">
+        <ul class="notice-board__contain flex" v-for="notice in tableData" :key="notice.id">
+          <router-link :to="{ name: 'NoticeDetail', params: { id: notice.id } }" target="_blank" class="router flex">
+            <li class="notice-board__id flex">{{ notice.id }}</li>
+            <li class="notice-board__text flex">{{ notice.text }}</li>
+            <li class="notice-board__date flex">{{ notice.date }}</li>
+          </router-link>
+        </ul>
+      </div>
+      <div class="notice-board__list flex" v-if="currentTab === 'hot'">
+        <ul class="notice-board__contain flex" v-for="notice in tableData" :key="notice.id">
+          <li class="notice-board__id flex">{{ notice.id }}</li>
+          <li class="notice-board__text flex">{{ notice.text }}</li>
+          <li class="notice-board__date flex">{{ notice.date }}</li>
+        </ul>
+      </div>
+      <div class="notice-board__list flex" v-if="currentTab === 'all'">
+        <ul class="notice-board__contain flex" v-for="notice in listAll" :key="notice.id">
+          <li class="notice-board__id flex">{{ notice.id }}</li>
+          <li class="notice-board__text flex">{{ notice.text }}</li>
+          <li class="notice-board__date flex">{{ notice.date }}</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.NoticeBoard {
+.router{
+  width:100%;
+  height:100%;
+}
+.notice {
   width: 100%;
-  height: 600px;
+  height: 700px;
   flex-direction: row;
-  background-image: url("public/backPic/NoticeBack.png");
-  background-size: cover;
   .el-carousel {
     height: 500px;
     width: 55%;
+    border-radius: 20px;
+    box-sizing: border-box;
+    border: 25px double #ffffff;
   }
   .el-carousel img {
     width: 100%;
   }
-  .demo-tabs {
-    border-radius: 10px;
-    margin-left: 20px;
-    background: rgba(77, 75, 75, 0.4);
+  .notice-board {
+    position: relative;
+    border-radius: 50px 1px;
+    margin-left: 5%;
+    background: #fbfdff;
     width: 30%;
     height: 500px;
+    box-shadow: 1px 1px 7px #939393;
   }
-  .box-card {
-    border: 0;
-    height: 100%;
-    background: rgba(255, 255, 255, 0);
+  .notice-board__tabs{
+    position: absolute;
+    left:0;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width:50px;
+    height:100%;
+    background: #ffffff;
+    border-radius: 50px 1px;
+    box-shadow: 1px 1px 3px #d0d0d0;
+    .notice-board__tab{
+      background: transparent;
+      height:27%;
+      width:100%;
+      border-radius: 50px 1px;
+      border:none;
+      cursor: pointer;
+      transition-duration: .3s;
+      writing-mode: vertical-rl;
+    }
+    .notice-board__tab.active{
+      background: #e6eaff;
+      height:47%;
+    }
   }
-  .card-header {
+  .notice-board__list{
+    position: absolute;
+    right:0;
+    height:100%;
+    width:90%;
     display: flex;
-    flex-direction: row;
-    font-size: 20px;
-    width: 100%;
-    height: 50px;
+    flex-direction: column;
+    justify-content: center;
   }
-  .cardName {
-    width: 70%;
+  .notice-board__contain{
+    justify-content: center;
+    width:calc(100% - 50px);;
+    height:15%;
+    border-bottom: solid 1px #eaeaea;
   }
-  .item {
-    width: 100%;
-    color: #ffffff;
-    justify-content: left;
-    font-size: 17px;
-    cursor: pointer;
-    height: 50px;
-    border-bottom: solid 1px #dadada;
+  .notice-board__contain li{
+    margin-left:10px;
   }
-  .item a {
-    color: #ffffff;
-    text-decoration: none;
+  .notice-board__id{
+    width:10%;
+    height:100%;
   }
-  .item a:hover {
-    color: #3e73e5;
+  .notice-board__text{
+    width:65%;
+    height:100%;
   }
-  .button {
-    width: 30%;
-    background: #efefef;
+  .notice-board__date{
+    width:15%;
+    height:100%;
   }
 }
 </style>

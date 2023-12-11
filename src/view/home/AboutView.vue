@@ -13,16 +13,16 @@ import { reactive } from "vue";
 import Card from '@/components/intro/CardComponent.vue';
 
 const cards = reactive([
-  { title: '我们是谁', data: '我们是RVC开发组' },
-  { title: '我们是谁', data: '我们是谁' },
-  { title: '联系我们', data: '联系我们' }
+  { title: '我们是谁', data: '我们是RVC开发组', img:'public/backPic/join.png' },
+  { title: '我们是谁', data: '我们是谁', img:'public/backPic/join.png' },
+  { title: '联系我们', data: '联系我们' , img:'public/backPic/join.png'}
 ]);
 </script>
 
 
 <template>
   <div class="about flex">
-    <Card v-for="(card, index) in cards" :key="index" :title="card.title" :data="card.data"></Card>
+    <Card v-for="(card, index) in cards" :key="index" :title="card.title" :data="card.data" :img="card.img"></Card>
   </div>
 </template>
 
@@ -35,7 +35,8 @@ const cards = reactive([
 .about {
   height: 100vh;
   width: 100%;
-  background: #d9e8ff;
+  background: url("public/backPic/about.png");
+  background-size: cover;
   justify-content: space-around;
 }
 </style>

@@ -3,104 +3,106 @@
   align-items: center;
   justify-content: center;
 }
-.HomePage {
+.intro {
+  position: absolute;
   display: flex;
   flex-flow: column;
   width: 100%;
-  background: #545454;
+  overflow: hidden;
 }
-/*欢迎板块*/
-.Welcome {
-  position: relative;
-  width: 100%;
-  height: 500px;
-  color: #ffffff;
-  background-image: url("../../../public/backPic/welcome.png");
+.intro-back{
+  position: fixed;
+  width:100%;
+  height:100vh;
+  background-image: url("public/backPic/welcome-2.png");
   background-size: cover;
-
-  .WelcomeCard {
-    position: absolute;
-    top: 100px;
-    width: 500px;
-    height: 250px;
-
-    .WelcomeTitle {
-      width: 100%;
-      height: 30%;
-      font-weight: bold;
-      font-size: 25px;
-    }
-    .WelcomeContain {
-      width: 100%;
-      height: 50%;
-    }
-    .WelcomeBtn {
-      width: 100%;
-      height: 20%;
-
-      .RegisterBtn {
-        background: rgba(246, 119, 196, 0.96);
-        width: 30%;
-        height: 100%;
-        cursor: pointer;
-      }
-      .EnterBtn {
-        width: 30%;
-        height: 100%;
-        border: 2px solid #ffffff;
-        margin-left: 20px;
-        cursor: pointer;
-      }
-    }
-  }
+  z-index: -1;
 }
 
 .Introduction {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 700px;
-  background-image: url("../../../public/backPic/introduction.png");
+  height: 900px;
   background-size: cover;
 
-  .IntroductionPic {
-    margin-left: 5%;
-    margin-top: 5%;
+  .Introduction-pic {
+    position: absolute;
+    top:15%;
+    margin-left: 10%;
     background-image: url("../../../public/backPic/introduction.png");
     background-size: cover;
-    width: 100%;
-    height: 80%;
+    width: 70%;
+    height: 70%;
     box-shadow: 5px 5px 15px #3a3a3a;
   }
-  .IntroductionCard {
-    position: relative;
+  .introduction-contain{
+    position: absolute;
     flex-direction: column;
     top: 25%;
     right: 10%;
-    width: 40%;
+    width: 20%;
+    height: 70%;
+  }
+  .Introduction-card {
+    position: absolute;
+    flex-direction: column;
+    width: 100%;
     height: 35%;
+    top:15%;
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 5px 5px 15px #3a3a3a;
     font-family: 宋体, serif;
-    .IntroductionTitle {
+    .Introduction-card__title {
       height: 25%;
       font-weight: bold;
       font-size: 18px;
     }
-    .IntroductionContain {
+    .Introduction-card__contain {
       height: 75%;
       width: 80%;
       font-size: 15px;
     }
   }
 }
+
+.fixed-strip{
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 3000px;
+  height: 100px;
+  background: rgb(250, 242, 240);
+  box-shadow: 0 -1px 10px 2px #ffffff;
+  color: #fff;
+  text-align: center;
+  line-height: 100px;
+  font-size: 100px;
+}
+.fixed {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2500px;
+  height: 100px;
+  background: rgb(250, 242, 240);
+  box-shadow: 0 -1px 10px 2px #ffffff;
+  color: #fff;
+  text-align: center;
+  line-height: 100px;
+  font-size: 100px;
+}
+
 .Functions {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 100px 1fr 1fr;
-  width: 100%;
+  width: 80%;
+  margin-left: 10%;
   height: 600px;
-  .FunctionsTitle {
+
+  .Functions-title {
     grid-column: 1 / span 4;
     font-size: 30px;
     color: white;
@@ -110,51 +112,185 @@
     width: 90%;
     height: 200px;
     text-align: center;
-    background: #797979;
-    .FunctionTool {
+    background: #ffffff;
+    border-radius: 20px;
+    .Function-tool {
       width: 100%;
       height: 20%;
     }
-    .FunctionImg {
+    .Function-img {
       width: 80%;
       height: 70%;
       margin-left: 10%;
+      border-radius: 40px;
       overflow: hidden;
+      box-shadow: 0px 0px 10px 3px #dcdcdc;
     }
-    .FunctionImg img {
+    .Function-img img {
       width: 100%;
+
     }
   }
 }
 .Team {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   width: 100%;
   height: 1000px;
-  .TeamTitle {
-    grid-column: 1 / span 2;
+  flex-direction: column;
+  .team-title{
+    width:80%;
+    height:10%;
+    margin-top:10%;
+    font-size:50px;
+    color:#ffffff;
+  }
+  .team-list{
+    margin-top: -10%;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+    /* 透视效果，观察者与z=0平面的距离 */
+    transform-origin: center;
+    /* 变形原点为中心 */
+  }
+  .team-content {
+    display: flex;
+    /* 设置为弹性盒子布局 */
+    justify-content: center;
+    /* 主轴居中对齐 */
+    align-items: center;
+    /* 交叉轴居中对齐 */
+    position: absolute;
+    /* 绝对定位 */
+    width: 100%;
+    /* 宽度100% */
+    height: 100%;
+    /* 高度100% */
+    transform-origin: center;
+    /* 变形原点为中心 */
+    transform-style: preserve-3d;
+    /* 保持3D变换 */
+    transform: translateZ(-30vw) rotateY(0);
+    /* 变换：沿z轴平移-30vw，绕y轴旋转0度 */
+    animation: carousel 15s infinite cubic-bezier(0.77, 0, 0.175, 1) forwards;
+    /* 动画：名称为carousel，持续时间9秒，无限循环，缓动函数为cubic-bezier(0.77, 0, 0.175, 1)，动画结束后保持最后状态 */
+  }
+  .team-item {
+    position: absolute;
+    /* 绝对定位 */
+    width: 100%;
+    /* 宽度占视口宽度的60% */
+    height: 100%;
+    /* 高度占视口高度的40% */
+    max-width: 350px;
+    /* 最大宽度为380像素 */
+    max-height: 350px;
+    /* 最大高度为250像素 */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    /* 设置阴影 */
+    border-radius: 6px;
+    /* 边框圆角半径为6像素 */
+    background-size: cover;
+    /* 背景图片等比例缩放并覆盖整个容器 */
+    -webkit-box-reflect: below 25px -webkit-linear-gradient(transparent 50%, rgba(255, 255, 255, 0.3));
+    /* 创建倒影效果 */
+    border: 25px dotted #ffffff;
+  }
+  .team-item__img{
+    width:100%;
+    height:100%;
+  }
+  /* 第一个项目样式 */
+  .team-item:nth-child(1) {
+    transform: rotateY(0) translateZ(35vw);
+    /* 变换：绕y轴旋转0度，沿z轴平移35vw */
+  }
+  /* 第二个项目样式 */
+  .team-item:nth-child(2) {
+    transform: rotateY(60deg) translateZ(35vw);
+    /* 变换：绕y轴旋转120度，沿z轴平移35vw */
+  }
+  /* 第三个项目样式 */
+  .team-item:nth-child(3) {
+    transform: rotateY(120deg) translateZ(35vw);
+    /* 变换：绕y轴旋转240度，沿z轴平移35vw */
+  }
+  .team-item:nth-child(4) {
+    transform: rotateY(180deg) translateZ(35vw);
+    /* 变换：绕y轴旋转240度，沿z轴平移35vw */
+  }
+  .team-item:nth-child(5) {
+    transform: rotateY(240deg) translateZ(35vw);
+    /* 变换：绕y轴旋转240度，沿z轴平移35vw */
+  }
+  .team-item:nth-child(6) {
+    transform: rotateY(300deg) translateZ(35vw);
+    /* 变换：绕y轴旋转240度，沿z轴平移35vw */
+  }
+  .team-item__message{
+    position: absolute;
+    flex-direction: column;
+    bottom:0;
+    width:100%;
+    height:50%;
+    background: linear-gradient(to top, #939393, rgba(255, 255, 255, 0));
+  }
+  .NickName{
+    color:rgba(255, 255, 255, 0.62);
+    height:50%;
+    width:100%;
     font-size: 30px;
   }
-  .TeamItem {
-    background: #797979;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    width: 90%;
-    height: 130px;
-    margin-left: 5%;
-    .Img {
-      grid-row: 1 / span 3;
-      overflow: hidden;
-    }
-    .Img img {
-      margin-top: 10%;
-      width: 80%;
-      height: 80%;
-      object-fit: cover;
-    }
-    /* .NickName{}
-        .Description{}
-        .Role{} */
+  .Description{
+    color: rgba(255, 255, 255, 0.62);
+    height:30%;
+    width:100%;
+  }
+  .Role{
+    color:rgba(255, 255, 255, 0.62);
+    height:20%;
+    width:100%;
+  }
+}
+/* 定义动画 */
+@keyframes carousel {
+  5%,
+  10% {
+    transform: translateZ(-35vw) rotateY(0);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转0度 */
+  }
+
+  15%,
+  25% {
+    transform: translateZ(-35vw) rotateY(-60deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-120度 */
+  }
+
+  30%,
+  40% {
+    transform: translateZ(-35vw) rotateY(-120deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-240度 */
+  }
+
+  45%,
+  55% {
+    transform: translateZ(-35vw) rotateY(-180deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-360度 */
+  }
+
+  60%,
+  70% {
+    transform: translateZ(-35vw) rotateY(-240deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-360度 */
+  }
+  75%,
+  85% {
+    transform: translateZ(-35vw) rotateY(-300deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-360度 */
+  }
+  90%,
+  95% {
+    transform: translateZ(-35vw) rotateY(-360deg);
+    /* 变换：沿z轴平移-35vw，绕y轴旋转-360度 */
   }
 }
 .about {
@@ -164,10 +300,13 @@
   font-size: 30px;
   .box{
     position: absolute;
+    margin-left: 15px;
     width:250px;
     height:80px;
     border:solid 3px #d6b6ea;
+    background: rgb(233, 200, 241);
     border-radius: 10px;
+    text-decoration-line: none;
   }
   .about-btn{
     position: absolute;
@@ -175,29 +314,34 @@
     height:80px;
     border:solid 3px #d6b6ea;
     border-radius: 10px;
-    background: #545454;
-    margin-top:-20px;
+    background: rgb(253, 244, 255);
+    margin-top:-18px;
     transition: 0.1s;
     color:rgb(253, 244, 255);
     cursor: pointer;
+    text-decoration-line: none;
   }
   .about-btn:hover{
     margin-top:0;
+    margin-left:15px;
     background: rgb(253, 244, 255);
     color: #424242;
+  }
+  .about-btn__text{
+    text-decoration-line: none;
   }
 }
 .Versions {
   width: 100%;
   height: 500px;
-  .VersionMessage {
+  .Version-message {
     position: relative;
     left: 10%;
     top: 10%;
     height: 25px;
     width: 70px;
     font-size: 14px;
-    background: #797979;
+    background: #ffffff;
     border-radius: 10px;
   }
   .VersionContain {
@@ -209,7 +353,7 @@
     font-size: 30px;
     justify-content: left;
   }
-  .VersionsBtn {
+  .Versions-btn {
     position: relative;
     left: 10%;
     top: 100px;
@@ -218,5 +362,9 @@
     font-size: 20px;
     background: #ffffff;
     border-radius: 50px;
+    text-decoration-line: none;
+    color:#3a3a3a;
+    box-shadow: 0px 0px 10px 3px #dcdcdc;
+
   }
 }

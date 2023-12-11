@@ -12,10 +12,11 @@
   <div class="card-container" @mouseover="flip(true)" @mouseout="flip(false)">
     <div class="card" :class="{ flipped: isFlipped }">
       <div class="card-face card-face-front">
-        <div>{{ title }}</div>
+        <img :src="img">
       </div>
       <div class="card-face card-face-back">
         <!-- 背面内容 -->
+        <div>{{ title }}</div>
         <p>{{ data }}</p>
       </div>
     </div>
@@ -25,7 +26,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-defineProps(['title', 'data']);
+defineProps(['title', 'data', 'img']);
 
 const isFlipped = ref(false);
 
@@ -37,10 +38,15 @@ const flip = (value: boolean) => {
 
 
 <style scoped>
+img{
+  width:100%;
+  height:100%
+}
 .card-container {
   perspective: 1000px;
   display: inline-block;
   animation: floatAnimation 1.5s linear .5s infinite alternate;
+
 }
 
 @keyframes floatAnimation {
@@ -53,8 +59,9 @@ const flip = (value: boolean) => {
 }
 
 .card {
-  width: 300px;
+  width: 350px;
   height: 500px;
+  border-radius: 20px;
   transform-style: preserve-3d;
   transition: transform 0.5s;
   background: #ffffff;
@@ -68,7 +75,7 @@ const flip = (value: boolean) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .card-face-front {
@@ -77,7 +84,8 @@ const flip = (value: boolean) => {
 
 .card-face-back {
   transform: rotateY(180deg);
-  background-color: #ffffff; /* 背面颜色 */
+  background:url("public/backPic/about-back.png");
+  background-size: cover;
 }
 
 .flipped {

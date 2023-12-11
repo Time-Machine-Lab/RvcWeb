@@ -9,78 +9,89 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <template>
-  <div class="HomePage">
-    <div class="Welcome">
-      <div class="WelcomeCard">
-        <div class="WelcomeTitle">RVC社区</div>
-        <div class="WelcomeContain">
-          RVC模型交流社区<br />2022-2023<br />一起探索声音变换的无限可能,你梦想的声音从现在开始!
-        </div>
-        <div class="WelcomeBtn flex">
-          <div class="RegisterBtn flex">
-            <router-link to="/login" target="_blank"> 立即注册 </router-link>
-          </div>
-          <div class="EnterBtn flex">进入社区</div>
-        </div>
-      </div>
-    </div>
+  <div class="intro">
+    <div class="intro-back"></div>
+    <!--欢迎页面-->
+    <Welcome></Welcome>
+    <div class="fixed-strip">RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC</div>
     <!--公告栏-->
     <NoticeBoard></NoticeBoard>
+    <div class="fixed">RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC   RVC</div>
     <!--社区介绍板块-->
     <div class="Introduction">
-      <div class="IntroductionPic"></div>
-      <div class="IntroductionCard flex">
-        <div class="IntroductionTitle flex">RVC社区</div>
-        <div class="IntroductionContain">
-          RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。
+      <div class="Introduction-pic"></div>
+      <div class="introduction-contain">
+        <div class="Introduction-card flex">
+          <div class="Introduction-card__title flex">RVC社区</div>
+          <div class="Introduction-card__contain">
+            RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。
+          </div>
         </div>
       </div>
+
     </div>
     <!--社区功能板块-->
-    <div class="Functions">
-      <div class="FunctionsTitle flex">社区功能</div>
+    <div class="Functions flex">
+      <div class="Functions-title flex">社区功能</div>
       <div v-for="(functionItem, index) in functionArray" :key="index" class="Function">
-        <div class="FunctionTool flex">{{ functionItem.function }}</div>
-        <div class="FunctionImg">
+        <div class="Function-tool flex">{{ functionItem.function }}</div>
+        <div class="Function-img flex">
           <img :src="functionItem.img" alt="Team Member Image" />
         </div>
       </div>
     </div>
     <!--我们团队板块-->
-    <div class="Team">
-      <div class="TeamTitle">我们团队</div>
-      <div v-for="(teamMember, index) in teamMembers" :key="index" class="TeamItem">
-        <div class="Img">
-          <img :src="teamMember.img" alt="Team Member Image" />
+    <div class="Team flex">
+      <div class="team-title flex">我们团队</div>
+      <div class="team-list">
+        <div class="team-content">
+          <div v-for="(teamMember, index) in teamMembers" :key="index" class="team-item">
+            <img :src="teamMember.img" alt="Team Member Image" class="team-item__img" />
+            <div class="team-item__message flex">
+              <div class="NickName flex">{{ teamMember.nickName }}</div>
+              <div class="Description flex">{{ teamMember.description }}</div>
+              <div class="Role flex">{{ teamMember.role }}</div>
+            </div>
+          </div>
         </div>
-        <div class="NickName flex">{{ teamMember.nickName }}</div>
-        <div class="Description flex">{{ teamMember.description }}</div>
-        <div class="Role flex">{{ teamMember.role }}</div>
       </div>
     </div>
     <!--关于我们-->
     <div class="about flex">
       <div class="box"></div>
       <div class="about-btn flex">
-        <router-link to="/about" target="_blank"> 关于我们 </router-link>
+        <router-link to="/about" target="_blank" class="about-btn__text"> <p>关于我们</p> </router-link>
       </div>
     </div>
     <!--RVC版本板块-->
     <div class="Versions">
-      <div class="VersionMessage flex">版本信息</div>
+      <div class="Version-message flex">版本信息</div>
       <div class="VersionContain flex">RVC已经到来</div>
-      <div class="VersionsBtn flex">
-        <a href="https://github.com/Time-Machine-Lab">了解更多</a>
-      </div>
+      <a href="https://github.com/Time-Machine-Lab" class="Versions-btn flex">了解更多</a>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import "../../assets/css/HomePage.css";
-import axios from "axios";
-import { ref, onMounted } from "vue";
-import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue";
-
+import "../../assets/css/HomePage.css"
+import axios from "axios"
+import { ref, onMounted,computed } from "vue"
+import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue"
+import Welcome from "@/components/intro/welcome.vue";
+// welcome板块
+window.addEventListener('scroll', function() {
+  const scrollDistance = window.scrollY;
+  const strip = document.querySelector('.fixed-strip')as HTMLElement;
+  if (strip) {
+    strip.style.transform = `translateX(-${scrollDistance}px)`;
+  }
+});
+window.addEventListener('scroll', function() {
+  const scrollDistance = window.scrollY;
+  const strip = document.querySelector('.fixed')as HTMLElement;
+  if (strip) {
+    strip.style.transform = `translateX(${scrollDistance}px)`;
+  }
+});
 // 社区功能板块
 const functionArray = [
   { function: "个人账号", img: "../../../public/teamPic/daocaoren.jpg" },
@@ -91,70 +102,108 @@ const functionArray = [
   { function: "虚拟对话", img: "../../../public/teamPic/lishiming.webp" },
   { function: "语音聊天室", img: "../../../public/teamPic/wangyoucao.jpg" },
 ];
+// team板块
 
-const teamMembers = [
+const items = [
   {
+    id: 1,
     nickName: "Member1",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/daocaoren.jpg",
   },
   {
-    nickName: "Member1",
+    id: 2,
+    nickName: "Member2",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/dhx.jpg",
   },
   {
-    nickName: "Member1",
+    id: 3,
+    nickName: "Member3",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/Genius.png",
   },
   {
-    nickName: "Member1",
+    id: 4,
+    nickName: "Member4",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/huaerbuku.jpg",
   },
   {
-    nickName: "Member1",
+    id: 5,
+    nickName: "Member5",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/jq.png",
   },
   {
-    nickName: "Member1",
+    id: 6,
+    nickName: "Member6",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/lishiming.webp",
   },
   {
-    nickName: "Member1",
+    id: 7,
+    nickName: "Member7",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/wangyoucao.jpg",
   },
   {
-    nickName: "Member1",
+    id: 8,
+    nickName: "Member8",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/welsir.jpg",
   },
   {
-    nickName: "Member1",
+    id: 9,
+    nickName: "Member9",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/xi.jpg",
   },
   {
-    nickName: "Member1",
+    id: 10,
+    nickName: "Member10",
     description: "Description1",
     role: "Role1",
     img: "../../../public/teamPic/xiangzong.jpg",
   },
   // Add more team members as needed
 ];
+const currentIndex = ref(0);
+const teamMembers = computed(() => {
+  let start = currentIndex.value % items.length;
+  if(currentIndex.value == 1){
+    return [
+      items[items.length-1],
+      items[items.length-2],
+      items[items.length-3],
+      items[items.length-4],
+      items[items.length-5],
+      items[items.length-6],
+    ];
+  }
+  return [
+    items[start],
+    items[(start + 1) % items.length],
+    items[(start + 2) % items.length],
+    items[(start + 3) % items.length],
+    items[(start + 4) % items.length],
+    items[(start + 5) % items.length],
+  ];
+});
+onMounted(() => {
+  setInterval(() => {
+    currentIndex.value = 1- currentIndex.value;
+  }, 15000);
+});
 
 const responseData = ref({
   data: {
