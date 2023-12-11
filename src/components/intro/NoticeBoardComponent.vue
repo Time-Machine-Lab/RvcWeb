@@ -64,9 +64,11 @@ const changeTab = (tab: any) => {
       </div>
       <div class="notice-board__list flex" v-if="currentTab === 'new'">
         <ul class="notice-board__contain flex" v-for="notice in tableData" :key="notice.id">
-          <li class="notice-board__id flex">{{ notice.id }}</li>
-          <li class="notice-board__text flex">{{ notice.text }}</li>
-          <li class="notice-board__date flex">{{ notice.date }}</li>
+          <router-link :to="{ name: 'NoticeDetail', params: { id: notice.id } }" target="_blank" class="router flex">
+            <li class="notice-board__id flex">{{ notice.id }}</li>
+            <li class="notice-board__text flex">{{ notice.text }}</li>
+            <li class="notice-board__date flex">{{ notice.date }}</li>
+          </router-link>
         </ul>
       </div>
       <div class="notice-board__list flex" v-if="currentTab === 'hot'">
@@ -88,6 +90,10 @@ const changeTab = (tab: any) => {
 </template>
 
 <style scoped>
+.router{
+  width:100%;
+  height:100%;
+}
 .notice {
   width: 100%;
   height: 700px;
