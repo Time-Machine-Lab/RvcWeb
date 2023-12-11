@@ -1,6 +1,18 @@
 <script setup lang="ts">
+import { onBeforeMount } from 'vue';
 // import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 // import './style.css'
+onBeforeMount(() => {
+  const loadingDom = document.querySelector(".before-app-render-loading");
+  if (loadingDom) {
+    console.log("loadingDom: ", loadingDom.parentElement);
+    loadingDom.classList.add("unmount");
+    setTimeout(() => {
+      loadingDom.remove();
+    }, 500);
+    loadingDom.classList.add("unmount");
+  }
+});
 </script>
 
 <template>
@@ -23,6 +35,7 @@
   <!--    </el-scrollbar>-->
 </template>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -41,4 +54,5 @@
   margin-top: 50px;
   padding: 0;
 }
+
 </style>

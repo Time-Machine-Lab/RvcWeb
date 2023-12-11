@@ -8,6 +8,8 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import "./style.css";
 
+import { inject } from '@vercel/analytics';
+inject();
 
 const app = createApp(App);
 app.use(router);
