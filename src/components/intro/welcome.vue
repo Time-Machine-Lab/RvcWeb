@@ -35,7 +35,7 @@
     left:-150px;
     height:100%;
     width:80%;
-    background: url("public/backPic/welcome-2.png");
+    background: url("https://s2.loli.net/2023/12/11/R6GBQLNJKlvcOmE.png");
     background-size: cover;
   }
   .overlay{
@@ -55,7 +55,7 @@
     height: 400px;
     color: #383838;
     .welcome-card__title {
-      background-image: url("public/lottie/enter.gif");
+      background-image: url("https://s2.loli.net/2023/12/11/pckeYmvE9z2tHxu.gif");
       background-size: contain;
       text-decoration-line: none;
       width: 200px;
