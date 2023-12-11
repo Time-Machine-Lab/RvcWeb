@@ -14,19 +14,7 @@ import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 
 <template>
   <div>
-    <el-scrollbar style="overflow: auto;height: 100vh;">
-      <div class="common-layout">
-        <el-container>
-          <el-header class="header">
-            <LayoutHeader></LayoutHeader>
-          </el-header>
-          <el-main class="main">
-            <RouterView :key="($router.currentRoute.value.query.id as string)" />
-          </el-main>
-          <el-footer style="margin: 0;padding:0">Footer</el-footer>
-        </el-container>
-      </div>
-    </el-scrollbar>
+    <LayoutHeader></LayoutHeader>
   </div>
 </template>
 
