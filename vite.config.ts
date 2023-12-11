@@ -19,9 +19,14 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 8090,
     proxy: {
-      "/api": {
+      "/m1": {
         target: "https://mock.apifox.com/",
+        changeOrigin: true,
       },
+      "/web": {
+        target: "http://1.94.28.8:9300/",
+        changeOrigin: true,      
+      }
     },
   },
   resolve: {

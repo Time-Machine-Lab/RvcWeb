@@ -6,7 +6,7 @@ import { message } from './message'
 
 
 const request = axios.create({
-  baseURL: 'http://1.94.28.8:9300',
+  baseURL: '',
   timeout: 5000
 })
 
