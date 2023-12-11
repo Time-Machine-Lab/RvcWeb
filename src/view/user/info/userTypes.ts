@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\userTypes.ts
+ */
 export type Profile = {
   id: 0;
   avatar: ""; //头像链接

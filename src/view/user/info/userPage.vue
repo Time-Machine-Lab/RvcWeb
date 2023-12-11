@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\userPage.vue
+-->
 <script lang="ts" setup>
 import router from "@/router/index.ts";
 import BaseInfo from "@/view/user/info/pages/baseInfo.vue";

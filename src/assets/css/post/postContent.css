@@ -1,0 +1,19 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-07 16:10:48
+ * @Description: 
+ * @FilePath: \RvcWeb\src\assets\css\post\postContent.css
+ */
+.post-content{
+
+}
+.post-content *{
+    text-align: left;
+    color: rgba(255,255,255,0.7);
+}
+.post-content img{
+    width: 100%;
+}
+.post-content * a{
+    /* text-decoration: none; */
+}

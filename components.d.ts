@@ -38,7 +38,6 @@ declare module 'vue' {
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
   }
   export interface ComponentCustomProperties {
-    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

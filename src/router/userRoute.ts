@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\router\userRoute.ts
+ */
 export default [
   {
     path: "",

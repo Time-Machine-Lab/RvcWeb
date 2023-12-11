@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 18:48:48
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\layout\header\layoutHeader.vue
+-->
 <script lang="ts" setup>
 import userStatus from "@/view/layout/header/components/userStatus.vue";
 </script>

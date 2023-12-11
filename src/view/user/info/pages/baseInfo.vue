@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\pages\baseInfo.vue
+-->
 <script setup lang="ts">
 import editProfile from "@/view/user/info/pages/editProfile.vue";
 import { Profile } from "@/view/user/info/userTypes";
