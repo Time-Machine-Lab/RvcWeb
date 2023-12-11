@@ -2,7 +2,7 @@
  * @Author: Dhx
  * @Date: 2023-12-06 19:12:20
  * @Description: 
- * @FilePath: \RvcWeb\src\view\modelCommunication\pages\postPage.vue
+ * @FilePath: \RvcWeb\src\view\modelCommunication\pages\postPageView.vue
 -->
 
 <script lang="ts" setup>
@@ -156,7 +156,7 @@ let figures = ref([
     min-width: 450px;
     /* background-color: rgba(0,0,0,0.1); */
 }
-.post-page__post :deep .el-breadcrumb__inner{
+.post-page__post :deep(.el-breadcrumb__inner){
     color: white;
 }
 

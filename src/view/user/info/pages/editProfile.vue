@@ -182,14 +182,14 @@ const submitChange = function () {
   display: block;
 }
 
-:deep .el-input__inner {
+:deep(.el-input__inner) {
   background-color: rgba(50, 52, 66);
 }
-:deep .el-input__wrapper {
+:deep(.el-input__wrapper) {
   background-color: rgba(50, 52, 66);
 }
 
-:deep .el-select-dropdown {
+:deep(.el-select-dropdown) {
   background-color: rgba(50, 52, 66);
 }
 
@@ -199,7 +199,7 @@ const submitChange = function () {
   font-weight: 700;
 }
 
-:deep .avatar-uploader .el-upload {
+:deep(.avatar-uploader .el-upload) {
   border: 1px dashed grey;
   border-radius: 6px;
   cursor: pointer;
@@ -208,11 +208,11 @@ const submitChange = function () {
   transition: var(--el-transition-duration-fast);
 }
 
-:deep.avatar-uploader .el-upload:hover {
+:deep(.avatar-uploader .el-upload:hover) {
   border-color: grey;
 }
 
-:deep .el-icon.avatar-uploader-icon {
+:deep(.el-icon.avatar-uploader-icon) {
   font-size: 28px;
   color: #8c939d;
   width: 178px;
