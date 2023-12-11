@@ -168,7 +168,7 @@ options.value = [
     </div>
 </template>
 <style scoped>
-:deep .el-scrollbar__wrap {
+:deep(.el-scrollbar__wrap) {
     background-color: black;
 }
 
@@ -201,11 +201,11 @@ options.value = [
     box-shadow: none;
 }
 
-:deep .el-input__inner {
+:deep(.el-input__inner) {
     color: white;
 }
 
-:deep .el-select {
+:deep(.el-select){
     --el-select-border-color-hover: none;
     --el-select-input-focus-border-color: none;
     outline: none;
