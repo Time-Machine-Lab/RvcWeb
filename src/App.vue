@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 // import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
-// import './style.css'
+import './style.css'
 onBeforeMount(() => {
   const loadingDom = document.querySelector(".before-app-render-loading");
   if (loadingDom) {

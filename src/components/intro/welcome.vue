@@ -8,9 +8,7 @@
       <div class="overlay"></div>
     </div>
     <div class="welcome-card flex">
-      <div class="welcome-card__title flex">
-          进入RVC
-      </div>
+      <router-link to="/homepage" target="_blank" class="welcome-card__title flex"> 进入RVC </router-link>
       <div class="welcome-card__contain flex">
         RVC模型交流社区<br />2022-2023<br />一起探索声音变换的无限可能,你梦想的声音从现在开始!
       </div>
@@ -59,6 +57,7 @@
     .welcome-card__title {
       background-image: url("public/lottie/enter.gif");
       background-size: contain;
+      text-decoration-line: none;
       width: 200px;
       height: 50%;
       font-weight: bold;

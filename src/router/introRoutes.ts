@@ -33,6 +33,11 @@ export default[
     component: () => import("../view/home/AboutView.vue")
   },
   {
+    path: "/homepage",
+    name: "homepage",
+    component: () => import("../view/home/HomePageView.vue")
+  },
+  {
     path: "/notice/:id",
     name: "NoticeDetail",
     component: () => import("../view/home/NoticeDetailView.vue"),

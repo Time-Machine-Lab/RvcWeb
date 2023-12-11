@@ -80,13 +80,17 @@ import Welcome from "@/components/intro/welcome.vue";
 // welcome板块
 window.addEventListener('scroll', function() {
   const scrollDistance = window.scrollY;
-  const strip = document.querySelector('.fixed-strip');
-  strip.style.transform = `translateX(-${scrollDistance}px)`;
+  const strip = document.querySelector('.fixed-strip')as HTMLElement;
+  if (strip) {
+    strip.style.transform = `translateX(-${scrollDistance}px)`;
+  }
 });
 window.addEventListener('scroll', function() {
   const scrollDistance = window.scrollY;
-  const strip = document.querySelector('.fixed');
-  strip.style.transform = `translateX(${scrollDistance}px)`;
+  const strip = document.querySelector('.fixed')as HTMLElement;
+  if (strip) {
+    strip.style.transform = `translateX(${scrollDistance}px)`;
+  }
 });
 // 社区功能板块
 const functionArray = [
