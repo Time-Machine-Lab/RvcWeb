@@ -1,12 +1,18 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-07 19:25:18
+ * @Description: 
+ * @FilePath: \RvcWeb\src\router\communicationRoutes.ts
+ */
 export default [
     {
         path: '/post',
-        name: 'postPage',
-        component: ()=> import('@/view/modelCommunication/pages/postPage.vue'),
+        name: 'postPageView',
+        component: ()=> import('@/view/modelCommunication/pages/postPageView.vue'),
     },
     {
         path: '/communication',
         name: 'communication',
-        component: ()=> import('@/view/modelCommunication/index.vue'),
+        component: ()=> import('@/view/modelCommunication/indexView.vue'),
     }
 ]
