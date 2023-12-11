@@ -10,16 +10,33 @@
 -->
 <script setup lang="ts">
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
-// import Model from '@/components/rvcModel/modelCardComponent.vue'
 </script>
 
 <template>
-  <div class="homepage">
+  <div>
     <LayoutHeader></LayoutHeader>
-<!--    <Model></Model>-->
   </div>
 </template>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.header {
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+}
+.main {
+  height: 100vh;
+  margin-top: 50px;
+  padding: 0;
+}
 
 </style>
