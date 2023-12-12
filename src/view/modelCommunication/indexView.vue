@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
+// import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
+import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import { PostVo } from '@/view/post/postType'
 import { ref } from 'vue';
+
 const posts = ref<PostVo[]>([])
 posts.value = [{
     "post_id": 1,
@@ -110,11 +112,11 @@ posts.value = [{
 },]
 let filter = ref(
     {
-        tag:{
-            tag_id:0,
-            tag_name:'全部'
+        tag: {
+            tag_id: 0,
+            tag_name: '全部'
         },
-        sortSwitch:true,
+        sortSwitch: true,
         sort: 'time'
     }
 )
@@ -148,22 +150,34 @@ options.value = [
                 </el-select>
             </div>
             <div class="sort-selecter">
-                <div :class="filter.sortSwitch?'sort-selecter__switch--on':'sort-selecter__switch--off'" @click="filter.sortSwitch = !filter.sortSwitch;filter.sort=''">
+                <div :class="filter.sortSwitch ? 'sort-selecter__switch--on' : 'sort-selecter__switch--off'"
+                    @click="filter.sortSwitch = !filter.sortSwitch; filter.sort = ''">
                     排序
                 </div>
-                <div :style="{cursor:filter.sortSwitch?'pointer':'not-allowed'}" :class="filter.sort == 'time'?'sort-selecter__button--selected':'sort-selecter__button--unselected'" @click="if(filter.sortSwitch)filter.sort='time';">
+                <div :style="{ cursor: filter.sortSwitch ? 'pointer' : 'not-allowed' }"
+                    :class="filter.sort == 'time' ? 'sort-selecter__button--selected' : 'sort-selecter__button--unselected'"
+                    @click="if (filter.sortSwitch) filter.sort = 'time';">
                     时间
                 </div>
-                <div :style="{cursor:filter.sortSwitch?'pointer':'not-allowed'}" :class="filter.sort == 'like'?'sort-selecter__button--selected':'sort-selecter__button--unselected'" @click="if(filter.sortSwitch)filter.sort='like';">
+                <div :style="{ cursor: filter.sortSwitch ? 'pointer' : 'not-allowed' }"
+                    :class="filter.sort == 'like' ? 'sort-selecter__button--selected' : 'sort-selecter__button--unselected'"
+                    @click="if (filter.sortSwitch) filter.sort = 'like';">
                     点赞
                 </div>
-                <div :style="{cursor:filter.sortSwitch?'pointer':'not-allowed'}" :class="filter.sort == 'view'?'sort-selecter__button--selected':'sort-selecter__button--unselected'" @click="if(filter.sortSwitch)filter.sort='view';">
+                <div :style="{ cursor: filter.sortSwitch ? 'pointer' : 'not-allowed' }"
+                    :class="filter.sort == 'view' ? 'sort-selecter__button--selected' : 'sort-selecter__button--unselected'"
+                    @click="if (filter.sortSwitch) filter.sort = 'view';">
                     浏览量
+                </div>
+            </div>
+            <div class="new-post">
+                <div class="new-post__button">
+                    + 新贴子
                 </div>
             </div>
         </div>
         <div class="post-list">
-            <postCardComponent v-for="(post, index) in posts" :key="index" :post="post"></postCardComponent>
+            
         </div>
     </div>
 </template>
@@ -205,7 +219,7 @@ options.value = [
     color: white;
 }
 
-:deep(.el-select){
+:deep(.el-select) {
     --el-select-border-color-hover: none;
     --el-select-input-focus-border-color: none;
     outline: none;
@@ -216,9 +230,7 @@ options.value = [
     margin-left: 20px;
     position: relative;
     height: 50px;
-    top: 100%;
     display: flex;
-    transform: translate(0, -100%);
 }
 
 .sort-selecter span {
@@ -226,7 +238,8 @@ options.value = [
     font-size: 14px;
     line-height: 25px;
 }
-.sort-selecter div{
+
+.sort-selecter div {
     width: 100px;
     height: 42px;
     color: white;
@@ -243,17 +256,54 @@ options.value = [
 }
 
 .sort-selecter__switch--off {
-    border: grey 1px solid;
+    border: rgba(255, 255, 255, 0.2) 1px solid;
+    transition: all 0.3s;
 }
 
-.sort-selecter__button--selected{
+.sort-selecter__switch--off:hover {
+    border: rgba(255, 255, 255, 0.4) 1px solid;
+}
+
+.sort-selecter__button--selected {
     border: #fb7299 1px solid;
 }
-.sort-selecter__button--unselected{
-    border: grey 1px solid;
+
+.sort-selecter__button--unselected {
+    border: rgba(255, 255, 255, 0.2) 1px solid;
+}
+
+.sort-selecter__button--unselected:hover {
+    border: rgba(255, 255, 255, 0.4) 1px solid;
+}
+
+.new-post {
+    position: absolute;
+    height: 50px;
+    right: 10%;
 }
 
 .post-list {
+    position: relative;
     height: calc(100% - 50px);
-    width: 100%;
+    width: 80%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.new-post__button {
+    width: 100px;
+    height: 42px;
+    color: white;
+    border-radius: 5px;
+    line-height: 42px;
+    margin-left: 2px;
+    user-select: none;
+    cursor: pointer;
+    border: #fb7299 1px solid;
+    background-color: #fb7299;
+    transition: all 0.3s;
+}
+
+.new-post__button:hover {
+    background-color: #f85c88;
 }</style>
