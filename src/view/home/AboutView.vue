@@ -13,9 +13,9 @@ import { reactive } from "vue";
 import Card from '@/components/intro/CardComponent.vue';
 
 const cards = reactive([
-  { title: '我们是谁', data: '我们是RVC开发组', img:'public/backPic/join.png' },
-  { title: '我们是谁', data: '我们是谁', img:'public/backPic/join.png' },
-  { title: '联系我们', data: '联系我们' , img:'public/backPic/join.png'}
+  { title: '我们是谁', data: '我们是RVC开发组', img:'https://s2.loli.net/2023/12/13/8HsCriMFdE7pPlL.png' },
+  { title: '我们是谁', data: '我们是谁', img:'https://s2.loli.net/2023/12/13/8HsCriMFdE7pPlL.png' },
+  { title: '联系我们', data: '联系我们' , img:'https://s2.loli.net/2023/12/13/8HsCriMFdE7pPlL.png'}
 ]);
 </script>
 
@@ -35,7 +35,7 @@ const cards = reactive([
 .about {
   height: 100vh;
   width: 100%;
-  background: url("public/backPic/about.png");
+  background: url("https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg");
   background-size: cover;
   justify-content: space-around;
 }

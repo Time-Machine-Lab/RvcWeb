@@ -4,7 +4,25 @@ import { getModels } from '@/api/model/modelApi'
 import { RvcModelVo } from '@/view/rvcModel/modelType'
 import { ref } from 'vue'
 let scrollDisabled = ref<boolean>(false)
-const models = ref<RvcModelVo[]>([])
+const models = ref<RvcModelVo[]>([{
+  model_id: '111',
+  uid: '1',
+  username: '1',
+  nickname: '1',
+  avatar: '1',
+  model_name: '1',
+  model_type: '1',
+  model_label: '1',
+  model_image: '1',
+  model_desc: '1',
+  model_note: '1',
+  watch_num: 1,
+  like_num: 1,
+  collection_num: 1,
+  create_at: '1',
+  has_like: false,
+  has_collection: false,
+}])
 const scroll = function () {
   scrollDisabled.value = true
   getModels(models.value.length, models.value.length + 5).then((res) => {

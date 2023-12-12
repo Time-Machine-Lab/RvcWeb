@@ -12,7 +12,6 @@
   <div class="card-container" @mouseover="flip(true)" @mouseout="flip(false)">
     <div class="card" :class="{ flipped: isFlipped }">
       <div class="card-face card-face-front">
-        <img :src="img">
       </div>
       <div class="card-face card-face-back">
         <!-- 背面内容 -->
@@ -61,7 +60,6 @@ img{
 .card {
   width: 350px;
   height: 500px;
-  border-radius: 20px;
   transform-style: preserve-3d;
   transition: transform 0.5s;
   background: #ffffff;
@@ -80,11 +78,13 @@ img{
 
 .card-face-front {
   transform: rotateY(0deg);
+  background:url("https://s2.loli.net/2023/12/13/8HsCriMFdE7pPlL.png");
+  background-size: cover;
 }
 
 .card-face-back {
   transform: rotateY(180deg);
-  background:url("public/backPic/about-back.png");
+  background:url("https://s2.loli.net/2023/12/11/Ws5LvbYnlZPMqG9.png");
   background-size: cover;
 }
 

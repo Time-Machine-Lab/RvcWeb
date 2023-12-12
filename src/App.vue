@@ -16,9 +16,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <!-- <div>
-    <RouterView :key="$router.currentRoute.value.query.id as string" />
-  </div> -->
+<!--  <div>-->
+<!--    <RouterView :key="$router.currentRoute.value.query.id as string" />-->
+<!--  </div>-->
   <el-scrollbar style="overflow: auto;height: 100vh;">
     <div class="common-layout">
       <el-container>
@@ -53,10 +53,8 @@ onBeforeMount(() => {
 }
 
 .main {
-  height: 100vh;
   margin-top: 50px;
   padding: 0;
-  background-color: rgba(40, 42, 54);
-
+  background-color: rgb(66, 66, 68);
 }
 </style>
