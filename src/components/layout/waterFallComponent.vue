@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, onUnmounted, watchEffect, watch } from 'vue'
+import { defineComponent, onMounted, ref, onUnmounted, watch } from 'vue'
 
 export default defineComponent({
   props: {
-    data: Array,
+    data: Array
   },
   setup(props) {
     const minWidth = ref(280)
     const columnCount = ref(5)
     const width = ref(0)
     const height = ref([0, 0, 0, 0, 0])
-    const containerRef = ref(null)
+    const containerRef = ref<HTMLElement | null>(null)
     let containerElement: HTMLElement | undefined
     let childElements: HTMLCollection | undefined
 
@@ -18,8 +18,8 @@ export default defineComponent({
       height.value.fill(0, 0, 5)
       columnCount.value = 5
       if (containerRef.value) {
-        containerElement = containerRef.value
-        childElements = containerElement.children
+        containerElement = containerRef.value as HTMLElement
+        childElements = containerElement.children as HTMLCollection
       }
       while (columnCount.value) {
         if (containerRef.value) {
@@ -30,21 +30,24 @@ export default defineComponent({
         }
         columnCount.value--
       }
-      for (let i = 0; i < childElements.length; i++) {
-        childElements[i].style.position = 'absolute'
-        childElements[i].style.display = 'inline-block'
-        childElements[i].style.width = width.value + 'px'
-        let index = getMinIndex(height.value, columnCount.value)
-        childElements[i].style.left = index * (width.value + 10) + 'px'
-        childElements[i].style.top = height.value[index] + 'px'
-        childElements[i].style.visibility = 'visible'
-        height.value[index] += childElements[i].clientHeight + 10
+      for (let i = 0; i < (childElements?.length as number); i++) {
+        if (childElements && containerElement) {
+          const currentElement = childElements[i] as HTMLElement;
+          currentElement.style.position = 'absolute';
+          currentElement.style.display = 'inline-block';
+          currentElement.style.width = width.value + 'px';
+          const index = getMinIndex(height.value, columnCount.value);
+          currentElement.style.left = index * (width.value + 10) + 'px';
+          currentElement.style.top = height.value[index] + 'px';
+          currentElement.style.visibility = 'visible';
+          height.value[index] += currentElement.clientHeight + 10;
+        }
       }
       let maxHeight = Math.max(...height.value)
-      containerElement.style.height = maxHeight + 'px'
+      if(containerElement)containerElement.style.height = maxHeight + 'px'
     };
 
-    const getMinIndex = function (height, len) {
+    const getMinIndex = function (height: number[], len: number) {
       var min = 2147483647;
       var index = 0
       for (let i = 0; i < len; i++) {
@@ -63,6 +66,7 @@ export default defineComponent({
       () => props.data,
       (newValue, oldValue) => {
         setTimeout(() => {
+          console.log(newValue, oldValue);
           sortElement()
         }, 500);
       },

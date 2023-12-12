@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
-import waterFallComponent from '@/components/layout/waterFallComponent.vue'
+// import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import { PostVo } from '@/view/post/postType'
 import { ref } from 'vue';
 
