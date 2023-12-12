@@ -18,12 +18,21 @@ import userStatus from "@/view/layout/header/components/userStatus.vue";
           主页
         </div>
       </RouterLink>
+      <RouterLink to="/model">
+        <div class="page-link__item">
+          模型
+        </div>
+      </RouterLink>
       <RouterLink to="/communication">
         <div class="page-link__item">
           社区
         </div>
       </RouterLink>
-      
+      <RouterLink to="/communication">
+        <div class="page-link__item">
+          反馈
+        </div>
+      </RouterLink>
     </div>
     <div class="user-status">
       <userStatus></userStatus>
@@ -35,7 +44,7 @@ import userStatus from "@/view/layout/header/components/userStatus.vue";
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: #2d2d2d;
   display: flex;
 }
 

@@ -29,6 +29,11 @@ const routes: RouteRecordRaw[] = [
         name: "home",
         component: () => import("../view/home/IntroView.vue"),
     },
+    {
+        path: "/model",
+        name: "model",
+        component: () => import("../view/home/HomePageView.vue"),
+    },
     ...introRoute,
     {
         path: "/user",
