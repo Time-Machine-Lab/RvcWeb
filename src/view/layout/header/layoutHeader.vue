@@ -28,11 +28,11 @@ import userStatus from "@/view/layout/header/components/userStatus.vue";
           社区
         </div>
       </RouterLink>
-      <RouterLink to="/communication">
-        <div class="page-link__item">
-          反馈
-        </div>
-      </RouterLink>
+<!--      <RouterLink to="/feedback">-->
+<!--        <div class="page-link__item">-->
+<!--          反馈-->
+<!--        </div>-->
+<!--      </RouterLink>-->
     </div>
     <div class="user-status">
       <userStatus></userStatus>
