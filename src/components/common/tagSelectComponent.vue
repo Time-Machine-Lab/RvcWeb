@@ -4,45 +4,82 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\components\common\tagSelectComponent.vue
 -->
-<template>
-    <el-tag v-for="tag in dynamicTags" :key="tag" class="mx-1" closable :disable-transitions="false"
-        @close="handleClose(tag)">
-        {{ tag }}
-    </el-tag>
-    <el-select v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1 w-20" size="small"
-        @keyup.enter="handleInputConfirm" @blur="handleInputConfirm">
-    </el-select>
-    <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
-        + New Tag
-    </el-button>
-</template>
-  
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { ELSelect } from 'element-plus'
 
-const inputValue = ref('')
+const selectValue = ref('')
 const dynamicTags = ref<string[]>([])
-const inputVisible = ref(false)
-const InputRef = ref<InstanceType<typeof ELSelect>>()
-
+const selectVisible = ref(false)
+const SelectRef = ref<InstanceType<typeof ELSelect>>()
+let tagOptions = ref([
+    {
+        value: 'tag1',
+        label: 'tag1'
+    },
+    {
+        value: 'tag2',
+        label: 'tag2'
+    }
+])
 const handleClose = (tag: string) => {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
 
-const showInput = () => {
-    inputVisible.value = true
+const showSelect = () => {
+    selectVisible.value = true
     nextTick(() => {
-        InputRef.value!.input!.focus()
+        console.log(SelectRef.value);
+
+        SelectRef.value!.focus()
     })
+
 }
 
-const handleInputConfirm = () => {
-    if (inputValue.value) {
-        dynamicTags.value.push(inputValue.value)
+const handleSelectConfirm = () => {
+    if (selectValue.value && !dynamicTags.value.includes(selectValue.value)) {
+        dynamicTags.value.push(selectValue.value)
     }
-    inputVisible.value = false
-    inputValue.value = ''
+    selectVisible.value = false
+    selectValue.value = ''
 }
 </script>
+<template>
+    <el-tag v-for="tag in dynamicTags" :key="tag"
+        :style="{ backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" closable
+        :disable-transitions="false" @close="handleClose(tag)">
+        {{ tag }}
+    </el-tag>
+    <el-select v-if="selectVisible" ref="SelectRef" v-model="selectValue"
+        :style="{ width: '100px', backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" size="small"
+        @change="handleSelectConfirm" @blur="handleSelectConfirm" placeholder="选择标签">
+        <el-option
+            v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value" />
+    </el-select>
+    <el-button v-else class="button-new-tag"
+        :style="{ backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" size="small" @click="showSelect">
+        + New Tag
+    </el-button>
+</template>
+  
+<style scoped>
+/* :deep(.el-input__inner) {
+    background-color: rgba(40, 40, 40);
+    border: none;
+} */
+
+:deep(.el-input__wrapper) {
+    background-color: rgba(40, 40, 40);
+}
+/* 
+:deep(.el-select-dropdown) {
+    background-color: rgba(40, 40, 40);
+}
+
+:deep(.el-select-dropdown__wrap) {
+    background-color: rgba(40, 40, 40);
+    border: none
+} */
+</style>
+
   
