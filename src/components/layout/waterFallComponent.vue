@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, onUnmounted, watchEffect, watch } from 'vue'
+import { defineComponent, onMounted, ref, onUnmounted, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -10,9 +10,9 @@ export default defineComponent({
     const columnCount = ref(5)
     const width = ref(0)
     const height = ref([0, 0, 0, 0, 0])
-    const containerRef = ref(null)
-    let containerElement: HTMLElement | undefined
-    let childElements: HTMLCollection | undefined
+    const containerRef = ref<HTMLElement | null>(null);
+    let containerElement: HTMLElement | undefined;
+    let childElements: HTMLCollection | undefined;
 
     const sortElement = function () {
       height.value.fill(0, 0, 5)
@@ -30,21 +30,26 @@ export default defineComponent({
         }
         columnCount.value--
       }
-      for (let i = 0; i < childElements.length; i++) {
-        childElements[i].style.position = 'absolute'
-        childElements[i].style.display = 'inline-block'
-        childElements[i].style.width = width.value + 'px'
-        let index = getMinIndex(height.value, columnCount.value)
-        childElements[i].style.left = index * (width.value + 10) + 'px'
-        childElements[i].style.top = height.value[index] + 'px'
-        childElements[i].style.visibility = 'visible'
-        height.value[index] += childElements[i].clientHeight + 10
+      if (childElements) {
+        for (let i = 0; i < childElements.length; i++) {
+          const child = childElements[i] as HTMLElement;
+          child.style.position = 'absolute'
+          child.style.display = 'inline-block'
+          child.style.width = width.value + 'px'
+          let index = getMinIndex(height.value, columnCount.value)
+          child.style.left = index * (width.value + 10) + 'px'
+          child.style.top = height.value[index] + 'px'
+          child.style.visibility = 'visible'
+          height.value[index] += child.clientHeight + 10
+        }
       }
-      let maxHeight = Math.max(...height.value)
-      containerElement.style.height = maxHeight + 'px'
+      if (containerElement) {
+        let maxHeight = Math.max(...height.value);
+        containerElement.style.height = maxHeight + 'px';
+      }
     };
 
-    const getMinIndex = function (height, len) {
+    const getMinIndex = function (height:any, len:any) {
       var min = 2147483647;
       var index = 0
       for (let i = 0; i < len; i++) {
@@ -61,7 +66,7 @@ export default defineComponent({
     })
     watch(
       () => props.data,
-      (newValue, oldValue) => {
+      () => {
         setTimeout(() => {
           sortElement()
         }, 500);
