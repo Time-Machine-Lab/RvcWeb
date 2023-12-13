@@ -40,7 +40,7 @@ const submitPost = function () {
                 <div class="label">
                     标签
                 </div>
-                <div>
+                <div style="text-align: left;">
                     <tagSelectComponent></tagSelectComponent>
                 </div>
                 <div class="label">
@@ -163,7 +163,7 @@ const submitPost = function () {
 }
 
 .newPost-page__center__right__Preview {
-    height: 600px;
+    height: 700px;
     width: calc(100% - 20px);
     padding: 10px;
     border: rgba(255, 255, 255, 0.4) 1px solid;
