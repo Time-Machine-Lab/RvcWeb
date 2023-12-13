@@ -65,7 +65,7 @@ export default defineComponent({
     })
     watch(
       () => props.data,
-      () => {
+      (newValue, oldValue) => {
         setTimeout(() => {
           console.log(newValue, oldValue);
           sortElement()
