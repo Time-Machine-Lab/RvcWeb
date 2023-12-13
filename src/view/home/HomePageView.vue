@@ -10,7 +10,9 @@
 -->
 <script setup lang="ts">
 import Model from '@/view/user/info/pages/likeModels.vue'
+import WaterFall from '@/components/layout/waterFallComponent.vue'
 import {ref} from 'vue'
+import {RvcModelVo} from "@/view/rvcModel/modelType.ts";
 
 // 选择器
 const value = ref('')
@@ -29,7 +31,25 @@ const options = [
   },
 ]
 
-// 搜索框
+const models = ref<RvcModelVo[]>([{
+  model_id: '111',
+  uid: '1',
+  username: '1',
+  nickname: '1',
+  avatar: '1',
+  model_name: '1',
+  model_type: '1',
+  model_label: '1',
+  model_image: '1',
+  model_desc: '1',
+  model_note: '1',
+  watch_num: 1,
+  like_num: 1,
+  collection_num: 1,
+  create_at: '1',
+  has_like: false,
+  has_collection: false,
+}])
 </script>
 
 <template>
@@ -50,7 +70,11 @@ const options = [
       <div class="model-contain">
         <div v-if="value === ''"> <Model></Model> </div>
         <div v-if="value === 'Option1'"> <Model></Model> </div>
-        <div v-else-if="value === 'Option2'"> <!-- Content sorted by most likes --> </div>
+        <div v-else-if="value === 'Option2'">
+          <WaterFall :data="models">
+            <div style="width:300px;height:500px;background: #79bbff"></div>
+          </WaterFall>
+        </div>
         <div v-else-if="value === 'Option3'"> <!-- Content sorted by latest --> </div>
       </div>
     </div>
