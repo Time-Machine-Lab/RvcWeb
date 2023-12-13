@@ -14,5 +14,15 @@ export default [
         path: '/communication',
         name: 'communication',
         component: ()=> import('@/view/modelCommunication/indexView.vue'),
+    },
+    {
+        path: '/newPost',
+        name: 'newPost',
+        component: ()=> import('@/view/modelCommunication/pages/newPostPageView.vue')
+    },
+    {
+        path: '/editPost',
+        name: 'editPost',
+        component: ()=> import('@/view/modelCommunication/pages/editPostPageView.vue')
     }
 ]

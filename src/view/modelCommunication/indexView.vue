@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 // import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
 // import waterFallComponent from '@/components/layout/waterFallComponent.vue'
-import { PostVo } from '@/view/post/postType'
+import { PostVo } from '@/api/post/postType'
 import { ref } from 'vue';
-
 const posts = ref<PostVo[]>([])
 posts.value = [{
     "post_id": 1,
@@ -171,13 +170,12 @@ options.value = [
                 </div>
             </div>
             <div class="new-post">
-                <div class="new-post__button">
+                <div class="new-post__button" @click="$router.push('/newPost')">
                     + 新贴子
                 </div>
             </div>
         </div>
         <div class="post-list">
-            
         </div>
     </div>
 </template>
@@ -306,4 +304,4 @@ options.value = [
 
 .new-post__button:hover {
     background-color: #f85c88;
-}</style>
+}</style>@/api/post/postType

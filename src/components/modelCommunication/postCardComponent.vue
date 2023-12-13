@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PostVo } from '@/view/post/postType'
+import { PostVo } from '@/api/post/postType'
 
 const props = defineProps<{
     post: PostVo
@@ -215,4 +215,4 @@ const props = defineProps<{
     font-size: 14px;
     text-align: left;
 }
-</style>
+</style>@/api/post/postType

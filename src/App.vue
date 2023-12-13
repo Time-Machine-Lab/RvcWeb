@@ -55,6 +55,6 @@ onBeforeMount(() => {
 .main {
   margin-top: 50px;
   padding: 0;
-  background-color: rgb(66, 66, 68);
+  background-color: rgb(56, 56, 58);
 }
 </style>

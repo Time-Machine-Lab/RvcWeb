@@ -26,6 +26,13 @@ export default defineConfig({
       "/web": {
         target: "http://1.94.28.8:9300/",
         changeOrigin: true,      
+      },
+      "/api": {
+        target: "http://124.71.107.76:8090",
+        changeOrigin: true,
+        headers:{
+          Token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NDM4NDIyNzAiLCJpYXQiOjE3MDI0NDgzMjIsImV4cCI6MTcwMjQ4NzkyMn0.iPx3bW_mjGKAA7O64NjnjPqnmUqJGM31K8zHUIy9Ry4"
+        }
       }
     },
   },

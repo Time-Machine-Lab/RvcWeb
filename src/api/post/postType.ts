@@ -22,3 +22,15 @@ export type PostVo = {
     has_collect: boolean;
     has_like: boolean;
 };
+
+export type PostForm = {
+    title: string;
+    content: string;
+    cover: string;
+}
+
+export type PostType = {
+    tag_id: string
+    tag_name: string
+    tag_img: string
+}
