@@ -28,9 +28,12 @@ onBeforeMount(() => {
         <el-main class="main">
           <RouterView :key="($router.currentRoute.value.query.id as string)" />
         </el-main>
-        <el-footer style="margin: 0;padding:0">Footer</el-footer>
+        <el-footer class="foot flex">
+          <router-link to="/about" target="_blank" class="foot-btn flex"> <p>加入我们</p> </router-link>
+          <router-link to="/service" target="_blank" class="foot-btn flex"> <p>服务条款</p> </router-link>
+          <router-link to="/feedback" target="_blank" class="foot-btn flex"> <p>反馈</p> </router-link>
+        </el-footer>
       </el-container>
-
     </div>
   </el-scrollbar>
 </template>
@@ -56,5 +59,18 @@ onBeforeMount(() => {
   margin-top: 50px;
   padding: 0;
   background-color: rgb(56, 56, 58);
+}
+.foot{
+  justify-content: left;
+  position: fixed;
+  bottom: 0;
+  width:100vw;
+  height:30px;
+  background: black;
+  .foot-btn{
+    width:100px;
+    height:100%;
+    color: #e5e5e5;
+  }
 }
 </style>

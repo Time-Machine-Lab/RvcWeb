@@ -34,6 +34,11 @@ const routes: RouteRecordRaw[] = [
         name: "model",
         component: () => import("../view/home/HomePageView.vue"),
     },
+    {
+        path: "/feedback",
+        name: "feedback",
+        component: () => import("../view/home/FeedBackView.vue"),
+    },
     ...introRoute,
     {
         path: "/user",

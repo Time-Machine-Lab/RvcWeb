@@ -33,6 +33,11 @@ export default[
     component: () => import("../view/home/AboutView.vue")
   },
   {
+    path: "/service",
+    name: "service",
+    component: () => import("../view/home/ServiceView.vue")
+  },
+  {
     path: "/homepage",
     name: "homepage",
     component: () => import("../view/home/HomePageView.vue")

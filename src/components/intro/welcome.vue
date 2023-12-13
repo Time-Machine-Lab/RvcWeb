@@ -35,7 +35,7 @@
     left:-150px;
     height:100%;
     width:80%;
-    background: url("https://s2.loli.net/2023/12/11/R6GBQLNJKlvcOmE.png");
+    background: url("https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg");
     background-size: cover;
   }
   .overlay{

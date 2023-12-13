@@ -14,6 +14,7 @@ export default defineComponent({
     let containerElement: HTMLElement | undefined
     let childElements: HTMLCollection | undefined
 
+
     const sortElement = function () {
       height.value.fill(0, 0, 5)
       columnCount.value = 5
@@ -47,7 +48,7 @@ export default defineComponent({
       if(containerElement)containerElement.style.height = maxHeight + 'px'
     };
 
-    const getMinIndex = function (height: number[], len: number) {
+    const getMinIndex = function (height:any, len:any) {
       var min = 2147483647;
       var index = 0
       for (let i = 0; i < len; i++) {
@@ -64,7 +65,7 @@ export default defineComponent({
     })
     watch(
       () => props.data,
-      (newValue, oldValue) => {
+      () => {
         setTimeout(() => {
           console.log(newValue, oldValue);
           sortElement()
