@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
 import { getPosts } from '@/api/post/postApi'
-import { PostVo } from '@/view/post/postType'
+import { PostVo } from '@/api/post/postType'
 import { ref } from 'vue'
 let scrollDisabled = ref<boolean>(false)
 const posts = ref<PostVo[]>([])
@@ -40,3 +40,4 @@ const scroll = function () {
   
 }
 </style>
+@/api/post/postType
