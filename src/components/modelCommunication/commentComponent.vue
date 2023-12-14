@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { CommentVo } from '@/api/post/postType'
 let props = defineProps<{
   comment: CommentVo,
@@ -7,8 +7,8 @@ let props = defineProps<{
   index: number
 }
 >()
-const commentStyle = ref(props.comment.rootCommentId == '' ? 'root-comment' : 'child-comment');
-const showReplyText = ref('查看回复')
+let commentStyle = ref(props.comment.rootCommentId == '' ? 'root-comment' : 'child-comment');
+let showReplyText = ref('查看回复')
 let inputVisibility = ref(false)
 let inputContent = ref('')
 const input = ref<any>(null)
@@ -16,8 +16,7 @@ const handleReply = function () {
   inputVisibility.value = true
   setTimeout(function () { input!.value!.focus() }, 300)
 }
-onMounted(() => {
-});
+
 </script>
 <template>
   <div style="width: 100%;position: relative">

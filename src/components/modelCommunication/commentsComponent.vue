@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\components\modelCommunication\commentsComponent.vue
 -->
 <script lang="ts" setup>
-import comment from '@/components/modelCommunication/commentComponent.vue'
+import commentComponent from '@/components/modelCommunication/commentComponent.vue'
 import { CommentVo } from '@/api/post/postType'
 import { ref } from 'vue';
 let props = defineProps<{
@@ -28,10 +28,10 @@ const showReply = function (index: number) {
             全部评论(3)
         </div>
         <div v-for="(comment, index) in rootComments" :key="index">
-            <comment :show-reply="showReply" :index="index" :comment="comment"></comment>
+            <commentComponent :show-reply="showReply" :index="index" :comment="comment"></commentComponent>
             <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
 
-                <comment :show-reply="showReply" :index="-1" :comment="childComment"></comment>
+                <commentComponent :show-reply="showReply" :index="-1" :comment="childComment"></commentComponent>
             </div>
 
         </div>
