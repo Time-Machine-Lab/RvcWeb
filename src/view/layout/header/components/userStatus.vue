@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { getUserInfoById } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
-import { Profile } from '@/view/user/info/userTypes'
+import { Profile } from '@/api/user/userTypes'
 const userStore = useUserStore()
 
 const login = function () {

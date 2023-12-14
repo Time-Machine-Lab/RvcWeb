@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import {ProfileForm} from '@/view/user/info/userTypes'
+import {ProfileForm} from '@/api/user/userTypes'
 
 export function editUserInfo (form:ProfileForm) {
     return request({
