@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\view\user\info\pages\likePosts.vue
 -->
 <script lang="ts" setup>
-import postCardComponent from '@/components/modelCommunication/postCardComponent.vue'
+import postCardComponent from '@/components/modelCommunication/postCardComponentA.vue'
 import { getPosts } from '@/api/post/postApi'
 import { PostVo } from '@/api/post/postType'
 import { ref } from 'vue'
