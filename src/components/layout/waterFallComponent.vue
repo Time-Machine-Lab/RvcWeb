@@ -1,11 +1,8 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, onUnmounted, watch } from 'vue'
+import { defineComponent, onMounted, ref, onUnmounted } from 'vue'
 
 export default defineComponent({
-  props: {
-    data: Array
-  },
-  setup(props) {
+  setup() {
     const minWidth = ref(280)
     const columnCount = ref(5)
     const width = ref(0)
@@ -45,11 +42,11 @@ export default defineComponent({
         }
       }
       let maxHeight = Math.max(...height.value)
-      if(containerElement)containerElement.style.height = maxHeight + 'px'
+      if (containerElement) containerElement.style.height = maxHeight + 'px'
     };
 
-    const getMinIndex = function (height:any, len:any) {
-      var min = 2147483647;
+    const getMinIndex = function (height: any, len: any) {
+      var min = 2147483647
       var index = 0
       for (let i = 0; i < len; i++) {
         if (min > height[i]) {
@@ -61,23 +58,34 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      sortElement()
       window.addEventListener('resize', function () { sortElement() })
+      const observer = new MutationObserver(handleMutation)
+      const container = containerRef.value
+      const config = { childList: true, subtree: true }
+      observer.observe(container as Node, config)
     })
-    watch(
-      () => props.data,
-      (newValue, oldValue) => {
-        setTimeout(() => {
-          console.log(newValue, oldValue);
-          sortElement()
-        }, 500);
-      },
-      { deep: true }
+    // watch(
+    //   () => childElements,
+    //   (newValue, oldValue) => {
+    //     setTimeout(() => {
+    //       console.log(newValue, oldValue);
+    //       sortElement()
+    //     }, 500);
+    //   },
+    //   { deep: true,immediate: true }
 
-    )
-
+    // )
+    const handleMutation = function (mutationsList: any, observer: any) {
+      console.log(mutationsList, observer)
+      sortElement()
+    }
     onUnmounted(() => {
       window.removeEventListener('resize', function () { sortElement() })
+      const observer = new MutationObserver(() => { })
+      observer.disconnect()
     })
+
     return { containerRef }
   }
 })
