@@ -64,6 +64,14 @@ export default defineComponent({
       const container = containerRef.value
       const config = { childList: true, subtree: true }
       observer.observe(container as Node, config)
+      if (childElements) {
+        for (let i = 0; i < childElements.length; i++) {
+          const imgElement = childElements[i].querySelector('img');
+          if (imgElement) {
+            imgElement.addEventListener('load', sortElement);
+          }
+        }
+      }
     })
     // watch(
     //   () => childElements,
@@ -84,6 +92,14 @@ export default defineComponent({
       window.removeEventListener('resize', function () { sortElement() })
       const observer = new MutationObserver(() => { })
       observer.disconnect()
+      if (childElements) {
+        for (let i = 0; i < childElements.length; i++) {
+          const imgElement = childElements[i].querySelector('img');
+          if (imgElement) {
+            imgElement.removeEventListener('load', sortElement);
+          }
+        }
+      }
     })
 
     return { containerRef }

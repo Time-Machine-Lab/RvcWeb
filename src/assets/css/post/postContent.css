@@ -9,10 +9,10 @@
 }
 .post-content *{
     text-align: left;
-    /* color: rgba(255,255,255,0.7); */
+    color: rgba(255,255,255,0.7);
 }
 .post-content img{
-    /* width: 100%; */
+    width: 100%;
 }
 .post-content * a{
     /* text-decoration: none; */
