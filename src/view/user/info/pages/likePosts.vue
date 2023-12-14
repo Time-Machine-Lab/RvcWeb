@@ -6,19 +6,19 @@
 -->
 <script lang="ts" setup>
 import postCardComponent from '@/components/modelCommunication/postCardComponentA.vue'
-import { getPosts } from '@/api/post/postApi'
+// import { getPosts } from '@/api/post/postApi'
 import { PostVo } from '@/api/post/postType'
 import { ref } from 'vue'
 let scrollDisabled = ref<boolean>(false)
 const posts = ref<PostVo[]>([])
 const scroll = function () {
   scrollDisabled.value = true
-  getPosts(posts.value.length, posts.value.length + 5).then((res: { data: string | any[]; }) => {
-    for (let i = 0; i < res.data.length; i++) {
-      posts.value.push(res.data[i])
-    }
-    scrollDisabled.value = false
-  })
+  // getPosts(posts.value.length, posts.value.length + 5).then((res: { data: string | any[]; }) => {
+  //   for (let i = 0; i < res.data.length; i++) {
+  //     posts.value.push(res.data[i])
+  //   }
+  //   scrollDisabled.value = false
+  // })
 }
 
 </script>
