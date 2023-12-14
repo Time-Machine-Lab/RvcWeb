@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\view\user\info\userStore.ts
  */
 import { defineStore } from "pinia";
-import { Profile } from "@/view/user/info/userTypes";
+import { Profile } from "@/api/user/userTypes";
 export const useUserStore = defineStore({
   id: "profileStore",
   state: () => ({

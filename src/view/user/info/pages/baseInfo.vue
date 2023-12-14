@@ -6,7 +6,7 @@
 -->
 <script setup lang="ts">
 import editProfile from "@/view/user/info/pages/editProfile.vue";
-import { Profile } from "@/view/user/info/userTypes";
+import { Profile } from "@/api/user/userTypes";
 import { reactive, ref } from "vue";
 import { getUserInfoById } from "@/api/user/userApi.js";
 import { useUserStore } from "@/view/user/info/userStore.js";

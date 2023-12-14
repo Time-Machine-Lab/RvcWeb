@@ -2,8 +2,9 @@
  * @Author: Dhx
  * @Date: 2023-12-06 17:26:28
  * @Description: 
- * @FilePath: \RvcWeb\src\view\post\postType.ts
+ * @FilePath: \RvcWeb\src\api\post\postType.ts
  */
+import {UserInfoVO} from '@/api/user/userTypes'
 export type PostVo = {
     post_id: number;
     uid: number;
@@ -33,4 +34,20 @@ export type PostType = {
     tag_id: string
     tag_name: string
     tag_img: string
+}
+
+export type CommentVo = {
+    postCommentId: string
+    content: string
+    createAt: string
+    userId: string
+    postId: string
+    commentLikeCount: number
+    rootCommentId: string
+    toUserId: string
+    updateAt: string
+    user: UserInfoVO | null
+    replayUser: UserInfoVO | null
+    childrenComment: UserInfoVO | null
+
 }
