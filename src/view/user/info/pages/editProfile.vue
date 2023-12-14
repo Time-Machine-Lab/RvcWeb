@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { editUserInfo } from "@/api/user/userApi.ts";
-import { Profile, ProfileForm } from "@/view/user/info/userTypes";
+import { Profile, ProfileForm } from "@/api/user/userTypes";
 const props = defineProps<{
   userProfile: Profile;
 }>();

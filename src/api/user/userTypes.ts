@@ -29,3 +29,43 @@ export type OtherUser = {
   nickName: string;
   description: string;
 };
+
+export type UserInfoVO = {
+  /**
+   * 用户头像
+   */
+  avatar?: string;
+  /**
+   * 生日
+   */
+  birthsday?: string;
+  /**
+   * 简介
+   */
+  description?: string;
+  /**
+   * 粉丝数
+   */
+  fansNum?: string;
+  /**
+   * 关注数
+   */
+  followNum?: string;
+  /**
+   * 用户昵称
+   */
+  nickname?: string;
+  /**
+   * 性别
+   */
+  sex?: string;
+  /**
+   * uid
+   */
+  uid?: string;
+  /**
+   * 用户名
+   */
+  username?: string;
+  [property: string]: any;
+}

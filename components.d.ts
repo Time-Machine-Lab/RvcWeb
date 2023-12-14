@@ -8,12 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CardComponent: typeof import('./src/components/intro/CardComponent.vue')['default']
+    CommentComponent: typeof import('./src/components/modelCommunication/commentComponent.vue')['default']
+    CommentsComponent: typeof import('./src/components/modelCommunication/commentsComponent.vue')['default']
     EditorComponent: typeof import('./src/components/editor/editorComponent.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCarousel: typeof import('element-plus/es')['ElCarousel']
-    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
