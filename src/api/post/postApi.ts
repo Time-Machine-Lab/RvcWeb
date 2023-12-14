@@ -1,14 +1,6 @@
 import request from '@/utils/request'
-import { PostForm } from '@/api/post/postType'
-export function getPosts (start:number,end:number) {
-    return request({
-        url:'/m1/3628624-0-3e257297/post/list',
-        params:{
-            start:start,
-            end:end
-        }
-    })
-}
+import { PostForm,PostListForm } from '@/api/post/postType'
+
 export function getPostById(post_id:number){
     return request({
         method:'get',
@@ -32,5 +24,12 @@ export function getPostType(){
     return request({
         method:'get',
         url:'/communication/post/type/list'
+    })
+}
+export function getPosts(form:PostListForm){
+    return request({
+        method:'get',
+        url:'/communication/post/list',
+        params:form
     })
 }

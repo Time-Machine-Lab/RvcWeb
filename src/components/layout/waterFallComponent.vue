@@ -42,7 +42,7 @@ export default defineComponent({
         }
       }
       let maxHeight = Math.max(...height.value)
-      if (containerElement) containerElement.style.height = maxHeight + 'px'
+      if (containerElement) containerElement.style.height = maxHeight + 20 + 'px'
     };
 
     const getMinIndex = function (height: any, len: any) {
@@ -116,7 +116,7 @@ export default defineComponent({
 .waterFall-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
 }
 </style>
   
