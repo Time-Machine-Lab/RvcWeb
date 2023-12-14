@@ -51,3 +51,17 @@ export type CommentVo = {
     childrenComment: UserInfoVO | null
 
 }
+
+export type PostListForm = {
+    data:string
+    page:string
+    limit:string
+    tagId:string
+}
+
+export type RvcCommunicationPostType = {
+    tag_id: string;
+    tag_img?: string;
+    tag_name?: string;
+    [property: string]: any;
+}
