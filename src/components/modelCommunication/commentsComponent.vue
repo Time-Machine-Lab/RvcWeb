@@ -9,7 +9,7 @@ import comment from '@/components/modelCommunication/commentComponent.vue'
 import { CommentVo } from '@/api/post/postType'
 import { ref } from 'vue';
 let props = defineProps<{
-    commentList:CommentVo[]
+    commentList: CommentVo[]
 }>()
 let rootComments = ref<CommentVo[]>(props.commentList)
 
@@ -17,7 +17,7 @@ let rootComments = ref<CommentVo[]>(props.commentList)
 let showChildComments = ref<boolean[]>([
     false, false, false, false, false
 ])
-const showReply = function(index:number){    
+const showReply = function (index: number) {
     showChildComments.value[index] = !showChildComments.value[index]
     return showChildComments.value[index]
 }
@@ -27,7 +27,15 @@ const showReply = function(index:number){
         <div class="info">
             全部评论(3)
         </div>
-        <!-- <el-scrollbar style="height: 100%;width: 100%"> -->
+        <div v-for="(comment, index) in rootComments" :key="index">
+            <comment :show-reply="showReply" :index="index" :comment="comment" />
+            <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
+
+                <comment :show-reply="showReply" :index="-1" :comment="childComment" />
+            </div>
+
+        </div>
+        <!-- <el-scrollbar style="height: 100%;width: 100%">
             <div v-for="(comment, index) in rootComments" :key="index">
                 <comment :show-reply="showReply" :index="index" :comment="comment"/>
                 <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment"
@@ -35,20 +43,21 @@ const showReply = function(index:number){
 
                     <comment :show-reply="showReply" :index="-1" :comment="childComment" />
                 </div>
-                <!-- <div v-show="showChildComments[index]" class="showMore" 
+                <div v-show="showChildComments[index]" class="showMore" 
                     :key="index">
                     查看更多
-                </div> -->
+                </div>
             </div>
-        <!-- </el-scrollbar> -->
+        </el-scrollbar> -->
     </div>
 </template>
   
   
 <style scoped>
-*{
+* {
     text-align: left;
 }
+
 .Comments {
     height: 85%;
     width: 95%;
