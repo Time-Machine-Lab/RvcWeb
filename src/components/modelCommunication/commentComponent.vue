@@ -12,9 +12,9 @@ const showReplyText = ref('查看回复')
 let inputVisibility = ref(false)
 let inputContent = ref('')
 const input = ref<any>(null)
-const handleReply = function(){
+const handleReply = function () {
   inputVisibility.value = true
-  setTimeout(() => {input!.value!.focus()}, 300)
+  setTimeout(function () { input!.value!.focus() }, 300)
 }
 onMounted(() => {
 });
@@ -74,19 +74,21 @@ onMounted(() => {
   background-color: white;
   display: flex;
 }
+
 .input {
-    position: relative;
-    width: 70%;
-    float: left;
-    height: 30px;
-    border: rgba(100, 100, 100) 1px solid;
-    outline: none;
-    border-radius: 5px;
-    background-color: rgba(40, 40, 40);
-    color: rgba(255, 255, 255, 0.7);
-    padding-left: 10px;
-    margin-left: 10px;
+  position: relative;
+  width: 70%;
+  float: left;
+  height: 30px;
+  border: rgba(100, 100, 100) 1px solid;
+  outline: none;
+  border-radius: 5px;
+  background-color: rgba(40, 40, 40);
+  color: rgba(255, 255, 255, 0.7);
+  padding-left: 10px;
+  margin-left: 10px;
 }
+
 .root-comment {
   position: relative;
   width: 100%;
@@ -162,10 +164,10 @@ onMounted(() => {
   display: flex;
   margin-top: 10px;
 }
-.reply span{
+
+.reply span {
   font-size: 14px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   text-align: center;
   line-height: 30px;
-}
-</style>
+}</style>
