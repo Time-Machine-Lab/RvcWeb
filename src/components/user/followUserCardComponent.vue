@@ -1,5 +1,11 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-12-05 13:02:25
+ * @Description: 
+ * @FilePath: \RvcWeb\src\components\user\followUserCardComponent.vue
+-->
 <script lang="ts" setup>
-import { OtherUser } from "@/view/user/info/userTypes";
+import { OtherUser } from '@/api/user/userTypes'
 import { useUserStore } from "@/view/user/info/userStore.js";
 const userStore = useUserStore();
 const props = defineProps<{

@@ -1,5 +1,11 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 15:07:19
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\user\info\pages\followUser.vue
+-->
 <script setup lang="ts">
-import { OtherUser } from "@/view/user/info/userTypes";
+import { OtherUser } from '@/api/user/userTypes'
 import FollowUserCard from "@/components/user/followUserCardComponent.vue";
 import { getFollowUsers } from "@/api/user/userApi";
 import router from "@/router/index.ts";

@@ -55,7 +55,7 @@ onMounted(() => {
         </div>
         <div v-show="inputVisibility" class="reply">
           <span>回复 {{ props.comment.user?.nickname }}:</span>
-          <input class="input" placeholder="" @blur="inputVisibility = false" ref="input">
+          <input class="input" placeholder="" v-model="inputContent" @blur="inputVisibility = false" ref="input">
         </div>
 
       </div>
