@@ -25,7 +25,7 @@ import userStatus from "@/view/layout/header/components/userStatus.vue";
       </RouterLink>
       <RouterLink to="/communication">
         <div class="page-link__item">
-          社区
+          交流区
         </div>
       </RouterLink>
 <!--      <RouterLink to="/feedback">-->
