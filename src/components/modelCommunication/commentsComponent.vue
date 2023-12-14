@@ -28,10 +28,10 @@ const showReply = function (index: number) {
             全部评论(3)
         </div>
         <div v-for="(comment, index) in rootComments" :key="index">
-            <comment :show-reply="showReply" :index="index" :comment="comment" />
+            <comment :show-reply="showReply" :index="index" :comment="comment"></comment>
             <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
 
-                <comment :show-reply="showReply" :index="-1" :comment="childComment" />
+                <comment :show-reply="showReply" :index="-1" :comment="childComment"></comment>
             </div>
 
         </div>
