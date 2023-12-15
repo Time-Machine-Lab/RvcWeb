@@ -9,7 +9,7 @@ export enum NotificationType {
 
 export const message = {
   // 顶部小弹窗
-  seccess(msg: string) {
+  success(msg: string) {
     ElMessage.success(msg);
   },
   warning(msg: string) {
