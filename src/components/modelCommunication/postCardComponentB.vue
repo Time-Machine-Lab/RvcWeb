@@ -17,13 +17,13 @@ const collect = function () {
     }
     ,2000)
     let form = <FavoriteAndCollectionForm>{
-        id: (localPost.value.post_id as unknown as string),
+        id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_collect ? '0' : '1'
     }
     collectPost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collect_num ++
+            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number)+1)as unknown as string
         }
         message.error('收藏失败，请稍后再试')
     })
@@ -36,13 +36,13 @@ const like = function () {
     }
     ,2000)
     let form = <FavoriteAndCollectionForm>{
-        id: (localPost.value.post_id as unknown as string),
+        id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_like ? '0' : '1'
     }
     favoritePost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_like = !localPost.value.has_like
-            localPost.value.like_num ++
+            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number)+1)as unknown as string
         }
         message.error('点赞失败，请稍后再试')
         
@@ -56,7 +56,7 @@ const like = function () {
             {{ localPost.title }}
         </div>
         <div class="post-card__creatAt" @click="$router.push('/post?id='+localPost.postId)">
-            {{ localPost.create_at }}
+            {{ localPost.createAt }}
         </div>
         <div class="post-card__info">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.uid)">
@@ -73,24 +73,24 @@ const like = function () {
                 <div class="other-info__stats__item">
                     <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/eye.svg\')' }">
                     </div>
-                    <span>{{ localPost.watch_num }}</span>
+                    <span>{{ localPost.watchNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
                         :style="{ backgroundImage: localPost.has_collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
-                    <span>{{ localPost.collect_num }}</span>
+                    <span>{{ localPost.collectNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
                         :style="{ backgroundImage: localPost.has_like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
-                    <span>{{ localPost.collect_num }}</span>
+                    <span>{{ localPost.collectNum }}</span>
                 </div>
                 <div class="other-info__stats__item">
                     <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/chat.svg\')' }">
                     </div>
-                    <span>{{ localPost.comment_num }}</span>
+                    <span>{{ localPost.commentNum }}</span>
                 </div>
             </div>
         </div>

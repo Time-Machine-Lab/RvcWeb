@@ -71,13 +71,13 @@ const collect = function () {
     }
         , 2000)
     let form = <FavoriteAndCollectionForm>{
-        id: (localPost.value.post_id as unknown as string),
+        id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_collect ? '0' : '1'
     }
     collectPost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collect_num++
+            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number)+1)as unknown as string
         }
         else {
             message.error('收藏失败，请稍后再试')
@@ -91,13 +91,13 @@ const like = function () {
         likeDisabled.value = true
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
-        id: (localPost.value.post_id as unknown as string),
+        id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_like ? '0' : '1'
     }
     favoritePost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_like = !localPost.value.has_like
-            localPost.value.like_num++
+            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number)+1)as unknown as string
         }
         message.error('点赞失败，请稍后再试')
 
