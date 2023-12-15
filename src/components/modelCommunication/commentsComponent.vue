@@ -25,7 +25,7 @@ const showReply = function (index: number) {
 <template>
     <div class="Comments">
         <div class="info">
-            全部评论(3)
+            全部评论({{ commentList.length }})
         </div>
         <div v-for="(comment, index) in rootComments" :key="index">
             <commentComponent :show-reply="showReply" :index="index" :comment="comment"></commentComponent>
@@ -35,20 +35,6 @@ const showReply = function (index: number) {
             </div>
 
         </div>
-        <!-- <el-scrollbar style="height: 100%;width: 100%">
-            <div v-for="(comment, index) in rootComments" :key="index">
-                <comment :show-reply="showReply" :index="index" :comment="comment"/>
-                <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment"
-                    :key="index2">
-
-                    <comment :show-reply="showReply" :index="-1" :comment="childComment" />
-                </div>
-                <div v-show="showChildComments[index]" class="showMore" 
-                    :key="index">
-                    查看更多
-                </div>
-            </div>
-        </el-scrollbar> -->
     </div>
 </template>
   
@@ -59,7 +45,7 @@ const showReply = function (index: number) {
 }
 
 .Comments {
-    height: 85%;
+    /* height: 85%; */
     width: 95%;
     margin: auto;
     bottom: 0;

@@ -6,23 +6,77 @@
  */
 import {UserInfoVO} from '@/api/user/userTypes'
 export type PostVo = {
-    post_id: number;
-    uid: number;
-    username: string;
-    nickname: string;
+    /**
+     * 作者头像
+     */
     avatar: string;
-    tag_id: number;
-    title: string;
+    /**
+     * 是否收藏
+     */
+    collect: string;
+    /**
+     * 收藏数
+     */
+    collectNum: string;
+    /**
+     * 评论数
+     */
+    commentNum: string;
+    /**
+     * 帖子内容
+     */
     content: string;
+    /**
+     * 帖子封面
+     */
     cover: string;
-    comment_num: number;
-    like_num: number;
-    collect_num: number;
-    watch_num: number;
-    create_at: string;
-    has_collect: boolean;
-    has_like: boolean;
-};
+    /**
+     * 创建日期
+     */
+    createAt: string;
+    /**
+     * 是否点赞
+     */
+    like: string;
+    /**
+     * 点赞数
+     */
+    likeNum: string;
+    /**
+     * 作者昵称
+     */
+    nickname: string;
+    /**
+     * 帖子id
+     */
+    postId: string;
+    /**
+     * 帖子类型
+     */
+    tagId: string;
+    /**
+     * 帖子标题
+     */
+    title: string;
+    /**
+     * 创建帖子用户id
+     */
+    uid: string;
+    /**
+     * 更新日期
+     */
+    updateAt: string;
+    /**
+     * 作者用户名
+     */
+    username: string;
+    /**
+     * 浏览数
+     */
+    watchNum: string;
+    [property: string]: any;
+}
+
 
 export type PostForm = {
     title: string;
@@ -60,8 +114,51 @@ export type PostListForm = {
 }
 
 export type RvcCommunicationPostType = {
-    tag_id: string;
-    tag_img?: string;
-    tag_name?: string;
+    tag_id: string
+    tag_img?: string
+    tag_name?: string
+    [property: string]: any
+}
+
+export type FavoriteAndCollectionForm = {
+    /**
+     * 帖子id、评论id
+     */
+    id: string;
+    /**
+     * 1、点赞   0、取消点赞
+     */
+    type: string;
+    [property: string]: any;
+}
+
+export type GetCommentListForm = {
+    data?: string;
+    limit?: string;
+    page?: string;
+    [property: string]: any;
+}
+
+export type CommentForm = {
+    /**
+     * 内容
+     */
+    content: string;
+    /**
+     * 所属帖子id
+     */
+    postId: string;
+    /**
+     * 顶级评论id
+     */
+    rootCommentId: string;
+    /**
+     * 回复目标评论id
+     */
+    toCommentId: string;
+    /**
+     * 回复目标用户id
+     */
+    toUserId: string;
     [property: string]: any;
 }

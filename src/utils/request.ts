@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-06 12:07:13
+ * @Description: 
+ * @FilePath: \RvcWeb\src\utils\request.ts
+ */
 import axios from 'axios'
 import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
@@ -39,10 +45,10 @@ request.interceptors.response.use(
         res = res ? JSON.parse(res) : res
     }
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
-    if (res.data.success === true) {
+    if (res.data.code === "200") {
       return Promise.resolve(res.data)
     } else {
-      message.error(res.data.message)
+      message.error(res.data.msg)
       return Promise.reject(res)
     }
   },
