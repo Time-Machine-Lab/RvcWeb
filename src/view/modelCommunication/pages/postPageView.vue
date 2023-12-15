@@ -154,7 +154,7 @@ const sendComment = function () {
                         <div @click="collect()"
                             style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
                         height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.has_collect ? 'url(\'/public/icon/star-fill.svg\')' : 'url(\'/public/icon/star.svg\')' }">
+                            :style="{ backgroundImage: localPost.has_collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
@@ -166,7 +166,7 @@ const sendComment = function () {
                         <div @click="like()"
                             style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
                         height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.has_like ? 'url(\'/public/icon/heart-fill.svg\')' : 'url(\'/public/icon/heart.svg\')' }">
+                            :style="{ backgroundImage: localPost.has_like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
