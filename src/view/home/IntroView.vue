@@ -24,19 +24,19 @@
         <div class="Introduction-card flex">
           <div class="Introduction-card__title flex">RVC社区</div>
           <div class="Introduction-card__contain">
-            RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。
+            {{Infos.rvcDescription}}
+<!--            RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。-->
           </div>
         </div>
       </div>
-
     </div>
     <!--社区功能板块-->
     <div class="Functions flex">
       <div class="Functions-title flex">社区功能</div>
-      <div v-for="(functionItem, index) in functionArray" :key="index" class="Function">
-        <div class="Function-tool flex">{{ functionItem.function }}</div>
+      <div v-for="(tool, index) in Tools" :key="index" class="Function">
+        <div class="Function-tool flex">{{ tool.tool }}</div>
         <div class="Function-img flex">
-          <img :src="functionItem.img" alt="Team Member Image" />
+          <img :src="tool.img" alt="Team Member Image" />
         </div>
       </div>
     </div>
@@ -45,10 +45,10 @@
       <div class="team-title flex">我们团队</div>
       <div class="team-list">
         <div class="team-content">
-          <div v-for="(teamMember, index) in teamMembers" :key="index" class="team-item">
-            <img :src="teamMember.img" alt="Team Member Image" class="team-item__img" />
+          <div v-for="(teamMember, index) in Teams" :key="index" class="team-item">
+            <img :src="teamMember.avatar" alt="Team Member Image" class="team-item__img" />
             <div class="team-item__message flex">
-              <div class="NickName flex">{{ teamMember.nickName }}</div>
+              <div class="NickName flex">{{ teamMember.nickname }}</div>
               <div class="Description flex">{{ teamMember.description }}</div>
               <div class="Role flex">{{ teamMember.role }}</div>
             </div>
@@ -73,165 +73,108 @@
 </template>
 <script setup lang="ts">
 import "../../assets/css/HomePage.css"
-import axios from "axios"
-import { ref, onMounted,computed } from "vue"
+import { ref, onMounted } from "vue"
 import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue"
 import Welcome from "@/components/intro/welcome.vue";
-// welcome板块
-// window.addEventListener('scroll', function() {
-//   const scrollDistance = window.scrollY;
-//   const strip = document.querySelector('.fixed-strip')as HTMLElement;
-//   if (strip) {
-//     strip.style.transform = `translateX(-${scrollDistance}px)`;
-//   }
-// });
-// window.addEventListener('scroll', function() {
-//   const scrollDistance = window.scrollY;
-//   const strip = document.querySelector('.fixed')as HTMLElement;
-//   if (strip) {
-//     strip.style.transform = `translateX(${scrollDistance}px)`;
-//   }
-// });
-// 社区功能板块
-const functionArray = [
-  { function: "个人账号", img: "../../../public/teamPic/daocaoren.jpg" },
-  { function: "畅所欲言", img: "../../../public/teamPic/dhx.jpg" },
-  { function: "在线试音", img: "../../../public/teamPic/Genius.png" },
-  { function: "模型大全", img: "../../../public/teamPic/huaerbuku.jpg" },
-  { function: "在线交易", img: "../../../public/teamPic/jq.png" },
-  { function: "虚拟对话", img: "../../../public/teamPic/lishiming.webp" },
-  { function: "语音聊天室", img: "../../../public/teamPic/wangyoucao.jpg" },
-];
-// team板块
+import {getInfo, getTeam, getTools} from "@/api/home/introAPI.ts";
 
-const items = [
-  {
-    id: 1,
-    nickName: "Member1",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/daocaoren.jpg",
-  },
-  {
-    id: 2,
-    nickName: "Member2",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/dhx.jpg",
-  },
-  {
-    id: 3,
-    nickName: "Member3",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/Genius.png",
-  },
-  {
-    id: 4,
-    nickName: "Member4",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/huaerbuku.jpg",
-  },
-  {
-    id: 5,
-    nickName: "Member5",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/jq.png",
-  },
-  {
-    id: 6,
-    nickName: "Member6",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/lishiming.webp",
-  },
-  {
-    id: 7,
-    nickName: "Member7",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/wangyoucao.jpg",
-  },
-  {
-    id: 8,
-    nickName: "Member8",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/welsir.jpg",
-  },
-  {
-    id: 9,
-    nickName: "Member9",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/xi.jpg",
-  },
-  {
-    id: 10,
-    nickName: "Member10",
-    description: "Description1",
-    role: "Role1",
-    img: "../../../public/teamPic/xiangzong.jpg",
-  },
-  // Add more team members as needed
-];
-const currentIndex = ref(0);
-const teamMembers = computed(() => {
-  let start = currentIndex.value % items.length;
-  if(currentIndex.value == 1){
-    return [
-      items[items.length-1],
-      items[items.length-2],
-      items[items.length-3],
-      items[items.length-4],
-      items[items.length-5],
-      items[items.length-6],
-    ];
-  }
-  return [
-    items[start],
-    items[(start + 1) % items.length],
-    items[(start + 2) % items.length],
-    items[(start + 3) % items.length],
-    items[(start + 4) % items.length],
-    items[(start + 5) % items.length],
-  ];
-});
+// 网站首页信息
+interface Info {
+  id: number
+  officialConcat: string
+  rvcDescription: string
+  rvcVersion: string
+  webDescription: string
+  webName: string
+}
+// 社区功能
+interface Tools {
+  id: number
+  img: string
+  tool: string
+  url: string
+}
+// 团队成员
+interface Team {
+  id: 1,
+  avatar: string
+  description: string
+  nickname: string
+  role: string
+}
+// 公告栏
+// interface HomeNotice {
+//   noticeId: string,
+//   title: string
+//   author: string
+//   content: null,
+//   cover: string
+//   createAt: string
+//   likeNum: null,
+//   watchNum: 0
+// }
+
+const Infos = ref<Info>({ id: 0, officialConcat: '', rvcDescription: '', rvcVersion: '', webDescription: '', webName: ''})
+const Tools = ref<Tools[]>([])
+const Teams = ref<Team[]>([])
+
+const getInfoDate = () => {
+  getInfo().then((res: any) => {
+    console.log(res)
+    Infos.value = res.data
+  })
+}
+const getToolDate = () => {
+  getTools().then((res: any) => {
+    console.log(res)
+    Tools.value = res.data
+  })
+}
+const getTeamDate = () => {
+  getTeam().then((res: any) => {
+    console.log(res)
+    Teams.value = res.data
+  })
+}
+
 onMounted(() => {
-  setInterval(() => {
-    currentIndex.value = 1- currentIndex.value;
-  }, 15000);
+  getInfoDate()
+  getToolDate()
+  getTeamDate()
 });
 
-const responseData = ref({
-  data: {
-    id: 0,
-    officialConcat: "",
-    rvcDescription: "",
-    rvcVersion: "",
-    webDescription: "",
-    webName: "",
-  },
-});
 
-const fetchData = async () => {
-  try {
-    const config = {
-      method: "get",
-      url: "http://localhost:9300/web/info",
-      headers: {
-        "User-Agent": "Apifox/1.0.0 (https://apifox.com)",
-      },
-    };
 
-    const response = await axios(config);
-    responseData.value = response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};
 
-onMounted(fetchData);
+
+// const currentIndex = ref(0);
+// const teamMembers = computed(() => {
+//   let start = currentIndex.value % items.length;
+//   if(currentIndex.value == 1){
+//     return [
+//       items[items.length-1],
+//       items[items.length-2],
+//       items[items.length-3],
+//       items[items.length-4],
+//       items[items.length-5],
+//       items[items.length-6],
+//     ];
+//   }
+//   return [
+//     items[start],
+//     items[(start + 1) % items.length],
+//     items[(start + 2) % items.length],
+//     items[(start + 3) % items.length],
+//     items[(start + 4) % items.length],
+//     items[(start + 5) % items.length],
+//   ];
+// });
+// onMounted(() => {
+//   setInterval(() => {
+//     currentIndex.value = 1- currentIndex.value;
+//   }, 15000);
+// });
+
+
+
 </script>

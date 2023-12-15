@@ -12,7 +12,6 @@
 import Model from '@/view/user/info/pages/likeModels.vue'
 import WaterFall from '@/components/layout/waterFallComponent.vue'
 import {ref} from 'vue'
-
 // 选择器
 const value = ref('')
 const options = [
@@ -29,8 +28,6 @@ const options = [
     label: '最新发布',
   },
 ]
-
-
 </script>
 
 <template>
@@ -51,14 +48,14 @@ const options = [
       <div class="model-contain">
         <div class="model-water" v-if="value === ''">
           <WaterFall>
-            <div style="width:300px;height:300px;background: rgba(121,187,255,0.33)">1</div>
-            <div style="width:300px;height:200px;background: rgba(121,187,255,0.33)">2</div>
-<!--            <div style="width:300px;height:300px;background: rgba(121,187,255,0.33)">3</div>-->
-<!--            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)">4</div>-->
-<!--            <div style="width:300px;height:500px;background: rgba(121,187,255,0.33)">5</div>-->
-<!--            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)">6</div>-->
-<!--            <div style="width:300px;height:300px;background: rgba(121,187,255,0.33)"></div>-->
-<!--            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)"></div>-->
+            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)">1</div>
+            <div style="width:300px;height:500px;background: rgba(121,187,255,0.33)">2</div>
+            <div style="width:300px;height:450px;background: rgba(121,187,255,0.33)">3</div>
+            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)">4</div>
+            <div style="width:300px;height:500px;background: rgba(121,187,255,0.33)">5</div>
+            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)">6</div>
+            <div style="width:300px;height:500px;background: rgba(121,187,255,0.33)"></div>
+            <div style="width:300px;height:400px;background: rgba(121,187,255,0.33)"></div>
           </WaterFall>
         </div>
         <div v-if="value === 'Option1'"> <Model></Model> </div>
@@ -129,6 +126,7 @@ const options = [
 }
 .model-contain{
   position: relative;
+  height:100vh;
   top:120px;
   width:100%;
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import FeedBackComponent from "@/components/intro/FeedBackComponent.vue";
+import { ref } from 'vue'
 const invitations = [{title:"从其他UI导入生成数据",data:"我使用 InvokeAI，并且看到其他一些人在这里和那里提到它。上传图片时，我需要手动复制和粘贴每张图片，有时可能会有点多。\n" +
       "也无法手动添加使用的模型/lora，或添加其他模型/lora（后者在将图片添加到模型/lora的图库时）。\n" +
       "如果有一种方法可以将其引入，那就太好了，就像自动 1111 一样。",time:"4小时前"},
@@ -11,16 +13,31 @@ const invitations = [{title:"从其他UI导入生成数据",data:"我使用 Invo
   {title:"从其他UI导入生成数据",data:"我使用 InvokeAI，并且看到其他一些人在这里和那里提到它。上传图片时，我需要手动复制和粘贴每张图片，有时可能会有点多。\n" +
         "也无法手动添加使用的模型/lora，或添加其他模型/lora（后者在将图片添加到模型/lora的图库时）。\n" +
         "如果有一种方法可以将其引入，那就太好了，就像自动 1111 一样。",time:"4小时前"}]
+
+const isModalOpen = ref(false);
+const open = () => {
+  isModalOpen.value = true;
+};
+const close = () => {
+  isModalOpen.value = false;
+};
 </script>
 
 <template>
   <div class="home">
-    <div class="contain flex">
-      <div class="contain-choice flex">
+    <button @click="close()" v-if="isModalOpen" class="close">X</button>
+    <transition name="fade">
+      <FeedBackComponent v-if="isModalOpen"></FeedBackComponent>
+    </transition>
+
+    <div class="contain-choice">
+      <div class="contain-choice__box flex">
         <div class="choice-item flex">所有反馈</div>
         <div class="choice-item flex">功能请求</div>
         <div class="choice-item flex">bug</div>
       </div>
+    </div>
+    <div class="contain flex">
       <div class="contain-left">
         <div class="contain-say flex">
           <h3 style="margin-bottom: 10px">有话要说吗？</h3>
@@ -33,7 +50,7 @@ const invitations = [{title:"从其他UI导入生成数据",data:"我使用 Invo
           <button class="contain-search__item flex">+创建新帖子</button>
         </div>
         <div class="contain-invitation">
-          <div v-for="(invitation, index) in invitations" :key="index" class="contain-invitation__item flex">
+          <div @click="open()" v-for="(invitation, index) in invitations" :key="index" class="contain-invitation__item flex">
             <div class="invitation__outline">
               <h3 style="margin-top:20px">{{invitation.title}}</h3>
               <div class="invitation__text">{{invitation.data}}</div>
@@ -60,41 +77,62 @@ const invitations = [{title:"从其他UI导入生成数据",data:"我使用 Invo
 </template>
 
 <style scoped>
+.fade-leave-to {
+  transition-duration: .3s;
+  transform: scale(0);
+}
+.close{
+  position: absolute;
+  right:20px;
+  top:70px;
+  width:50px;
+  height:50px;
+  background: rgba(255, 255, 255, 0.78);
+  z-index: 8;
+  cursor: pointer;
+  border: solid 1px #cccccc;
+  border-radius: 5px;
+}
 .home{
   width:100%;
-  height:100vh;
-  background-color: rgb(66, 66, 68);
+  height:200vh;
+  .contain-choice{
+    top:50px;
+    position: fixed;
+    width:100%;
+    height:80px;
+    box-shadow: 16px 16px 32px #363638;
+    z-index: 5;
+    background: rgb(84, 84, 84);
+    align-items: end;
+    .contain-choice__box{
+      position: relative;
+      align-items: end;
+      bottom: 0;
+      left:9%;
+      width:82%;
+      height:100%;
+      justify-content: left;
+    }
+    .choice-item{
+      background-color: rgb(66, 66, 68);
+      width:150px;
+      height:45px;
+      border-radius: 10px 10px 0 0;
+      color: #a4a4a4;
+      margin-left:10px;
+      cursor: pointer;
+    }
+  }
 }
 .contain{
   position: relative;
-  overflow: scroll;
   left:9%;
   width:82%;
-  height: 150vh;
+  height: 150%;
   background-color:  rgb(66, 66, 68);
   box-shadow: 16px 16px 32px #363638,
   -16px -16px 32px #4e4e50;
-}
-.contain-choice{
-  top:50px;
-  position: fixed;
-  justify-content: left;
-  width:82%;
-  height:80px;
-  box-shadow: 16px 16px 32px #363638;
-  z-index: 5;
-  background: rgb(84, 84, 84);
-  align-items: end;
-
-  .choice-item{
-    background-color: rgb(66, 66, 68);
-    width:150px;
-    height:45px;
-    border-radius: 10px 10px 0 0;
-    color: #a4a4a4;
-    margin-left:10px;
-    cursor: pointer;
-  }
 }
 .contain-left{
   display: flex;
