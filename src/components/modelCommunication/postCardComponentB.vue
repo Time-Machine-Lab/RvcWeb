@@ -51,11 +51,11 @@ const like = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover" @click="$router.push('/post?id='+localPost.post_id)" style="width: 100%;margin: 0;padding: 0;">
-        <div class="post-card__title" @click="$router.push('/post?id='+localPost.post_id)">
+        <img :src="props.post.cover" @click="$router.push('/post?id='+localPost.postId)" style="width: 100%;margin: 0;padding: 0;">
+        <div class="post-card__title" @click="$router.push('/post?id='+localPost.postId)">
             {{ localPost.title }}
         </div>
-        <div class="post-card__creatAt" @click="$router.push('/post?id='+localPost.post_id)">
+        <div class="post-card__creatAt" @click="$router.push('/post?id='+localPost.postId)">
             {{ localPost.create_at }}
         </div>
         <div class="post-card__info">
@@ -71,24 +71,24 @@ const like = function () {
             </div>
             <div class="other-info">
                 <div class="other-info__stats__item">
-                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/public/icon/eye.svg\')' }">
+                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/eye.svg\')' }">
                     </div>
                     <span>{{ localPost.watch_num }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localPost.has_collect ? 'url(\'/public/icon/star-fill.svg\')' : 'url(\'/public/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localPost.has_collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localPost.collect_num }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localPost.has_like ? 'url(\'/public/icon/heart-fill.svg\')' : 'url(\'/public/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localPost.has_like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ localPost.collect_num }}</span>
                 </div>
                 <div class="other-info__stats__item">
-                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/public/icon/chat.svg\')' }">
+                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/chat.svg\')' }">
                     </div>
                     <span>{{ localPost.comment_num }}</span>
                 </div>
