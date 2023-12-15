@@ -244,6 +244,7 @@ const sendComment = function () {
 .post-page {
     width: 80%;
     /* overflow: auto; */
+    min-height: 100vh;
     position: relative;
     left: 50%;
     display: flex;
