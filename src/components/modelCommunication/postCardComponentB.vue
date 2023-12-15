@@ -1,55 +1,98 @@
 <script lang="ts" setup>
-import { PostVo } from '@/api/post/postType'
+import { PostVo, FavoriteAndCollectionForm } from '@/api/post/postType'
+import { favoritePost, collectPost } from '@/api/post/postApi'
+import { ref } from 'vue';
+import { message } from '@/utils/message';
 let props = defineProps<{
     post: PostVo
 }>()
+let localPost = ref<PostVo>(props.post)
+let likeDisabled = ref(true)
+let collectDisabled = ref(true)
+const collect = function () {
+    if (!collectDisabled.value) return
+    collectDisabled.value = false
+    setTimeout(function(){
+        collectDisabled.value = true
+    }
+    ,2000)
+    let form = <FavoriteAndCollectionForm>{
+        id: (localPost.value.post_id as unknown as string),
+        type: localPost.value.has_collect ? '0' : '1'
+    }
+    collectPost(form).then(res => {
+        if (res.status == 200) {
+            localPost.value.has_collect = !localPost.value.has_collect
+            localPost.value.collect_num ++
+        }
+        message.error('收藏失败，请稍后再试')
+    })
+}
+const like = function () {
+    if (!likeDisabled.value) return
+    likeDisabled.value = false
+    setTimeout(function(){
+        likeDisabled.value = true
+    }
+    ,2000)
+    let form = <FavoriteAndCollectionForm>{
+        id: (localPost.value.post_id as unknown as string),
+        type: localPost.value.has_like ? '0' : '1'
+    }
+    favoritePost(form).then(res => {
+        if (res.status == 200) {
+            localPost.value.has_like = !localPost.value.has_like
+            localPost.value.like_num ++
+        }
+        message.error('点赞失败，请稍后再试')
+        
+    })
+}
 </script>
 <template>
-    <div class="post-card" @click="$router.replace('/post?id=')">
-        <img :src="props.post.cover" style="width: 100%;margin: 0;padding: 0;">
-        <div class="post-card__title">
-            {{ props.post.title }}
+    <div class="post-card">
+        <img :src="props.post.cover" @click="$router.push('/post?id='+localPost.post_id)" style="width: 100%;margin: 0;padding: 0;">
+        <div class="post-card__title" @click="$router.push('/post?id='+localPost.post_id)">
+            {{ localPost.title }}
         </div>
-        <div class="post-card__creatAt">
-            {{ props.post.create_at }}
+        <div class="post-card__creatAt" @click="$router.push('/post?id='+localPost.post_id)">
+            {{ localPost.create_at }}
         </div>
         <div class="post-card__info">
-            <div class="user-info" @click="$router.replace('/user?id=' + props.post.uid)">
+            <div class="user-info" @click="$router.push('/user?id=' + localPost.uid)">
 
-                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + props.post.avatar + ')' }">
+                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localPost.avatar + ')' }">
 
                 </div>
                 <div class="user-info__usename">
-                    {{ props.post.nickname }}
+                    {{ localPost.nickname }}
                 </div>
 
             </div>
             <div class="other-info">
-                    <div class="other-info__stats__item">
-                        <img src="/public/icon/eye.svg">
-                        <span>{{ props.post.watch_num }}</span>
+                <div class="other-info__stats__item">
+                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/public/icon/eye.svg\')' }">
                     </div>
-                    <div class="other-info__stats__item" v-if="!props.post.has_collect">
-                        <img src="/public/icon/star.svg">
-                        <span>{{ props.post.collect_num }}</span>
-                    </div>
-                    <div class="other-info__stats__item" v-if="props.post.has_collect">
-                        <img src="/public/icon/star-fill.svg">
-                        <span>{{ props.post.collect_num }}</span>
-                    </div>
-                    <div class="other-info__stats__item" v-if="!props.post.has_like">
-                        <img src="/public/icon/heart.svg">
-                        <span>{{ props.post.collect_num }}</span>
-                    </div>
-                    <div class="other-info__stats__item" v-if="props.post.has_like">
-                        <img src="/public/icon/heart-fill.svg">
-                        <span>{{ props.post.collect_num }}</span>
-                    </div>
-                    <div class="other-info__stats__item">
-                        <img src="/icon/chat.svg">
-                        <span>{{ props.post.comment_num }}</span>
-                    </div>
+                    <span>{{ localPost.watch_num }}</span>
                 </div>
+                <div class="other-info__stats__item" @click="collect()">
+                    <div style="height: 16px;width: 16px;"
+                        :style="{ backgroundImage: localPost.has_collect ? 'url(\'/public/icon/star-fill.svg\')' : 'url(\'/public/icon/star.svg\')' }">
+                    </div>
+                    <span>{{ localPost.collect_num }}</span>
+                </div>
+                <div class="other-info__stats__item" @click="like()">
+                    <div style="height: 16px;width: 16px;"
+                        :style="{ backgroundImage: localPost.has_like ? 'url(\'/public/icon/heart-fill.svg\')' : 'url(\'/public/icon/heart.svg\')' }">
+                    </div>
+                    <span>{{ localPost.collect_num }}</span>
+                </div>
+                <div class="other-info__stats__item">
+                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/public/icon/chat.svg\')' }">
+                    </div>
+                    <span>{{ localPost.comment_num }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -105,11 +148,12 @@ let props = defineProps<{
     left: 50%;
     transform: translate(-50%);
     z-index: 1;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
 
     display: flex;
 }
+
 .user-info {
     position: relative;
     height: 30px;
@@ -148,6 +192,7 @@ let props = defineProps<{
 .user-info__usename:hover {
     color: white;
 }
+
 .other-info {
     position: relative;
     height: 100%;
@@ -164,6 +209,7 @@ let props = defineProps<{
     display: flex;
     margin-right: 5px;
 }
+
 .other-info__stats__item span {
     display: inline-block;
     height: 16px;
@@ -172,5 +218,4 @@ let props = defineProps<{
     margin-left: 4px;
     color: rgba(255, 255, 255, 0.7);
 }
-
 </style>

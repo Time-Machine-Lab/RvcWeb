@@ -1,10 +1,16 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-06 16:01:59
+ * @Description: 
+ * @FilePath: \RvcWeb\src\api\post\postApi.ts
+ */
 import request from '@/utils/request'
-import { PostForm,PostListForm } from '@/api/post/postType'
+import { GetCommentListForm, FavoriteAndCollectionForm, PostForm,PostListForm, CommentForm } from '@/api/post/postType'
 
 export function getPostById(post_id:number){
     return request({
         method:'get',
-        url:'?post_id='+post_id,
+        url:'/communication/post/details?postId='+post_id,
     })
 }
 
@@ -30,6 +36,36 @@ export function getPosts(form:PostListForm){
     return request({
         method:'get',
         url:'/communication/post/list',
+        params:form
+    })
+}
+
+export function favoritePost(form:FavoriteAndCollectionForm){
+    return request({
+        method:'put',
+        url:'/communication/post/favorite',
+        params:form
+    })
+}
+export function collectPost(form:FavoriteAndCollectionForm){
+    return request({
+        method:'put',
+        url:'/communication/post/collection',
+        params:form
+    })
+}
+export function getCommentList(form:GetCommentListForm){
+    return request({
+        method:'get',
+        url:'/communication/comment/list',
+        params:form
+    })
+}
+
+export function commentAdd(form:CommentForm){
+    return request({
+        method:'post',
+        url:'/communication/comment/add',
         params:form
     })
 }

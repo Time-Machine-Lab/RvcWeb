@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommentVo } from '@/api/post/postType'
+import { CommentVo, CommentForm } from '@/api/post/postType'
+import {commentAdd} from '@/api/post/postApi'
 let props = defineProps<{
   comment: CommentVo,
   showReply: (index: number) => boolean,
@@ -14,9 +15,26 @@ let inputContent = ref('')
 const input = ref<any>(null)
 const handleReply = function () {
   inputVisibility.value = true
-  setTimeout(function () { input!.value!.focus() }, 300)
+  setTimeout(function () { input!.value!.focus() }, 500)
 }
+const handleBlur = function () {
+  setTimeout(function(){inputVisibility.value = false},100)
+}
+const sendComment = function () {
+  let form = ref<CommentForm>({
+    content: inputContent.value,
+    postId: props.comment.postId,
+    rootCommentId: props.comment.rootCommentId,
+    toCommentId: props.comment.postCommentId,
+    toUserId: props.comment.userId
+  })
+  commentAdd(form.value).then(res=>{
+    console.log(res);
+    inputContent.value = ""
 
+  })
+
+}
 </script>
 <template>
   <div style="width: 100%;position: relative">
@@ -53,8 +71,9 @@ const handleReply = function () {
           </span>
         </div>
         <div v-show="inputVisibility" class="reply">
-          <span>回复 {{ props.comment.user?.nickname }}:</span>
-          <input class="input" placeholder="" v-model="inputContent" @blur="inputVisibility = false" ref="input">
+          <span>{{ props.comment.user?.nickname }}:</span>
+          <input class="input" placeholder="" v-model="inputContent" @blur="handleBlur" ref="input">
+          <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" @click="sendComment()">发送</button>
         </div>
 
       </div>
@@ -164,9 +183,26 @@ const handleReply = function () {
   margin-top: 10px;
 }
 
+.reply button {
+  position: relative;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  background-color: #fb7299;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
 .reply span {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
   line-height: 30px;
-}</style>
+}
+</style>

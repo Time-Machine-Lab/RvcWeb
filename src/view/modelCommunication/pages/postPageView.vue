@@ -8,75 +8,169 @@
 <script lang="ts" setup>
 import "@/assets/css/post/postContent.css"
 import postPageCommentsView from "./postPageCommentsView.vue"
+import { commentAdd, getPostById } from "@/api/post/postApi"
+import { favoritePost, collectPost } from '@/api/post/postApi'
 import { ref } from "vue";
-const content = "<img src=\"https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg\"><div class=\"pt-4\"><h1>RVC社区</h1><p>RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。</p><p><a href=\"https://rvc.top/#/\">预览地址</a></p><h1>RVC社区</h1><p>RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。</p><p><a href=\"https://rvc.top/#/\">预览地址</a></p><h1>RVC社区</h1><p>RVC社区是一个基于VITS语音合成系统的开源工具，可以实现实时的声音转换，适用于直播、视频录制等场景。RVC可以让用户将一个人的声音样本复制并转移到另一个人身上，或者自定义声音的特征，如音调、音色、语速等。RVC社区提供了模型分享下载、在线演示、教程指导等功能，让用户可以轻松上手和体验RVC的魅力。</p><p><a href=\"https://rvc.top/#/\">预览地址</a></p></div><h1 style=\"text-align: left;\"><span style=\"font-size: 48px; font-family: 华文楷体;\"><strong>标题1</strong></span></h1><div data-w-e-type=\"todo\" style=\"text-align: left;\"><input type=\"checkbox\" disabled=\"\">吃饭</div><div data-w-e-type=\"todo\" style=\"text-align: left;\"><input type=\"checkbox\" disabled=\"\">睡觉</div><p style=\"text-align: left;\">👊👊👊</p><p style=\"text-align: left;\">🤡🤡🤡</p><table style=\"width: auto;\"><tbody><tr><th colSpan=\"1\" rowSpan=\"1\" width=\"200\">1</th><th colSpan=\"1\" rowSpan=\"1\" width=\"auto\">2</th><th colSpan=\"1\" rowSpan=\"1\" width=\"auto\">3</th><th colSpan=\"1\" rowSpan=\"1\" width=\"auto\">4</th></tr><tr><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">a</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">ddd</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td></tr><tr><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">b</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">ddd</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">ddd</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td></tr><tr><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">c</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">ddd</td></tr><tr><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\">d</td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td><td colSpan=\"1\" rowSpan=\"1\" width=\"auto\"></td></tr></tbody></table><p><br></p>"
-let inputContext = ref<string>('')
+import router from "@/router";
+import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postType";
+import { message } from "@/utils/message";
+
+getPostById((router.currentRoute.value.query.id as unknown as number)).then(res => {
+    localPost.value = res.data
+})
+let localPost = ref<PostVo>({
+    avatar: "",
+    collect: "",
+    collectNum: "",
+    commentNum: "",
+    content: "",
+    cover: "",
+    createAt: "",
+    like: "",
+    likeNum: "",
+    nickname: "",
+    postId: "",
+    tagId: "",
+    title: "",
+    uid: "",
+    updateAt: "",
+    username: "",
+    watchNum: ""
+})
+let inputContent = ref<string>('')
+let figures = ref([
+    {
+        desc: "关注",
+        number: 0,
+    },
+    {
+        desc: "贴子",
+        number: 0,
+    },
+    {
+        desc: "粉丝",
+        number: 0,
+    },
+    {
+        desc: "上传模型",
+        number: 0,
+    }
+]);
+let likeDisabled = ref(true)
+let collectDisabled = ref(true)
 const to = function (index: number) {
     let h1 = document.querySelectorAll(".post-content h1")
 
     window.scrollTo(0, h1[index].getBoundingClientRect().top)
 }
-let figures = ref([
-    {
-        desc: "关注",
-        number: 11,
-    },
-    {
-        desc: "贴子",
-        number: 43,
-    },
-    {
-        desc: "粉丝",
-        number: 423,
-    },
-    {
-        desc: "上传模型",
-        number: 12,
+const collect = function () {
+    if (!collectDisabled.value) return
+    collectDisabled.value = false
+    setTimeout(function () {
+        collectDisabled.value = true
     }
-]);
+        , 2000)
+    let form = <FavoriteAndCollectionForm>{
+        id: (localPost.value.post_id as unknown as string),
+        type: localPost.value.has_collect ? '0' : '1'
+    }
+    collectPost(form).then(res => {
+        if (res.status == 200) {
+            localPost.value.has_collect = !localPost.value.has_collect
+            localPost.value.collect_num++
+        }
+        else {
+            message.error('收藏失败，请稍后再试')
+        }
+    })
+}
+const like = function () {
+    if (!likeDisabled.value) return
+    likeDisabled.value = false
+    setTimeout(function () {
+        likeDisabled.value = true
+    }, 2000)
+    let form = <FavoriteAndCollectionForm>{
+        id: (localPost.value.post_id as unknown as string),
+        type: localPost.value.has_like ? '0' : '1'
+    }
+    favoritePost(form).then(res => {
+        if (res.status == 200) {
+            localPost.value.has_like = !localPost.value.has_like
+            localPost.value.like_num++
+        }
+        message.error('点赞失败，请稍后再试')
+
+    })
+}
+const calcNum = function (num: number) {
+    return num > 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
+}
+const sendComment = function () {
+    let form = ref<CommentForm>({
+        content: inputContent.value,
+        postId: (router.currentRoute.value.query.id as string),
+        rootCommentId: "",
+        toCommentId: "",
+        toUserId: ""
+    })
+    commentAdd(form.value).then(res => {
+        console.log(res);
+        inputContent.value = ""
+    })
+
+}
 </script>
 <template>
     <div class="post-page">
 
-        <div class="post-page__post" >
+        <div class="post-page__post">
             <el-breadcrumb :separator="'>'">
                 <el-breadcrumb-item :to="{ path: '/communication' }">交流区</el-breadcrumb-item>
                 <el-breadcrumb-item>贴子</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="post-page__post__title">
                 <span class="scroll-text">
-                    标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
+                    {{ localPost?.title }}
                 </span>
             </div>
             <div class="post-page__post__info">
                 <div class="post-page__post__info__createAt">
-                    2019-01-01
+                    {{ localPost?.create_at }}
                 </div>
                 <div class="post-page__post__info__tags">
-                    <span>#MODEL</span>
+                    <span>{{ localPost?.tagId }}</span>
                 </div>
             </div>
-            <div class="post-content post-page__post__content" v-html="content">
+            <div class="post-content post-page__post__content" v-html="localPost?.content">
 
             </div>
             <div class="post-page__post__editTime">
-                最后编辑于:2021-12-02
+                最后编辑于:{{ localPost?.updateAt }}
             </div>
             <div class="post-page__post__operation">
                 <div class="post-page__post__operation__item">
                     <div class="post-page__post__operation__item__svg">
-                        <img src="/icon/star.svg" width="40" height="40">
+                        <div @click="collect()"
+                            style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
+                        height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
+                            :style="{ backgroundImage: localPost.has_collect ? 'url(\'/public/icon/star-fill.svg\')' : 'url(\'/public/icon/star.svg\')' }">
+                        </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
-                        3.2K
+                        {{ calcNum(localPost?.collect_num as number) }}
                     </div>
                 </div>
                 <div class="post-page__post__operation__item">
                     <div class="post-page__post__operation__item__svg">
-                        <img src="/icon/like.svg" width="40" height="40">
+                        <div @click="like()"
+                            style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
+                        height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
+                            :style="{ backgroundImage: localPost.has_like ? 'url(\'/public/icon/heart-fill.svg\')' : 'url(\'/public/icon/heart.svg\')' }">
+                        </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
-                        1K
+                        {{ calcNum(localPost?.like_num as number) }}
                     </div>
                 </div>
             </div>
@@ -85,29 +179,30 @@ let figures = ref([
                     <span>回复</span>
                 </div>
                 <div class="post-page__post__commentBox--row2">
-                    <textarea maxlength="300" v-model="inputContext"></textarea>
+                    <textarea maxlength="300" v-model="inputContent"></textarea>
                 </div>
                 <div class="post-page__post__commentBox--row3">
-                    <button :style="{ cursor: inputContext != '' ? 'pointer' : 'not-allowed' }">发送</button>
+                    <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" @click="sendComment">发送</button>
                 </div>
             </div>
-            <div style="height: 500px;">
-                <postPageCommentsView></postPageCommentsView>
+            <div style="padding-bottom:50px;width:100%;position: absolute">
+                <postPageCommentsView :post_id="localPost.postId"></postPageCommentsView>
             </div>
         </div>
         <div class="post-page__sidebar">
             <div class="author-box">
                 <div class="author-box__userInfo">
                     <div class="author-box__userInfo__baseInfo">
-                        <div class="author-box__userInfo__baseInfo__avatar">
+                        <div class="author-box__userInfo__baseInfo__avatar"
+                            :style="{ backgroundImage: 'url(\'' + localPost?.avatar + '\')' }">
 
                         </div>
                         <div class="author-box__userInfo__baseInfo__username">
                             <div class="author-box__userInfo__baseInfo__text__username">
-                                USERNAME
+                                {{ localPost?.nickname }}
                             </div>
                             <div class="author-box__userInfo__baseInfo__text__createAt">
-                                Joined 2021-01-01
+                                <!-- 注册于 {{ localPost? }} -->
                             </div>
                         </div>
                     </div>
@@ -148,19 +243,22 @@ let figures = ref([
 <style scoped>
 .post-page {
     width: 80%;
-    overflow: auto;
+    /* overflow: auto; */
     position: relative;
     left: 50%;
     display: flex;
+    margin-top: 20px;
     transform: translate(-50%);
 }
 
 .post-page__post {
+    position: relative;
     width: 75%;
     min-width: 450px;
     /* background-color: rgba(0,0,0,0.1); */
 }
-.post-page__post :deep(.el-breadcrumb__inner){
+
+.post-page__post :deep(.el-breadcrumb__inner) {
     color: white;
 }
 
@@ -384,7 +482,7 @@ let figures = ref([
     background-position: center center;
     border-radius: 5px;
     overflow: hidden;
-    background-image: url('/public/teamPic/dhx.jpg');
+    background-image: url('/public/teamPic/default.png');
 }
 
 .author-box__userInfo__baseInfo__text {
@@ -522,5 +620,4 @@ let figures = ref([
 
 .target-box__target:hover {
     background-color: rgba(255, 255, 255, 0.2);
-}
-</style>
+}</style>
