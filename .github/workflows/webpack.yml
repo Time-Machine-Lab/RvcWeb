@@ -40,10 +40,10 @@ jobs:
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@master
         with:
-          host: 117.21.200.55
-          port: 10022
-          username: rvc
-          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY_2 }}
+          host: 1.94.28.8
+          # port: 10022
+          username: root
+          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
             docker stop RvcGatewayContainer || true
             docker rm RvcGatewayContainer || true
