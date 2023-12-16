@@ -7,21 +7,17 @@
 <script lang="ts" setup>
 import { ref, nextTick } from 'vue'
 import { ELSelect } from 'element-plus'
-
+let props = defineProps<{
+    options:Array<{
+    value:string
+    label:string
+}>
+}>()
 const selectValue = ref('')
 const dynamicTags = ref<string[]>([])
 const selectVisible = ref(false)
 const SelectRef = ref<InstanceType<typeof ELSelect>>()
-let tagOptions = ref([
-    {
-        value: 'tag1',
-        label: 'tag1'
-    },
-    {
-        value: 'tag2',
-        label: 'tag2'
-    }
-])
+let Options = ref(props.options)
 const handleClose = (tag: string) => {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
@@ -29,7 +25,6 @@ const handleClose = (tag: string) => {
 const showSelect = () => {
     selectVisible.value = true
     nextTick(() => {
-        console.log(SelectRef.value);
 
         SelectRef.value!.focus()
     })
@@ -54,7 +49,7 @@ const handleSelectConfirm = () => {
         :style="{ width: '100px', backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" size="small"
         @change="handleSelectConfirm" @blur="handleSelectConfirm" placeholder="选择标签">
         <el-option
-            v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value" />
+            v-for="item in Options" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
     <el-button v-else class="button-new-tag"
         :style="{ backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" size="small" @click="showSelect">

@@ -3,20 +3,31 @@ import editorComponent from '@/components/editor/editorComponent.vue'
 import tagSelectComponent from '@/components/common/tagSelectComponent.vue'
 import "@/assets/css/post/postContent.css"
 import { PostForm } from '@/api/post/postType'
+import { getPostType } from '@/api/post/postApi'
 import { ref } from 'vue'
-const handleCoverSuccess = function () { }
-const beforeCoverUpload = function () { }
+let tagsOption = ref<[{
+    value:string
+    label:string
+}]>([{
+    value:'',
+    label:''
+}])
 let content = ref('')
-const getContent = function (html: string) {
-    content.value = html
-}
 let post = ref<PostForm>({
     title: '',
     content: '',
     cover: ''
 })
+getPostType().then(res=>{
+    tagsOption.value = res.data
+})
 const submitPost = function () {
     post.value.content = content.value
+}
+const handleCoverSuccess = function () { }
+const beforeCoverUpload = function () { }
+const getContent = function (html: string) {
+    content.value = html
 }
 </script>
 <template>
@@ -41,7 +52,7 @@ const submitPost = function () {
                     标签
                 </div>
                 <div style="text-align: left;">
-                    <tagSelectComponent></tagSelectComponent>
+                    <tagSelectComponent :options="tagsOption"></tagSelectComponent>
                 </div>
                 <div class="label">
                     标题

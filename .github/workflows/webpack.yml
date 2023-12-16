@@ -43,7 +43,7 @@ jobs:
           host: 117.21.200.55
           port: 10022
           username: root
-          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SERVER_SSH_PRIVATE_KEY_2 }}
           script: |
             docker stop RvcGatewayContainer || true
             docker rm RvcGatewayContainer || true
