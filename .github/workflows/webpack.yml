@@ -49,5 +49,5 @@ jobs:
             docker rm RvcGatewayContainer || true
             docker rmi $(docker images tmllab/rvc-web -q) || true 
             sleep 3
-            docker pull tmllab/rvc-web
+            docker pull https://registry.docker-cn.com/tmllab/rvc-web
             docker run -d --name RvcGatewayContainer -p 8090:8090 tmllab/rvc-web
