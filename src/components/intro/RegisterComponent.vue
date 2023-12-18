@@ -1,23 +1,78 @@
 <!--
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
- * @LastEditors: LisianthusLeaf 3106334435@qq.com
- * @LastEditTime: 2023-12-06 23:48:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-12-17 17:51:52
  * @FilePath: \RvcWeb\src\components\intro\RegisterComponent.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <script lang="ts">
-import { defineComponent } from "vue";
+import { message } from "@/utils/message";
+import { getCode, register } from '@/api/user/userApi'
+import { EmailCodeForm, RegisterForm } from '@/api/user/userTypes'
+import { defineComponent, ref } from "vue";
+import { storage } from "@/utils/storage";
 
 export default defineComponent({
   name: "register-page",
   data() {
     return {
       isChecked: false, // 初始化为未勾选
+      hasSendCode: false,
+      form: {
+        email: '',
+        code: '',
+        password: '',
+        repeatPassword: ''
+      }
     };
   },
+  methods: {
+    sendCode() {
+      if (this.form.email == '') {
+        message.warning('请输入邮箱')
+        return
+      }
+      if (!this.checkEmain(this.form.email)) {
+        message.warning('邮箱格式错误')
+        return
+      }
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      let that = this
+      let form = ref<EmailCodeForm>({
+        email: this.form.email,
+        type: 0
+      })
+      getCode(form.value).then(res => {
+        console.log(res)
+        message.success('发送成功')
+        this.hasSendCode = true
+        setTimeout(function () {
+          that.hasSendCode = false
+        }, 60000)
+      })
+
+    },
+    registerFunc() {
+      if ((this.form.password == '' || this.form.repeatPassword == '')) { message.warning('请输入密码'); return; }
+      if (this.form.password != this.form.repeatPassword) { message.warning('两次密码输入不一致'); return; }
+      if ((this.form.code == '')) { message.warning('请输入验证码'); return; }
+      if (!this.isChecked) { message.warning('请先勾选同意用户协议'); return; }
+      let form = ref<RegisterForm>({
+        email: this.form.email,
+        emailCode: this.form.code,
+        password: this.form.password
+      })
+      register(form.value).then(res => {
+        storage.set('token',res.data.token)
+      })
+    },
+    checkEmain(email: string) {
+      return /^([a-zA-Z]|[0-9])(\w|\\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email);
+    }
+  }
 });
 </script>
 
@@ -25,36 +80,25 @@ export default defineComponent({
   <div class="contain">
     <form class="contain">
       <div class="center">
-        <input
-          placeholder="Email address"
-          type="email"
-          name="email"
-          class="item"
-        />
         <div class="item-box flex">
-          <input
-            placeholder="password"
-            type="password"
-            name="password"
-            class="item-1"
-          />
-          <input
-            placeholder="confirm password"
-            type="password"
-            name="password"
-            class="item-1"
-          />
+          <input v-model="form.email" placeholder="Email address" type="email" name="email" class="item-2" />
+          <div class="item-3" :style="{ transform: !hasSendCode ? 'rotateY(180deg)' : 'rotateY(0)' }">
+            <button type="button" style="transform: rotateY(180deg) translateZ(1px);" @click="sendCode">发送验证码</button>
+            <input v-model="form.code" placeholder="验证码" />
+          </div>
+        </div>
+
+        <div class="item-box flex">
+          <input v-model="form.password" placeholder="password" type="password" name="password" class="item-1" />
+          <input v-model="form.repeatPassword" placeholder="confirm password" type="password" name="password"
+            class="item-1" />
         </div>
       </div>
       <div class="bottom flex">
         <div class="forget flex">
-          <input
-            type="checkbox"
-            v-model="isChecked"
-            id="myCheckbox"
-          />同意用户协议
+          <input type="checkbox" v-model="isChecked" id="myCheckbox" />同意用户协议
         </div>
-        <button>登录</button>
+        <button type="button" @click="registerFunc()">注册</button>
       </div>
     </form>
   </div>
@@ -66,10 +110,12 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
+
 .contain {
   height: 100%;
   width: 100%;
 }
+
 .item {
   width: 100%;
   height: 50px;
@@ -79,12 +125,14 @@ export default defineComponent({
   border: none;
   box-shadow: 1px 1px 5px #dbddfd;
 }
+
 .item-box {
   justify-content: space-between;
   width: 100%;
   height: 50px;
   margin-top: 13px;
 }
+
 .item-1 {
   width: 48%;
   height: 50px;
@@ -93,21 +141,76 @@ export default defineComponent({
   border: none;
   box-shadow: 1px 1px 5px #dbddfd;
 }
-.item::placeholder {
-  padding-left: 15px;
+
+.item-2 {
+  width: 75%;
+  height: 50px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 1px 1px 5px #dbddfd;
 }
-.item-1::placeholder {
-  padding-left: 15px;
+
+.item-3 {
+  position: relative;
+  width: 20%;
+  height: 50px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s;
+  transform-style: preserve-3d;
+
+  box-shadow: 1px 1px 5px #dbddfd;
 }
+
+.item-3 * {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.5s;
+}
+
+.item-3 button:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 25px #dbddfd;
+
+}
+
+
+
 .center {
   width: 100%;
   height: 80%;
 }
+
+input::placeholder {}
+
+input {
+  text-align: center;
+  color: black;
+  font-size: 16px;
+  border: none;
+  outline: none;
+}
+
+input {
+  outline: none;
+}
+
 .bottom {
   justify-content: space-between;
   width: 100%;
   height: 20%;
 }
+
 button {
   width: 100px;
   height: 100%;
@@ -116,6 +219,7 @@ button {
   background: #ffffff;
   box-shadow: 1px 1px 5px #dbddfd;
 }
+
 .forget {
   text-decoration-line: underline;
   font-family: 宋体, serif;

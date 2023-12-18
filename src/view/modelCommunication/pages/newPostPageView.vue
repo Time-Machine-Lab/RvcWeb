@@ -2,8 +2,8 @@
 import editorComponent from '@/components/editor/editorComponent.vue'
 import tagSelectComponent from '@/components/common/tagSelectComponent.vue'
 import "@/assets/css/post/postContent.css"
-import { PostForm } from '@/api/post/postType'
-import { getPostType } from '@/api/post/postApi'
+import { PostForm,PostType } from '@/api/post/postType'
+import { getPostType,postAdd } from '@/api/post/postApi'
 import { ref } from 'vue'
 let tagsOption = ref<[{
     value:string
@@ -13,16 +13,38 @@ let tagsOption = ref<[{
     label:''
 }])
 let content = ref('')
-let post = ref<PostForm>({
-    title: '',
-    content: '',
-    cover: ''
+let postForm = ref<PostForm>({
+title: '',
+content: '',
+coverId: '',
+tagId: ''
 })
 getPostType().then(res=>{
-    tagsOption.value = res.data
+    res.data=[
+        {
+            "tagImg": "前端",
+            "id": "1",
+            "tagName": "/img/tool-person.png"
+        },
+        {
+            "tagImg": "后端",
+            "id": "2",
+            "tagName": "/img/tool-chat.png"
+        }
+    ]
+    let data = <PostType[]>(res.data)
+    for(let i=0;i<data.length;i++){
+        tagsOption.value.push({
+            value:data[i].tag_name,
+            label:data[i].tag_name
+        })
+    }
 })
 const submitPost = function () {
-    post.value.content = content.value
+    postForm.value.content = content.value
+    postAdd(postForm.value).then(res=>{
+        console.log(res); 
+    })
 }
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function () { }
@@ -44,7 +66,7 @@ const getContent = function (html: string) {
                 <div>
                     <el-upload class="cover-uploader" action="http://124.71.107.76" :show-file-list="false"
                         :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
-                        <img v-if="post.cover" :src="post.cover" class="cover" />
+                        <img v-if="postForm.cover" :src="postForm.cover" class="cover" />
                         <el-icon v-else class="cover-uploader-icon"> + </el-icon>
                     </el-upload>
                 </div>
@@ -58,7 +80,7 @@ const getContent = function (html: string) {
                     标题
                 </div>
                 <div style="width: 100%;height: 30px;">
-                    <input class="input" placeholder="标题">
+                    <input class="input" placeholder="标题" v-model="postForm.title">
                 </div>
                 <div class="label">
                     内容

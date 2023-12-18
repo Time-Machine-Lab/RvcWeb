@@ -69,3 +69,11 @@ export function commentAdd(form:CommentForm){
         params:form
     })
 }
+
+export function postAdd(form:PostForm){
+    return request({
+        method:'post',
+        url:'/communication/post/add',
+        params:form
+    })
+}

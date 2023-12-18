@@ -51,7 +51,7 @@ const like = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover" @click="$router.push('/post?id='+localPost.postId)" style="width: 100%;margin: 0;padding: 0;">
+        <img :src="props.post.cover?props.post.cover:'/'" @click="$router.push('/post?id='+localPost.postId)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="post-card__title" @click="$router.push('/post?id='+localPost.postId)">
             {{ localPost.title }}
         </div>

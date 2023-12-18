@@ -79,10 +79,25 @@ export type PostVo = {
 
 
 export type PostForm = {
-    title: string;
+    /**
+     * 帖子内容
+     */
     content: string;
-    cover: string;
+    /**
+     * 帖子封面
+     */
+    coverId: string;
+    /**
+     * 帖子类型
+     */
+    tagId: string;
+    /**
+     * 帖子标题
+     */
+    title: string;
+    [property: string]: any;
 }
+
 
 export type PostType = {
     tag_id: string
@@ -114,9 +129,9 @@ export type PostListForm = {
 }
 
 export type RvcCommunicationPostType = {
-    tag_id: string
-    tag_img?: string
-    tag_name?: string
+    tagId: string
+    tagImg?: string
+    tagName?: string
     [property: string]: any
 }
 
