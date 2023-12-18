@@ -5,13 +5,16 @@
  * @FilePath: \RvcWeb\src\view\layout\header\components\userStatus.vue
 -->
 <script lang="ts" setup>
-import { getUserInfoById } from '@/api/user/userApi.js'
+import { getLoginUserInfo } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { Profile } from '@/api/user/userTypes'
 const userStore = useUserStore()
-
+getLoginUserInfo().then(res => {
+        console.log(res.data)
+        userStore.setProfile(<Profile>res.data)
+    })
 const login = function () {
-    getUserInfoById('1').then((res: { data: Profile; }) => {
+    getLoginUserInfo().then(res => {
         console.log(res.data)
         userStore.setProfile(<Profile>res.data)
     })
