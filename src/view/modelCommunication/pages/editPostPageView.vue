@@ -2,19 +2,20 @@
 import editorComponent from '@/components/editor/editorComponent.vue'
 import "@/assets/css/post/postContent.css"
 import {getPostById} from '@/api/post/postApi'
-import { PostForm, PostVo } from '@/api/post/postType'
+import { PostForm } from '@/api/post/postType'
 import { ref } from 'vue';
 import router from '@/router';
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function () { }
-let oldPost = ref<PostVo>()
+let oldPost = ref<PostForm>()
 let post = ref<PostForm>({
-    title: '',
-    content: '',
-    cover: ''
+content: '',
+coverId: '',
+tagId: '',
+title: ''
 })
 getPostById(router.currentRoute.value.query?.post_id as unknown as number).then((res)=>{
-    oldPost = ref<PostVo>(res.data)
+    oldPost = ref<PostForm>(res.data)
     post.value.title = oldPost.value?.title?oldPost.value?.title:''
     post.value.content = oldPost.value?.content?oldPost.value?.content:''
     post.value.cover = oldPost.value?.cover?oldPost.value?.cover:''
