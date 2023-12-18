@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-17 18:09:05
+ * @LastEditTime: 2023-12-18 15:19:43
  * @FilePath: \RvcWeb\src\components\intro\LoginComponent.vue
  * @Description: 
  * 
@@ -13,7 +13,6 @@ import { defineComponent, ref } from "vue";
 import { LoginForm } from "@/api/user/userTypes";
 import { login } from "@/api/user/userApi";
 import { storage } from "@/utils/storage";
-import router from "@/router";
 export default defineComponent({
   name: "login-page",
   data(){
