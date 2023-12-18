@@ -48,10 +48,24 @@ const like = function () {
         
     })
 }
+const getimg = function(){
+    const img = [
+        "/testPic/1.jpeg",
+        "/testPic/2.jpeg",
+        "/testPic/3.jpeg",
+        "/testPic/4.jpeg",
+        "/testPic/5.jpeg",
+        "/testPic/6.jpeg",
+        "/testPic/7.jpeg",
+        "/testPic/8.jpeg",
+        "/testPic/9.jpeg",
+    ]
+    return img[Math.floor(Math.random()*(9+1))]
+}
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover?props.post.cover:'/'" @click="$router.push('/post?id='+localPost.postId)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
+        <img :src="props.post.cover?props.post.cover:getimg()" @click="$router.push('/post?id='+localPost.postId)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="post-card__title" @click="$router.push('/post?id='+localPost.postId)">
             {{ localPost.title }}
         </div>
@@ -61,7 +75,7 @@ const like = function () {
         <div class="post-card__info">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.uid)">
 
-                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localPost.avatar + ')' }">
+                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localPost.avatar?localPost.avatar:'/teamPic/default.png' + ')' }">
 
                 </div>
                 <div class="user-info__usename">
@@ -103,6 +117,7 @@ const like = function () {
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;
+    border: rgba(255,255,255,0.1) 1px solid;
 }
 
 .post-card:hover>img {
@@ -148,7 +163,6 @@ const like = function () {
     left: 50%;
     transform: translate(-50%);
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 5px;
 
     display: flex;
@@ -161,6 +175,8 @@ const like = function () {
     transition: all 0.3s;
     display: flex;
     margin-left: 5px;
+    /* background-color: rgba(0, 0, 0, 0.8); */
+
 }
 
 .user-info__avatar {
@@ -199,6 +215,9 @@ const like = function () {
     width: 60%;
     display: flex;
     justify-content: end;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.8);
+
 }
 
 .other-info__stats__item {

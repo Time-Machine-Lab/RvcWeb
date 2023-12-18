@@ -2,14 +2,9 @@
  * @Author: Dhx
  * @Date: 2023-11-30 15:07:19
  * @Description: 
- * @FilePath: \RvcWeb\src\router\userRoute.ts
+ * @FilePath: \RvcWeb\src\router\homepageRouter\user\userRoutes.ts
  */
 export default [
-  {
-    path: "",
-    name: "userPage",
-    redirect: "/user/followUser",
-  },
   {
     path: "followUser",
     component: () => import("@/view/user/info/pages/followUser.vue"),

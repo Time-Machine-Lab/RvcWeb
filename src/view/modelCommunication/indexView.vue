@@ -1,49 +1,50 @@
 <script lang="ts" setup>
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
-import {getPostType,getPosts} from '@/api/post/postApi'
-import { PostVo,RvcCommunicationPostType,PostListForm } from '@/api/post/postType'
+import { getPostType, getPosts } from '@/api/post/postApi'
+import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postType'
 import { ref } from 'vue';
 const posts = ref<PostVo[]>([])
 posts.value = [
 
 ]
 
-let filter = ref(
-    {
-        tag: {
-            tagId: 0,
-            tagName: '全部'
-        },
-        sortSwitch: true,
-        sort: 'time'
-    }
-)
+// let filter = ref(
+//     {
+//         tag: {
+//             tagId: 0,
+//             tagName: '全部'
+//         },
+//         sortSwitch: true,
+//         sort: 'time'
+//     }
+// )
 let tags = ref<RvcCommunicationPostType[]>([])
 let form = ref<PostListForm>({
-data: '1',
-page: '0',
-limit: '20',
-tagId: '1'
+    data: '1',
+    page: '0',
+    limit: '20',
+    tagId: '1'
 })
-getPostType().then(res=>{
+getPostType().then(res => {
     tags.value = res.data
 })
-const load2 = function(){
-    getPosts(form.value).then(res=>{
+const load2 = function () {
+    getPosts(form.value).then(res => {
         posts.value = res?.data
     })
 }
 load2()
 
-const load = function(){
+const load = function () {
+    console.log('load');
     
 }
 let disabled = ref(false)
 </script>
 <template>
     <div class="communicationView">
-        <div class="filter-container">
+        <!-- <div class="filter-container">
             <div class="tag-selecter">
                 <el-select v-model="filter.tag.tagId" class="m-2" placeholder="Select" size="large" @change="form.tagId=(filter.tag.tagId as unknown as string)">
                     <el-option v-for="tag in tags" :key="tag.tagId" :label="tag.tagId" :value="tag.tagName"
@@ -76,14 +77,12 @@ let disabled = ref(false)
                     + 新贴子
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="post-list">
-            <el-scrollbar style="overflow: auto;height: 100%;background-color: transparent;">
-                    <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
-                        <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
-                    </waterFallComponent>
-            </el-scrollbar>
-
+            <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
+                :infinite-scroll-immediate="true">
+                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+            </waterFallComponent>
         </div>
     </div>
 </template>
@@ -93,9 +92,9 @@ let disabled = ref(false)
 }
 
 .communicationView {
+    position: relative;
     width: 100%;
-    height: calc(100vh - 50px);
-    overflow: hidden;
+    height: 100%;
 }
 
 .filter-container {
@@ -191,8 +190,8 @@ let disabled = ref(false)
 
 .post-list {
     position: relative;
-    height: calc(100% - 50px);
-    width: 80%;
+    height: 100%;
+    width: 100%;
     left: 50%;
     transform: translate(-50%);
 }
