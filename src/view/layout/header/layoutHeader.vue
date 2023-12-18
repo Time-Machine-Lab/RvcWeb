@@ -5,35 +5,13 @@
  * @FilePath: \RvcWeb\src\view\layout\header\layoutHeader.vue
 -->
 <script lang="ts" setup>
-import userStatus from "@/view/layout/header/components/userStatus.vue";
+import userStatus from "@/components/user/userStatus.vue";
 </script>
 <template>
   <div class="header">
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
-    <div class="page-link">
-      <RouterLink to="/">
-        <div class="page-link__item">
-          主页
-        </div>
-      </RouterLink>
-      <RouterLink to="/model">
-        <div class="page-link__item">
-          模型
-        </div>
-      </RouterLink>
-      <RouterLink to="/communication">
-        <div class="page-link__item">
-          交流区
-        </div>
-      </RouterLink>
-<!--      <RouterLink to="/feedback">-->
-<!--        <div class="page-link__item">-->
-<!--          反馈-->
-<!--        </div>-->
-<!--      </RouterLink>-->
-    </div>
     <div class="user-status">
       <userStatus></userStatus>
     </div>
@@ -44,14 +22,15 @@ import userStatus from "@/view/layout/header/components/userStatus.vue";
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #2d2d2d;
+  background-color: rgba(26,27,30);
   display: flex;
+  border-bottom: rgba(255,255,255,0.1) 1px solid;
 }
 
 .header .logo {
   position: relative;
   height: 100%;
-  width: 100px;
+  width: 200px;
   background-image: url("/src/assets/logo/rvc.png");
   background-repeat: no-repeat;
   background-size: 150%;

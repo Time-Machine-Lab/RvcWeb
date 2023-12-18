@@ -31,7 +31,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "src/api/user/userApi.ts"
-  ],
+, "src/router/homepageRouter"  ],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

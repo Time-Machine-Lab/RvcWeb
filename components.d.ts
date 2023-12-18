@@ -41,6 +41,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TagSelectComponent: typeof import('./src/components/common/tagSelectComponent.vue')['default']
+    UserStatus: typeof import('./src/components/user/userStatus.vue')['default']
     WaterFallComponent: typeof import('./src/components/layout/waterFallComponent.vue')['default']
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
   }
