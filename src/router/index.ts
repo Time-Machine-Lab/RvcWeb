@@ -17,6 +17,8 @@ import {
 } from "vue-router";
 import introRoute from './introRoutes.ts'
 import homepageRoutes from '@/router/homepageRouter/index.ts'
+import communicationRoutes from "./homepageRouter/communication/communicationRoutes.ts"
+import userRoutes from "./homepageRouter/user/userRoutes.ts"
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
@@ -34,6 +36,8 @@ const routes: RouteRecordRaw[] = [
     },
     ...homepageRoutes,
     ...introRoute,
+    ...communicationRoutes,
+    ...userRoutes
 ];
 const options: RouterOptions = {
     history: createWebHashHistory(),

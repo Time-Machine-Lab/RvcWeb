@@ -17,7 +17,10 @@ posts.value = [
 ]
 
 
-let tags = ref<RvcCommunicationPostType[]>([])
+let tags = ref<{
+    id:string|undefined
+    name:string|undefined
+}[]>([])
 let form = ref<PostListForm>({
     data: '1',
     page: '0',
@@ -25,7 +28,13 @@ let form = ref<PostListForm>({
     tagId: '1'
 })
 getPostType().then(res => {
-    tags.value = res.data
+    let data = ref<RvcCommunicationPostType[]>(res.data)
+    for(let i=0;i<data.value.length;i++){
+        tags.value.push({
+            id:data.value[i].tagId,
+            name:data.value[i].tagName
+        })
+    }
 })
 const load2 = function () {
     getPosts(form.value).then(res => {
@@ -43,7 +52,7 @@ let disabled = ref(false)
 <template>
     <div class="communicationView">
         <div class="filter-container">
-            <filterComponent></filterComponent>
+            <filterComponent :tags="tags"></filterComponent>
         </div>
         <div class="post-list">
             <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"

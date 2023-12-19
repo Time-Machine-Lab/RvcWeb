@@ -1,9 +1,18 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+const sortMethod = ref(["时间排序", "浏览量排序", "评论排序"])
+let props = defineProps<{
+    tags:{
+        id:string|undefined
+        name:string|undefined
+    }[]
+}>()
+let tags = ref<{
+    id:string|undefined,
+    name:string|undefined
+}[]>(props.tags)
 let sortSelectvisibility = ref(false)
 let clickSort = ref(false)
-let sortMethod = ref(["时间排序", "浏览量排序", "评论排序"])
-let tags = ref(["谈天说地", "炼丹心得", "巴拉拉", "炼丹心得", "巴巴拉", "炼丹心得", "巴拉拉", "炼丹心得", "巴拉巴拉", "一段很长的文本", "炼丹心得", "巴巴拉", "炼丹心得", "巴拉拉", "炼丹心得", "巴巴拉", "炼丹心得", "巴巴拉", "炼丹心得", "巴拉巴拉", "一段很长的文本"])
 let currentMethodIndex = ref(0)
 let currentTagsIndex = ref(-1)
 const handleClickSort = function () {
@@ -50,7 +59,7 @@ const handleBlur = function () {
             <div class="filter-box__tags__item" v-for="(tag, index) in tags"
                 :style="{ backgroundColor: currentTagsIndex == index ? 'rgba(33,37,41)' : '' }" :key="index"
                 @click="currentTagsIndex = currentTagsIndex!=index?index:-1;">
-                {{ tag }}
+                {{ tag.name }}
             </div>
         </div>
     </div>

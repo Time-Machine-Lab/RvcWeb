@@ -36,7 +36,7 @@ const handleBlur = function () {
 <style scoped>
 .search-box {
     position: relative;
-    height: 50%;
+    height: 54%;
     width: 95%;
     left: 50%;
     top: 50%;
