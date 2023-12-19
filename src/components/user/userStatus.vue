@@ -2,43 +2,79 @@
  * @Author: Dhx
  * @Date: 2023-11-30 18:48:48
  * @Description: 
- * @FilePath: \RvcWeb\src\view\layout\header\components\userStatus.vue
+ * @FilePath: \RvcWeb\src\components\user\userStatus.vue
 -->
 <script lang="ts" setup>
-import { getLoginUserInfo } from '@/api/user/userApi.js'
+import { getLoginUserInfo,logout } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { Profile } from '@/api/user/userTypes'
+import { ref } from 'vue';
+import { message } from '@/utils/message';
+import { storage } from '@/utils/storage';
 const userStore = useUserStore()
+let userStatusVisibility = ref(false)
 getLoginUserInfo().then(res => {
-        console.log(res.data)
-        userStore.setProfile(<Profile>res.data)
-    })
+    console.log(res.data)
+    userStore.setProfile(<Profile>res.data)
+})
 const login = function () {
     getLoginUserInfo().then(res => {
         console.log(res.data)
         userStore.setProfile(<Profile>res.data)
     })
 }
-
+const handleClickUser = function () {
+    userStatusVisibility.value = !userStatusVisibility.value
+}
+const handleBlur = function () {
+    setTimeout(function () {
+        userStatusVisibility.value = false
+    }, 200)
+}
+const logoutFunc = function (){
+    logout().then(res=>{
+        console.log(res)
+        
+        message.success('登出成功')
+        storage.remove('token')
+    })
+}
 </script>
 <template>
     <div class="user-status">
-        <div class="login-button" v-if="!userStore?.getProfile?.id" @click="login">
+        <div class="login-button" v-if="userStore?.getProfile?.id" @click="login">
             登录
         </div>
-        <div class="" v-else>
-            
+        <div class="avatar-container" v-else>
+            <div tabindex="-1" @click="handleClickUser" @blur="handleBlur" class="avatar"
+                :style="{ backgroundImage: 'url(' + '/teamPic/default.png' + ')' }">
+
+            </div>
+
         </div>
-        <div class="avatar-container">
-            <RouterLink to="/user/">
-                <div class="avatar" v-if="userStore?.getProfile?.id"
-                    :style="{ backgroundImage: 'url(' + userStore?.getProfile?.avatar + ')' }">
+        <div class="user-more" v-show="userStatusVisibility">
+            <RouterLink :to="'/user?id='+userStore?.getProfile?.id">
+                <div class="user-more__item">
+                <div class="horizontal-center" style="display: flex;">
+                    <span>
+                        <img width="24" height="24" class="vertical-center" src="/icon/user.svg">
+                    </span>
+                    <span style="line-height: 50px;margin-left: 15px;margin-right: 7px;">个人主页</span>
 
                 </div>
+            </div>
             </RouterLink>
+            
+            <div class="user-more__item" @click="logoutFunc">
+                <div class="horizontal-center" style="display: flex;">
+                    <span style="margin-left: 2px;">
+                        <img width="24" height="24" class="vertical-center" src="/icon/logout.svg">
+                    </span>
+                    <span style="line-height: 50px;margin-left: 15px;margin-right: 7px;">登出</span>
 
+                </div>
+            </div>
         </div>
-
     </div>
 </template>
 <style scoped>
@@ -46,6 +82,8 @@ const login = function () {
     position: relative;
     height: 100%;
     width: 100%;
+    border-left: rgba(255, 255, 255, 0.1) 1px solid;
+
 }
 
 .user-status .login-button {
@@ -95,6 +133,35 @@ const login = function () {
     transition: all 0.5s;
 }
 
-.user-status .avatar:hover {
+.user-more {
+    position: absolute;
+    top: 65px;
+    right: 0px;
+    width: 200px;
+    border-radius: 5px;
+    border: rgba(55, 58, 64) 1px solid;
+    background-color: rgba(37, 38, 43);
+    padding: 5px;
+    z-index: 10;
+    user-select: none;
+}
+
+.user-more__item {
+    padding-left: 15px;
+    width: calc(100% - 15px);
+    height: 50px;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.user-more__item:hover {
+    background-color: rgba(56, 58, 64);
+    cursor: pointer;
+}
+
+/* .user-status .avatar:hover {
     scale: 1.1;
-}</style>
+} */
+</style>
