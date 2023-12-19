@@ -3,8 +3,9 @@ import { defineComponent, onMounted, ref, onUnmounted } from 'vue'
 
 export default defineComponent({
   setup() {
-    const minWidth = ref(280)
+    const minWidth = ref(320)
     const columnCount = ref(5)
+    const margin = ref(15)
     const width = ref(0)
     const height = ref([0, 0, 0, 0, 0])
     const containerRef = ref<HTMLElement | null>(null)
@@ -21,7 +22,7 @@ export default defineComponent({
       }
       while (columnCount.value) {
         if (containerRef.value) {
-          width.value = containerRef.value.clientWidth / columnCount.value - 10
+          width.value = containerRef.value.clientWidth / columnCount.value - margin.value
         }
         if (width.value > minWidth.value) {
           break
@@ -35,14 +36,14 @@ export default defineComponent({
           currentElement.style.display = 'inline-block';
           currentElement.style.width = width.value + 'px';
           const index = getMinIndex(height.value, columnCount.value);
-          currentElement.style.left = index * (width.value + 10) + 'px';
+          currentElement.style.left = index * (width.value + margin.value) + 'px';
           currentElement.style.top = height.value[index] + 'px';
           currentElement.style.visibility = 'visible';
-          height.value[index] += currentElement.clientHeight + 10;
+          height.value[index] += currentElement.clientHeight + margin.value;
         }
       }
       let maxHeight = Math.max(...height.value)
-      if (containerElement) containerElement.style.height = maxHeight + 20 + 'px'
+      if (containerElement) containerElement.style.height = maxHeight + 2*margin.value + 'px'
     };
 
     const getMinIndex = function (height: any, len: any) {

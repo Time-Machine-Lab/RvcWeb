@@ -77,6 +77,7 @@ let disabled = ref(false)
     height: 100%;
     width: 100%;
     left: 50%;
+    margin-top: 15px;
     transform: translate(-50%);
 }
 
