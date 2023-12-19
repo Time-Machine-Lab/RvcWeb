@@ -26,13 +26,13 @@ const handleBlur = function () {
                 @click="handleClickSort" @blur="handleBlur">
                 <div class="horizontal-center" style="display: flex;">
                     <span>
-                        <img width="16" height="16" class="vertical-center" src="icon/sort-down.svg">
+                        <img width="16" height="16" class="vertical-center" src="/icon/sort-down.svg">
                     </span>
                     <span
                         style="line-height: 40px;margin-left: 3px;margin-right: 7px;">{{ sortMethod[currentMethodIndex] }}</span>
                     <span>
                         <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
-                            :class="sortSelectvisibility ? 'revolve-animation' : ''" src="icon/arrow-down.svg">
+                            :class="sortSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                     </span>
                 </div>
 
