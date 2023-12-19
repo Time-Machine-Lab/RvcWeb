@@ -13,7 +13,7 @@
                 :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(255,255,255,0.1)' : 'transparent' }">
                 <router-link to="/rvc/posts" style="display: block;height: 100%;width: 100%;">
                     <span class="img_back" :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
-                        <img width="12" height="12" src="/icon/post.svg" class="center">
+                        <img width="12" height="12" src="/icon/post.svg" class="vh-center">
                     </span>
                     <span>贴子</span>
                 </router-link>
@@ -22,7 +22,7 @@
                 :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(255,255,255,0.1)' : 'transparent' }">
                 <router-link to="/rvc/models" style="display: block;height: 100%;width: 100%;">
                     <span class="img_back" :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
-                        <img width="12" height="12" src="/icon/model.svg" class="center">
+                        <img width="12" height="12" src="/icon/model.svg" class="vh-center">
                     </span>
 
                     <span>模型</span>
@@ -38,7 +38,7 @@
 <style scoped>
 .rvc-home {
     position: relative;
-    width: 80%;
+    width: 90%;
     height: 100%;
     left: 50%;
     transform: translate(-50%);

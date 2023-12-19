@@ -28,7 +28,7 @@ const handleBlur = function () {
             <input :placeholder="'搜索'+searchType[currentTypeIndex]" class="input">
         </div>
         <div class="search-box__button">
-            <img class="vertical-center" src="/icon/search.svg">
+            <img class="vh-center" src="/icon/search.svg">
         </div>
 
     </div>
