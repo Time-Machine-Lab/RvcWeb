@@ -24,7 +24,7 @@ let tags = ref<{
 let form = ref<PostListForm>({
     data: '1',
     page: '0',
-    limit: '20',
+    limit: '5',
     tagId: '1'
 })
 getPostType().then(res => {
@@ -75,7 +75,7 @@ let disabled = ref(false)
 
 .filter-container {
     position: relative;
-    min-height: 100px;
+    /* min-height: 100px; */
     width: 100%;
     display: flex;
 }
@@ -86,7 +86,7 @@ let disabled = ref(false)
     height: 100%;
     width: 100%;
     left: 50%;
-    margin-top: 15px;
+    margin-top: 5px;
     transform: translate(-50%);
 }
 

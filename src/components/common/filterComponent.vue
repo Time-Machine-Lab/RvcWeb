@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-const sortMethod = ref(["时间排序", "浏览量排序", "评论排序"])
+const sortMethod = ref(["时间排序", "浏览量排序", "点赞数量排序"])
 let props = defineProps<{
     tags:{
         id:string|undefined
@@ -66,15 +66,19 @@ const handleBlur = function () {
 </template>
 <style scoped>
 .filter-box {
-    height: min-100px;
+    /* min-height: 50px; */
     width: 100%;
     /* background-color: rgba(0, 0, 0, 0.1); */
 }
 
 .filter-box__filter {
+    position: absolute;
+    top: -70px;
+    right: 10px;
     height: 70px;
     width: 100%;
     display: flex;
+    justify-content: right;
 }
 
 .filter-box__filter__sort {
@@ -132,12 +136,12 @@ const handleBlur = function () {
     line-height: 40px;
     font-size: 14px;
     text-align: left;
+    border-radius: 10px;
     color: rgba(255, 255, 255, 0.7);
 }
 
 .sort-select__item:hover {
     background-color: rgba(56, 58, 64);
-    border-radius: 10px;
     cursor: pointer;
 }
 
