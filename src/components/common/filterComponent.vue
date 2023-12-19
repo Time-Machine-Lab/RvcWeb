@@ -74,9 +74,10 @@ const handleBlur = function () {
 .filter-box__filter {
     position: absolute;
     top: -70px;
+    right: 0;
     right: 10px;
     height: 70px;
-    width: 100%;
+    width: 30%;
     display: flex;
     justify-content: right;
 }
