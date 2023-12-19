@@ -9,11 +9,24 @@
 <template>
     <div class="rvc-home">
         <div class="rvc-home__link">
-            <div class="rvc-home__link__item" :style="{backgroundColor:$router.currentRoute.value.path == '/rvc/posts'?'rgba(255,255,255,0.1)':'transparent'}">
-                <router-link to="/rvc/posts"><img width="14" height="14" src="/icon/post.svg" style="margin-right:10px"><span>贴子</span></router-link>
+            <div class="rvc-home__link__item"
+                :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(255,255,255,0.1)' : 'transparent' }">
+                <router-link to="/rvc/posts" style="display: block;height: 100%;width: 100%;">
+                    <span class="img_back" :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
+                        <img width="12" height="12" src="/icon/post.svg" class="center">
+                    </span>
+                    <span>贴子</span>
+                </router-link>
             </div>
-            <div class="rvc-home__link__item">
-                <router-link to="/rvc/models"><img width="14" height="14" src="/icon/model.svg" style="margin-right:10px"><span>模型</span></router-link>
+            <div class="rvc-home__link__item"
+                :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(255,255,255,0.1)' : 'transparent' }">
+                <router-link to="/rvc/models" style="display: block;height: 100%;width: 100%;">
+                    <span class="img_back" :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
+                        <img width="12" height="12" src="/icon/model.svg" class="center">
+                    </span>
+
+                    <span>模型</span>
+                </router-link>
             </div>
 
         </div>
@@ -40,28 +53,46 @@
 .rvc-home__link__item {
     position: relative;
     top: 50%;
-    transform: translate(0,-50%);
+    transform: translate(0, -50%);
     height: 40px;
-    line-height:40px;
+    line-height: 40px;
     width: 80px;
-    padding: 0 3px;
-    margin-left:5px;
-    cursor:pointer;
-    border-radius:5px;
+    padding: 0 8px;
+    margin-left: 3px;
+    cursor: pointer;
+    border-radius: 5px;
 }
-.rvc-home__link__item span{
-    color: rgba(255,255,255,0.7);
+
+.rvc-home__link__item span {
+    position:absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
+    margin-left: 3px;
+    line-height: 40px;
     text-align: center;
-    text-decoration:none;
-    font-family: '黑体'
+    text-decoration: none;
+    text-shadow: 0 0 5px rgba(255,255,255,0.1),0 0 5px rgba(255,255,255,0.1),0 0 5px rgba(255,255,255,0.1),0 0 5px rgba(255,255,255,0.1);
+    font-family: '黑体';
 }
-.rvc-home__link__item span:hover{
-    color: rgba(255,255,255,0.9);
+
+.rvc-home__link__item span:hover {
+    color: rgba(255, 255, 255, 1);
 }
 
 .rvc-home__view {
     width: 100%;
     height: calc(100% - 100px);
+}
+.img_back{
+    position: relative;
+    display: block;
+    top: 50%;
+    transform: translate(0,-50%);
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
 }
 </style>

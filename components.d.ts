@@ -16,8 +16,12 @@ declare module 'vue' {
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     FeedBackComponent: typeof import('./src/components/intro/FeedBackComponent.vue')['default']
+    FilterComponent: typeof import('./src/components/common/filterComponent.vue')['default']
     FollowUserCardComponent: typeof import('./src/components/user/followUserCardComponent.vue')['default']
     LoginComponent: typeof import('./src/components/intro/LoginComponent.vue')['default']
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
@@ -31,5 +35,8 @@ declare module 'vue' {
     UserStatus: typeof import('./src/components/user/userStatus.vue')['default']
     WaterFallComponent: typeof import('./src/components/layout/waterFallComponent.vue')['default']
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }
