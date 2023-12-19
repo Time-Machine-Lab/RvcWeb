@@ -8,6 +8,7 @@ export default[
     {
         path: '/rvc',
         name: 'rvcHomeView',
+        redirect: '/rvc/posts',
         component: () => import('@/view/layout/main/rvcHomeView.vue'),
         children: [
             {

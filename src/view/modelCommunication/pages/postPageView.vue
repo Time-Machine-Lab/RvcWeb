@@ -104,7 +104,7 @@ const like = function () {
     })
 }
 const calcNum = function (num: number) {
-    return num > 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
+    return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
 const sendComment = function () {
     let form = ref<CommentForm>({
@@ -126,7 +126,7 @@ const sendComment = function () {
 
         <div class="post-page__post">
             <el-breadcrumb :separator="'>'">
-                <el-breadcrumb-item :to="{ path: '/communication' }">交流区</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/rvc/posts' }">交流区</el-breadcrumb-item>
                 <el-breadcrumb-item>贴子</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="post-page__post__title">
@@ -158,7 +158,7 @@ const sendComment = function () {
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
-                        {{ calcNum(localPost?.collect_num as number) }}
+                        {{ calcNum(localPost?.collectNum as unknown as number) }}
                     </div>
                 </div>
                 <div class="post-page__post__operation__item">
@@ -170,7 +170,7 @@ const sendComment = function () {
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
-                        {{ calcNum(localPost?.like_num as number) }}
+                        {{ calcNum(localPost?.likeNum as unknown as number) }}
                     </div>
                 </div>
             </div>

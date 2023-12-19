@@ -11,6 +11,8 @@ declare module 'vue' {
     CommentComponent: typeof import('./src/components/modelCommunication/commentComponent.vue')['default']
     CommentsComponent: typeof import('./src/components/modelCommunication/commentsComponent.vue')['default']
     EditorComponent: typeof import('./src/components/editor/editorComponent.vue')['default']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
