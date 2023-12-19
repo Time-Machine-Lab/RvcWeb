@@ -6,12 +6,16 @@
 -->
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue";
+import searchComponent from "@/components/common/searchComponent.vue";
 </script>
 <template>
   <div class="header">
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
+    <div class="search">
+      <searchComponent></searchComponent>
+    </div>
     <div class="user-status">
       <userStatus></userStatus>
     </div>
@@ -36,6 +40,13 @@ import userStatus from "@/components/user/userStatus.vue";
   background-size: 150%;
   cursor: pointer;
   background-position: center;
+}
+.header .search{
+  position: absolute;
+  height: 100%;
+  width: 40%;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 .header .user-status {
