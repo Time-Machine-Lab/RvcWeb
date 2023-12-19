@@ -15,6 +15,12 @@ export default[
                 name: 'posts',
                 component: () => import('@/view/modelCommunication/indexView.vue'),
             },
+            {
+                path: 'models',
+                name: 'models',
+                component: () => import('@/view/rvcModel/indexView.vue'),
+            },
         ]
     },
+    
 ]
