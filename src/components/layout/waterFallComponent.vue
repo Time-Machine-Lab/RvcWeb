@@ -43,7 +43,7 @@ export default defineComponent({
         }
       }
       let maxHeight = Math.max(...height.value)
-      if (containerElement) containerElement.style.height = maxHeight + 2*margin.value + 'px'
+      if (containerElement) containerElement.style.height = maxHeight + 2 * margin.value + 'px'
     };
 
     const getMinIndex = function (height: any, len: any) {
@@ -59,7 +59,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      sortElement()
       window.addEventListener('resize', function () { sortElement() })
       const observer = new MutationObserver(handleMutation)
       const container = containerRef.value
@@ -73,6 +72,8 @@ export default defineComponent({
           }
         }
       }
+      sortElement()
+
     })
     // watch(
     //   () => childElements,
@@ -88,9 +89,24 @@ export default defineComponent({
     const handleMutation = function (mutationsList: any, observer: any) {
       console.log(mutationsList, observer)
       console.log('sort')
-      setTimeout(function(){
+      // mutationsList.forEach((mutation:any) => {
+      //   switch (mutation.type) {
+      //     case "childList":
+      //       /* 从树上添加或移除一个或更多的子节点；参见 mutation.addedNodes 与
+      //          mutation.removedNodes */
+      //       setTimeout(function () {
+      //         sortElement()
+      //       }, 200)
+      //       break;
+      //     case "attributes":
+      //       /* mutation.target 中某节点的一个属性值被更改；该属性名称在 mutation.attributeName 中，
+      //          该属性之前的值为 mutation.oldValue */
+      //       break;
+      //   }
+      // });
+      setTimeout(function () {
         sortElement()
-      },200)
+      }, 200)
     }
     onUnmounted(() => {
       window.removeEventListener('resize', function () { sortElement() })

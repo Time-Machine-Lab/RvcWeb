@@ -26,6 +26,9 @@ const login = function () {
         <div class="login-button" v-if="!userStore?.getProfile?.id" @click="login">
             登录
         </div>
+        <div class="" v-else>
+            
+        </div>
         <div class="avatar-container">
             <RouterLink to="/user/">
                 <div class="avatar" v-if="userStore?.getProfile?.id"
