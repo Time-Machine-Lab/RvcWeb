@@ -15,7 +15,7 @@ const handleBlur = function () {
             @blur="handleBlur">
             <span style="line-height: 35px;margin-left: 8px;margin-right: 15px;">{{ searchType[currentTypeIndex] }}</span>
             <span>
-                <img width="14" height="14" class="vertical-center" src="icon/arrow-down.svg">
+                <img width="14" height="14" class="vertical-center" src="/icon/arrow-down.svg">
             </span>
         </div>
         <div class="search-select" v-show="searchSelectVisibility">
