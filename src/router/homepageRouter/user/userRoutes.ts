@@ -4,25 +4,38 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\router\homepageRouter\user\userRoutes.ts
  */
-export default [
+export default[
   {
-    path: "followUser",
-    component: () => import("@/view/user/info/pages/followUser.vue"),
-  },
-  {
-    path: "likeModels",
-    component: () => import("@/view/user/info/pages/likeModels.vue"),
-  },
-  {
-    path: "favoriteModels",
-    component: () => import("@/view/user/info/pages/favoriteModels.vue"),
-  },
-  {
-    path: "likePosts",
-    component: () => import("@/view/user/info/pages/likePosts.vue"),
-  },
-  {
-    path: "favoritePosts",
-    component: () => import("@/view/user/info/pages/favoritePosts.vue"),
-  },
+    path: "/user",
+    name: "userPage",
+    component: () => import("@/view/user/info/userPage.vue"),
+    children: [
+      {
+        path: "followUser",
+        name: "followUser",
+        component: () => import("@/view/user/info/pages/followUser.vue"),
+      },
+      {
+        path: "likeModels",
+        name: "likeModels",
+        component: () => import("@/view/user/info/pages/likeModels.vue"),
+      },
+      {
+        path: "favoriteModels",
+        name: "favoriteModels",
+        component: () => import("@/view/user/info/pages/favoriteModels.vue"),
+      },
+      {
+        path: "likePosts",
+        name: "likePosts",
+        component: () => import("@/view/user/info/pages/likePosts.vue"),
+      },
+      {
+        path: "favoritePosts",
+        name: "favoritePosts",
+        component: () => import("@/view/user/info/pages/favoritePosts.vue"),
+      },
+    ]
+  }
+
 ];

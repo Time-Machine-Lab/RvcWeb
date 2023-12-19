@@ -57,7 +57,7 @@ const getContent = function (html: string) {
         <div class="newPost-page__center">
             <div class="newPost-page__center__left">
                 <el-breadcrumb :separator="'>'">
-                    <el-breadcrumb-item :to="{ path: '/communication' }">交流区</el-breadcrumb-item>
+                    <el-breadcrumb-item :to="{ path: '/rvc/posts' }">交流区</el-breadcrumb-item>
                     <el-breadcrumb-item>新建贴子</el-breadcrumb-item>
                 </el-breadcrumb>
                 <div class="label">
@@ -111,7 +111,7 @@ const getContent = function (html: string) {
     position: relative;
     height: 100vh;
     width: 100%;
-    background-color: rgba(30, 30, 30);
+    background-color: rgba(26,27,30);
 }
 
 .newPost-page__center {
@@ -156,7 +156,7 @@ const getContent = function (html: string) {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    background-color: rgba(40, 40, 40);
+    background-color: rgba(37,38,43);
     transition: var(--el-transition-duration-fast);
 }
 
@@ -190,7 +190,7 @@ const getContent = function (html: string) {
     border: rgba(100, 100, 100) 1px solid;
     outline: none;
     border-radius: 5px;
-    background-color: rgba(40, 40, 40);
+    background-color: rgba(37,38,43);
     color: rgba(255, 255, 255, 0.7);
     padding-left: 10px;
 }

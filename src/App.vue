@@ -25,7 +25,7 @@ onBeforeMount(() => {
   <!--  <div>-->
   <!--    <RouterView :key="$router.currentRoute.value.query.id as string" />-->
   <!--  </div>-->
-  <div style="height: 100vh;width: 100vw;">
+  <div style="height: 100vh;width: 100vw;min-width: 1080px;">
     <el-container>
       <el-header class="header">
         <LayoutHeader></LayoutHeader>
