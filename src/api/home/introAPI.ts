@@ -24,9 +24,22 @@ export function getHomeNotice() {
     method: "get",
   });
 }
-export function getDetail() {
+export function getWebNotice(page: string) {
   return request({
-    url: "/web/detail",
+    url: "/web/notice/webNotice",
     method: "get",
+    params: {
+      page
+    }
+  });
+}
+// 获取一个公告的详细信息
+export function getDetail(noticeId:string) {
+  return request({
+    url: "/web/notice/detail",
+    method: "get",
+    params: {
+      noticeId
+    }
   });
 }

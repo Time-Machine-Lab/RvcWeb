@@ -10,31 +10,33 @@
 -->
 <script setup lang="ts">
 import "@/assets/css/NoticeDetail.css";
-// import request from '@/utils/request.ts';
+import {onMounted, ref} from "vue";
+import {DetailVO} from "@/api/home/introTypes.ts";
+import {getDetail} from "@/api/home/introAPI.ts";
+import { useRoute } from 'vue-router';
+const noticeId = ref("");
+const Detail = ref<DetailVO>(<DetailVO>{});
 
-let contain = {
-  author: "RVC社区官方",
-  content: "欢迎来到RVC社区",
-  cover: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg",
-  createAt: "2023-11-29 01:47:50",
-  likeNum: 0,
-  noticeId: "5bcd73d6-8546-42a7-8afe-1819643aac6c",
-  title: "",
-  watchNum: 0,
-};
+onMounted(() => {
+  noticeId.value = <string>useRoute().params.id;
+  getDetail(noticeId.value).then((res: any) => {
+    console.log(res)
+    Detail.value = res.data;
+  })
+});
 </script>
 <template>
-  <div class="NoticeDetail flex">
+  <div class="NoticeDetail">
     <div class="NoticeTitle">
-      <div class="title flex">{{ contain.title }}</div>
+      <div class="title flex">{{ Detail.title }}</div>
       <div class="message flex">
-        <div class="author">{{ contain.author }}</div>
-        <div class="time">{{ contain.createAt }}</div>
+        <div class="author">{{ Detail.author }}</div>
+        <div class="time">{{ Detail.createAt }}</div>
       </div>
     </div>
     <div class="NoticeCover">
-      <img :src="contain.cover" alt="Team Member Image" />
+      <img :src="Detail.cover" alt="Team Member Image" class="NoticeImg"/>
     </div>
-    <div class="NoticeContain flex">{{ contain.content }}</div>
+    <div class="NoticeContain flex">{{ Detail.content }}</div>
   </div>
 </template>
