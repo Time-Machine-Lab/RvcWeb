@@ -129,7 +129,7 @@ export type PostListForm = {
 }
 
 export type RvcCommunicationPostType = {
-    tagId: string
+    id: string
     tagImg?: string
     tagName?: string
     [property: string]: any
