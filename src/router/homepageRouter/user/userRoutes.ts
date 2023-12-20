@@ -16,25 +16,16 @@ export default[
         component: () => import("@/view/user/info/pages/followUser.vue"),
       },
       {
-        path: "likeModels",
-        name: "likeModels",
-        component: () => import("@/view/user/info/pages/likeModels.vue"),
+        path: "likes",
+        name: "likes",
+        component: () => import("@/view/user/info/pages/likesPageView.vue"),
       },
       {
-        path: "favoriteModels",
-        name: "favoriteModels",
+        path: "collections",
+        name: "collections",
         component: () => import("@/view/user/info/pages/favoriteModels.vue"),
       },
-      {
-        path: "likePosts",
-        name: "likePosts",
-        component: () => import("@/view/user/info/pages/likePosts.vue"),
-      },
-      {
-        path: "favoritePosts",
-        name: "favoritePosts",
-        component: () => import("@/view/user/info/pages/favoritePosts.vue"),
-      },
+
     ]
   }
 

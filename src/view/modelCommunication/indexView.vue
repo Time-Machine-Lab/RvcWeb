@@ -11,6 +11,7 @@ import filterComponent from '@/components/common/filterComponent.vue'
 import { getPostType, getPosts } from '@/api/post/postApi'
 import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postType'
 import { ref } from 'vue';
+import { message } from '@/utils/message'
 const posts = ref<PostVo[]>([])
 posts.value = [
 
@@ -21,6 +22,7 @@ let tags = ref<{
     id:string|undefined
     name:string|undefined
 }[]>([])
+let page = ref(0)
 let form = ref<PostListForm>({
     data: '1',
     page: '0',
@@ -36,17 +38,31 @@ getPostType().then(res => {
         })
     }
 })
-const load2 = function () {
+const load = function () {
+    disabled.value = true
+    setTimeout(function(){
+        disabled.value = false
+    },5000)
     getPosts(form.value).then(res => {
-        posts.value = res?.data
+        let data = res.data
+        if(data.length == 0){
+            disabled.value = true
+            message.warning('没有更多数据了')
+            return
+        }
+        for(let i =0 ;i<data.length;i++){
+            posts.value.push(data[i])
+        }
+        page.value ++
+        form.value.page = page.value as unknown as string
+        disabled.value = false
     })
 }
-load2()
 
-const load = function () {
-    console.log('load');
+// const load = function () {
+//     console.log('load');
     
-}
+// }
 let disabled = ref(false)
 </script>
 <template>

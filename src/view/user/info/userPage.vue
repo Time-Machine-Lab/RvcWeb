@@ -29,20 +29,15 @@ setTimeout(function () {
         <router-link :to="{ path: '/user/followUser', query: $route.query }">
           <button>follow</button>
         </router-link>
-        <router-link :to="{ path: '/user/likeModels', query: $route.query }">
-          <button>likeModels</button>
+        <router-link :to="{ path: '/user/likes', query: $route.query }">
+          <button>like</button>
         </router-link>
         <router-link
-          :to="{ path: '/user/favoriteModels', query: $route.query }"
+          :to="{ path: '/user/collections', query: $route.query }"
         >
-          <button>favoriteModels</button>
+          <button>collections</button>
         </router-link>
-        <router-link :to="{ path: '/user/likePosts', query: $route.query }">
-          <button>likePosts</button>
-        </router-link>
-        <router-link :to="{ path: '/user/favoritePosts', query: $route.query }">
-          <button>favoritePosts</button>
-        </router-link>
+
       </div>
       <div class="router-view-container">
         <router-view></router-view>
@@ -61,14 +56,14 @@ setTimeout(function () {
   position: relative;
   top: 0;
   left: 0;
-  background-color: rgba(50, 52, 64);
+  background-color: rgba(26,27,30);
 }
 .userPage .base-info-container {
   display: inline-block;
   position: relative;
   width: 15%;
   min-width: 200px;
-  background-color: rgba(40, 42, 54);
+  background-color: rgba(37,38,43);
 }
 .userPage .other-info-container {
   display: inline-block;

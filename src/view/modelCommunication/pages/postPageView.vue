@@ -77,7 +77,7 @@ const collect = function () {
     collectPost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number)+1)as unknown as string
+            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
         }
         else {
             message.error('收藏失败，请稍后再试')
@@ -97,7 +97,7 @@ const like = function () {
     favoritePost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_like = !localPost.value.has_like
-            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number)+1)as unknown as string
+            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
         }
         message.error('点赞失败，请稍后再试')
 
@@ -182,7 +182,8 @@ const sendComment = function () {
                     <textarea maxlength="300" v-model="inputContent"></textarea>
                 </div>
                 <div class="post-page__post__commentBox--row3">
-                    <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" @click="sendComment">发送</button>
+                    <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }"
+                        @click="sendComment">发送</button>
                 </div>
             </div>
             <div style="padding-bottom:50px;width:100%;position: absolute">
@@ -190,6 +191,21 @@ const sendComment = function () {
             </div>
         </div>
         <div class="post-page__sidebar">
+            <div class="target-box">
+                <div class="target-box__title">
+                    <img src="/icon/list.svg" width="28" height="28"
+                        style="position: relative;top: 50%;transform: translate(0,-50%);">导航
+                </div>
+                <div class="target-box__target" @click="to(0)">
+                    RVC社区
+                </div>
+                <div class="target-box__target" @click="to(1)">
+                    RVC社区
+                </div>
+                <div class="target-box__target" @click="to(2)">
+                    RVC社区
+                </div>
+            </div>
             <div class="author-box">
                 <div class="author-box__userInfo">
                     <div class="author-box__userInfo__baseInfo">
@@ -217,26 +233,8 @@ const sendComment = function () {
                         </div>
                     </div>
                 </div>
-                <div class="author-box__operation">
-                    <button class="author-box__operation--follow">＋关注</button>
-                    <button class="author-box__operation--contact">私信</button>
-                </div>
             </div>
-            <div class="target-box">
-                <div class="target-box__title">
-                    <img src="/icon/list.svg" width="28" height="28"
-                        style="position: relative;top: 50%;transform: translate(0,-50%);">导航
-                </div>
-                <div class="target-box__target" @click="to(0)">
-                    RVC社区
-                </div>
-                <div class="target-box__target" @click="to(1)">
-                    RVC社区
-                </div>
-                <div class="target-box__target" @click="to(2)">
-                    RVC社区
-                </div>
-            </div>
+
         </div>
     </div>
 </template>
@@ -450,21 +448,20 @@ const sendComment = function () {
     width: 95%;
     left: 50%;
     transform: translate(-50%);
-    background-color: rgba(40, 40, 50);
-    height: 220px;
-    box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px;
-    border-radius: 10px;
+    background-color: rgba(37, 38, 43);
+    height: 150px;
+    /* box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px; */
+    border-radius: 5px;
     margin-top: 10px;
-    border: rgba(255, 255, 255, 0.2) 1px solid;
+    overflow: hidden;
+    border: rgba(55, 58, 64) 1px solid;
 }
 
 .author-box__userInfo {
     position: relative;
-    width: 90%;
-    height: 150px;
-    border-bottom: rgba(255, 255, 255, 0.2) 1px solid;
-    left: 50%;
-    transform: translate(-50%);
+    width: 100%;
+    height: 149px;
+    border-bottom: rgba(55, 58, 64) 1px solid;
 }
 
 .author-box__userInfo__baseInfo {
@@ -544,57 +541,18 @@ const sendComment = function () {
     margin: 0 7px;
 }
 
-.author-box__operation {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    width: 90%;
-    height: 70px;
-    display: flex;
-    justify-content: space-around;
-}
-
-.author-box__operation button {
-    position: relative;
-    top: 50%;
-    transform: translate(0, -50%);
-    height: 35px;
-    width: 120px;
-    cursor: pointer;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    letter-spacing: 5px;
-    font-size: 16px;
-    font-weight: 700;
-    color: white;
-    border: rgba(255, 255, 255, 0.2) 1px solid;
-}
-
-.author-box__operation--follow {
-    background-color: #fb7299;
-    transition: all 0.3s;
-}
-
-.author-box__operation--follow:hover {
-    background-color: #f7638d;
-}
-
-.author-box__operation--contact {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
 .target-box {
     position: relative;
     width: 95%;
     left: 50%;
     transform: translate(-50%);
-    background-color: rgba(40, 40, 50);
-    box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px;
-    border-radius: 10px;
+    background-color: rgba(37, 38, 43);
+    /* box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px; */
+    border-radius: 5px;
     margin-top: 10px;
-    border: rgba(255, 255, 255, 0.2) 1px solid;
-    padding: 10px 0;
+    border: rgba(55, 58, 64) 1px solid;
+    padding: 0 0;
+    overflow: hidden;
 }
 
 .target-box__title {
@@ -604,6 +562,7 @@ const sendComment = function () {
     padding-left: 10px;
     font-weight: 700;
     font-size: 20px;
+    background-color: rgba(26, 27, 30);
     color: rgba(255, 255, 255, 0.8);
     text-align: left;
 }
