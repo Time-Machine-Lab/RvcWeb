@@ -10,8 +10,8 @@
 -->
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import {getHomeNotice} from "@/api/home/introAPI.ts";
-import {NoticeVO} from "@/api/home/introTypes.ts";
+import {getHomeNotice, getWebNotice} from "@/api/home/introAPI.ts";
+import {BoardVO, Notice, NoticeVO} from "@/api/home/introTypes.ts";
 
 const NoticeImg = ref([
   { img: "../../../public/teamPic/dhx.jpg" },
@@ -43,16 +43,27 @@ const currentTab = ref('new');
 const changeTab = (tab: any) => {
   currentTab.value = tab;
 };
-// const NoticePage = ref<Notice>(<Notice>{})
-const Notices  = ref<NoticeVO[]>([])
-const getNoticeData = () => {
+
+// 获取首页的轮播图公告信息
+const Boards = ref<BoardVO[]>([]);
+const getWebData = () => {
   getHomeNotice().then((res: any) => {
     console.log(res)
-    Notices.value = res.data.pageList
+    Boards.value = res.data.pageList;
+  })
+}
+// 获取公告页面的公告数据列表
+const NoticePage = ref<Notice>(<Notice>{page: "1", limit: "6",pageList:[],total:"6"});
+const Notices = ref<NoticeVO[]>([]);
+const getNoticeData = () => {
+  getWebNotice(NoticePage.value.page).then((res: any) => {
+    console.log(res)
+    Notices.value = res.data.pageList;
   })
 }
 onMounted(() => {
-  getNoticeData
+  getNoticeData()
+  getWebData()
 });
 </script>
 
@@ -75,11 +86,11 @@ onMounted(() => {
         <button class="notice-board__tab flex" @click="changeTab('all')" :class="{ active: currentTab === 'all' }">全部公告</button>
       </div>
       <div class="notice-board__list flex" v-if="currentTab === 'new'">
-        <ul class="notice-board__contain flex" v-for="notice in tableData" :key="notice.id">
-          <router-link :to="{ name: 'NoticeDetail', params: { id: notice.id } }" target="_blank" class="router flex">
-            <li class="notice-board__id flex">{{ notice.id }}</li>
-            <li class="notice-board__text flex">{{ notice.text }}</li>
-            <li class="notice-board__date flex">{{ notice.date }}</li>
+        <ul class="notice-board__contain flex" v-for="(notice,index) in Notices" :key="index">
+          <router-link :to="{ name: 'NoticeDetail', params: { id: notice.noticeId } }" target="_blank" class="router flex">
+            <li class="notice-board__id flex">{{ notice.author }}</li>
+            <li class="notice-board__text flex">{{ notice.title }}</li>
+            <li class="notice-board__date flex">{{ notice.createAt }}</li>
           </router-link>
         </ul>
       </div>
