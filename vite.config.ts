@@ -23,25 +23,30 @@ export default defineConfig({
       //   target: "https://mock.apifox.com/",
       //   changeOrigin: true,
       // },
+      // "/feedback": {
+      //   target: "http://1.94.28.8:9400/",
+      //   changeOrigin: true,
+      // },
       // "/web": {
       //   target: "http://1.94.28.8:9300/",
-      //   changeOrigin: true,      
+      //   changeOrigin: true,
       // },
       // '/communication':{
       //   target: "http://1.94.28.8:9200/",
       //   changeOrigin: true
       // },
-      // "/api": {
-      //   target: "http://124.71.107.76:8090",
-      //   changeOrigin: true,
-      //   headers:{
-      //     Token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NDM4NDIyNzAiLCJpYXQiOjE3MDI0NDgzMjIsImV4cCI6MTcwMjQ4NzkyMn0.iPx3bW_mjGKAA7O64NjnjPqnmUqJGM31K8zHUIy9Ry4"
-      //   }
+      // '/model':{
+      //   target: "http://1.94.28.8:9100/",
+      //   changeOrigin: true
       // },
-      // "/user":{
+      // '/user':{
       //   target: "http://1.94.28.8:9000/",
       //   changeOrigin: true
-      // }
+      // },
+      // '/captcha':{
+      //   target: "http://1.94.28.8:8080/",
+      //   changeOrigin: true
+      // },
       "/rvcApi":{
         target: "http://117.21.200.55:10010/",
         changeOrigin: true,

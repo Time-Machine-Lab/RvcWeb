@@ -1,9 +1,3 @@
-<!--
- * @Author: Dhx
- * @Date: 2023-11-30 14:50:51
- * @Description: 
- * @FilePath: \RvcWeb\src\App.vue
--->
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
@@ -59,27 +53,30 @@ onBeforeMount(() => {
 .header {
   height: 70px;
   width: 100%;
+  position: fixed;
   margin: 0;
   padding: 0;
   z-index: 1;
 }
 
 .main {
+  position:relative;
+  top:70px;
   height: calc(100vh - 110px);
   padding: 0;
-  background-color: rgb(26,27,30);
-  overflow: scroll;
+  background-color: rgb(56, 56, 58);
 }
-
-.foot {
+.foot{
   justify-content: left;
-  width: 100vw;
-  height: 40px;
+  position: fixed;
+  bottom: 0;
+  width:100vw;
+  height:40px;
   background: black;
-
-  .foot-btn {
-    width: 100px;
-    height: 100%;
+  .foot-btn{
+    width:100px;
+    height:100%;
     color: #e5e5e5;
   }
-}</style>
+}
+</style>

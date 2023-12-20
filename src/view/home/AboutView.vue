@@ -33,7 +33,7 @@ const cards = reactive([
   align-items: center;
 }
 .about {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background: url("https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg");
   background-size: cover;

@@ -106,7 +106,7 @@ const props = defineProps<{
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    background-image: url('/public/backPic/welcome.png');
+    background-image: url('public/backPic/welcome.png');
 }
 
 .post-card__info {
@@ -159,7 +159,7 @@ const props = defineProps<{
     top: 50%;
     transform: translate(0, -50%);
     border-radius: 10px;
-    background-image: url("/public/teamPic/dhx.jpg");
+    background-image: url("public/teamPic/dhx.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
