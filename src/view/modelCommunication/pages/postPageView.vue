@@ -174,7 +174,7 @@ const sendComment = function () {
                     </div>
                 </div>
             </div>
-            <!-- <div class="post-page__post__commentBox">
+            <div class="post-page__post__commentBox">
                 <div class="post-page__post__commentBox--row1">
                     <span>回复</span>
                 </div>
@@ -185,7 +185,7 @@ const sendComment = function () {
                     <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }"
                         @click="sendComment">发送</button>
                 </div>
-            </div> -->
+            </div>
             <div style="padding-bottom:50px;width:100%;position: absolute">
                 <postPageCommentsView :post_id="localPost.postId"></postPageCommentsView>
             </div>
