@@ -40,9 +40,9 @@ getPostType().then(res => {
 })
 const load = function () {
     disabled.value = true
-    setTimeout(function(){
-        disabled.value = false
-    },5000)
+    // setTimeout(function(){
+    //     disabled.value = false
+    // },5000)
     getPosts(form.value).then(res => {
         let data = res.data
         if(data.length == 0){

@@ -24,7 +24,7 @@ request.interceptors.request.use(
     console.log(token)
     if (token!='') {
       // 将token添加到请求头中
-      config.headers.accessToken = token
+      config.headers.token = token
     }
     console.log(config)
     return config

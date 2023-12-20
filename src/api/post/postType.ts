@@ -95,6 +95,10 @@ export type PostForm = {
      * 帖子标题
      */
     title: string;
+    /**
+     * 贴子id(修改时传)
+     */
+    postId?: string;
     [property: string]: any;
 }
 
@@ -175,5 +179,22 @@ export type CommentForm = {
      * 回复目标用户id
      */
     toUserId: string;
+    [property: string]: any;
+}
+export type UserLikePostForm = {
+    data?: string;
+    limit?: string;
+    page?: string;
+    [property: string]: any;
+}
+
+export type UserCreatePostForm = {
+    limit?: string;
+    page?: string;
+    [property: string]: any;
+}
+
+export type GetPostDetailsForm = {
+    postId: string;
     [property: string]: any;
 }
