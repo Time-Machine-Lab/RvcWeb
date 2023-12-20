@@ -12,7 +12,7 @@ import { message } from './message'
 
 
 const request = axios.create({
-  baseURL: '',
+  baseURL: 'http://117.21.200.55:10010',
   timeout: 5000
 })
 

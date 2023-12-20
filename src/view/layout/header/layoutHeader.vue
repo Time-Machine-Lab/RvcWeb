@@ -73,7 +73,7 @@ const handleBlur = function () {
   position: relative;
   height: 100%;
   width: 200px;
-  background-image: url("/src/assets/logo/rvc.png");
+  background-image: url("src/assets/logo/rvc.png");
   background-repeat: no-repeat;
   background-size: 150%;
   cursor: pointer;

@@ -76,6 +76,7 @@ export default defineComponent({
   width: 100%;
 }
 .item {
+  text-align: center;
   width: 100%;
   height: 50px;
   background: #ffffff;
@@ -83,9 +84,7 @@ export default defineComponent({
   border-radius: 5px;
   border: none;
   box-shadow: 1px 1px 5px #dbddfd;
-}
-.item::placeholder {
-  padding-left: 15px;
+  outline: none;
 }
 .center {
   width: 100%;

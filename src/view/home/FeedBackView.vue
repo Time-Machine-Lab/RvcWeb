@@ -72,7 +72,7 @@ const load = () => {
     ListItems.value.page = nextPage.toString();
     ListItems.value.total = total.toString();
     loading.value = false
-  }, 2000)
+  }, 10000)
 }
 
 onMounted(() => {
@@ -102,7 +102,7 @@ onMounted(() => {
         <div class="contain-search flex">
           <button class="contain-search__item flex">最新</button>
           <button class="contain-search__item flex">最热</button>
-          <button class="contain-search__item flex">搜索</button>
+<!--          <button class="contain-search__item flex">搜索</button>-->
           <button @click="openNew()" class="contain-search__item flex">+创建新帖子</button>
         </div>
         <div class="infinite-list-wrapper" style="overflow: auto">
