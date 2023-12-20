@@ -1,9 +1,3 @@
-<!--
- * @Author: Dhx
- * @Date: 2023-11-30 14:50:51
- * @Description: 
- * @FilePath: \RvcWeb\src\App.vue
--->
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
@@ -25,7 +19,7 @@ onBeforeMount(() => {
   <!--  <div>-->
   <!--    <RouterView :key="$router.currentRoute.value.query.id as string" />-->
   <!--  </div>-->
-  <div style="height: 100vh;width: 100vw;">
+  <div style="height: 100vh;width: 100vw;min-width: 1080px;">
     <el-container>
       <el-header class="header">
         <LayoutHeader></LayoutHeader>
@@ -34,9 +28,15 @@ onBeforeMount(() => {
         <RouterView :key="($router.currentRoute.value.query.id as string)" />
       </el-main>
       <el-footer class="foot flex">
-        <router-link to="/about" target="_blank" class="foot-btn flex"> <p>加入我们</p> </router-link>
-        <router-link to="/service" target="_blank" class="foot-btn flex"> <p>服务条款</p> </router-link>
-        <router-link to="/feedback" target="_blank" class="foot-btn flex"> <p>反馈</p> </router-link>
+        <router-link to="/about" target="_blank" class="foot-btn flex">
+          <p>加入我们</p>
+        </router-link>
+        <router-link to="/service" target="_blank" class="foot-btn flex">
+          <p>服务条款</p>
+        </router-link>
+        <router-link to="/feedback" target="_blank" class="foot-btn flex">
+          <p>反馈</p>
+        </router-link>
       </el-footer>
     </el-container>
   </div>
@@ -51,23 +51,21 @@ onBeforeMount(() => {
 }
 
 .header {
-  position: fixed;
   height: 70px;
   width: 100%;
+  position: fixed;
   margin: 0;
   padding: 0;
   z-index: 1;
 }
 
 .main {
-  position: fixed;
-  height: 100vh;
-  width:100vw;
+  position:relative;
+  top:70px;
+  height: calc(100vh - 110px);
   padding: 0;
-  background-color: rgb(26,27,30);
-  overflow: scroll;
+  background-color: rgb(56, 56, 58);
 }
-
 .foot{
   justify-content: left;
   position: fixed;

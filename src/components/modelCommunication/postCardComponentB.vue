@@ -9,13 +9,27 @@ let props = defineProps<{
 let localPost = ref<PostVo>(props.post)
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
+let clickMore = ref(false)
+let moreVisibility = ref(false)
+const handleClickMore = function () {
+    clickMore.value = true
+    moreVisibility.value = !moreVisibility.value
+    setTimeout(function () {
+        clickMore.value = false
+    }, 200)
+}
+const handleBlur = function () {
+    setTimeout(function () {
+        moreVisibility.value = false
+    }, 200)
+}
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
-    setTimeout(function(){
+    setTimeout(function () {
         collectDisabled.value = true
     }
-    ,2000)
+        , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_collect ? '0' : '1'
@@ -23,7 +37,7 @@ const collect = function () {
     collectPost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number)+1)as unknown as string
+            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
         }
         message.error('收藏失败，请稍后再试')
     })
@@ -31,10 +45,10 @@ const collect = function () {
 const like = function () {
     if (!likeDisabled.value) return
     likeDisabled.value = false
-    setTimeout(function(){
+    setTimeout(function () {
         likeDisabled.value = true
     }
-    ,2000)
+        , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_like ? '0' : '1'
@@ -42,13 +56,13 @@ const like = function () {
     favoritePost(form).then(res => {
         if (res.status == 200) {
             localPost.value.has_like = !localPost.value.has_like
-            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number)+1)as unknown as string
+            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
         }
         message.error('点赞失败，请稍后再试')
-        
+
     })
 }
-const getimg = function(){
+const getimg = function (index:number) {
     const img = [
         "/testPic/1.jpeg",
         "/testPic/2.jpeg",
@@ -60,22 +74,26 @@ const getimg = function(){
         "/testPic/8.jpeg",
         "/testPic/9.jpeg",
     ]
-    return img[Math.floor(Math.random()*(9+1))]
+    return img[index%9]
 }
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover?props.post.cover:getimg()" @click="$router.push('/post?id='+localPost.postId)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
-        <div class="post-card__title" @click="$router.push('/post?id='+localPost.postId)">
-            {{ localPost.title }}
+        <img :src="props.post.cover ? props.post.cover : getimg(localPost.postId as unknown as number)" @click="$router.push('/post?id=' + localPost.postId)"
+            style="min-height:100px;width: 100%;margin: 0;padding: 0;">
+        <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur" :class="clickMore ? 'dither-animation' : ''">
+            <div style="height: 20px;width:20px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;"></div>
         </div>
-        <div class="post-card__creatAt" @click="$router.push('/post?id='+localPost.postId)">
-            {{ localPost.createAt }}
+        <div class="more-window" v-show="moreVisibility">
+            <div class="more-window__item" @click="message.warning('敬请期待')">
+                举报
+            </div>
         </div>
         <div class="post-card__info">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.uid)">
 
-                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localPost.avatar?localPost.avatar:'/teamPic/default.png' + ')' }">
+                <div class="user-info__avatar"
+                    :style="{ backgroundImage: 'url(' + localPost.avatar ? localPost.avatar : '/teamPic/default.png' + ')' }">
 
                 </div>
                 <div class="user-info__usename">
@@ -83,6 +101,13 @@ const getimg = function(){
                 </div>
 
             </div>
+            <div class="post-card__info__creatAt" @click="$router.push('/post?id=' + localPost.postId)">
+                {{ localPost.createAt }}
+            </div>
+            <div class="post-card__info__title" @click="$router.push('/post?id=' + localPost.postId)">
+                {{ localPost.title }}
+            </div>
+
             <div class="other-info">
                 <div class="other-info__stats__item">
                     <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/eye.svg\')' }">
@@ -117,7 +142,7 @@ const getimg = function(){
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;
-    border: rgba(255,255,255,0.1) 1px solid;
+    border: rgba(255, 255, 255, 0.1) 1px solid;
 }
 
 .post-card:hover>img {
@@ -125,63 +150,90 @@ const getimg = function(){
     scale: 1.02;
 }
 
-.post-card__title {
+.more-window {
     position: absolute;
-    top: 0;
-    width: calc(100% - 10px);
-    padding-left: 10px;
-    height: 30px;
-    line-height: 30px;
-    color: white;
-    text-overflow: ellipsis;
-    font-size: 16px;
-    text-align: left;
-    z-index: 1;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+    right: 40px;
+    top: 40px;
+    width: 120px;
+    border-radius: 10px;
+    border: rgba(55, 58, 64) 1px solid;
+    background-color: rgba(37, 38, 43);
+    padding: 5px;
+    z-index: 10;
+    user-select: none;
 }
 
-.post-card__creatAt {
-    position: absolute;
-    top: 30px;
-    width: calc(100% - 10px);
-    padding-left: 10px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 10px;
+.more-window__item {
+    padding-left: 15px;
+    width: calc(100% - 15px);
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: left;
+    border-radius: 5px;
+
     color: rgba(255, 255, 255, 0.7);
-    z-index: 1;
-    text-align: left;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-
 }
+
+.more-window__item:hover {
+    background-color: rgba(56, 58, 64);
+    cursor: pointer;
+}
+
+
 
 .post-card__info {
     position: absolute;
-    bottom: 10px;
-    width: 95%;
-    height: 30px;
+    bottom: 0;
+    width: 100%;
+    /* height: 150px; */
     left: 50%;
     transform: translate(-50%);
     z-index: 1;
     border-radius: 5px;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+}
 
-    display: flex;
+.post-card__info__title {
+    position: relative;
+    width: calc(100% - 10px);
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    font-size: 20px;
+    text-align: left;
+    z-index: 1;
+}
+
+.post-card__info__creatAt {
+    position: relative;
+    width: calc(100% - 10px);
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    margin-left: 10px;
+    color: rgba(255, 255, 255, 1);
+    z-index: 1;
+    text-align: left;
+
 }
 
 .user-info {
     position: relative;
-    height: 30px;
-    width: 40%;
+    height: 40px;
+    width: 100%;
     transition: all 0.3s;
     display: flex;
-    margin-left: 5px;
+    margin-left: 15px;
     /* background-color: rgba(0, 0, 0, 0.8); */
 
 }
 
 .user-info__avatar {
-    height: 20px;
-    min-width: 20px;
+    height: 30px;
+    min-width: 30px;
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
@@ -192,9 +244,7 @@ const getimg = function(){
     background-position: center;
 }
 
-.user-info__avatar:hover {
-    scale: 1.1;
-}
+
 
 .user-info__usename {
     height: 30px;
@@ -211,12 +261,13 @@ const getimg = function(){
 
 .other-info {
     position: relative;
-    height: 100%;
-    width: 60%;
+    height: 40px;
+    width: calc(100% - 10px);
     display: flex;
-    justify-content: end;
+    margin-left: 10px;
+    justify-content: start;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.8);
+    /* background-color: rgba(0, 0, 0, 0.8); */
 
 }
 
@@ -226,7 +277,7 @@ const getimg = function(){
     transform: translate(0, -50%);
     height: 16px;
     display: flex;
-    margin-right: 5px;
+    margin-right: 15px;
 }
 
 .other-info__stats__item span {
@@ -236,5 +287,16 @@ const getimg = function(){
     font-size: 14px;
     margin-left: 4px;
     color: rgba(255, 255, 255, 0.7);
+}
+
+.more {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+}
+.dither-animation {
+    top: 11px;
 }
 </style>

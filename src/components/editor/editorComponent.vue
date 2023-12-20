@@ -8,6 +8,7 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 let props = defineProps<{
+  content:string,
   getContent: (html: string) => void
 }>()
 const editor = ref<any>(null)
@@ -19,7 +20,7 @@ const toolbarConfig = {
     "fullScreen", "codeBlock", "todo", "|", "group-video"
   ]
 }
-let html = ref('')
+let html = ref(props.content)
 const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
@@ -72,7 +73,7 @@ onBeforeUnmount(() => {
 <template>
   <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="height:200px; overflow-y: hidden" v-model="computedContent" :defaultConfig="editorConfig" :mode="mode"
+    <Editor style="min-height:200px; overflow-y: hidden" v-model="computedContent" :defaultConfig="editorConfig" :mode="mode"
       @onCreated="onCreated" />
   </div>
 </template>
