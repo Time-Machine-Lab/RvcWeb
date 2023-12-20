@@ -1,18 +1,40 @@
 <!--
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
- * @LastEditors: LisianthusLeaf 3106334435@qq.com
- * @LastEditTime: 2023-12-06 23:48:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-12-18 15:19:43
  * @FilePath: \RvcWeb\src\components\intro\LoginComponent.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { defineComponent, ref } from "vue";
+import { LoginForm } from "@/api/user/userTypes";
+import { login } from "@/api/user/userApi";
+import { storage } from "@/utils/storage";
 export default defineComponent({
   name: "login-page",
+  data(){
+    return{
+      form:{
+        email:'',
+        password:''
+      }
+    }
+  },
+  methods:{
+    loginFunc(){
+      let form = ref<LoginForm>({
+        email:this.form.email,
+        password:this.form.password
+      })
+      login(form.value).then(res=>{
+        storage.set('token',(res.data.token as string))
+        this.$router.replace('/')
+      })
+    }
+  }
 });
 </script>
 
@@ -25,17 +47,19 @@ export default defineComponent({
           type="email"
           name="email"
           class="item"
+          v-model="form.email"
         />
         <input
           placeholder="password"
           type="password"
           name="password"
           class="item"
+          v-model="form.password"
         />
       </div>
       <div class="bottom flex">
         <div class="forget flex">忘记密码</div>
-        <button>登录</button>
+        <button type="button" @click="loginFunc">登录</button>
       </div>
     </form>
   </div>
@@ -79,6 +103,7 @@ button {
   border: none;
   background: #ffffff;
   box-shadow: 1px 1px 5px #dbddfd;
+  cursor: pointer;
 }
 .forget {
   text-decoration-line: underline;

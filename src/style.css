@@ -23,7 +23,7 @@ body {
   margin: 0;
   padding: 0;
   text-decoration: none;
-  /* font-family: "ZCool"; */
+  font-family: "黑体";
 }
 
 ::-webkit-scrollbar {
@@ -47,4 +47,20 @@ body {
   100% {
     transform: translateX(-100%);
   }
+}
+.vh-center{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+.vertical-center{
+  position: relative;
+  top: 50%;
+  transform: translate(0,-50%);
+}
+.horizontal-center{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
 }

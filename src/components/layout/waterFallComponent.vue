@@ -86,7 +86,10 @@ export default defineComponent({
     // )
     const handleMutation = function (mutationsList: any, observer: any) {
       console.log(mutationsList, observer)
-      sortElement()
+      console.log('sort')
+      setTimeout(function(){
+        sortElement()
+      },200)
     }
     onUnmounted(() => {
       window.removeEventListener('resize', function () { sortElement() })

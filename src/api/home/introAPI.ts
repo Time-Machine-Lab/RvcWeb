@@ -1,44 +1,32 @@
 import request from "../../utils/request";
-import "./introTypes.ts";
-import {
-  Detail,
-  HomeNotice,
-  Info,
-  Team,
-  Tools,
-} from "@/api/home/introTypes.ts";
-export function getInfo(form: Info) {
+
+export function getInfo() {
   return request({
     url: "/web/info",
     method: "get",
-    data: form,
   });
 }
-export function getTools(form: Tools) {
+export function getTools() {
   return request({
     url: "/web/tools",
     method: "get",
-    data: form,
   });
 }
-export function getTeam(form: Team) {
+export function getTeam() {
   return request({
     url: "/web/team",
     method: "get",
-    data: form,
   });
 }
-export function getHomeNotice(form: HomeNotice) {
+export function getHomeNotice() {
   return request({
-    url: "/web/homeNotice",
+    url: "/web/notice/homeNotice",
     method: "get",
-    data: form,
   });
 }
-export function getDetail(form: Detail) {
+export function getDetail() {
   return request({
     url: "/web/detail",
     method: "get",
-    data: form,
   });
 }

@@ -21,11 +21,13 @@ request.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any> ) => {
     // 从storage中获取token
     const token = storage.get<string>('token')
-    if (token) {
+    console.log(token)
+    if (token!='') {
       // 将token添加到请求头中
       config.headers.accessToken = token
     }
-  return config
+    console.log(config)
+    return config
   },
   error => {
     message.error(error.data.error.message)
@@ -40,15 +42,12 @@ request.interceptors.response.use(
      if (res.config.responseType === 'blob') {
       return res
     }
-    // 兼容服务端返回的字符串数据
-    if (typeof res === 'string') {
-        res = res ? JSON.parse(res) : res
-    }
+    // 此处已由res.data.success === true修改成如下
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
-    if (res.data.code === "200") {
+    if (res.status == 200) {
       return Promise.resolve(res.data)
     } else {
-      message.error(res.data.msg)
+      message.error(res.data.message)
       return Promise.reject(res)
     }
   },
