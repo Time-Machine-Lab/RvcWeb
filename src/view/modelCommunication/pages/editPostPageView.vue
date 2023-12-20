@@ -59,7 +59,7 @@ const savePost = function () {
                     内容
                 </div>
                 <div style="width: 90%;">
-                    <editorComponent :getContent="getContent"></editorComponent>
+                    <editorComponent :content="post.content" :getContent="getContent"></editorComponent>
                 </div>
             </div>
             <div class="editPost-page__center__right">
