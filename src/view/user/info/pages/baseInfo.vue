@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import editProfile from "@/view/user/info/pages/editProfile.vue";
 import { Profile } from "@/api/user/userTypes";
-import { reactive, ref } from "vue";
+import {  ref } from "vue";
 import { getUserInfoById } from "@/api/user/userApi.js";
 import { useUserStore } from "@/view/user/info/userStore.js";
 
@@ -27,7 +27,7 @@ let figures = ref([
 const open = () => {
   drawer.value = true;
 };
-let userProfile = reactive<Profile>({
+let userProfile = ref<Profile>({
   id: 0,
   avatar: "", //头像链接
   nickName: "", //昵称
@@ -48,7 +48,8 @@ setTimeout(function () {
       (userStore.getProfile.id as unknown as string) ||
     router.currentRoute.value.query.id == undefined
   ) {
-    userProfile = userStore.getProfile;
+    userProfile.value = userStore.getProfile;
+    
     figures.value = [
       {
         desc: "LIKES",
@@ -63,7 +64,7 @@ setTimeout(function () {
   } else {
     getUserInfoById(router.currentRoute.value.query.id as string).then(
       (res) => {
-        userProfile = res.data;
+        userProfile.value = res.data;
         figures.value = [
           {
             desc: "LIKES",
@@ -86,18 +87,18 @@ setTimeout(function () {
     <div class="avatar-container">
       <div
         class="avatar"
-        :style="{ backgroundImage: 'url(' + userProfile?.avatar + ')' }"
+        :style="{ backgroundImage: 'url(\'' + userProfile.avatar?userProfile?.avatar:'/teamPic/default.png' + '\')' }"
       ></div>
     </div>
     <div class="information">
       <div class="username-container">
         <span class="username">
-          {{ userProfile ? userProfile.nickName : "unknow" }}
+          {{ userProfile.nickName ? userProfile.nickName : "unknow" }}
         </span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          Joined {{ userProfile ? userProfile.register_date : "1970-01-01" }}
+          创建于 {{ userProfile.register_date ? userProfile.register_date : "1970-01-01" }}
         </span>
       </div>
     </div>
@@ -147,9 +148,9 @@ setTimeout(function () {
   width: 180px;
   height: 180px;
   position: relative;
+  margin-left: 15px;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(0, -50%);
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 30px;
   background-position: center center;
@@ -163,18 +164,22 @@ setTimeout(function () {
 }
 
 .base-info .username-container .username {
+  margin-left: 15px;
   display: block;
   position: relative;
-  font-size: 24px;
-  text-align: center;
+  font-size: 26px;
+  text-align: left;
+  line-height: 32px;
+
   color: rgba(255, 255, 255, 0.6);
 }
 
 .base-info .creatTime-container .creatTime {
+  margin-left: 15px;
   display: block;
   position: relative;
-  font-size: 16px;
-  text-align: center;
+  font-size: 14px;
+  text-align: left;
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -186,12 +191,12 @@ setTimeout(function () {
 .button-container .button {
   display: block;
   width: 90%;
-  height: 60px;
-  border-radius: 5px;
+  height: 40px;
+  border-radius: 20px;
   margin: 20px auto auto;
-  background-color: #646cff;
-  line-height: 60px;
-  font-size: 18px;
+  background-color: rgba(25,113,194);
+  line-height: 40px;
+  font-size: 16px;
   color: white;
   font-weight: 700;
   cursor: pointer;
@@ -200,12 +205,12 @@ setTimeout(function () {
 .button-container .greybutton {
   display: block;
   width: 90%;
-  height: 60px;
-  border-radius: 5px;
+  height: 40px;
+  border-radius: 20px;
   margin: 20px auto auto;
-  background-color: #757686;
-  line-height: 60px;
-  font-size: 18px;
+  background-color: rgba(25,113,194);
+  line-height: 40px;
+  font-size: 16px;
   color: white;
   font-weight: 700;
   cursor: pointer;
@@ -213,7 +218,7 @@ setTimeout(function () {
 }
 
 .button-container .button:hover {
-  background-color: #535bf2;
+  background-color: rgba(24,100,171);
 }
 
 .line {
