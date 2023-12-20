@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-17 17:51:52
+ * @LastEditTime: 2023-12-21 03:43:30
  * @FilePath: \RvcWeb\src\components\intro\RegisterComponent.vue
  * @Description: 
  * 
@@ -10,7 +10,7 @@
 -->
 <script lang="ts">
 import { message } from "@/utils/message";
-import { getCode, register } from '@/api/user/userApi'
+import { getCode, register,getPreCode } from '@/api/user/userApi'
 import { EmailCodeForm, RegisterForm } from '@/api/user/userTypes'
 import { defineComponent, ref } from "vue";
 import { storage } from "@/utils/storage";
@@ -26,7 +26,12 @@ export default defineComponent({
         code: '',
         password: '',
         repeatPassword: ''
-      }
+      },
+      preCode: {
+        uuid: '',
+        base64: '',
+        inputCode:''
+      },
     };
   },
   methods: {
@@ -39,11 +44,17 @@ export default defineComponent({
         message.warning('邮箱格式错误')
         return
       }
+      if(this.preCode.inputCode == ''){
+        message.warning('请输入图片验证码')
+        return
+      }
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       let that = this
       let form = ref<EmailCodeForm>({
         email: this.form.email,
-        type: 0
+        type: 0,
+        uuid:this.preCode.uuid,
+        code:this.preCode.inputCode
       })
       getCode(form.value).then(res => {
         console.log(res)
@@ -71,7 +82,16 @@ export default defineComponent({
     },
     checkEmain(email: string) {
       return /^([a-zA-Z]|[0-9])(\w|\\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email);
+    },
+    getPreCodeFunc(){
+      getPreCode().then(res=>{
+        this.preCode.uuid = res.data.uuid
+        this.preCode.base64 = res.data.base64
+      })
     }
+  },
+  mounted(){
+    this.getPreCodeFunc()
   }
 });
 </script>
@@ -81,7 +101,11 @@ export default defineComponent({
     <form class="contain">
       <div class="center">
         <div class="item-box flex">
-          <input v-model="form.email" placeholder="Email address" type="email" name="email" class="item-2" />
+          <input v-model="preCode.inputCode" placeholder="图片验证码" type="text" name="password" class="item-1" />
+          <img :src="'data:image/png;base64,'+preCode.base64">
+        </div>
+        <div class="item-box flex">
+          <input v-model="form.email" placeholder="邮箱" type="email" name="email" class="item-2" />
           <div class="item-3" :style="{ transform: !hasSendCode ? 'rotateY(180deg)' : 'rotateY(0)' }">
             <button type="button" style="transform: rotateY(180deg) translateZ(1px);" @click="sendCode">发送验证码</button>
             <input v-model="form.code" placeholder="验证码" />
@@ -89,10 +113,11 @@ export default defineComponent({
         </div>
 
         <div class="item-box flex">
-          <input v-model="form.password" placeholder="password" type="password" name="password" class="item-1" />
+          <input v-model="form.password" placeholder="密码" type="password" name="password" class="item-1" />
           <input v-model="form.repeatPassword" placeholder="confirm password" type="password" name="password"
             class="item-1" />
         </div>
+        
       </div>
       <div class="bottom flex">
         <div class="forget flex">
@@ -129,7 +154,7 @@ export default defineComponent({
 .item-box {
   justify-content: space-between;
   width: 100%;
-  height: 50px;
+  height: 45px;
   margin-top: 13px;
 }
 

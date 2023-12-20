@@ -65,3 +65,9 @@ export function logout(){
         method: 'post'
     })
 }
+export function getPreCode(){
+    return request({
+        url: '/user/preCode',
+        method:'get'
+    })
+}
