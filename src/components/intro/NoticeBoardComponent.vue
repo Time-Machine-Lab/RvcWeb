@@ -9,7 +9,9 @@
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
+import {getHomeNotice} from "@/api/home/introAPI.ts";
+import {NoticeVO} from "@/api/home/introTypes.ts";
 
 const NoticeImg = ref([
   { img: "../../../public/teamPic/dhx.jpg" },
@@ -41,7 +43,17 @@ const currentTab = ref('new');
 const changeTab = (tab: any) => {
   currentTab.value = tab;
 };
-
+// const NoticePage = ref<Notice>(<Notice>{})
+const Notices  = ref<NoticeVO[]>([])
+const getNoticeData = () => {
+  getHomeNotice().then((res: any) => {
+    console.log(res)
+    Notices.value = res.data.pageList
+  })
+}
+onMounted(() => {
+  getNoticeData
+});
 </script>
 
 <template>
@@ -158,6 +170,7 @@ const changeTab = (tab: any) => {
     border-bottom: solid 1px #eaeaea;
   }
   .notice-board__contain li{
+    color:#000000;
     margin-left:10px;
   }
   .notice-board__id{
@@ -169,7 +182,7 @@ const changeTab = (tab: any) => {
     height:100%;
   }
   .notice-board__date{
-    width:15%;
+    width:25%;
     height:100%;
   }
 }
