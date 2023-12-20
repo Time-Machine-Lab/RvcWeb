@@ -23,8 +23,13 @@ export default[
       {
         path: "collections",
         name: "collections",
-        component: () => import("@/view/user/info/pages/favoriteModels.vue"),
+        component: () => import("@/view/user/info/pages/collectionsPageView.vue"),
       },
+      {
+        path: "create",
+        name: "create",
+        component: () => import("@/view/user/info/pages/createPageView.vue")
+      }
 
     ]
   }

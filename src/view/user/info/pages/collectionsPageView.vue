@@ -52,11 +52,10 @@ const loadPost = function () {
                             :class="selectVisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                     </span>
                 </div>
-
-            </div>
-            <div class="select-window" v-show="selectVisibility">
-                <div class="select-window__item" v-for="(choice, index) in selectOptions" :key="index"
-                    @click="handleOptionChange(index)">{{ choice }}
+                <div class="select-window" v-show="selectVisibility">
+                    <div class="select-window__item" v-for="(choice, index) in selectOptions" :key="index"
+                        @click="handleOptionChange(index)">{{ choice }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,7 +74,6 @@ const loadPost = function () {
 }
 
 .like-pages__filter {
-    position: relative;
     height: 70px;
     width: 100%;
 }
@@ -97,7 +95,7 @@ const loadPost = function () {
     user-select: none;
 }
 
-.like-pages__filter__select:hover {
+.filter-pages__filter__select:hover {
     background-color: rgba(33, 37, 41);
 }
 
@@ -108,14 +106,13 @@ const loadPost = function () {
 
 .select-window {
     position: absolute;
-    top: 60px;
-    left: 10px;
+    margin-top: 45px;
     width: 100px;
     border-radius: 10px;
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
-    z-index: 20;
+    z-index: 10;
     user-select: none;
 }
 
@@ -128,11 +125,11 @@ const loadPost = function () {
     text-align: left;
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
 }
 
 .select-window__item:hover {
     background-color: rgba(56, 58, 64);
+    cursor: pointer;
 }
 
 .dither-animation {
@@ -145,8 +142,6 @@ const loadPost = function () {
 }
 
 .like-pages__content {
-    position: absolute;
-    height: calc(100% - 70px);
+    height: calc(100%-70px);
     width: 100%;
-}
-</style>
+}</style>

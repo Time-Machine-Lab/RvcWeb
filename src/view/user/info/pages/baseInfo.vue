@@ -109,7 +109,7 @@ setTimeout(function () {
       <span class="greybutton" v-if="style && hasFollow" @click="follow">
         已关注
       </span>
-      <span class="button" v-if="!style" @click="open"> 编辑资料 </span>
+      <span class="button" v-if="style" @click="open"> 编辑资料 </span>
     </div>
     <div class="line"></div>
     <div class="figures-container">
@@ -260,7 +260,7 @@ setTimeout(function () {
 }
 
 :deep .el-drawer__body {
-  background-color: rgba(40, 42, 54) !important;
+  background-color: rgba(26,27,30) !important;
 }
 </style>
 ../userStore

@@ -31,7 +31,7 @@ const handleBlur = function () {
     <div class="search">
       <searchComponent></searchComponent>
     </div>
-    <div class="right">
+    <div class="header__right">
       <div class="button-group">
         <RouterLink to="/newPost">
           <div class="newPost">
@@ -157,7 +157,7 @@ const handleBlur = function () {
   width: 70%;
 }
 
-.right {
+.header__right {
   position: relative;
   width: calc(30% - 500px);
   min-width: 300px;

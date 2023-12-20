@@ -53,7 +53,7 @@ const scroll = function () {
 .follow-user-list {
   width: 100%;
   height: 100%;
-  background-color: rgba(50, 52, 64);
+  background-color: rgba(26,27,30);
 }
 .follow-user-list .follow-container {
   width: 100%;
