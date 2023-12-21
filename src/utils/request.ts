@@ -21,10 +21,12 @@ request.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any> ) => {
     // 从storage中获取token
     const token = storage.get<string>('token')
+    const uid = storage.get<string>('uid')
     console.log(token)
     if (token!='') {
       // 将token添加到请求头中
       config.headers.token = token
+      config.headers.uid = uid
     }
     console.log(config)
     return config

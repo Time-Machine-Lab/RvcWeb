@@ -19,24 +19,35 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then(res 
     localPost.value = res.data
 })
 let localPost = ref<PostVo>({
-    avatar: "",
-    collect: "",
-    collectNum: "",
-    commentNum: "",
-    content: "",
-    cover: "",
-    createAt: "",
-    like: "",
-    likeNum: "",
-    nickname: "",
-    postId: "",
-    tagId: "",
-    title: "",
-    uid: "",
-    updateAt: "",
-    username: "",
-    watchNum: ""
-})
+        "postId": "2",
+        "author": {
+            "uid": "1735241323452608514",
+            "username": "xRPEEiXL",
+            "birthday": null,
+            "nickname": null,
+            "followNum": 0,
+            "fansNum": 0,
+            "sex": null,
+            "avatar": null,
+            "description": null
+        },
+        "postType": {
+            "id": "1",
+            "tagImg": "/img/tool-person.png",
+            "tagName": "前端"
+        },
+        "title": "测试2",
+        "content": "<h1><span style=\"color: rgb(255, 255, 255);\">标题1</span></h1><p>112311111111111111111111111111111111111111111111111111111111111</p><h1><span style=\"color: rgb(255, 255, 255);\">标题2</span></h1><p>clvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvk</p><h1><span style=\"color: rgb(255, 255, 255);\">标题3</span></h1><p>fdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdi</p><h1><span style=\"color: rgb(66, 144, 247);\">标题4</span></h1>",
+        "cover": null,
+        "commentNum": 222,
+        "likeNum": 0,
+        "collectNum": 1,
+        "watchNum": 223,
+        "createAt": "2023-12-16T07:24:10",
+        "updateAt": "2023-12-16T07:24:10",
+        "like": false,
+        "collect": false
+    })
 let inputContent = ref<string>('')
 let figures = ref([
     {
@@ -56,13 +67,22 @@ let figures = ref([
         number: 0,
     }
 ]);
+let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
-const to = function (index: number) {
-    let h1 = document.querySelectorAll(".post-content h1")
-
-    window.scrollTo(0, h1[index].getBoundingClientRect().top)
+const getH1 = function () {
+    H1Elements.value = document.querySelectorAll(".post-content h1")    
 }
+setTimeout(function(){
+    getH1()
+
+},2000)
+const to = function (index: number) {
+    console.log(H1Elements.value[index].getBoundingClientRect().top);
+    
+    document.querySelector('#appVue .main')!.scrollTo(0, H1Elements.value[index].getBoundingClientRect().top - 200)
+}
+
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
@@ -196,14 +216,8 @@ const sendComment = function () {
                     <img src="/icon/list.svg" width="28" height="28"
                         style="position: relative;top: 50%;transform: translate(0,-50%);">导航
                 </div>
-                <div class="target-box__target" @click="to(0)">
-                    RVC社区
-                </div>
-                <div class="target-box__target" @click="to(1)">
-                    RVC社区
-                </div>
-                <div class="target-box__target" @click="to(2)">
-                    RVC社区
+                <div class="target-box__target" v-for="(element,index) in H1Elements" :key="index" @click="to(index)">
+                    {{ element.innerText }}
                 </div>
             </div>
             <div class="author-box">
