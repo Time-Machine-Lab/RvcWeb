@@ -4,7 +4,7 @@ import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
 import { PostVo, UserLikePostForm } from '@/api/post/postType';
 import { getUserLikePosts } from '@/api/post/postApi';
-let selectOptions = ref(['模型', '贴子'])
+let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
@@ -15,8 +15,13 @@ let form = ref<UserLikePostForm>({
     limit: '5',
     page: '0'
 })
-getUserLikePosts(form.value).then(res => {
-    console.log(res);
+getUserLikePosts(form.value).then((res: any) => {
+    if (res.code == 200) {
+        let data = res.data
+        for (let i = 0; i < data.length; i++) {
+            posts.value.push(data[i])
+        }
+    }
 
 })
 const handleClickSelect = function () {
@@ -52,10 +57,11 @@ const loadPost = function () {
                             :class="selectVisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                     </span>
                 </div>
-                <div class="select-window" v-show="selectVisibility">
-                    <div class="select-window__item" v-for="(choice, index) in selectOptions" :key="index"
-                        @click="handleOptionChange(index)">{{ choice }}
-                    </div>
+
+            </div>
+            <div class="select-window" v-show="selectVisibility">
+                <div class="select-window__item" v-for="(choice, index) in selectOptions" :key="index"
+                    @click="handleOptionChange(index)">{{ choice }}
                 </div>
             </div>
         </div>
@@ -69,8 +75,11 @@ const loadPost = function () {
 </template>
 <style scoped>
 .like-pages {
+    position: relative;
     height: 100%;
-    width: 100%;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .like-pages__filter {
@@ -95,9 +104,10 @@ const loadPost = function () {
     user-select: none;
 }
 
-.filter-pages__filter__select:hover {
+.like-pages__filter__select:hover {
     background-color: rgba(33, 37, 41);
 }
+
 
 .like-pages__filter__select {
     height: 40px;
@@ -112,7 +122,8 @@ const loadPost = function () {
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
-    z-index: 10;
+    z-index: 20;
+
     user-select: none;
 }
 
@@ -144,4 +155,5 @@ const loadPost = function () {
 .like-pages__content {
     height: calc(100%-70px);
     width: 100%;
-}</style>
+}
+</style>
