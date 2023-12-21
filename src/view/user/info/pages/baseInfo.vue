@@ -21,7 +21,7 @@ let drawer = ref(false);
 let figures = ref([
   {
     desc: "",
-    number: 0,
+    number: '0',
   },
 ]);
 const open = () => {
@@ -49,15 +49,18 @@ setTimeout(function () {
     router.currentRoute.value.query.id == undefined
   ) {
     userProfile.value = userStore.getProfile;
-    
+    router.currentRoute.value.query.id = userProfile.value.uid!
+    console.log(userProfile.value.uid);
+    loaded.value = false;
+
     figures.value = [
       {
         desc: "LIKES",
-        number: userStore.getProfile.fans_num,
+        number: userStore.getProfile.fansNum!,
       },
       {
         desc: "FOLLOWERS",
-        number: userStore.getProfile.follow_num,
+        number: userStore.getProfile.followNum!,
       },
     ];
     style = false;
@@ -68,19 +71,19 @@ setTimeout(function () {
         figures.value = [
           {
             desc: "LIKES",
-            number: res.data.fans_num,
+            number: res.data.fansNum,
           },
           {
             desc: "FOLLOWERS",
-            number: res.data.follow_num,
+            number: res.data.followNum,
           },
         ];
+        loaded.value = false;
+
       },
     );
   }
-
-  loaded.value = false;
-}, 1000);
+}, 300);
 </script>
 <template>
   <div class="base-info">
@@ -103,10 +106,10 @@ setTimeout(function () {
       </div>
     </div>
     <div class="button-container">
-      <span class="button" v-if="style && !hasFollow" @click="follow">
+      <span class="button" v-if="!style && !hasFollow" @click="follow">
         关注
       </span>
-      <span class="greybutton" v-if="style && hasFollow" @click="follow">
+      <span class="greybutton" v-if="!style && hasFollow" @click="follow">
         已关注
       </span>
       <span class="button" v-if="style" @click="open"> 编辑资料 </span>

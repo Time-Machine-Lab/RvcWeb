@@ -11,12 +11,19 @@ import { Profile, ProfileForm } from "@/api/user/userTypes";
 const props = defineProps<{
   userProfile: Profile;
 }>();
-const form = ref<ProfileForm>({
+const oldProfile = ref<ProfileForm>({
   avatar: props.userProfile.avatar,
   nickName: props.userProfile.nickName,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
-  birthday: "",
+  birthday: props.userProfile.birthsday,
+});
+let newProfile = ref<ProfileForm>({
+  avatar: props.userProfile.avatar,
+  nickName: props.userProfile.nickName,
+  description: props.userProfile.description,
+  sex: props.userProfile.sex,
+  birthday: props.userProfile.birthsday,
 });
 const sexOptions = ref([
   {
@@ -54,16 +61,22 @@ const inputStyle = ref({
 const handleAvatarSuccess = function () { };
 const beforeAvatarUpload = function () { };
 const submitChange = function () {
-  editUserInfo(form.value).then((res) => {
+  if (!profileHasChanged()) {
+    return
+  }
+  editUserInfo(newProfile.value).then((res) => {
     console.log(res + "res");
   });
 };
+const profileHasChanged = function () {
+  return !(oldProfile.value.avatar == newProfile.value.avatar && oldProfile.value.birthday == newProfile.value.birthday && oldProfile.value.description == newProfile.value.description && oldProfile.value.nickName == newProfile.value.nickName && oldProfile.value.sex == newProfile.value.sex)
+}
 </script>
 <template>
   <div class="edit-profile-container">
     <div class="header">
       <span class="title">编辑资料</span>
-      <span class="button" @click="submitChange">保存更改</span>
+      <span class="button" @click="submitChange" :style="{ cursor: !profileHasChanged() ? 'not-allowed' : 'pointer' }">保存更改</span>
     </div>
 
     <div class="content">
@@ -72,18 +85,19 @@ const submitChange = function () {
         <div class="upload-container">
           <el-upload class="avatar-uploader" action="http://124.71.107.76" :show-file-list="false"
             :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="form.avatar" :src="form.avatar" class="avatar" />
+            <img v-if="newProfile.avatar" :src="newProfile.avatar" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"> + </el-icon>
           </el-upload>
         </div>
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 昵称 </span>
-        <input v-model="form.nickName" class="input" placeholder="nickname" :input-style="inputStyle" />
+        <input v-model="newProfile.nickName" style="width: 170px;" class="input" placeholder="nickname" :input-style="inputStyle" />
+
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 简介 </span>
-        <input v-model="form.description" class="input" placeholder="description" :input-style="inputStyle" />
+        <input v-model="newProfile.description" class="input" placeholder="description" :input-style="inputStyle" />
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 性别 </span>
@@ -105,18 +119,23 @@ const submitChange = function () {
         </div>
         <div class="sex-select" v-show="sexSelectvisibility">
           <div class="sex-select__item" v-for="(tag, index) in sexOptions" :key="index"
-            @click="currentSexIndex = index; sexSelectvisibility = false;">
+            @click="currentSexIndex = index; sexSelectvisibility = false;newProfile.sex = sexOptions[currentSexIndex].value">
             {{ tag.label }}
           </div>
         </div>
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 生日 </span>
+
         <div class="select">
           <div class="block">
-            <el-date-picker v-model="form" type="date" placeholder="Pick a day" />
+            <el-date-picker v-model="newProfile.birthday" type="date" placeholder="Pick a day" />
           </div>
         </div>
+      </el-row>
+      <el-row :gutter="20" class="row">
+        <span class="label"> 密码 </span>
+        <input class="input" style="cursor: not-allowed;width: 170px;" disabled placeholder="********"> <img @click="console.log(1)" style="margin-left: 10px;cursor: pointer;" src="/icon/setting.svg">
       </el-row>
     </div>
   </div>
@@ -152,11 +171,13 @@ const submitChange = function () {
   line-height: 40px;
   color: rgba(255, 255, 255, 1);
   font-size: 16px;
-  cursor: pointer;
   user-select: none;
   margin-right: 10px;
   top: 50%;
   transform: translate(0, -50%);
+}
+.edit-profile-container .header .button:hover{
+  background-color: rgba(24,100,171);
 }
 
 .content {
@@ -198,8 +219,11 @@ const submitChange = function () {
 
 .label {
   font-size: 14px;
+  display: block;
+  width: 100%;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 700;
+  text-align: left;
   margin-bottom: 5px;
 }
 
