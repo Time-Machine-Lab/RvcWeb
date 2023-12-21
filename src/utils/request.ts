@@ -7,12 +7,12 @@
 import axios from 'axios'
 import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
-// import router from '@/router/index.ts'
+import router from '@/router/index.ts'
 import { message } from './message'
 
 
 const request = axios.create({
-  baseURL: '',
+  baseURL: '/rvcApi',
   timeout: 5000
 })
 
@@ -72,9 +72,9 @@ request.interceptors.response.use(
       const statusText = statusTextMap[error.response.status] ?? '其他错误'
       message.error(`${statusText}(${error.response.status})`)
       if (error.response.status === 401) {
-        // router.replace({
-        //   path: '/Login'
-        // })
+        router.replace({
+          path: '/Login'
+        })
       }
       return Promise.reject(error)
     }
