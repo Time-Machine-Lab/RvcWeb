@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\api\post\postApi.ts
  */
 import request from '@/utils/request'
-import { GetCommentListForm, FavoriteAndCollectionForm, PostForm,PostListForm, CommentForm } from '@/api/post/postType'
+import { GetCommentListForm, FavoriteAndCollectionForm, PostForm,PostListForm, CommentForm,UserLikePostForm, UserCreatePostForm, GetPostDetailsForm } from '@/api/post/postType'
 
 export function getPostById(post_id:number){
     return request({
@@ -74,6 +74,29 @@ export function postAdd(form:PostForm){
     return request({
         method:'post',
         url:'/communication/post/add',
+        params:form
+    })
+}
+
+export function getUserLikePosts(form:UserLikePostForm){
+    return request({
+        method:'get',
+        url:'/communication/post/user/favorite',
+        params:form
+    })
+}
+
+export function getUserCreatePosts(form:UserCreatePostForm){
+    return request({
+        method:'get',
+        url:'/communication/post/user/create',
+        params:form
+    })
+}
+export function getPostDetails(form:GetPostDetailsForm){
+    return request({
+        method:'get',
+        url:'/communication/post/details',
         params:form
     })
 }

@@ -1,3 +1,9 @@
+<!--
+ * @Author: Dhx
+ * @Date: 2023-11-30 14:50:51
+ * @Description: 
+ * @FilePath: \RvcWeb\src\App.vue
+-->
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
@@ -64,7 +70,7 @@ onBeforeMount(() => {
   top:70px;
   height: calc(100vh - 110px);
   padding: 0;
-  background-color: rgb(56, 56, 58);
+  background-color: rgb(26,27,30);
 }
 .foot{
   justify-content: left;

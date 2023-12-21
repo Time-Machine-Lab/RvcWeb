@@ -31,7 +31,7 @@ const handleBlur = function () {
     <div class="search">
       <searchComponent></searchComponent>
     </div>
-    <div class="right">
+    <div class="header__right">
       <div class="button-group">
         <RouterLink to="/newPost">
           <div class="newPost">
@@ -73,7 +73,7 @@ const handleBlur = function () {
   position: relative;
   height: 100%;
   width: 200px;
-  background-image: url("src/assets/logo/rvc.png");
+  background-image: url("/logo/rvc.png");
   background-repeat: no-repeat;
   background-size: 150%;
   cursor: pointer;
@@ -157,7 +157,7 @@ const handleBlur = function () {
   width: 70%;
 }
 
-.right {
+.header__right {
   position: relative;
   width: calc(30% - 500px);
   min-width: 300px;

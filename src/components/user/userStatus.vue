@@ -19,7 +19,6 @@ getLoginUserInfo().then(res => {
 })
 const login = function () {
     getLoginUserInfo().then(res => {
-        console.log(res.data)
         userStore.setProfile(<Profile>res.data)
     })
 }
@@ -53,7 +52,7 @@ const logoutFunc = function (){
 
         </div>
         <div class="user-more" v-show="userStatusVisibility">
-            <RouterLink :to="'/user?id='+userStore?.getProfile?.id">
+            <RouterLink :to="'/user?id='+userStore?.getProfile?.uid">
                 <div class="user-more__item">
                 <div class="horizontal-center" style="display: flex;">
                     <span>

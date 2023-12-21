@@ -13,15 +13,12 @@ declare module 'vue' {
     EditorComponent: typeof import('./src/components/editor/editorComponent.vue')['default']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
-    ElCarousel: typeof import('element-plus/es')['ElCarousel']
-    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElContainer: typeof import('element-plus/es')['ElContainer']
-    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
-    ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
@@ -34,6 +31,7 @@ declare module 'vue' {
     FollowUserCardComponent: typeof import('./src/components/user/followUserCardComponent.vue')['default']
     LoginComponent: typeof import('./src/components/intro/LoginComponent.vue')['default']
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
+    ModelCardComponentB: typeof import('./src/components/rvcModel/modelCardComponentB.vue')['default']
     NewFeedbackComponent: typeof import('./src/components/feedback/NewFeedbackComponent.vue')['default']
     NoticeBoardComponent: typeof import('./src/components/intro/NoticeBoardComponent.vue')['default']
     PostCardComponentA: typeof import('./src/components/modelCommunication/postCardComponentA.vue')['default']
@@ -49,6 +47,5 @@ declare module 'vue' {
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

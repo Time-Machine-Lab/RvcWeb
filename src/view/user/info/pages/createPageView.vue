@@ -2,20 +2,20 @@
 import { ref } from 'vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
-import { PostVo, UserLikePostForm } from '@/api/post/postType';
-import { getUserLikePosts } from '@/api/post/postApi';
+import { PostVo, UserCreatePostForm } from '@/api/post/postType';
+import { getUserCreatePosts } from '@/api/post/postApi';
 let selectOptions = ref(['模型', '贴子'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
 let postScrollDisabled = ref(false)
 let posts = ref<PostVo[]>([])
-let form = ref<UserLikePostForm>({
+let form = ref<UserCreatePostForm>({
     data: '',
     limit: '5',
     page: '0'
 })
-getUserLikePosts(form.value).then(res => {
+getUserCreatePosts(form.value).then(res => {
     console.log(res);
 
 })
@@ -40,9 +40,9 @@ const loadPost = function () {
 }
 </script>
 <template>
-    <div class="like-pages">
-        <div class="like-pages__filter">
-            <div tabindex="-1" class="like-pages__filter__select" :class="clickSelect ? 'dither-animation' : ''"
+    <div class="create-pages">
+        <div class="create-pages__filter">
+            <div tabindex="-1" class="create-pages__filter__select" :class="clickSelect ? 'dither-animation' : ''"
                 @click="handleClickSelect" @blur="handleBlur">
                 <div class="horizontal-center" style="display: flex;">
                     <span style="line-height: 40px;margin-left: 3px;margin-right: 7px;">{{ selectOptions[currentSelectIndex]
@@ -60,7 +60,7 @@ const loadPost = function () {
                 </div>
             </div>
         </div>
-        <div class="like-pages__content">
+        <div class="create-pages__content">
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
                 :infinite-scroll-disabled="postScrollDisabled" :infinite-scroll-immediate="true">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
@@ -69,18 +69,18 @@ const loadPost = function () {
     </div>
 </template>
 <style scoped>
-.like-pages {
+.create-pages {
     height: 100%;
     width: 100%;
 }
 
-.like-pages__filter {
+.create-pages__filter {
     position: relative;
     height: 70px;
     width: 100%;
 }
 
-.like-pages__filter__select {
+.create-pages__filter__select {
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
@@ -97,11 +97,11 @@ const loadPost = function () {
     user-select: none;
 }
 
-.like-pages__filter__select:hover {
+.create-pages__filter__select:hover {
     background-color: rgba(33, 37, 41);
 }
 
-.like-pages__filter__select {
+.create-pages__filter__select {
     height: 40px;
     width: 100px;
 }
@@ -144,7 +144,7 @@ const loadPost = function () {
     transform-origin: 6px 3.5px;
 }
 
-.like-pages__content {
+.create-pages__content {
     position: absolute;
     height: calc(100% - 70px);
     width: 100%;
