@@ -27,7 +27,7 @@
   position: relative;
   top: 0;
   width: 100%;
-  height: 500px;
+  height: 650px;
   color: #ffffff;
   background: rgb(250, 242, 240);
 
@@ -114,8 +114,4 @@
 
 }
 
-@media screen and (min-width:1200px) {
-  .welcome {
-    height: 700px;
-  }
-}</style>
+</style>

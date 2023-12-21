@@ -90,7 +90,7 @@ button{
   position: fixed;
   backdrop-filter: blur(3px); /* 模糊效果 */
   width:100vw;
-  height:100vh;
+  height:100%;
   z-index: 7;
   overflow: scroll;
   .box__center{
@@ -101,7 +101,7 @@ button{
     z-index: 11;
     .box-contain{
       position: relative;
-      top:190px;
+      top:50px;
       background: rgba(26, 32, 45, 0.82);
       width:100%;
       height:540px;
