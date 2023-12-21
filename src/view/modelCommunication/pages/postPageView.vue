@@ -19,23 +19,23 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then(res 
     localPost.value = res.data
 })
 let localPost = ref<PostVo>({
-avatar: "",
-collect: "",
-collectNum: "",
-commentNum: "",
-content: "",
-cover: "",
-createAt: "",
-like: "",
-likeNum: "",
-nickname: "",
-postId: "",
-tagId: "",
-title: "",
-uid: "",
-updateAt: "",
-username: "",
-watchNum: ""
+    avatar: "",
+    collect: "",
+    collectNum: "",
+    commentNum: "",
+    content: "",
+    cover: "",
+    createAt: "",
+    like: "",
+    likeNum: "",
+    nickname: "",
+    postId: "",
+    tagId: "",
+    title: "",
+    uid: "",
+    updateAt: "",
+    username: "",
+    watchNum: ""
 })
 let inputContent = ref<string>('')
 let figures = ref([
@@ -60,15 +60,15 @@ let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 const getH1 = function () {
-    H1Elements.value = document.querySelectorAll(".post-content h1")    
+    H1Elements.value = document.querySelectorAll(".post-content h1")
 }
-setTimeout(function(){
+setTimeout(function () {
     getH1()
 
-},2000)
+}, 2000)
 const to = function (index: number) {
     console.log(H1Elements.value[index].getBoundingClientRect().top);
-    
+
     document.querySelector('#appVue .main')!.scrollTo(0, H1Elements.value[index].getBoundingClientRect().top - 200)
 }
 
@@ -83,14 +83,12 @@ const collect = function () {
         id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_collect ? '0' : '1'
     }
-    collectPost(form).then(res => {
-        if (res.status == 200) {
-            localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
-        }
-        else {
-            message.error('收藏失败，请稍后再试')
-        }
+    collectPost(form).then((res:any) => {
+        localPost.value.has_collect = !localPost.value.has_collect
+        localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
+
+        message.warning(res.msg)
+
     })
 }
 const like = function () {
@@ -103,12 +101,10 @@ const like = function () {
         id: (localPost.value.postId as unknown as string),
         type: localPost.value.has_like ? '0' : '1'
     }
-    favoritePost(form).then(res => {
-        if (res.status == 200) {
-            localPost.value.has_like = !localPost.value.has_like
-            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
-        }
-        message.error('点赞失败，请稍后再试')
+    favoritePost(form).then((res: any) => {
+        localPost.value.has_like = !localPost.value.has_like
+        localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
+        message.warning(res.msg)
 
     })
 }
@@ -116,6 +112,9 @@ const calcNum = function (num: number) {
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
 const sendComment = function () {
+    if(inputContent.value == ''){
+        return
+    }
     let form = ref<CommentForm>({
         content: inputContent.value,
         postId: (router.currentRoute.value.query.id as string),
@@ -123,8 +122,12 @@ const sendComment = function () {
         toCommentId: "",
         toUserId: ""
     })
-    commentAdd(form.value).then(res => {
-        console.log(res);
+    commentAdd(form.value).then((res: any) => {
+        if(res.code==200){
+            message.success('发送成功，等待审核')
+        } else{
+            message.error(res.msg)
+        }
         inputContent.value = ""
     })
 
@@ -196,7 +199,7 @@ const sendComment = function () {
                 </div>
             </div>
             <div style="padding-bottom:50px;width:100%;position: absolute">
-                <postPageCommentsView :post_id="localPost.postId"></postPageCommentsView>
+                <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ></postPageCommentsView>
             </div>
         </div>
         <div class="post-page__sidebar">
@@ -205,7 +208,7 @@ const sendComment = function () {
                     <img src="/icon/list.svg" width="28" height="28"
                         style="position: relative;top: 50%;transform: translate(0,-50%);">导航
                 </div>
-                <div class="target-box__target" v-for="(element,index) in H1Elements" :key="index" @click="to(index)">
+                <div class="target-box__target" v-for="(element, index) in H1Elements" :key="index" @click="to(index)">
                     {{ element.innerText }}
                 </div>
             </div>
@@ -583,4 +586,5 @@ const sendComment = function () {
 
 .target-box__target:hover {
     background-color: rgba(255, 255, 255, 0.2);
-}</style>
+}
+</style>

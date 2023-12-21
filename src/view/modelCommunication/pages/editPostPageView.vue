@@ -69,7 +69,7 @@ const savePost = function () {
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function () { }
 const getContent = function (html: string) {
-    content.value = html
+    postForm.value.content = html
 }
 
 const loadOldPost = function () {
@@ -83,7 +83,11 @@ const loadOldPost = function () {
         oldPost.value.tagId = data.value.tagId
         oldPost.value.coverId = data.value.cover
         oldPost.value.tagName = data.value.tagName
-        postForm.value = oldPost.value
+        postForm.value.title = oldPost.value.title
+        postForm.value.content = oldPost.value.content
+        postForm.value.tagId = oldPost.value.tagId
+        postForm.value.coverId = oldPost.value.coverId
+        postForm.value.tagName = oldPost.value.tagName
     })
 
 }
