@@ -19,35 +19,24 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then(res 
     localPost.value = res.data
 })
 let localPost = ref<PostVo>({
-        "postId": "2",
-        "author": {
-            "uid": "1735241323452608514",
-            "username": "xRPEEiXL",
-            "birthday": null,
-            "nickname": null,
-            "followNum": 0,
-            "fansNum": 0,
-            "sex": null,
-            "avatar": null,
-            "description": null
-        },
-        "postType": {
-            "id": "1",
-            "tagImg": "/img/tool-person.png",
-            "tagName": "前端"
-        },
-        "title": "测试2",
-        "content": "<h1><span style=\"color: rgb(255, 255, 255);\">标题1</span></h1><p>112311111111111111111111111111111111111111111111111111111111111</p><h1><span style=\"color: rgb(255, 255, 255);\">标题2</span></h1><p>clvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvk</p><h1><span style=\"color: rgb(255, 255, 255);\">标题3</span></h1><p>fdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdisjfojdskvkclvjskdfoaifdi</p><h1><span style=\"color: rgb(66, 144, 247);\">标题4</span></h1>",
-        "cover": null,
-        "commentNum": 222,
-        "likeNum": 0,
-        "collectNum": 1,
-        "watchNum": 223,
-        "createAt": "2023-12-16T07:24:10",
-        "updateAt": "2023-12-16T07:24:10",
-        "like": false,
-        "collect": false
-    })
+avatar: "",
+collect: "",
+collectNum: "",
+commentNum: "",
+content: "",
+cover: "",
+createAt: "",
+like: "",
+likeNum: "",
+nickname: "",
+postId: "",
+tagId: "",
+title: "",
+uid: "",
+updateAt: "",
+username: "",
+watchNum: ""
+})
 let inputContent = ref<string>('')
 let figures = ref([
     {
