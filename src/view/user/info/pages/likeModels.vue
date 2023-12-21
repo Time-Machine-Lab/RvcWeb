@@ -10,9 +10,7 @@ import modelCard from '@/components/rvcModel/modelCardComponent.vue'
 import { RvcModelVo } from '@/api/rvcModel/modelType'
 import { ref } from 'vue'
 let scrollDisabled = ref<boolean>(false)
-const models = ref<RvcModelVo[]>([{
-  
-}])
+const models = ref<RvcModelVo[]>([])
 const scroll = function () {
   scrollDisabled.value = true
   // getModels(models.value.length, models.value.length + 5).then((res) => {
