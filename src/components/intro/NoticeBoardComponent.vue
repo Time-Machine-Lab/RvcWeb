@@ -10,59 +10,19 @@
 -->
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import {getHomeNotice, getWebNotice} from "@/api/home/introAPI.ts";
-import {BoardVO, Notice, NoticeVO} from "@/api/home/introTypes.ts";
-
-const NoticeImg = ref([
-  { img: "../../../public/teamPic/dhx.jpg" },
-  { img: "../../../public/teamPic/dhx.jpg" },
-  { img: "../../../public/teamPic/Genius.png" },
-  { img: "../../../public/teamPic/huaerbuku.jpg" },
-  { img: "../../../public/teamPic/jq.png" },
-  { img: "../../../public/teamPic/lishiming.webp" },
-  { img: "../../../public/teamPic/wangyoucao.jpg" },
-]);
-
-const tableData = ref([
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-]);
-const listAll = ref([
-  { date: "2017-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-  { date: "2016-05-03", id: "Tom", text: "No. 189, Grove St, Los Angeles" },
-]);
-const currentTab = ref('new');
-const changeTab = (tab: any) => {
-  currentTab.value = tab;
-};
+import {getHomeNotice} from "@/api/home/introAPI.ts";
+import {BoardVO} from "@/api/home/introTypes.ts";
 
 // 获取首页的轮播图公告信息
-const Boards = ref<BoardVO[]>([]);
+const Boards = ref<BoardVO[]>([{author: "111", content: "111", cover: "/", createAt: "2021", likeNum: 0, noticeId: "1111", title: "111", watchNum: 2}]);
 const getWebData = () => {
   getHomeNotice().then((res: any) => {
     console.log(res)
     Boards.value = res.data.pageList;
   })
 }
-// 获取公告页面的公告数据列表
-const NoticePage = ref<Notice>(<Notice>{page: "1", limit: "6",pageList:[],total:"6"});
-const Notices = ref<NoticeVO[]>([]);
-const getNoticeData = () => {
-  getWebNotice(NoticePage.value.page).then((res: any) => {
-    console.log(res)
-    Notices.value = res.data.pageList;
-  })
-}
+
 onMounted(() => {
-  getNoticeData()
   getWebData()
 });
 </script>
@@ -71,130 +31,148 @@ onMounted(() => {
   <div class="notice flex">
     <!--轮播图-->
     <el-carousel height="auto" autoplay>
-      <el-carousel-item
-        v-for="(ImgItem, index) in NoticeImg"
-        :key="index"
-        style="height: 500px">
-        <img :src="ImgItem.img" alt="Team Member Image" />
+      <el-carousel-item v-for="(item, index) in Boards" :key="index" style="height: 550px">
+        <router-link :to="{ name: 'NoticeDetail', params: { id: item.noticeId } }" target="_blank" class="router">
+<!--          <img :src="item.cover" alt="Team Member Image" class="img"/>-->
+          <img src="https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg" alt="Team Member Image" class="img"/>
+          <div class="message">
+            <div>{{item.title}}</div>
+            <div>{{item.author}}</div>
+            <div>{{item.watchNum}}</div>
+          </div>
+        </router-link>
       </el-carousel-item>
     </el-carousel>
-    <!--公告栏-->
-    <div class="notice-board flex">
-      <div class="notice-board__tabs flex">
-        <button class="notice-board__tab flex" @click="changeTab('new')" :class="{ active: currentTab === 'new' }"><p>最新公告</p></button>
-        <button class="notice-board__tab flex" @click="changeTab('hot')" :class="{ active: currentTab === 'hot' }">最热公告</button>
-        <button class="notice-board__tab flex" @click="changeTab('all')" :class="{ active: currentTab === 'all' }">全部公告</button>
+    <router-link to="/notice" target="_blank" class="more">
+      <div class="tooltip-container">
+        <span class="tooltip">查看更多</span>
+        <span class="text">查看更多</span>
       </div>
-      <div class="notice-board__list flex" v-if="currentTab === 'new'">
-        <ul class="notice-board__contain flex" v-for="(notice,index) in Notices" :key="index">
-          <router-link :to="{ name: 'NoticeDetail', params: { id: notice.noticeId } }" target="_blank" class="router flex">
-            <li class="notice-board__id flex">{{ notice.author }}</li>
-            <li class="notice-board__text flex">{{ notice.title }}</li>
-            <li class="notice-board__date flex">{{ notice.createAt }}</li>
-          </router-link>
-        </ul>
-      </div>
-      <div class="notice-board__list flex" v-if="currentTab === 'hot'">
-        <ul class="notice-board__contain flex" v-for="notice in tableData" :key="notice.id">
-          <li class="notice-board__id flex">{{ notice.id }}</li>
-          <li class="notice-board__text flex">{{ notice.text }}</li>
-          <li class="notice-board__date flex">{{ notice.date }}</li>
-        </ul>
-      </div>
-      <div class="notice-board__list flex" v-if="currentTab === 'all'">
-        <ul class="notice-board__contain flex" v-for="notice in listAll" :key="notice.id">
-          <li class="notice-board__id flex">{{ notice.id }}</li>
-          <li class="notice-board__text flex">{{ notice.text }}</li>
-          <li class="notice-board__date flex">{{ notice.date }}</li>
-        </ul>
-      </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <style scoped>
+.more{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  width:100%;
+  height:100px;
+}
+.tooltip-container {
+  --background: #c5c6fa;
+  background: var(--background);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 17px;
+  border-radius: 10px;
+  width: 8em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #efefef;
+  box-shadow: 0 0 5px 2px #ffffff;
+}
+.tooltip {
+  position: absolute;
+  top: 0;
+  left: 30%;
+  transform: translateX(-50%);
+  padding: 0.3em 0.6em;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  background: var(--background);
+  border-radius: 5px;
+  width: 7em;
+  text-align: center;
+  font-family: 方正粗黑宋简体, serif;
+}
+.tooltip::before {
+  position: absolute;
+  content: "";
+  height: 0.6em;
+  width: 0.6em;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  background: var(--background);
+}
+.tooltip-container:hover .tooltip {
+  top: -100%;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  animation: shake 500ms ease-in-out forwards;
+}
+@keyframes shake {
+  0% {
+    transform: rotate(2deg);
+  }
+  50% {
+    transform: rotate(-3deg);
+  }
+  70% {
+    transform: rotate(3deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.text {
+  position: relative;
+  padding: 0.7em 1.8em;
+  overflow: hidden;
+  font-family: 方正粗黑宋简体, serif;
+}
+.text::before {
+  content: "(^_^)/";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: inherit;
+  background-color: var(--background);
+  transition: 0.3s;
+}
+.tooltip-container:hover .text::before {
+  top: 0;
+}
 .router{
   width:100%;
-  height:100%;
+  height:550px;
 }
 .notice {
+  flex-direction: column;
   width: 100%;
-  height: 700px;
-  flex-direction: row;
+  height: 900px;
   .el-carousel {
-    height: 500px;
-    width: 55%;
+    height: 550px;
+    width: 900px;
     border-radius: 20px;
     box-sizing: border-box;
-    border: 25px double #ffffff;
+    border: 10px double #020202;
   }
-  .el-carousel img {
+  .el-carousel-item{
+    width:100%;
+    height:100%;
+  }
+  .img {
     width: 100%;
   }
-  .notice-board {
-    position: relative;
-    border-radius: 50px 1px;
-    margin-left: 5%;
-    background: #fbfdff;
-    width: 30%;
-    height: 500px;
-    box-shadow: 1px 1px 7px #939393;
-  }
-  .notice-board__tabs{
-    position: absolute;
-    left:0;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width:50px;
-    height:100%;
-    background: #ffffff;
-    border-radius: 50px 1px;
-    box-shadow: 1px 1px 3px #d0d0d0;
-    .notice-board__tab{
-      background: transparent;
-      height:27%;
-      width:100%;
-      border-radius: 50px 1px;
-      border:none;
-      cursor: pointer;
-      transition-duration: .3s;
-      writing-mode: vertical-rl;
-    }
-    .notice-board__tab.active{
-      background: #e6eaff;
-      height:47%;
-    }
-  }
-  .notice-board__list{
-    position: absolute;
-    right:0;
-    height:100%;
-    width:90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .notice-board__contain{
-    justify-content: center;
-    width:calc(100% - 50px);;
-    height:15%;
-    border-bottom: solid 1px #eaeaea;
-  }
-  .notice-board__contain li{
-    color:#000000;
-    margin-left:10px;
-  }
-  .notice-board__id{
-    width:10%;
-    height:100%;
-  }
-  .notice-board__text{
-    width:65%;
-    height:100%;
-  }
-  .notice-board__date{
-    width:25%;
-    height:100%;
-  }
+
 }
+.message{
+  position: absolute;
+  bottom: 0;
+  width:100%;
+  height:200px;
+  background: rgba(143, 143, 143, 0.59);
+}
+
 </style>

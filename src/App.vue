@@ -73,10 +73,14 @@ onBeforeMount(() => {
   width:100vw;
   height:40px;
   background: black;
+  font-family: 华文中宋;
   .foot-btn{
     width:100px;
     height:100%;
     color: #e5e5e5;
+  }
+  .foot-btn:hover{
+    color: #b7b7b7;
   }
 }
 </style>

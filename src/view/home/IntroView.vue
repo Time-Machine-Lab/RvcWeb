@@ -13,10 +13,10 @@
     <div class="intro-back"></div>
     <!--欢迎页面-->
     <Welcome></Welcome>
-    <div class="fixed-strip">RVC   RVC   RVC   RVC   RVC</div>
+    <div class="fixed-strip">RVC   RVC   RVC   RVC   RVC   RVC   RVC</div>
     <!--公告栏-->
     <NoticeBoard></NoticeBoard>
-    <div class="fixed">RVC   RVC   RVC   RVC   RVC</div>
+    <div class="fixed">RVC   RVC   RVC   RVC   RVC   RVC   RVC</div>
     <!--社区介绍板块-->
     <div class="Introduction">
       <div class="Introduction-pic"></div>
@@ -102,18 +102,6 @@ interface Team {
   nickname: string
   role: string
 }
-// 公告栏
-// interface HomeNotice {
-//   noticeId: string,
-//   title: string
-//   author: string
-//   content: null,
-//   cover: string
-//   createAt: string
-//   likeNum: null,
-//   watchNum: 0
-// }
-
 const Infos = ref<Info>({ id: 0, officialConcat: '', rvcDescription: '', rvcVersion: '', webDescription: '', webName: ''})
 const Tools = ref<Tools[]>([])
 const Teams = ref<Team[]>([])
@@ -144,9 +132,6 @@ onMounted(() => {
 });
 
 
-
-
-
 // const currentIndex = ref(0);
 // const teamMembers = computed(() => {
 //   let start = currentIndex.value % items.length;
@@ -174,7 +159,4 @@ onMounted(() => {
 //     currentIndex.value = 1- currentIndex.value;
 //   }, 15000);
 // });
-
-
-
 </script>
