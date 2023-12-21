@@ -44,14 +44,14 @@ export function favoritePost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/favorite',
-        params:form
+        data:form
     })
 }
 export function collectPost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/collection',
-        params:form
+        data:form
     })
 }
 export function getCommentList(form:GetCommentListForm){
@@ -66,7 +66,7 @@ export function commentAdd(form:CommentForm){
     return request({
         method:'post',
         url:'/communication/comment/add',
-        params:form
+        data:form
     })
 }
 
