@@ -28,11 +28,11 @@
 }
 .right {
   width: 550px;
-  height: 500px;
+  height: 300px;
   border-radius: 10px;
   background: rgba(181, 164, 253, 0.24);
   .top {
-    height: 65%;
+    height: 100%;
     width: 100%;
     background: #ecf2fc;
     border-radius: 10px;

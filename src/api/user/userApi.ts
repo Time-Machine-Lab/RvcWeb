@@ -9,8 +9,8 @@ import { ProfileForm, EmailCodeForm, RegisterForm, LoginForm } from '@/api/user/
 
 export function editUserInfo(form: ProfileForm) {
     return request({
-        url: '/m1/3628624-0-3e257297/getUserInfo',
-        method: 'get',
+        url: '/user/update',
+        method: 'post',
         data: form
     })
 }
@@ -23,8 +23,11 @@ export function getLoginUserInfo() {
 
 export function getUserInfoById(id: string) {
     return request({
-        url: '/m1/3628624-0-3e257297/getUserInfoById?id=' + id,
+        url: '/user/getUserInfo',
         method: 'get',
+        headers:{
+            'uid':id
+        }
     })
 }
 

@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import {RvcModelVo} from '@/view/rvcModel/modelType'
+import {RvcModelVo} from '@/api/rvcModel/modelType'
 
 const props = defineProps<{
     model:RvcModelVo
 }>()
 </script>
 <template>
-    <router-link to="">
         <div class="model-card">
-        <div class="model-card__pic">
+        <div class="model-card__pic" :style="{backgroundImage:'url('+props.model.picture+')'}">
 
         </div>
         <div class="model-card__info">
             <div class="model-card__info__name">
-                {{ props.model.model_name }}
+                {{ props.model.name }}
             </div>
             <div class="model-card__info__creatAt">
-                {{ props.model.create_at }}
+                {{ props.model.avatar }}
             </div>
             <div class="user-info">
                 <div class="user-info__avatar" :style="{backgroundImage:'url('+props.model.avatar+')'}">
@@ -29,32 +28,31 @@ const props = defineProps<{
             <div class="model-card__info__stats">
                 <div class="model-card__info__stats__item">
                     <img src="/public/icon/eye.svg">
-                    <span>{{ props.model.watch_num }}</span>
+                    <span>{{ props.model.viewNum }}</span>
                 </div>
                 <div class="model-card__info__stats__item">
                     <img src="/public/icon/download.svg">
                     <span>{{ 0 }}</span>
                 </div>
-                <div class="model-card__info__stats__item" v-if="!props.model.has_like">
+                <div class="model-card__info__stats__item" v-if="!props.model.isCollection">
                     <img src="/public/icon/star.svg">
-                    <span>{{ props.model.collection_num }}</span>
+                    <span>{{ props.model.collectionNum }}</span>
                 </div>
-                <div class="model-card__info__stats__item" v-if="props.model.has_like">
+                <div class="model-card__info__stats__item" v-else>
                     <img src="/public/icon/star-fill.svg">
-                    <span>{{ props.model.like_num }}</span>
+                    <span>{{ props.model.collectionNum }}</span>
                 </div>
-                <div class="model-card__info__stats__item" v-if="!props.model.has_like">
+                <div class="model-card__info__stats__item" v-if="!props.model.isLike">
                     <img src="/public/icon/heart.svg">
-                    <span>{{ props.model.like_num }}</span>
+                    <span>{{ props.model.likesNum }}</span>
                 </div>
-                <div class="model-card__info__stats__item" v-if="props.model.has_like">
+                <div class="model-card__info__stats__item" v-else>
                     <img src="/public/icon/heart-fill.svg">
-                    <span>{{ props.model.like_num }}</span>
+                    <span>{{ props.model.likesNum }}</span>
                 </div>
             </div>
         </div>
     </div>
-    </router-link>
     
 </template>
 <style scoped>
@@ -62,6 +60,7 @@ const props = defineProps<{
     position: relative;
     width: 100%;
     height: 100%;
+    /* min-height: 300px; */
     overflow: hidden;
     cursor: pointer;
     border-radius: 10px;
@@ -165,4 +164,4 @@ const props = defineProps<{
     font-size: 14px;
     margin-left: 4px;
     color: rgba(255, 255, 255, 0.7);
-}</style>
+}</style>@/api/rvcModel/modelType

@@ -82,10 +82,10 @@ const loadDraft = function () {
     tagId: string,
     tagName: string
   }>("postDraft")!
-  postForm.value.title = draft.value.title
-  postForm.value.content = draft.value.content
-  postForm.value.tagId = draft.value.tagId
-  postForm.value.coverId = draft.value.coverId
+  postForm.value.title = draft.value?.title
+  postForm.value.content = draft.value?.content
+  postForm.value.tagId = draft.value?.tagId
+  postForm.value.coverId = draft.value?.coverId
 }
 loadDraft()
 
@@ -158,7 +158,7 @@ loadDraft()
         </div>
         <div class="type-select" v-show="typeSelectvisibility">
           <div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
-               @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex].value!">
+               @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
             {{ tag.label }}
           </div>
         </div>

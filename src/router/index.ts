@@ -1,8 +1,8 @@
 /*
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 23:31:30
- * @LastEditors: LisianthusLeaf 3106334435@qq.com
- * @LastEditTime: 2023-12-06 23:47:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2023-12-21 18:08:49
  * @FilePath: \RvcWeb\src\router\index.ts
  * @Description: 
  * 
@@ -19,6 +19,7 @@ import introRoute from './introRoutes.ts'
 import homepageRoutes from '@/router/homepageRouter/index.ts'
 import communicationRoutes from "./homepageRouter/communication/communicationRoutes.ts"
 import userRoutes from "./homepageRouter/user/userRoutes.ts"
+import rvcModelRoutes from "./homepageRouter/rvcModel/rvcModelRoutes.ts";
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
@@ -37,7 +38,8 @@ const routes: RouteRecordRaw[] = [
     ...homepageRoutes,
     ...introRoute,
     ...communicationRoutes,
-    ...userRoutes
+    ...userRoutes,
+    ...rvcModelRoutes
 ];
 const options: RouterOptions = {
     history: createWebHashHistory(),

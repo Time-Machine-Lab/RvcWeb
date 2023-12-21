@@ -122,7 +122,7 @@ loadOldPost()
 
           </div> -->
             <div class="button-group">
-                <div class="button-group__submit" @click="savePost" :style="{cursor:!postHasChanged()?'not-allowed':'point'}">
+                <div class="button-group__submit" @click="savePost" :style="{cursor:!postHasChanged()?'not-allowed':'pointer'}">
                     保存
                 </div>
             </div>
@@ -155,7 +155,7 @@ loadOldPost()
                 </div>
                 <div class="type-select" v-show="typeSelectvisibility">
                     <div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
-                        @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex].value!">
+                        @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
                         {{ tag.label }}
                     </div>
                 </div>
