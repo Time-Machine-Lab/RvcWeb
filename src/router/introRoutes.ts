@@ -28,6 +28,11 @@ export default[
     ],
   },
   {
+    path: "/forget",
+    name: "forget",
+    component: () => import("../view/home/ForgetView.vue")
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import("../view/home/AboutView.vue")
@@ -41,6 +46,11 @@ export default[
     path: "/homepage",
     name: "homepage",
     component: () => import("../view/home/HomePageView.vue")
+  },
+  {
+    path: "/notice",
+    name: "NoticeAll",
+    component: () => import("../view/home/NoticeView.vue"),
   },
   {
     path: "/notice/:id",

@@ -59,6 +59,7 @@ onBeforeMount(() => {
 .header {
   height: 70px;
   width: 100%;
+  min-width: 1080px;
   position: fixed;
   margin: 0;
   padding: 0;
@@ -79,10 +80,14 @@ onBeforeMount(() => {
   width:100vw;
   height:40px;
   background: black;
+  font-family: 华文中宋;
   .foot-btn{
     width:100px;
     height:100%;
     color: #e5e5e5;
+  }
+  .foot-btn:hover{
+    color: #b7b7b7;
   }
 }
 </style>
