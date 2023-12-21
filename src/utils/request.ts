@@ -12,7 +12,7 @@ import { message } from './message'
 
 
 const request = axios.create({
-  baseURL: '/rvcApi',
+  baseURL: '',
   timeout: 5000
 })
 

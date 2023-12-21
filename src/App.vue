@@ -59,6 +59,7 @@ onBeforeMount(() => {
 .header {
   height: 70px;
   width: 100%;
+  min-width: 1080px;
   position: fixed;
   margin: 0;
   padding: 0;

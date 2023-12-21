@@ -58,7 +58,7 @@ export default defineComponent({
         />
       </div>
       <div class="bottom flex">
-        <div class="forget flex">忘记密码</div>
+        <router-link to="/forget" class="forget flex"> <p>忘记密码</p> </router-link>
         <button type="button" @click="loginFunc">登录</button>
       </div>
     </form>

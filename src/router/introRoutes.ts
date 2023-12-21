@@ -28,6 +28,11 @@ export default[
     ],
   },
   {
+    path: "/forget",
+    name: "forget",
+    component: () => import("../view/home/ForgetView.vue")
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import("../view/home/AboutView.vue")

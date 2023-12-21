@@ -161,8 +161,8 @@ button{
   transform: scale(90%);
 }
 .close{
-  position: absolute;
-  right:20px;
+  position: fixed;
+  right:100px;
   top:70px;
   width:45px;
   height:45px;
@@ -174,7 +174,7 @@ button{
 }
 .home{
   width:100%;
-  height:100vh;
+  height:100%;
 }
 .contain-choice{
   top:70px;
@@ -205,7 +205,7 @@ button{
 .contain{
   padding: 20px;
   position: relative;
-  top:130px;
+  top:100px;
   flex-direction: column;
   margin:auto;
   width:1100px;

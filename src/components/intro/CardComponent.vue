@@ -15,8 +15,10 @@
       </div>
       <div class="card-face card-face-back">
         <!-- 背面内容 -->
-        <div>{{ title }}</div>
-        <p>{{ data }}</p>
+        <div class="back">
+          <h1 class="title">联系我们</h1>
+          <p style="margin-top: 50px">{{ data }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -25,7 +27,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-defineProps(['title', 'data', 'img']);
+defineProps(['data']);
 
 const isFlipped = ref(false);
 
@@ -37,6 +39,16 @@ const flip = (value: boolean) => {
 
 
 <style scoped>
+.back{
+  width:80%;
+  height:80%;
+}
+
+.title{
+  color: #ecdd9f;
+  font-family: ZCool;
+  width:100%;
+}
 img{
   width:100%;
   height:100%
@@ -83,6 +95,7 @@ img{
 }
 
 .card-face-back {
+  position: relative;
   transform: rotateY(180deg);
   background:url("https://s2.loli.net/2023/12/11/Ws5LvbYnlZPMqG9.png");
   background-size: cover;

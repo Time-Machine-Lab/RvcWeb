@@ -58,16 +58,28 @@
     </div>
     <!--关于我们-->
     <div class="about flex">
-      <div class="box"></div>
-      <div class="about-btn flex">
-        <router-link to="/about" target="_blank" class="about-btn__text"> <p>关于我们</p> </router-link>
+      <div class="parent">
+        <div class="card">
+          <div class="content-box">
+            <span class="card-title">RVC官方社区</span>
+            <p class="card-content">
+              RVC社区是一个致力于分享和交流RVC（Retrieval based Voice Conversion，检索式声音转换）技术的平台。RVC是一个基于VITS语音合成系统的开源工具，能实现实时声音变换，适用于直播、视频录制等场景
+            </p>
+            <router-link to="/about" target="_blank" class="see-more"> <p>关于我们</p> </router-link>
+          </div>
+        </div>
       </div>
+
     </div>
     <!--RVC版本板块-->
     <div class="Versions">
-      <div class="Version-message flex">版本信息</div>
-      <div class="VersionContain flex">RVC已经到来</div>
-      <a href="https://github.com/Time-Machine-Lab" class="Versions-btn flex">了解更多</a>
+      <div class="Version-message flex">{{ Infos.rvcVersion }}</div>
+      <div class="VersionContain flex">RVC已经到来
+      </div>
+      <a href="https://github.com/Time-Machine-Lab" class="Versions-btn flex">
+        <svg t="1703169036340" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2644" width="30" height="30"><path d="M512 42.666667A464.64 464.64 0 0 0 42.666667 502.186667 460.373333 460.373333 0 0 0 363.52 938.666667c23.466667 4.266667 32-9.813333 32-22.186667v-78.08c-130.56 27.733333-158.293333-61.44-158.293333-61.44a122.026667 122.026667 0 0 0-52.053334-67.413333c-42.666667-28.16 3.413333-27.733333 3.413334-27.733334a98.56 98.56 0 0 1 71.68 47.36 101.12 101.12 0 0 0 136.533333 37.973334 99.413333 99.413333 0 0 1 29.866667-61.44c-104.106667-11.52-213.333333-50.773333-213.333334-226.986667a177.066667 177.066667 0 0 1 47.36-124.16 161.28 161.28 0 0 1 4.693334-121.173333s39.68-12.373333 128 46.933333a455.68 455.68 0 0 1 234.666666 0c89.6-59.306667 128-46.933333 128-46.933333a161.28 161.28 0 0 1 4.693334 121.173333A177.066667 177.066667 0 0 1 810.666667 477.866667c0 176.64-110.08 215.466667-213.333334 226.986666a106.666667 106.666667 0 0 1 32 85.333334v125.866666c0 14.933333 8.533333 26.88 32 22.186667A460.8 460.8 0 0 0 981.333333 502.186667 464.64 464.64 0 0 0 512 42.666667" p-id="2645"></path></svg>
+        了解更多
+      </a>
     </div>
   </div>
 </template>
@@ -160,3 +172,84 @@ onMounted(() => {
 //   }, 15000);
 // });
 </script>
+<style scoped>
+.parent {
+  width: 450px;
+  padding: 20px;
+  perspective: 1000px;
+}
+
+.card {
+  /* border-radius: 10px; */
+  border: 3px solid rgb(255, 255, 255);
+  transform-style: preserve-3d;
+  background-size: 60px 60px;
+  background-position: 0 0, 0 0;
+  width: 100%;
+  box-shadow: rgba(142, 142, 142, 0.3) 0px 30px 30px -10px;
+  transition: all 0.5s ease-in-out;
+}
+
+.card:hover {
+  background-position: -100px 100px, -100px 100px;
+  transform: rotate3d(0.5, 1, 0, 30deg);
+}
+
+.content-box {
+  background: rgba(161, 197, 250, 0.84);
+  /* border-radius: 10px 100px 10px 10px; */
+  transition: all 0.5s ease-in-out;
+  padding: 60px 25px 45px 25px;
+  transform-style: preserve-3d;
+}
+
+.content-box .card-title {
+  display: inline-block;
+  color: white;
+  font-size: 25px;
+  font-weight: 900;
+  transition: all 0.5s ease-in-out;
+  transform: translate3d(0px, 0px, 50px);
+}
+
+.content-box .card-title:hover {
+  transform: translate3d(0px, 0px, 60px);
+}
+
+.content-box .card-content {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #f2f2f2;
+  transition: all 0.5s ease-in-out;
+  transform: translate3d(0px, 0px, 30px);
+}
+
+.content-box .card-content:hover {
+  transform: translate3d(0px, 0px, 60px);
+}
+
+.content-box .see-more {
+  cursor: pointer;
+  margin-top: 1.5rem;
+  display: inline-block;
+  font-family: ZCool;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: rgb(73, 73, 73);
+  /* border-radius: 5px; */
+  background: white;
+  padding: 0.5rem 0.7rem;
+  transition: all 0.5s ease-in-out;
+  transform: translate3d(0px, 0px, 20px);
+}
+
+.content-box .see-more:hover {
+  transform: translate3d(0px, 0px, 60px);
+}
+
+.date-box span {
+  display: block;
+  text-align: center;
+}
+</style>
