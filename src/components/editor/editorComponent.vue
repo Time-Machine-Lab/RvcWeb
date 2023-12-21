@@ -47,7 +47,7 @@ const editorConfig = {
       // onError(file, err, res) {
       //   console.log(err,res);
       // },
-      customInsert(res: any, insertFn: InsertFnType) {
+      customInsert(res: any, insertFn: any) {
         insertFn(res.data)
     },
     },
