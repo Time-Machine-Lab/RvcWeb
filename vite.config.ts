@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-11-30 14:50:51
+ * @Description: 
+ * @FilePath: \RvcWeb\vite.config.ts
+ */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
@@ -48,7 +54,7 @@ export default defineConfig({
       //   changeOrigin: true
       // },
       "/rvcApi":{
-        target: "http://117.21.200.55:10010/",
+        target: "http://1.94.28.8:10000/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/rvcApi/, "/"),
       }

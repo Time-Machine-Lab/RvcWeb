@@ -74,3 +74,13 @@ export function getPreCode(){
         method:'get'
     })
 }
+
+export function uploadAvatar(file:File){
+    const formData = new FormData();
+    formData.append('file', file);
+    return request({
+        url: '/user/avatar',
+        method:'post',
+        data: formData
+    })
+}

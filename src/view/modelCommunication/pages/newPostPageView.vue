@@ -2,7 +2,7 @@
 import editorComponent from '@/components/editor/editorComponent.vue'
 import "@/assets/css/post/postContent.css"
 import { PostForm, RvcCommunicationPostType } from '@/api/post/postType'
-import { getPostType, postAdd } from '@/api/post/postApi'
+import { getPostType, postAdd, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import { storage } from '@/utils/storage'
 import { message } from '@/utils/message'
@@ -56,8 +56,21 @@ const submitPost = function () {
   })
   storage.remove('postDraft')
 }
-const handleCoverSuccess = function () { }
-const beforeCoverUpload = function () { }
+const handleCoverSuccess = function () { };
+const beforeCoverUpload = function (rawFile:File) {
+  if (rawFile.type !== 'image/jpeg') {
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 10) {
+    message.warning('请上传小于10M的图片')
+    return false
+  }
+  uploadPicture(rawFile).then(res=>{
+    postForm.value.coverId = res.data
+    console.log(res)
+    
+  })
+  return true
+};
 const getContent = function (html: string) {
   content.value = html
 }
@@ -133,9 +146,8 @@ loadDraft()
         封面
       </div>
       <div>
-        <el-upload class="cover-uploader" action="/communication/post/cover
-" :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
-          <img v-if="postForm.cover" :src="postForm.cover" class="cover" />
+        <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
+          <img v-if="postForm.coverId" :src="postForm.coverId" class="cover" />
           <el-icon v-else class="cover-uploader-icon"> + </el-icon>
         </el-upload>
       </div>
@@ -205,7 +217,7 @@ loadDraft()
 
 .cover-uploader .cover {
   width: 100%;
-  height: 178px;
+  min-height: 178px;
   display: block;
 }
 
