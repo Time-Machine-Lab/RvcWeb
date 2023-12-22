@@ -23,7 +23,7 @@ const props = defineProps<{
 
     <div class="info">
       <div class="username">
-        {{ props.followUser.nickName }}
+        {{ props.followUser.nickname }}
       </div>
       <div class="description">
         {{ props.followUser.description }}

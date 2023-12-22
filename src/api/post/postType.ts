@@ -31,7 +31,7 @@ export type PostForm = {
     /**
      * 帖子封面
      */
-    coverId: string;
+    coverId: string|null;
     /**
      * 帖子类型
      */
