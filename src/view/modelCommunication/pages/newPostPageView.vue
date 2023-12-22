@@ -6,6 +6,7 @@ import { getPostType, postAdd, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import { storage } from '@/utils/storage'
 import { message } from '@/utils/message'
+import router from '@/router'
 let tagsOption = ref<{
   value: string | undefined
   label: string | undefined
@@ -22,7 +23,7 @@ let draft = ref<{
   title: string,
   content: string,
   coverId: string,
-  coverBase64: string,
+  coverUrl: string,
   tagId: string,
   tagName: string
 }>()
@@ -52,24 +53,32 @@ const handleBlur = function () {
 }
 const submitPost = function () {
   postForm.value.content = content.value
-  postAdd(postForm.value).then(res => {
-    console.log(res);
+  postAdd(postForm.value).then((res: any) => {
+    if (res.code == 200) {
+      message.success('保存成功')
+      router.back()
+    }
   })
   storage.remove('postDraft')
 }
 const handleCoverSuccess = function () { };
-const beforeCoverUpload = function (rawFile:File) {
+const beforeCoverUpload = function (rawFile: File) {
   if (rawFile.type !== 'image/jpeg') {
     return false
   } else if (rawFile.size / 1024 / 1024 > 10) {
     message.warning('请上传小于10M的图片')
     return false
   }
-  uploadPicture(rawFile).then(res=>{
-    postForm.value.coverId = res.data.id
+  uploadPicture(rawFile).then((res:any) => {
+    if(res.code == 200){
+postForm.value.coverId = res.data.id
     postForm.value.coverUrl = res.data.url
-    console.log(res)
+    message.success('上传成功')
+    } else{
+      message.error('上传失败')
+    }
     
+
   })
   return false
 };
@@ -82,7 +91,7 @@ const saveDraft = function () {
     title: postForm.value?.title,
     content: postForm.value?.content,
     coverId: postForm.value?.coverId,
-    coverBase64: '',
+    coverUrl: postForm.value?.coverUrl,
     tagId: postForm.value?.tagId,
     tagName: tagsOption.value[currentTypeIndex.value]?.label
   })
@@ -93,7 +102,7 @@ const loadDraft = function () {
     title: string,
     content: string,
     coverId: string,
-    coverBase64: string,
+    coverUrl: string,
     tagId: string,
     tagName: string
   }>("postDraft")!
@@ -101,6 +110,7 @@ const loadDraft = function () {
   postForm.value.content = draft.value?.content
   postForm.value.tagId = draft.value?.tagId
   postForm.value.coverId = draft.value?.coverId
+  postForm.value.coverUrl = draft.value?.coverUrl
 }
 loadDraft()
 
@@ -124,7 +134,7 @@ loadDraft()
           内容
         </div>
         <div style="width: 90%;">
-          <editorComponent :getContent="getContent" :content="postForm.content"></editorComponent>
+          <editorComponent :getContent="getContent" :editor-content="postForm.content"></editorComponent>
         </div>
       </div>
 
@@ -148,7 +158,8 @@ loadDraft()
         封面
       </div>
       <div>
-        <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
+        <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess"
+          :before-upload="beforeCoverUpload">
           <img v-if="postForm.coverUrl" :src="postForm.coverUrl" class="cover" />
           <el-icon v-else class="cover-uploader-icon"> + </el-icon>
         </el-upload>
@@ -158,21 +169,21 @@ loadDraft()
       </div>
       <div style="text-align: left;">
         <div tabindex="-1" class="type-selecter"
-             :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
-             :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
+          :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
+          :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
           <div class="horizontal-center" style="display: flex;">
-                        <span style="line-height: 40px;margin-left: 3px;width: 300px;">{{
-                            currentTypeIndex != -1 ? tagsOption[currentTypeIndex]?.label : draft?.tagName }}</span>
+            <span style="line-height: 40px;margin-left: 3px;width: 300px;">{{
+              currentTypeIndex != -1 ? tagsOption[currentTypeIndex]?.label : draft?.tagName }}</span>
             <span>
-                            <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
-                                 :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                        </span>
+              <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
+                :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
+            </span>
           </div>
 
         </div>
         <div class="type-select" v-show="typeSelectvisibility">
           <div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
-               @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
+            @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
             {{ tag.label }}
           </div>
         </div>

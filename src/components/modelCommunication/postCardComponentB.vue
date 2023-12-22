@@ -4,6 +4,7 @@ import { favoritePost, collectPost, postDelete } from '@/api/post/postApi'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
+import router from '@/router';
 let props = defineProps<{
     post: PostVo
 }>()
@@ -93,15 +94,18 @@ const postDeleteFunc = function () {
         postId: localPost.value.postId
     })
     postDelete(form.value).then((res: any) => {
-        if (res.code == 200){
+        if (res.code == 200) {
             message.success('删除成功')
         }
     })
 }
+const editPost = function () {
+    router.push('/editPost?postId=' + localPost.value.postId)
+}
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover ? props.post.cover : getimg(localPost.postId as unknown as number)"
+        <img :src="props?.post?.cover!"
             @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="tag">
@@ -117,7 +121,13 @@ const postDeleteFunc = function () {
             <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
             </div>
-            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid" @click="postDeleteFunc">删除贴子</div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid"
+                @click="postDeleteFunc">
+                删除贴子
+            </div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid" @click="editPost">
+                编辑贴子
+            </div>
         </div>
         <div class="post-card__info">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.author.uid)">
@@ -168,6 +178,7 @@ const postDeleteFunc = function () {
 <style>
 .post-card {
     position: relative;
+    min-height: 200px;
     width: 380px;
     cursor: pointer;
     border-radius: 10px;
