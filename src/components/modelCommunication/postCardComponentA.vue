@@ -28,44 +28,44 @@ const props = defineProps<{
             </RouterLink>
 
             <div class="post-card__info__data">
-                <div class="user-info" @click="$router.replace('/user?id=' + props.post.uid)">
+                <div class="user-info" @click="$router.replace('/user?id=' + props.post.author.uid)">
 
-                    <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + props.post.avatar + ')' }">
+                    <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + props.post.author.avatar + ')' }">
 
                     </div>
                     <div class="user-info__usename">
-                        {{ props.post.nickname }}
+                        {{ props.post.author.nickname }}
                     </div>
 
                 </div>
 
                 <div class="creatAt">
-                    发布日期：{{ props.post.create_at }}
+                    发布日期：{{ props.post.createAt }}
                 </div>
                 <div class="other-info">
                     <div class="other-info__stats__item">
                         <img src="/public/icon/eye.svg">
-                        <span>{{ props.post.watch_num }}</span>
+                        <span>{{ props.post.watchNum }}</span>
                     </div>
-                    <div class="other-info__stats__item" v-if="!props.post.has_collect">
+                    <div class="other-info__stats__item" v-if="!props.post.collect">
                         <img src="/public/icon/star.svg">
-                        <span>{{ props.post.collect_num }}</span>
+                        <span>{{ props.post.collectNum }}</span>
                     </div>
-                    <div class="other-info__stats__item" v-if="props.post.has_collect">
+                    <div class="other-info__stats__item" v-else>
                         <img src="/public/icon/star-fill.svg">
-                        <span>{{ props.post.collect_num }}</span>
+                        <span>{{ props.post.collectNum }}</span>
                     </div>
-                    <div class="other-info__stats__item" v-if="!props.post.has_like">
+                    <div class="other-info__stats__item" v-if="!props.post.like">
                         <img src="/public/icon/heart.svg">
-                        <span>{{ props.post.collect_num }}</span>
+                        <span>{{ props.post.likeNum }}</span>
                     </div>
-                    <div class="other-info__stats__item" v-if="props.post.has_like">
+                    <div class="other-info__stats__item" v-else>
                         <img src="/public/icon/heart-fill.svg">
-                        <span>{{ props.post.collect_num }}</span>
+                        <span>{{ props.post.likeNum }}</span>
                     </div>
                     <div class="other-info__stats__item">
                         <img src="/icon/chat.svg">
-                        <span>{{ props.post.comment_num }}</span>
+                        <span>{{ props.post.commentNum }}</span>
                     </div>
                 </div>
             </div>
