@@ -14,7 +14,7 @@ import {getHomeNotice} from "@/api/home/introAPI.ts";
 import {BoardVO} from "@/api/home/introTypes.ts";
 
 // 获取首页的轮播图公告信息
-const Boards = ref<BoardVO[]>([{author: "111", content: "111", cover: "/", createAt: "2021", likeNum: 0, noticeId: "1111", title: "111", watchNum: 2}]);
+const Boards = ref<BoardVO[]>([{author: "111", content: "111", cover: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", createAt: "2021", likeNum: 0, noticeId: "1111", title: "111", watchNum: 2}]);
 const getWebData = () => {
   getHomeNotice().then((res: any) => {
     console.log(res)
@@ -33,12 +33,12 @@ onMounted(() => {
     <el-carousel height="auto" autoplay>
       <el-carousel-item v-for="(item, index) in Boards" :key="index" style="height: 550px">
         <router-link :to="{ name: 'NoticeDetail', params: { id: item.noticeId } }" target="_blank" class="router">
-<!--          <img :src="item.cover" alt="Team Member Image" class="img"/>-->
-          <img src="https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg" alt="Team Member Image" class="img"/>
-          <div class="message">
-            <div>{{item.title}}</div>
-            <div>{{item.author}}</div>
-            <div>{{item.watchNum}}</div>
+          <img :src="item.cover" alt="Team Member Image" class="img"/>
+<!--          <img src="https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg" alt="Team Member Image" class="img"/>-->
+          <div class="message flex">
+            <div class="message-title flex">{{item.title}}</div>
+            <div class="message-author flex">{{item.author}}</div>
+            <div class="message-watch flex">{{item.watchNum}}</div>
           </div>
         </router-link>
       </el-carousel-item>
@@ -164,15 +164,33 @@ onMounted(() => {
   }
   .img {
     width: 100%;
+    height:100%;
   }
 
 }
 .message{
+  flex-direction: column;
   position: absolute;
   bottom: 0;
   width:100%;
-  height:200px;
-  background: rgba(143, 143, 143, 0.59);
+  height:250px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 254, 254, 0.98));
+  color:#3a3a3a;
+  font-family: 方正粗黑宋简体;
 }
-
+.message-title{
+  font-size: 26px;
+  height:20%;
+  width:80%;
+}
+.message-author{
+  height:40%;
+  width:80%;
+  font-size: 20px;
+}
+.message-watch{
+  height:20%;
+  width:60%;
+  justify-content: right;
+}
 </style>

@@ -69,19 +69,14 @@ const onUploadImg = (files: any) => {
   console.log(files)
 }
 const submitForm = async () => {
-  const formData: postComment = {
+  let formData = ref<postComment>({
     comment: postContent.value,
     replyCmId: '11',
     replyFbId: data,  // 如果是添加新帖子，可以忽略这个属性
-  };
-  try {
-    const response = await getCommentAdd(formData);
-    console.log('表单提交成功', response);
-    // 这里你可以处理提交成功后的逻辑，例如重定向到其他页面等
-  } catch (error) {
-    console.error('表单提交失败', error);
-    // 这里你可以处理提交失败后的逻辑，例如显示错误消息等
-  }
+  })
+  getCommentAdd(formData.value).then((res) => {
+    console.log(res + "res");
+  });
 };
 </script>
 

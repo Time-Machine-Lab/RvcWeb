@@ -8,10 +8,26 @@
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import './style.css'
-onBeforeMount(() => {
+import { preloadImages } from '@/utils/preload';
+
+onBeforeMount(async () => {
   const loadingDom = document.querySelector(".before-app-render-loading");
   if (loadingDom) {
     console.log("loadingDom: ", loadingDom.parentElement);
+    // 图片预加载
+    await preloadImages();
+    let count = 0;
+    let imgs = [
+      'https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg',
+      'https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg'
+    ]
+    for (let img of imgs) {
+      let image = new Image();
+      image.onload = () => {
+        count++;
+      };
+      image.src = img;
+    }
     loadingDom.classList.add("unmount");
     setTimeout(() => {
       loadingDom.remove();

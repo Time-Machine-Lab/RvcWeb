@@ -56,12 +56,15 @@
       height: 15%;
       font-weight: bold;
       font-size: 18px;
+      letter-spacing: 2px;
     }
     .Introduction-card__contain {
       height: 60%;
       width: 80%;
-      font-size: 15px;
+      font-size: 16px;
       overflow: scroll;
+      font-family: 幼圆;
+      letter-spacing: 1px;
     }
   }
 }
@@ -105,15 +108,20 @@
 
   .Functions-title {
     grid-column: 1 / span 4;
-    font-size: 30px;
     color: white;
+    font-size: 30px;
   }
   .Function {
     margin-left: 5%;
     width: 90%;
     height: 200px;
     text-align: center;
-    background: #ffffff;
+    background: rgba(70, 70, 70, 0.98);
+    box-shadow: 0px 0px 10px 3px #dcdcdc;
+    color:#ffffff;
+    font-family: 方正姚体;
+    font-size: 18px;
+    letter-spacing: 3px;
     border-radius: 20px;
     .Function-tool {
       width: 100%;
@@ -129,7 +137,6 @@
     }
     .Function-img img {
       width: 100%;
-
     }
   }
 }
@@ -141,7 +148,7 @@
     width:80%;
     height:10%;
     margin-top:10%;
-    font-size:50px;
+    font-size:30px;
     color:#ffffff;
   }
   .team-list{
@@ -176,6 +183,7 @@
     /* 动画：名称为carousel，持续时间9秒，无限循环，缓动函数为cubic-bezier(0.77, 0, 0.175, 1)，动画结束后保持最后状态 */
   }
   .team-item {
+    overflow: hidden;
     position: absolute;
     /* 绝对定位 */
     width: 100%;
@@ -197,7 +205,6 @@
     border: 25px dotted #ffffff;
   }
   .team-item__img{
-    width:100%;
     height:100%;
   }
   /* 第一个项目样式 */
@@ -228,15 +235,16 @@
     /* 变换：绕y轴旋转240度，沿z轴平移35vw */
   }
   .team-item__message{
+    font-family: 幼圆 ;
     position: absolute;
     flex-direction: column;
     bottom:0;
     width:100%;
     height:50%;
-    background: linear-gradient(to top, #939393, rgba(255, 255, 255, 0));
+    background: linear-gradient(to top, #696969, rgba(255, 255, 255, 0));
   }
   .NickName{
-    color:rgba(255, 255, 255, 0.62);
+    color: rgba(255, 255, 255, 0.78);
     height:50%;
     width:100%;
     font-size: 30px;
@@ -299,38 +307,6 @@
   width:100%;
   height:400px;
   font-size: 30px;
-  .box{
-    position: absolute;
-    margin-left: 15px;
-    width:250px;
-    height:80px;
-    border:solid 3px #d6b6ea;
-    background: rgb(233, 200, 241);
-    border-radius: 10px;
-    text-decoration-line: none;
-  }
-  .about-btn{
-    position: absolute;
-    width:250px;
-    height:80px;
-    border:solid 3px #d6b6ea;
-    border-radius: 10px;
-    background: rgb(253, 244, 255);
-    margin-top:-18px;
-    transition: 0.1s;
-    color:rgb(253, 244, 255);
-    cursor: pointer;
-    text-decoration-line: none;
-  }
-  .about-btn:hover{
-    margin-top:0;
-    margin-left:15px;
-    background: rgb(253, 244, 255);
-    color: #424242;
-  }
-  .about-btn__text{
-    text-decoration-line: none;
-  }
 }
 .Versions {
   width: 100%;
@@ -339,11 +315,13 @@
     position: relative;
     left: 10%;
     top: 10%;
-    height: 25px;
+    padding: 8px;
     width: 70px;
     font-size: 14px;
-    background: #ffffff;
-    border-radius: 10px;
+    font-family: 微软雅黑;
+    background: #e7e7e7;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 1px #dcdcdc;
   }
   .VersionContain {
     position: relative;
@@ -367,6 +345,5 @@
     text-decoration-line: none;
     color:#3a3a3a;
     box-shadow: 0px 0px 10px 3px #dcdcdc;
-
   }
 }
