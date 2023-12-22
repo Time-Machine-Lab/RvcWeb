@@ -14,6 +14,7 @@ import { ref } from "vue";
 import router from "@/router";
 import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postType";
 import { message } from "@/utils/message";
+import { storage } from "@/utils/storage";
 
 getPostById((router.currentRoute.value.query.id as unknown as number)).then(res => {
     localPost.value = res.data
@@ -86,6 +87,10 @@ const to = function (index: number) {
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
+    if(localPost.value.author.uid == storage.get<string>('uid')){
+        message.warning('这是你的贴子哦')
+        return
+    }
     setTimeout(function () {
         collectDisabled.value = true
     }
@@ -97,7 +102,7 @@ const collect = function () {
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.collect = !localPost.value.collect
-            localPost.value.collectNum = localPost.value.collectNum + 1
+            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect?1:-1)
             message.success('')
         } else {
             message.error(res.msg)
@@ -108,6 +113,10 @@ const collect = function () {
 const like = function () {
     if (!likeDisabled.value) return
     likeDisabled.value = false
+    if(localPost.value.author.uid == storage.get<string>('uid')){
+        message.warning('这是你的贴子哦')
+        return
+    }
     setTimeout(function () {
         likeDisabled.value = true
     }, 2000)
@@ -118,7 +127,7 @@ const like = function () {
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.like = !localPost.value.like
-            localPost.value.likeNum = localPost.value.likeNum + 1
+            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like?1:-1)
             message.success('')
         } else {
             message.error(res.msg)

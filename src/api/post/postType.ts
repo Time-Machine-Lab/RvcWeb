@@ -143,3 +143,7 @@ export type GetPostDetailsForm = {
     postId: string;
     [property: string]: any;
 }
+
+export type DeletePostForm = {
+    postId: string;
+}

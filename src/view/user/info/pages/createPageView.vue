@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
-import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
-import { PostVo, UserCreatePostForm } from '@/api/post/postType';
-import { getUserCreatePosts } from '@/api/post/postApi';
-let selectOptions = ref(['模型', '贴子'])
+import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue'
+import { PostVo, UserCreatePostForm } from '@/api/post/postType'
+import { getUserCreatePosts } from '@/api/post/postApi'
+import { useUserStore } from "@/view/user/info/userStore.js"
+const userStore = useUserStore();
+
+let selectOptions = ref([ '贴子','模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
@@ -15,8 +18,15 @@ let form = ref<UserCreatePostForm>({
     limit: '5',
     page: '0'
 })
-getUserCreatePosts(form.value).then(res => {
-    console.log(res);
+getUserCreatePosts(form.value).then((res:any) => {
+    if(res.code == 200){
+        let data = res.data
+        let userProfile = userStore.getProfile
+        for(let i=0;i<data.length;i++){
+            data[i].author = userProfile
+            posts.value.push(data[i])
+        }
+    }
 
 })
 const handleClickSelect = function () {
@@ -70,8 +80,11 @@ const loadPost = function () {
 </template>
 <style scoped>
 .create-pages {
+    position: relative;
     height: 100%;
-    width: 100%;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .create-pages__filter {
