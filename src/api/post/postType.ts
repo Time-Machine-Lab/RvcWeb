@@ -4,77 +4,22 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\api\post\postType.ts
  */
-import {UserInfoVO} from '@/api/user/userTypes'
+import { UserInfoVO } from '@/api/user/userTypes'
 export type PostVo = {
-    /**
-     * 作者头像
-     */
-    avatar: string;
-    /**
-     * 是否收藏
-     */
-    collect: string;
-    /**
-     * 收藏数
-     */
-    collectNum: string;
-    /**
-     * 评论数
-     */
-    commentNum: string;
-    /**
-     * 帖子内容
-     */
-    content: string;
-    /**
-     * 帖子封面
-     */
-    cover: string;
-    /**
-     * 创建日期
-     */
-    createAt: string;
-    /**
-     * 是否点赞
-     */
-    like: string;
-    /**
-     * 点赞数
-     */
-    likeNum: string;
-    /**
-     * 作者昵称
-     */
-    nickname: string;
-    /**
-     * 帖子id
-     */
     postId: string;
-    /**
-     * 帖子类型
-     */
-    tagId: string;
-    /**
-     * 帖子标题
-     */
+    author: UserInfoVO;
+    postType: PostType;
     title: string;
-    /**
-     * 创建帖子用户id
-     */
-    uid: string;
-    /**
-     * 更新日期
-     */
+    content: string;
+    cover: string | null;
+    commentNum: number;
+    likeNum: number;
+    collectNum: number;
+    watchNum: number;
+    createAt: string;
     updateAt: string;
-    /**
-     * 作者用户名
-     */
-    username: string;
-    /**
-     * 浏览数
-     */
-    watchNum: string;
-    [property: string]: any;
+    like: boolean;
+    collect: boolean;
 }
 
 
@@ -104,9 +49,9 @@ export type PostForm = {
 
 
 export type PostType = {
-    tag_id: string
-    tag_name: string
-    tag_img: string
+    id: string
+    tagName: string
+    tagImg: string
 }
 
 export type CommentVo = {
@@ -126,10 +71,10 @@ export type CommentVo = {
 }
 
 export type PostListForm = {
-    data:string
-    page:string
-    limit:string
-    tagId:string
+    data: string|undefined
+    page: string
+    limit: string
+    tagId: string|undefined
 }
 
 export type RvcCommunicationPostType = {

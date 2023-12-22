@@ -46,7 +46,7 @@ export type Profile = {
 
 export type ProfileForm = {
   avatar?: string;
-  nickName?: string;
+  nickname?: string;
   description?: string;
   sex?: string;
   birthday?: string;
@@ -55,7 +55,7 @@ export type ProfileForm = {
 export type OtherUser = {
   id: number;
   avatar: string;
-  nickName: string;
+  nickname: string;
   description: string;
 };
 

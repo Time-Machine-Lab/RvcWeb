@@ -14,14 +14,13 @@ const props = defineProps<{
 }>();
 const oldProfile = ref<ProfileForm>({
   avatar: props.userProfile.avatar,
-  nickName: props.userProfile.nickName,
+  nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
   birthday: props.userProfile.birthsday,
 });
 let newProfile = ref<ProfileForm>({
-  avatar: props.userProfile.avatar,
-  nickName: props.userProfile.nickName,
+  nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
   birthday: props.userProfile.birthsday,
@@ -67,11 +66,21 @@ const beforeAvatarUpload = function (rawFile:File) {
     message.warning('请上传小于10M的图片')
     return false
   }
-  uploadAvatar(rawFile).then(res=>{
-    console.log(res)
+  var reader = new FileReader();
+reader.readAsDataURL(rawFile);  
+reader.onload = function(){
+  newProfile.value.avatar = String(reader.result)
+}
+
+  
+  newProfile.value.avatar = rawFile.webkitRelativePath
+  uploadAvatar(rawFile).then((res:any)=>{
+    if(res.code == 200){
+      message.success('上传成功，等待审核')
+    }
     
   })
-  return true
+  return false
 };
 const submitChange = function () {
   if (!profileHasChanged()) {
@@ -82,7 +91,7 @@ const submitChange = function () {
   });
 };
 const profileHasChanged = function () {
-  return !(oldProfile.value.avatar == newProfile.value.avatar && oldProfile.value.birthday == newProfile.value.birthday && oldProfile.value.description == newProfile.value.description && oldProfile.value.nickName == newProfile.value.nickName && oldProfile.value.sex == newProfile.value.sex)
+  return !( oldProfile.value.birthday == newProfile.value.birthday && oldProfile.value.description == newProfile.value.description && oldProfile.value.nickname == newProfile.value.nickname && oldProfile.value.sex == newProfile.value.sex)
 }
 </script>
 <template>
@@ -105,7 +114,7 @@ const profileHasChanged = function () {
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 昵称 </span>
-        <input v-model="newProfile.nickName" style="width: 170px;" class="input" placeholder="nickname" :input-style="inputStyle" />
+        <input v-model="newProfile.nickname" style="width: 170px;" class="input" placeholder="nickname" :input-style="inputStyle" />
 
       </el-row>
       <el-row :gutter="20" class="row">
@@ -132,7 +141,7 @@ const profileHasChanged = function () {
         </div>
         <div class="sex-select" v-show="sexSelectvisibility">
           <div class="sex-select__item" v-for="(tag, index) in sexOptions" :key="index"
-            @click="currentSexIndex = index; sexSelectvisibility = false;newProfile.sex = sexOptions[currentSexIndex].value">
+            @click="currentSexIndex = index; sexSelectvisibility = false;newProfile.sex = sexOptions[currentSexIndex].label">
             {{ tag.label }}
           </div>
         </div>

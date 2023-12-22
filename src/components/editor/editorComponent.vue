@@ -9,7 +9,7 @@ import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { storage } from '@/utils/storage';
 let props = defineProps<{
-  content:string,
+  content: string,
   getContent: (html: string) => void
 }>()
 const editor = ref<any>(null)
@@ -39,7 +39,7 @@ const editorConfig = {
       timeout: 10 * 1000,
       // onSuccess( ) {
       //   console.log(res);
-        
+
       // },
       // onFailed(res:any) { //response格式不同，实际上这里是成功的
       //   console.log(res);
@@ -48,8 +48,8 @@ const editorConfig = {
       //   console.log(err,res);
       // },
       customInsert(res: any, insertFn: any) {
-        insertFn(res.data)
-    },
+        insertFn(res.data.url)
+      },
     },
     color: {
 
@@ -58,7 +58,7 @@ const editorConfig = {
 };
 const mode = 'default';
 
-const onCreated = (createdEditor:any) => {
+const onCreated = (createdEditor: any) => {
   editor.value = Object.seal(createdEditor);
   setInterval(() => {
     props.getContent(html.value)
@@ -78,8 +78,8 @@ onBeforeUnmount(() => {
 <template>
   <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: hidden" v-model="computedContent" :defaultConfig="editorConfig" :mode="mode"
-            @onCreated="onCreated" />
+    <Editor style="min-height:200px; overflow-y: hidden" v-model="computedContent" :defaultConfig="editorConfig"
+      :mode="mode" @onCreated="onCreated" />
   </div>
 </template>
 <style src="@wangeditor/editor/dist/css/style.css"></style>

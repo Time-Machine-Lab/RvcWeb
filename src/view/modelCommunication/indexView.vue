@@ -22,18 +22,18 @@ let tags = ref<{
     id:string|undefined
     name:string|undefined
 }[]>([])
-let page = ref(0)
+let page = ref(1)
 let form = ref<PostListForm>({
     data: '1',
-    page: '0',
+    page: '1',
     limit: '5',
-    tagId: '1'
+    tagId: ''
 })
 getPostType().then(res => {
     let data = ref<RvcCommunicationPostType[]>(res.data)
     for(let i=0;i<data.value.length;i++){
         tags.value.push({
-            id:data.value[i].tagId,
+            id:data.value[i].id,
             name:data.value[i].tagName
         })
     }
@@ -58,7 +58,25 @@ const load = function () {
         disabled.value = false
     })
 }
-
+const getTag = function(index:number){    
+    if(index == -1){
+        form.value.tagId = ''
+    } else {
+        form.value.tagId = tags.value[index]?.id
+    }
+    form.value.page = '1'
+    posts.value = []
+    load()
+}
+const getSort  = function(index:number){
+    if((index as unknown as string) == form.value.data)return
+    else{
+        form.value.data = (index as unknown as string)
+    }
+    form.value.page = '1'
+    posts.value = []
+    load()
+}
 // const load = function () {
 //     console.log('load');
     
@@ -68,12 +86,12 @@ let disabled = ref(false)
 <template>
     <div class="communicationView">
         <div class="filter-container">
-            <filterComponent :tags="tags"></filterComponent>
+            <filterComponent @getTag="getTag" @getSort="getSort" :tags="tags"></filterComponent>
         </div>
         <div class="post-list">
             <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" ></postCardComponentB>
             </waterFallComponent>
         </div>
     </div>
