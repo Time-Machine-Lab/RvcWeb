@@ -105,7 +105,7 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="props?.post?.cover!"
+        <img :src="props.post.cover? props.post.cover:getimg(localPost.postId as unknown as number)"
             @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="tag">
