@@ -66,8 +66,14 @@ export type CommentVo = {
     updateAt: string
     user: UserInfoVO | null
     replayUser: UserInfoVO | null
-    childrenComment: UserInfoVO | null
-
+    childrenComment: CommentVo[] | undefined
+    like:boolean
+}
+export type CommentChildrenListForm = {
+    data: string;
+    limit: string;
+    page: string;
+    [property: string]: any;
 }
 
 export type PostListForm = {
@@ -111,19 +117,19 @@ export type CommentForm = {
     /**
      * 所属帖子id
      */
-    postId: string;
+    postId: string|undefined;
     /**
      * 顶级评论id
      */
-    rootCommentId: string;
+    rootCommentId: string|undefined;
     /**
      * 回复目标评论id
      */
-    toCommentId: string;
+    toCommentId: string|undefined;
     /**
      * 回复目标用户id
      */
-    toUserId: string;
+    toUserId: string|undefined;
     [property: string]: any;
 }
 export type UserLikePostForm = {
@@ -146,4 +152,15 @@ export type GetPostDetailsForm = {
 
 export type DeletePostForm = {
     postId: string;
+}
+export type LikeCommentForm = {
+    /**
+     * 帖子id、评论id
+     */
+    id: string;
+    /**
+     * 1、点赞   0、取消点赞
+     */
+    type: string;
+    [property: string]: any;
 }

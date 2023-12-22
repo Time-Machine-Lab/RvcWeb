@@ -6,34 +6,72 @@
 -->
 <script lang="ts" setup>
 import commentComponent from '@/components/modelCommunication/commentComponent.vue'
-import { CommentVo } from '@/api/post/postType'
+import { CommentVo,CommentChildrenListForm } from '@/api/post/postType'
 import { ref } from 'vue';
+import { message } from '@/utils/message';
+import { getChildComments } from '@/api/post/postApi';
 let props = defineProps<{
     commentList: CommentVo[]
 }>()
 let rootComments = ref<CommentVo[]>(props.commentList)
-
-
-let showChildComments = ref<boolean[]>([
-    false, false, false, false, false
-])
+let showChildComments = ref<boolean[]>([])
+let hasChildComments = ref<boolean[]>([])
+let childForm = ref<CommentChildrenListForm[]>([])
+let disalbed = ref(false)
+for(let i=0;i<rootComments.value.length;i++){
+    rootComments.value[i].childrenComment =[]
+    showChildComments.value.push(false)
+    hasChildComments.value.push(true)
+    childForm.value.push({
+    data: rootComments.value[i].postCommentId,
+    limit: '10',
+    page: '1'
+})
+}
 const showReply = function (index: number) {
+    if(rootComments.value[index].childrenComment?.length==0){
+        getChildCommentsFunc(index)
+    }
     showChildComments.value[index] = !showChildComments.value[index]
     return showChildComments.value[index]
+}
+const getChildCommentsFunc = function(index:number){
+    if(disalbed.value){
+        return
+    }
+    disalbed.value = true
+    setTimeout(function(){
+        disalbed.value = false
+
+    },5000)
+    getChildComments(childForm.value[index]).then((res:any)=>{
+        if(res.code == 200){
+            if (res.data.length == 0) {
+            message.warning('没有更多评论了')
+            hasChildComments.value[index] = false
+            return
+        }
+        disalbed.value = false
+        let data  = ref<any>(res.data)
+        for(let i=0;i<data.value.length;i++){
+            rootComments.value[index].childrenComment?.push(data.value[i])
+        }
+        let page = childForm.value[index].page as unknown as number
+        page++
+        childForm.value[index].page = page as unknown as string
+        }
+    })
 }
 </script>
 <template>
     <div class="Comments">
-        <div class="info">
-            全部评论({{ commentList.length }})
-        </div>
         <div v-for="(comment, index) in rootComments" :key="index">
             <commentComponent :show-reply="showReply" :index="index" :comment="comment"></commentComponent>
             <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
 
                 <commentComponent :show-reply="showReply" :index="-1" :comment="childComment"></commentComponent>
             </div>
-
+            <div style="color: white;cursor:pointer;font-size: 14px;text-align: center;" @click="getChildCommentsFunc(index)" v-show="showChildComments[index]&&hasChildComments[index]">加载更多</div>
         </div>
     </div>
 </template>
@@ -46,7 +84,7 @@ const showReply = function (index: number) {
 
 .Comments {
     /* height: 85%; */
-    width: 95%;
+    width: 100%;
     margin: auto;
     bottom: 0;
 }

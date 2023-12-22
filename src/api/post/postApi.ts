@@ -118,3 +118,19 @@ export function postDelete(form:DeletePostForm){
         params:form
     })
 }
+
+export function getChildComments(form:CommentChildrenListForm){
+    return request({
+        method:'get',
+        url:'/communication/comment/childrenList',
+        params:form
+    })
+}
+
+export function likeComment(form:LikeCommentForm){
+    return request({
+        method:'put',
+        url:'/communication/comment/favorite',
+        data:form
+    })
+}

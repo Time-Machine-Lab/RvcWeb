@@ -12,10 +12,12 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 const userStore = useUserStore()
+let userProfile =ref<Profile>()
 let userStatusVisibility = ref(false)
 getLoginUserInfo().then(res => {
     console.log(res.data)
     userStore.setProfile(<Profile>res.data)
+    userProfile.value = userStore.getProfile
     storage.set('uid',res.data.uid)
 })
 const handleClickUser = function () {
@@ -37,18 +39,18 @@ const logoutFunc = function (){
 </script>
 <template>
     <div class="user-status">
-        <div class="login-button" v-if="!userStore?.getProfile?.uid" @click="$router.push('/login')">
+        <div class="login-button" v-if="!userProfile?.uid" @click="$router.push('/login')">
             登录
         </div>
         <div class="avatar-container" v-else>
             <div tabindex="-1" @click="handleClickUser" @blur="handleBlur" class="avatar"
-                :style="{ backgroundImage: 'url(' + '/teamPic/default.png' + ')' }">
+                :style="{ backgroundImage: 'url(' + userProfile?.avatar + ')' }">
 
             </div>
 
         </div>
         <div class="user-more" v-show="userStatusVisibility">
-            <RouterLink :to="'/user?id='+userStore?.getProfile?.uid">
+            <RouterLink :to="'/user?id='+userProfile?.uid">
                 <div class="user-more__item">
                 <div class="horizontal-center" style="display: flex;">
                     <span>
