@@ -15,7 +15,9 @@ import router from "@/router";
 import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postType";
 import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
-
+import { useUserStore } from '@/view/user/info/userStore.js'
+const userStore = useUserStore()
+let userProfile = userStore.getProfile
 getPostById((router.currentRoute.value.query.id as unknown as number)).then(res => {
     localPost.value = res.data
 })
@@ -87,7 +89,7 @@ const to = function (index: number) {
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
-    if(localPost.value.author.uid == storage.get<string>('uid')){
+    if (localPost.value.author.uid == storage.get<string>('uid')) {
         message.warning('这是你的贴子哦')
         return
     }
@@ -102,7 +104,7 @@ const collect = function () {
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.collect = !localPost.value.collect
-            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect?1:-1)
+            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
             message.success('')
         } else {
             message.error(res.msg)
@@ -113,7 +115,7 @@ const collect = function () {
 const like = function () {
     if (!likeDisabled.value) return
     likeDisabled.value = false
-    if(localPost.value.author.uid == storage.get<string>('uid')){
+    if (localPost.value.author.uid == storage.get<string>('uid')) {
         message.warning('这是你的贴子哦')
         return
     }
@@ -127,7 +129,7 @@ const like = function () {
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.like = !localPost.value.like
-            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like?1:-1)
+            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
             message.success('')
         } else {
             message.error(res.msg)
@@ -183,50 +185,26 @@ const sendComment = function () {
             <div class="post-content post-page__post__content" v-html="localPost?.content">
 
             </div>
-            <div class="post-page__post__editTime">
-                最后编辑于:{{ localPost?.updateAt }}
-            </div>
-            <div class="post-page__post__operation">
-                <div class="post-page__post__operation__item">
-                    <div class="post-page__post__operation__item__svg">
-                        <div @click="collect()"
-                            style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
-                        height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
-                        </div>
-                    </div>
-                    <div class="post-page__post__operation__item__num">
-                        {{ calcNum(localPost?.collectNum as unknown as number) }}
-                    </div>
+            <div class="post-page__post__footer">
+                <div class="post-page__post__footer__editTime">
+                    最后编辑于:{{ localPost?.updateAt }}
                 </div>
-                <div class="post-page__post__operation__item">
-                    <div class="post-page__post__operation__item__svg">
-                        <div @click="like()"
-                            style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
-                        height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                        </div>
+                <div class="post-page__post__footer__operation">
+                    <div class="operation-item" @click="collect">
+                        <div class="vertical-center" style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                        :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
                     </div>
-                    <div class="post-page__post__operation__item__num">
-                        {{ calcNum(localPost?.likeNum as unknown as number) }}
+                    <span>{{ calcNum(localPost.collectNum) }}</span>
+                    </div>
+                    <div class="operation-item" @click="like">
+                        <div class="vertical-center" style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                        :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                    </div>
+                    <span>{{ calcNum(localPost.likeNum) }}</span>
                     </div>
                 </div>
             </div>
-            <div class="post-page__post__commentBox">
-                <div class="post-page__post__commentBox--row1">
-                    <span>回复</span>
-                </div>
-                <div class="post-page__post__commentBox--row2">
-                    <textarea maxlength="300" v-model="inputContent"></textarea>
-                </div>
-                <div class="post-page__post__commentBox--row3">
-                    <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }"
-                        @click="sendComment">发送</button>
-                </div>
-            </div>
-            <div style="padding-bottom:50px;width:100%;position: absolute">
-                <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)"></postPageCommentsView>
-            </div>
+
         </div>
         <div class="post-page__sidebar">
             <div class="target-box">
@@ -268,13 +246,27 @@ const sendComment = function () {
             </div>
 
         </div>
+
+    </div>
+    <div class="comment">评论</div>
+    <div class="post-page__post__commentBox">
+        <div class="post-page__post__commentBox--row1">
+            <img width="40" height="40" :src="userProfile.avatar" style="border-radius: 20px;margin-right: 20px;">
+            <input maxlength="300" v-model="inputContent">
+        </div>
+        <div class="post-page__post__commentBox--row2">
+            <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" @click="sendComment">发送</button>
+        </div>
+    </div>
+    <div style="padding-bottom:50px;width:75%;position: relative;left: 50%;transform: translate(-50%);">
+        <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)"></postPageCommentsView>
     </div>
 </template>
 <style scoped>
 .post-page {
-    width: 80%;
+    width: 75%;
     /* overflow: auto; */
-    min-height: 100vh;
+    /* min-height: 100vh; */
     position: relative;
     left: 50%;
     display: flex;
@@ -326,19 +318,53 @@ const sendComment = function () {
     position: relative;
     width: calc(100% - 20px);
     padding: 10px;
+    min-height: 600px;
     border-bottom: rgba(255, 255, 255, 0.2) 1px solid;
 }
-
-.post-page__post__editTime {
-    position: relative;
+.post-page__post__footer{
+    height: 40px;
     width: 100%;
-    height: 30px;
-    line-height: 30px;
+    display: flex;
+}
+.post-page__post__footer__editTime {
+    position: relative;
+    width: 50%;
+    height: 40px;
+    line-height: 40px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.2);
     text-align: left;
     padding-left: 10px;
 }
+.post-page__post__footer__operation{
+    position: relative;
+    width: 50%;
+    height: 40px;
+    display: flex;
+    justify-content: right;
+}
+.operation-item{
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 30px;
+    display: flex;
+    background-color: rgba(31,34,37);
+    border-radius: 5px;
+    margin-right: 5px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+.operation-item span {
+    display: inline-block;
+    font-weight: 700;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    margin-left: 4px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
 
 .post-page__post__info__createAt {
     line-height: 20px;
@@ -397,59 +423,43 @@ const sendComment = function () {
     position: relative;
     left: 50%;
     transform: translate(-50%);
-    width: 95%;
-    height: 220px;
+    width: 75%;
+    height: 100px;
     margin-top: 30px;
-    background-color: rgba(40, 40, 50);
     border-radius: 5px;
-    border: rgba(255, 255, 255, 0.2) 1px solid;
-    box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px;
+    /* border: rgba(255, 255, 255, 0.2) 1px solid; */
 }
+
 
 .post-page__post__commentBox--row1 {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    height: 60px;
-    width: 90%;
-    text-align: left;
-}
-
-.post-page__post__commentBox--row1 span {
-    line-height: 60px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.post-page__post__commentBox--row2 {
-    height: 100px;
+    height: 50px;
     width: 100%;
+    display: flex;
 }
 
-.post-page__post__commentBox--row2 textarea {
+.post-page__post__commentBox--row1 input {
     width: calc(90% - 10px);
-    height: calc(100% - 10px);
+    height: 30px;
     border-radius: 5px;
     border: rgba(255, 255, 255, 0.2) 1px solid;
     resize: none;
     outline: none;
-    background-color: rgba(40, 40, 50);
+    background-color: rgba(26, 27, 30);
     transition: all 0.2s;
     padding: 5px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
 }
 
-.post-page__post__commentBox--row2 textarea:hover {
+.post-page__post__commentBox--row1 textarea:hover {
     border: rgba(255, 255, 255, 0.4) 1px solid;
 }
 
-.post-page__post__commentBox--row2 textarea:focus {
+.post-page__post__commentBox--row1 textarea:focus {
     border: #fb7299 1px solid;
 }
 
-.post-page__post__commentBox--row3 {
+.post-page__post__commentBox--row2 {
     position: relative;
     left: 50%;
     transform: translate(-50%);
@@ -458,9 +468,9 @@ const sendComment = function () {
     margin-top: 5px;
 }
 
-.post-page__post__commentBox--row3 button {
+.post-page__post__commentBox--row2 button {
     position: absolute;
-    right: 0;
+    right: 10px;
     bottom: 0;
     height: 30px;
     line-height: 30px;
@@ -469,7 +479,7 @@ const sendComment = function () {
     outline: none;
     border: none;
     border-radius: 3px;
-    background-color: #fb7299;
+    background-color: rgba(25, 113, 194);
     color: rgba(255, 255, 255, 0.7);
     font-weight: 700;
     letter-spacing: 3px;
@@ -488,11 +498,24 @@ const sendComment = function () {
     overflow: hidden;
     border: rgba(55, 58, 64) 1px solid;
 }
-
+.comment{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 30px;
+    width: 75%;
+    line-height: 30px;
+    font-size: 30px;
+    text-align: left;
+    padding-left: 10px;
+    font-weight: 700;
+    color: white;
+}
 .author-box__userInfo {
     position: relative;
     width: 100%;
     height: 149px;
+    background-color: rgba(26,27,30);
     border-bottom: rgba(55, 58, 64) 1px solid;
 }
 
@@ -578,13 +601,14 @@ const sendComment = function () {
     width: 95%;
     left: 50%;
     transform: translate(-50%);
-    background-color: rgba(37, 38, 43);
+    background-color: rgba(26,27,30);
     /* box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px; */
     border-radius: 5px;
     margin-top: 10px;
     border: rgba(55, 58, 64) 1px solid;
     padding: 0 0;
-    overflow: hidden;
+    max-height: 400px;
+    overflow: scroll;
 }
 
 .target-box__title {
