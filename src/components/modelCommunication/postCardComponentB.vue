@@ -117,7 +117,7 @@ const postDeleteFunc = function () {
             <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
             </div>
-            <div class="more-window__item" @click="postDeleteFunc">删除贴子</div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid" @click="postDeleteFunc">删除贴子</div>
         </div>
         <div class="post-card__info">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.author.uid)">
