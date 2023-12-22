@@ -17,13 +17,14 @@ const oldProfile = ref<ProfileForm>({
   nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
-  birthday: props.userProfile.birthsday,
+  birthday: props.userProfile.birthday,
 });
 let newProfile = ref<ProfileForm>({
+  avatar: props.userProfile.avatar,
   nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
-  birthday: props.userProfile.birthsday,
+  birthday: props.userProfile.birthday,
 });
 const sexOptions = ref([
   {
@@ -151,7 +152,7 @@ const profileHasChanged = function () {
 
         <div class="select">
           <div class="block">
-            <el-date-picker format="YYYY-MM-DD" value-format="YYYY-MM-DD" v-model="newProfile.birthday" type="date" placeholder="Pick a day" />
+            <el-date-picker format="YYYY-MM-DD"  value-format="YYYY-MM-DD" v-model="newProfile.birthday" type="date" placeholder="Pick a day" />
           </div>
         </div>
       </el-row>

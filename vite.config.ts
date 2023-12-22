@@ -54,7 +54,7 @@ export default defineConfig({
       //   changeOrigin: true
       // },
       "/rvcApi":{
-        target: "http://117.21.200.55:10000/",
+        target: "http://1.94.28.8:10000/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/rvcApi/, "/"),
       }
