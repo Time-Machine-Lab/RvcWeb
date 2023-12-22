@@ -6,21 +6,21 @@
 -->
 <script setup lang="ts">
 import { ref } from "vue";
-import { editUserInfo } from "@/api/user/userApi.ts";
+import { editUserInfo,uploadAvatar } from "@/api/user/userApi.ts";
 import { Profile, ProfileForm } from "@/api/user/userTypes";
+import { message } from "@/utils/message";
 const props = defineProps<{
   userProfile: Profile;
 }>();
 const oldProfile = ref<ProfileForm>({
   avatar: props.userProfile.avatar,
-  nickName: props.userProfile.nickName,
+  nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
   birthday: props.userProfile.birthsday,
 });
 let newProfile = ref<ProfileForm>({
-  avatar: props.userProfile.avatar,
-  nickName: props.userProfile.nickName,
+  nickname: props.userProfile.nickname,
   description: props.userProfile.description,
   sex: props.userProfile.sex,
   birthday: props.userProfile.birthsday,
@@ -59,7 +59,29 @@ const inputStyle = ref({
   color: "white",
 });
 const handleAvatarSuccess = function () { };
-const beforeAvatarUpload = function () { };
+const beforeAvatarUpload = function (rawFile:File) {
+  if (rawFile.type !== 'image/jpeg') {
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 10) {
+    message.warning('请上传小于10M的图片')
+    return false
+  }
+  var reader = new FileReader();
+reader.readAsDataURL(rawFile);  
+reader.onload = function(){
+  newProfile.value.avatar = String(reader.result)
+}
+
+  
+  newProfile.value.avatar = rawFile.webkitRelativePath
+  uploadAvatar(rawFile).then((res:any)=>{
+    if(res.code == 200){
+      message.success('上传成功，等待审核')
+    }
+    
+  })
+  return false
+};
 const submitChange = function () {
   if (!profileHasChanged()) {
     return
@@ -69,7 +91,7 @@ const submitChange = function () {
   });
 };
 const profileHasChanged = function () {
-  return !(oldProfile.value.avatar == newProfile.value.avatar && oldProfile.value.birthday == newProfile.value.birthday && oldProfile.value.description == newProfile.value.description && oldProfile.value.nickName == newProfile.value.nickName && oldProfile.value.sex == newProfile.value.sex)
+  return !( oldProfile.value.birthday == newProfile.value.birthday && oldProfile.value.description == newProfile.value.description && oldProfile.value.nickname == newProfile.value.nickname && oldProfile.value.sex == newProfile.value.sex)
 }
 </script>
 <template>
@@ -83,16 +105,16 @@ const profileHasChanged = function () {
       <el-row :gutter="20" class="row">
         <span class="label"> 头像 </span>
         <div class="upload-container">
-          <el-upload class="avatar-uploader" action="http://124.71.107.76" :show-file-list="false"
+          <el-upload class="avatar-uploader" :show-file-list="false"
             :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="newProfile.avatar" :src="newProfile.avatar" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"> + </el-icon>
+            <el-icon v-else class="avatar-uploader-icon"> {{ '<' }} 10M </el-icon>
           </el-upload>
         </div>
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 昵称 </span>
-        <input v-model="newProfile.nickName" style="width: 170px;" class="input" placeholder="nickname" :input-style="inputStyle" />
+        <input v-model="newProfile.nickname" style="width: 170px;" class="input" placeholder="nickname" :input-style="inputStyle" />
 
       </el-row>
       <el-row :gutter="20" class="row">
@@ -119,7 +141,7 @@ const profileHasChanged = function () {
         </div>
         <div class="sex-select" v-show="sexSelectvisibility">
           <div class="sex-select__item" v-for="(tag, index) in sexOptions" :key="index"
-            @click="currentSexIndex = index; sexSelectvisibility = false;newProfile.sex = sexOptions[currentSexIndex].value">
+            @click="currentSexIndex = index; sexSelectvisibility = false;newProfile.sex = sexOptions[currentSexIndex].label">
             {{ tag.label }}
           </div>
         </div>
@@ -129,7 +151,7 @@ const profileHasChanged = function () {
 
         <div class="select">
           <div class="block">
-            <el-date-picker v-model="newProfile.birthday" type="date" placeholder="Pick a day" />
+            <el-date-picker format="YYYY-MM-DD" value-format="YYYY-MM-DD" v-model="newProfile.birthday" type="date" placeholder="Pick a day" />
           </div>
         </div>
       </el-row>

@@ -2,13 +2,14 @@
 import { ref } from 'vue';
 import { CommentVo, CommentForm } from '@/api/post/postType'
 import {commentAdd} from '@/api/post/postApi'
+import { message } from '@/utils/message';
 let props = defineProps<{
   comment: CommentVo,
   showReply: (index: number) => boolean,
   index: number
 }
 >()
-let commentStyle = ref(props.comment.rootCommentId == '' ? 'root-comment' : 'child-comment');
+let commentStyle = ref(props.comment.rootCommentId == '0' ? 'root-comment' : 'child-comment');
 let showReplyText = ref('查看回复')
 let inputVisibility = ref(false)
 let inputContent = ref('')
@@ -28,9 +29,13 @@ const sendComment = function () {
     toCommentId: props.comment.postCommentId,
     toUserId: props.comment.userId
   })
-  commentAdd(form.value).then(res=>{
-    console.log(res);
-    inputContent.value = ""
+  commentAdd(form.value).then((res:any)=>{
+    if(res.code==200){
+            message.success('发送成功，等待审核')
+        } else{
+            message.error(res.msg)
+        }
+        inputContent.value = ""
 
   })
 
@@ -66,7 +71,7 @@ const sendComment = function () {
             回复
           </span>
           <span style="margin-left: 20px;cursor: pointer" @click="showReplyText = showReply(index) ? '收起' : '查看回复'"
-            v-show="props.comment.rootCommentId == '' ? true : false">
+            v-show="props.comment.rootCommentId == '0' ? true : false">
             {{ showReplyText }}
           </span>
         </div>

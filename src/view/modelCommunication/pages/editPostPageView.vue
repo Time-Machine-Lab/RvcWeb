@@ -19,7 +19,7 @@ let postForm = ref<PostForm>({
 let oldPost = ref<{
     title: string,
     content: string,
-    coverId: string,
+    coverId: string|null,
     tagId: string,
     tagName: string
 }>({
@@ -69,7 +69,7 @@ const savePost = function () {
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function () { }
 const getContent = function (html: string) {
-    content.value = html
+    postForm.value.content = html
 }
 
 const loadOldPost = function () {
@@ -80,10 +80,14 @@ const loadOldPost = function () {
         let data = ref<PostVo>(res.data)
         oldPost.value.title = data.value.title
         oldPost.value.content = data.value.content
-        oldPost.value.tagId = data.value.tagId
+        oldPost.value.tagId = data.value.postType.id
         oldPost.value.coverId = data.value.cover
-        oldPost.value.tagName = data.value.tagName
-        postForm.value = oldPost.value
+        oldPost.value.tagName = data.value.postType.tagName
+        postForm.value.title = oldPost.value.title
+        postForm.value.content = oldPost.value.content
+        postForm.value.tagId = oldPost.value.tagId
+        postForm.value.coverId = oldPost.value.coverId
+        postForm.value.tagName = oldPost.value.tagName
     })
 
 }

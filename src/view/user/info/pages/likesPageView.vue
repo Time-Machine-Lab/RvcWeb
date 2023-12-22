@@ -4,7 +4,7 @@ import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
 import { PostVo, UserLikePostForm } from '@/api/post/postType';
 import { getUserLikePosts } from '@/api/post/postApi';
-let selectOptions = ref(['模型', '贴子'])
+let selectOptions = ref([ '贴子','模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
@@ -15,8 +15,13 @@ let form = ref<UserLikePostForm>({
     limit: '5',
     page: '0'
 })
-getUserLikePosts(form.value).then(res => {
-    console.log(res);
+getUserLikePosts(form.value).then((res:any) => {
+    if(res.code == 200){
+        let data = res.data
+        for(let i=0;i<data.length;i++){
+            posts.value.push(data[i])
+        }
+    }
 
 })
 const handleClickSelect = function () {
@@ -70,8 +75,11 @@ const loadPost = function () {
 </template>
 <style scoped>
 .like-pages {
+    position: relative;
     height: 100%;
-    width: 100%;
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%);
 }
 
 .like-pages__filter {

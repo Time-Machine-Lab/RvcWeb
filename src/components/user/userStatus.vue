@@ -16,12 +16,8 @@ let userStatusVisibility = ref(false)
 getLoginUserInfo().then(res => {
     console.log(res.data)
     userStore.setProfile(<Profile>res.data)
+    storage.set('uid',res.data.uid)
 })
-const login = function () {
-    getLoginUserInfo().then(res => {
-        userStore.setProfile(<Profile>res.data)
-    })
-}
 const handleClickUser = function () {
     userStatusVisibility.value = !userStatusVisibility.value
 }
@@ -41,7 +37,7 @@ const logoutFunc = function (){
 </script>
 <template>
     <div class="user-status">
-        <div class="login-button" v-if="userStore?.getProfile?.id" @click="login">
+        <div class="login-button" v-if="!userStore?.getProfile?.uid" @click="$router.push('/login')">
             登录
         </div>
         <div class="avatar-container" v-else>

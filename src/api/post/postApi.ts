@@ -44,14 +44,14 @@ export function favoritePost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/favorite',
-        params:form
+        data:form
     })
 }
 export function collectPost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/collection',
-        params:form
+        data:form
     })
 }
 export function getCommentList(form:GetCommentListForm){
@@ -66,7 +66,7 @@ export function commentAdd(form:CommentForm){
     return request({
         method:'post',
         url:'/communication/comment/add',
-        params:form
+        data:form
     })
 }
 
@@ -74,7 +74,7 @@ export function postAdd(form:PostForm){
     return request({
         method:'post',
         url:'/communication/post/add',
-        params:form
+        data:form
     })
 }
 
@@ -98,5 +98,15 @@ export function getPostDetails(form:GetPostDetailsForm){
         method:'get',
         url:'/communication/post/details',
         params:form
+    })
+}
+
+export function uploadPicture(file:File){
+    const formData = new FormData();
+    formData.append('wangeditor-uploaded-image', file);
+    return request({
+        method:'post',
+        url:'/communication/post/cover',
+        data:formData
     })
 }

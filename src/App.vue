@@ -41,7 +41,7 @@ onBeforeMount(async () => {
   <!--  <div>-->
   <!--    <RouterView :key="$router.currentRoute.value.query.id as string" />-->
   <!--  </div>-->
-  <div style="height: 100vh;width: 100vw;min-width: 1080px;">
+  <div id="appVue" style="height: 100vh;width: 100vw;min-width: 1080px;">
     <el-container>
       <el-header class="header">
         <LayoutHeader></LayoutHeader>

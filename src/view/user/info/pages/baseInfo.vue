@@ -30,12 +30,12 @@ const open = () => {
 let userProfile = ref<Profile>({
   id: 0,
   avatar: "", //头像链接
-  nickName: "", //昵称
+  nickname: "", //昵称
   description: "", //简介
   register_date: "", //注册时间
   sex: "", //性别
-  fans_num: 0, //粉丝数量
-  follow_num: 0, //关注数
+  fansNum: '0', //粉丝数量
+  followNum: '0', //关注数
 });
 
 const follow = function () {
@@ -96,12 +96,12 @@ setTimeout(function () {
     <div class="information">
       <div class="username-container">
         <span class="username">
-          {{ userProfile.nickName ? userProfile.nickName : "unknow" }}
+          {{ userProfile.nickname ? userProfile.nickname : "unknow" }}
         </span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          创建于 {{ userProfile.register_date ? userProfile.register_date : "1970-01-01" }}
+           {{ userProfile.birthsday ? userProfile.birthsday : "1970-01-01" }}
         </span>
       </div>
     </div>

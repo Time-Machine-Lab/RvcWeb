@@ -25,7 +25,7 @@ const scroll = function () {
 <template>
   <div class="post-list infinite-list" v-infinite-scroll="scroll" :infinite-scroll-disabled="scrollDisabled" infinite-scroll-immediate="ture"
     infinite-scroll-distance="30" style="overflow: auto;">
-      <postCardComponent v-for="post in posts" :key="post.post_id" :post="post"></postCardComponent>
+      <postCardComponent v-for="post in posts" :key="post.postType.id" :post="post"></postCardComponent>
 </div>
 </template>
 
