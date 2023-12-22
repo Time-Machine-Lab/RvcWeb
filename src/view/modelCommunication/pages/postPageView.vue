@@ -19,23 +19,34 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then(res 
     localPost.value = res.data
 })
 let localPost = ref<PostVo>({
-    avatar: "",
-    collect: "",
-    collectNum: "",
-    commentNum: "",
-    content: "",
-    cover: "",
-    createAt: "",
-    like: "",
-    likeNum: "",
-    nickname: "",
     postId: "",
-    tagId: "",
+    author: {
+        avatar: undefined,
+        birthsday: undefined,
+        description: undefined,
+        fansNum: undefined,
+        followNum: undefined,
+        nickname: undefined,
+        sex: undefined,
+        uid: undefined,
+        username: undefined
+    },
+    postType: {
+        id: "",
+        tagName: "",
+        tagImg: ""
+    },
     title: "",
-    uid: "",
+    content: "",
+    cover: null,
+    commentNum: 0,
+    likeNum: 0,
+    collectNum: 0,
+    watchNum: 0,
+    createAt: "",
     updateAt: "",
-    username: "",
-    watchNum: ""
+    like: false,
+    collect: false
 })
 let inputContent = ref<string>('')
 let figures = ref([
@@ -81,13 +92,16 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.has_collect ? '0' : '1'
+        type: localPost.value.collect ? '0' : '1'
     }
-    collectPost(form).then((res:any) => {
-        localPost.value.has_collect = !localPost.value.has_collect
-        localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
-
-        message.warning(res.msg)
+    collectPost(form).then((res: any) => {
+        if (res.code == 200) {
+            localPost.value.collect = !localPost.value.collect
+            localPost.value.collectNum = localPost.value.collectNum + 1
+            message.success('')
+        } else {
+            message.error(res.msg)
+        }
 
     })
 }
@@ -99,20 +113,23 @@ const like = function () {
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.has_like ? '0' : '1'
+        type: localPost.value.like ? '0' : '1'
     }
     favoritePost(form).then((res: any) => {
-        localPost.value.has_like = !localPost.value.has_like
-        localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
-        message.warning(res.msg)
-
+        if (res.code == 200) {
+            localPost.value.like = !localPost.value.like
+            localPost.value.likeNum = localPost.value.likeNum + 1
+            message.success('')
+        } else {
+            message.error(res.msg)
+        }
     })
 }
 const calcNum = function (num: number) {
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
 const sendComment = function () {
-    if(inputContent.value == ''){
+    if (inputContent.value == '') {
         return
     }
     let form = ref<CommentForm>({
@@ -123,9 +140,9 @@ const sendComment = function () {
         toUserId: ""
     })
     commentAdd(form.value).then((res: any) => {
-        if(res.code==200){
+        if (res.code == 200) {
             message.success('发送成功，等待审核')
-        } else{
+        } else {
             message.error(res.msg)
         }
         inputContent.value = ""
@@ -148,10 +165,10 @@ const sendComment = function () {
             </div>
             <div class="post-page__post__info">
                 <div class="post-page__post__info__createAt">
-                    {{ localPost?.create_at }}
+                    {{ localPost?.createAt }}
                 </div>
                 <div class="post-page__post__info__tags">
-                    <span>{{ localPost?.tagId }}</span>
+                    <span>{{ localPost?.postType?.id }}</span>
                 </div>
             </div>
             <div class="post-content post-page__post__content" v-html="localPost?.content">
@@ -166,7 +183,7 @@ const sendComment = function () {
                         <div @click="collect()"
                             style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
                         height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.has_collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                            :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
@@ -178,7 +195,7 @@ const sendComment = function () {
                         <div @click="like()"
                             style="cursor:pointer;position:relative;left:50%;top:50%;transform:translate(-50%,-50%);
                         height: 40px;width: 40px;background-size: 100% 100%;background-position: center center;background-repeat: no-repeat;"
-                            :style="{ backgroundImage: localPost.has_like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                            :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                         </div>
                     </div>
                     <div class="post-page__post__operation__item__num">
@@ -199,7 +216,7 @@ const sendComment = function () {
                 </div>
             </div>
             <div style="padding-bottom:50px;width:100%;position: absolute">
-                <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ></postPageCommentsView>
+                <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)"></postPageCommentsView>
             </div>
         </div>
         <div class="post-page__sidebar">
@@ -216,12 +233,12 @@ const sendComment = function () {
                 <div class="author-box__userInfo">
                     <div class="author-box__userInfo__baseInfo">
                         <div class="author-box__userInfo__baseInfo__avatar"
-                            :style="{ backgroundImage: 'url(\'' + localPost?.avatar + '\')' }">
+                            :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
 
                         </div>
                         <div class="author-box__userInfo__baseInfo__username">
                             <div class="author-box__userInfo__baseInfo__text__username">
-                                {{ localPost?.nickname }}
+                                {{ localPost?.author.nickname }}
                             </div>
                             <div class="author-box__userInfo__baseInfo__text__createAt">
                                 <!-- 注册于 {{ localPost? }} -->

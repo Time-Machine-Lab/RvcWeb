@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-const sortMethod = ref(["时间排序", "浏览量排序", "点赞数量排序"])
+const sortMethod = ref(["时间排序", "点赞数量排序", "浏览量排序"])
 let props = defineProps<{
-    tags:{
-        id:string|undefined
-        name:string|undefined
-    }[]
+    tags: {
+        id: string | undefined
+        name: string | undefined
+    }[],
 }>()
+const emit = defineEmits(["getTag", "getSort"]);
+
 let tags = ref<{
-    id:string|undefined,
-    name:string|undefined
+    id: string | undefined,
+    name: string | undefined
 }[]>(props.tags)
 let sortSelectvisibility = ref(false)
 let clickSort = ref(false)
@@ -27,6 +29,15 @@ const handleBlur = function () {
         sortSelectvisibility.value = false
     }, 200)
 }
+const handleTagClick = function (index: number) {
+    currentTagsIndex.value = currentTagsIndex.value != index ? index : -1
+    emit('getTag', currentTagsIndex.value)
+}
+const handleSortClick = function (index:number) {
+    currentMethodIndex.value = index
+    sortSelectvisibility.value = false
+    emit('getSort',currentMethodIndex.value + 1)
+}
 </script>
 <template>
     <div class="filter-box">
@@ -37,8 +48,8 @@ const handleBlur = function () {
                     <span>
                         <img width="16" height="16" class="vertical-center" src="/icon/sort-down.svg">
                     </span>
-                    <span
-                        style="line-height: 40px;margin-left: 3px;margin-right: 7px;">{{ sortMethod[currentMethodIndex] }}</span>
+                    <span style="line-height: 40px;margin-left: 3px;margin-right: 7px;">{{ sortMethod[currentMethodIndex]
+                    }}</span>
                     <span>
                         <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
                             :class="sortSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
@@ -48,8 +59,9 @@ const handleBlur = function () {
             </div>
             <div class="sort-select" v-show="sortSelectvisibility">
                 <div class="sort-select__item" v-for="(method, index) in sortMethod" :key="index"
-                    @click="currentMethodIndex = index; sortSelectvisibility = false">{{ method }}
-                     <span v-show="currentMethodIndex == index" style="color: rgba(25,113,194);position:absolute;right: 15px;">
+                    @click="handleSortClick(index)">{{ method }}
+                    <span v-show="currentMethodIndex == index"
+                        style="color: rgba(25,113,194);position:absolute;right: 15px;">
                         ✓
                     </span>
                 </div>
@@ -58,7 +70,7 @@ const handleBlur = function () {
         <div class="filter-box__tags">
             <div class="filter-box__tags__item" v-for="(tag, index) in tags"
                 :style="{ backgroundColor: currentTagsIndex == index ? 'rgba(33,37,41)' : '' }" :key="index"
-                @click="currentTagsIndex = currentTagsIndex!=index?index:-1;">
+                @click="handleTagClick(index)">
                 {{ tag.name }}
             </div>
         </div>
@@ -168,4 +180,5 @@ const handleBlur = function () {
 
 .filter-box__tags__item:hover {
     background-color: rgba(33, 37, 41);
-}</style>
+}
+</style>

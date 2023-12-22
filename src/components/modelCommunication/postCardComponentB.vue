@@ -32,14 +32,15 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.has_collect ? '0' : '1'
+        type: localPost.value.collect ? '0' : '1'
     }
-    collectPost(form).then(res => {
-        if (res.status == 200) {
-            localPost.value.has_collect = !localPost.value.has_collect
-            localPost.value.collectNum = ((localPost.value.collectNum as unknown as number) + 1) as unknown as string
+    collectPost(form).then((res: any) => {
+        if (res.code == 200) {
+            localPost.value.collect = !localPost.value.collect
+            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect?1:-1)
+        } else {
+            message.error(res.msg)
         }
-        message.error('收藏失败，请稍后再试')
     })
 }
 const like = function () {
@@ -51,18 +52,19 @@ const like = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.has_like ? '0' : '1'
+        type: localPost.value.like ? '0' : '1'
     }
-    favoritePost(form).then(res => {
-        if (res.status == 200) {
-            localPost.value.has_like = !localPost.value.has_like
-            localPost.value.likeNum = ((localPost.value.likeNum as unknown as number) + 1) as unknown as string
+    favoritePost(form).then((res: any) => {
+        if (res.code == 200) {
+            localPost.value.like = !localPost.value.like
+            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like?1:-1)
+        } else {
+            message.error(res.msg)
         }
-        message.error('点赞失败，请稍后再试')
 
     })
 }
-const getimg = function (index:number) {
+const getimg = function (index: number) {
     const img = [
         "/testPic/1.jpeg",
         "/testPic/2.jpeg",
@@ -74,15 +76,22 @@ const getimg = function (index:number) {
         "/testPic/8.jpeg",
         "/testPic/9.jpeg",
     ]
-    return img[index%9]
+    return img[index % 9]
 }
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover ? props.post.cover : getimg(localPost.postId as unknown as number)" @click="$router.push('/post?id=' + localPost.postId)"
+        <img :src="props.post.cover ? props.post.cover : getimg(localPost.postId as unknown as number)"
+            @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:100px;width: 100%;margin: 0;padding: 0;">
-        <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur" :class="clickMore ? 'dither-animation' : ''">
-            <div style="height: 20px;width:20px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;"></div>
+        <div class="tag">
+            {{ localPost.postType.tagName }}
+        </div>
+        <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
+            :class="clickMore ? 'dither-animation' : ''">
+            <div
+                style="height: 20px;width:20px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
+            </div>
         </div>
         <div class="more-window" v-show="moreVisibility">
             <div class="more-window__item" @click="message.warning('敬请期待')">
@@ -90,14 +99,14 @@ const getimg = function (index:number) {
             </div>
         </div>
         <div class="post-card__info">
-            <div class="user-info" @click="$router.push('/user?id=' + localPost.uid)">
+            <div class="user-info" @click="$router.push('/user?id=' + localPost.author.uid)">
 
                 <div class="user-info__avatar"
-                    :style="{ backgroundImage: 'url(' + localPost.avatar ? localPost.avatar : '/teamPic/default.png' + ')' }">
+                    :style="{ backgroundImage: 'url(' + localPost.author?.avatar ? localPost.author?.avatar : '/teamPic/default.png' + ')' }">
 
                 </div>
                 <div class="user-info__usename">
-                    {{ localPost.nickname }}
+                    {{ localPost.author?.nickname }}
                 </div>
 
             </div>
@@ -116,15 +125,15 @@ const getimg = function (index:number) {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localPost.has_collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localPost.collectNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localPost.has_like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
-                    <span>{{ localPost.collectNum }}</span>
+                    <span>{{ localPost.likeNum }}</span>
                 </div>
                 <div class="other-info__stats__item">
                     <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/chat.svg\')' }">
@@ -148,6 +157,20 @@ const getimg = function (index:number) {
 .post-card:hover>img {
     transition: all 0.5s;
     scale: 1.02;
+}
+
+.tag {
+    padding: 0 10px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 10px;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.2);
+    color: white;
+    z-index: 30;
 }
 
 .more-window {
@@ -238,7 +261,7 @@ const getimg = function (index:number) {
     top: 50%;
     transform: translate(0, -50%);
     border-radius: 10px;
-    background-image: url("/public/teamPic/dhx.jpg");
+    /* background-image: url("/public/teamPic/dhx.jpg"); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -296,7 +319,7 @@ const getimg = function (index:number) {
     top: 10px;
     right: 10px;
 }
+
 .dither-animation {
     top: 11px;
-}
-</style>
+}</style>

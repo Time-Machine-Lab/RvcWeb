@@ -15,7 +15,8 @@ let postForm = ref<PostForm>({
   title: '',
   content: '',
   coverId: '',
-  tagId: ''
+  tagId: '',
+  coverUrl: ''
 })
 let draft = ref<{
   title: string,
@@ -65,11 +66,12 @@ const beforeCoverUpload = function (rawFile:File) {
     return false
   }
   uploadPicture(rawFile).then(res=>{
-    postForm.value.coverId = res.data
+    postForm.value.coverId = res.data.id
+    postForm.value.coverUrl = res.data.url
     console.log(res)
     
   })
-  return true
+  return false
 };
 const getContent = function (html: string) {
   content.value = html
@@ -147,7 +149,7 @@ loadDraft()
       </div>
       <div>
         <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
-          <img v-if="postForm.coverId" :src="postForm.coverId" class="cover" />
+          <img v-if="postForm.coverUrl" :src="postForm.coverUrl" class="cover" />
           <el-icon v-else class="cover-uploader-icon"> + </el-icon>
         </el-upload>
       </div>
