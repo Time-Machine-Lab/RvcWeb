@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { PostVo, FavoriteAndCollectionForm } from '@/api/post/postType'
-import { favoritePost, collectPost } from '@/api/post/postApi'
+import { PostVo, FavoriteAndCollectionForm, DeletePostForm } from '@/api/post/postType'
+import { favoritePost, collectPost, postDelete } from '@/api/post/postApi'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
+import { storage } from '@/utils/storage';
+import router from '@/router';
 let props = defineProps<{
     post: PostVo
 }>()
@@ -25,11 +27,15 @@ const handleBlur = function () {
 }
 const collect = function () {
     if (!collectDisabled.value) return
+
     collectDisabled.value = false
+    if (localPost.value.author.uid == storage.get<string>('uid')) {
+        message.warning('这是你的贴子哦')
+        return
+    }
     setTimeout(function () {
         collectDisabled.value = true
-    }
-        , 2000)
+    }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
         type: localPost.value.collect ? '0' : '1'
@@ -37,7 +43,7 @@ const collect = function () {
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.collect = !localPost.value.collect
-            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect?1:-1)
+            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
         } else {
             message.error(res.msg)
         }
@@ -45,7 +51,12 @@ const collect = function () {
 }
 const like = function () {
     if (!likeDisabled.value) return
+
     likeDisabled.value = false
+    if (localPost.value.author.uid == storage.get<string>('uid')) {
+        message.warning('这是你的贴子哦')
+        return
+    }
     setTimeout(function () {
         likeDisabled.value = true
     }
@@ -57,7 +68,7 @@ const like = function () {
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
             localPost.value.like = !localPost.value.like
-            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like?1:-1)
+            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
         } else {
             message.error(res.msg)
         }
@@ -67,21 +78,26 @@ const like = function () {
 const getimg = function (index: number) {
     const img = [
         "/testPic/1.jpeg",
-        "/testPic/2.jpeg",
-        "/testPic/3.jpeg",
-        "/testPic/4.jpeg",
-        "/testPic/5.jpeg",
-        "/testPic/6.jpeg",
-        "/testPic/7.jpeg",
-        "/testPic/8.jpeg",
-        "/testPic/9.jpeg",
     ]
-    return img[index % 9]
+    return img[index % 1]
+}
+const postDeleteFunc = function () {
+    let form = ref<DeletePostForm>({
+        postId: localPost.value.postId
+    })
+    postDelete(form.value).then((res: any) => {
+        if (res.code == 200) {
+            message.success('删除成功')
+        }
+    })
+}
+const editPost = function () {
+    router.push('/editPost?postId=' + localPost.value.postId)
 }
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover ? props.post.cover : getimg(localPost.postId as unknown as number)"
+        <img :src="props.post.cover? props.post.cover:getimg(localPost.postId as unknown as number)"
             @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="tag">
@@ -96,6 +112,13 @@ const getimg = function (index: number) {
         <div class="more-window" v-show="moreVisibility">
             <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
+            </div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid"
+                @click="postDeleteFunc">
+                删除贴子
+            </div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid" @click="editPost">
+                编辑贴子
             </div>
         </div>
         <div class="post-card__info">
@@ -147,6 +170,7 @@ const getimg = function (index: number) {
 <style>
 .post-card {
     position: relative;
+    min-height: 200px;
     width: 380px;
     cursor: pointer;
     border-radius: 10px;
@@ -168,7 +192,7 @@ const getimg = function (index: number) {
     top: 10px;
     font-size: 10px;
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     color: white;
     z-index: 30;
 }
@@ -322,4 +346,5 @@ const getimg = function (index: number) {
 
 .dither-animation {
     top: 11px;
-}</style>
+}
+</style>

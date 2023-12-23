@@ -2,30 +2,33 @@
 import editorComponent from '@/components/editor/editorComponent.vue'
 import "@/assets/css/post/postContent.css"
 import { GetPostDetailsForm, PostForm, RvcCommunicationPostType, PostVo } from '@/api/post/postType'
-import { getPostType, postAdd, getPostDetails } from '@/api/post/postApi'
+import { getPostType, postAdd, getPostDetails, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import router from '@/router'
+import { message } from '@/utils/message'
 let tagsOption = ref<{
     value: string | undefined
     label: string | undefined
 }[]>([])
-let content = ref('')
 let postForm = ref<PostForm>({
     title: '',
     content: '',
     coverId: '',
+    coverUrl: '',
     tagId: ''
 })
 let oldPost = ref<{
     title: string,
     content: string,
-    coverId: string|null,
+    coverId: string | null,
+    coverUrl: string | null,
     tagId: string,
     tagName: string
 }>({
     title: '',
     content: '',
     coverId: '',
+    coverUrl: '',
     tagId: '',
     tagName: ''
 })
@@ -61,13 +64,34 @@ const savePost = function () {
         return
     }
     postForm.value.postId = (router.currentRoute.value.query.postId as string)
-    postForm.value.content = content.value
-    postAdd(postForm.value).then(res => {
-        console.log(res);
+    postAdd(postForm.value).then((res: any) => {
+        if (res.code == 200) {
+            message.success('保存成功')
+            router.back()
+        }
     })
 }
 const handleCoverSuccess = function () { }
-const beforeCoverUpload = function () { }
+const beforeCoverUpload = function (rawFile: File) {
+    if (rawFile.type !== 'image/jpeg') {
+        return false
+    } else if (rawFile.size / 1024 / 1024 > 10) {
+        message.warning('请上传小于10M的图片')
+        return false
+    }
+    uploadPicture(rawFile).then((res: any) => {
+        if (res.code == 200) {
+            postForm.value.coverId = res.data.id
+            postForm.value.coverUrl = res.data.url
+            message.success('上传成功')
+        } else {
+            message.success('上传失败')
+        }
+
+
+    })
+    return false
+}
 const getContent = function (html: string) {
     postForm.value.content = html
 }
@@ -113,7 +137,8 @@ loadOldPost()
                     内容
                 </div>
                 <div style="width: 90%;">
-                    <editorComponent :getContent="getContent" :content="postForm.content"></editorComponent>
+                    <editorComponent v-if="postForm.content" :getContent="getContent" :editorContent="postForm.content">
+                    </editorComponent>
                 </div>
             </div>
 
@@ -126,7 +151,8 @@ loadOldPost()
 
           </div> -->
             <div class="button-group">
-                <div class="button-group__submit" @click="savePost" :style="{cursor:!postHasChanged()?'not-allowed':'pointer'}">
+                <div class="button-group__submit" @click="savePost"
+                    :style="{ cursor: !postHasChanged() ? 'not-allowed' : 'pointer' }">
                     保存
                 </div>
             </div>
@@ -136,7 +162,7 @@ loadOldPost()
             <div>
                 <el-upload class="cover-uploader" action="/communication/post/cover
 " :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
-                    <img v-if="postForm.cover" :src="postForm.cover" class="cover" />
+                    <img v-if="postForm.coverUrl" :src="postForm.coverUrl" class="cover" />
                     <el-icon v-else class="cover-uploader-icon"> + </el-icon>
                 </el-upload>
             </div>

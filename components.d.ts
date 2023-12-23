@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-11-30 14:50:51
+ * @Description:
+ * @FilePath: \RvcWeb\components.d.ts
+ */
 /* eslint-disable */
 /* prettier-ignore */
 // @ts-nocheck
@@ -16,10 +22,14 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
@@ -37,6 +47,8 @@ declare module 'vue' {
     LoginComponent: typeof import('./src/components/intro/LoginComponent.vue')['default']
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
     ModelCardComponentB: typeof import('./src/components/rvcModel/modelCardComponentB.vue')['default']
+    ModelCommentComponent: typeof import('./src/components/rvcModel/modelCommentComponent.vue')['default']
+    ModelCommentsComponent: typeof import('./src/components/rvcModel/modelCommentsComponent.vue')['default']
     NewFeedbackComponent: typeof import('./src/components/feedback/NewFeedbackComponent.vue')['default']
     NoticeBoardComponent: typeof import('./src/components/intro/NoticeBoardComponent.vue')['default']
     PostCardComponentA: typeof import('./src/components/modelCommunication/postCardComponentA.vue')['default']
@@ -45,10 +57,15 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchComponent: typeof import('./src/components/common/searchComponent.vue')['default']
+    SuggestedModelsComponent: typeof import('./src/components/rvcModel/suggestedModelsComponent.vue')['default']
     TagSelectComponent: typeof import('./src/components/common/tagSelectComponent.vue')['default']
+    UserCardComponent: typeof import('./src/components/user/userCardComponent.vue')['default']
     UserStatus: typeof import('./src/components/user/userStatus.vue')['default']
     WaterFallComponent: typeof import('./src/components/layout/waterFallComponent.vue')['default']
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

@@ -90,7 +90,7 @@ setTimeout(function () {
     <div class="avatar-container">
       <div
         class="avatar"
-        :style="{ backgroundImage: 'url(\'' + userProfile.avatar?userProfile?.avatar:'/teamPic/default.png' + '\')' }"
+        :style="{ backgroundImage: 'url(\'' + userProfile.avatar + '\')' }"
       ></div>
     </div>
     <div class="information">

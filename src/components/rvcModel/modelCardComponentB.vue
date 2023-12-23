@@ -82,7 +82,7 @@ const getimg = function (index: number) {
         <img :src="props.model.picture ? props.model.picture : getimg(localModel.id as unknown as number)"
             @click="$router.push('/model?id=' + localModel.id)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
-            :class="clickMore ? 'dither-animation' : ''">
+            :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
             <div
                 style="height: 20px;width:20px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
             </div>

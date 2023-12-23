@@ -22,10 +22,15 @@ request.interceptors.request.use(
     // 从storage中获取token
     const token = storage.get<string>('token')
     const uid = storage.get<string>('uid')
+    // const username = storage.get<string>('username')
     console.log(token)
     if (token!='') {
       // 将token添加到请求头中
       config.headers.token = token
+      // config.headers.uid = uid
+      // config.headers.useranme = username
+    }
+    if(uid!=''){
       config.headers.uid = uid
     }
     console.log(config)

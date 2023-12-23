@@ -1,12 +1,13 @@
 <!--
  * @Author: Dhx
  * @Date: 2023-11-30 14:50:51
- * @Description: 
+ * @Description:
  * @FilePath: \RvcWeb\src\App.vue
 -->
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
+import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
 import './style.css'
 // import { preloadImages } from '@/utils/preload';
 
@@ -47,23 +48,15 @@ onBeforeMount(async () => {
         <LayoutHeader></LayoutHeader>
       </el-header>
       <el-main class="main">
-        <RouterView :key="($router.currentRoute.value.query.id as string)" />
+        <Transition name="slide-fade">
+          <RouterView :key="($router.currentRoute.value.query.id as string)" />
+        </Transition>
       </el-main>
-      <el-footer class="foot flex">
-        <router-link to="/about" target="_blank" class="foot-btn flex">
-          <p>加入我们</p>
-        </router-link>
-        <router-link to="/service" target="_blank" class="foot-btn flex">
-          <p>服务条款</p>
-        </router-link>
-        <router-link to="/feedback" target="_blank" class="foot-btn flex">
-          <p>反馈</p>
-        </router-link>
-      </el-footer>
+      <LayoutFooter></LayoutFooter>
     </el-container>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
 
 * {
@@ -89,21 +82,18 @@ onBeforeMount(async () => {
   padding: 0;
   background-color: rgb(26,27,30);
 }
-.foot{
-  justify-content: left;
-  position: fixed;
-  bottom: 0;
-  width:100vw;
-  height:40px;
-  background: black;
-  font-family: 华文中宋;
-  .foot-btn{
-    width:100px;
-    height:100%;
-    color: #e5e5e5;
-  }
-  .foot-btn:hover{
-    color: #b7b7b7;
-  }
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>

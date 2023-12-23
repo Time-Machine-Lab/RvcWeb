@@ -9,9 +9,10 @@ import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { storage } from '@/utils/storage';
 let props = defineProps<{
-  content: string,
+  editorContent: string,
   getContent: (html: string) => void
 }>()
+
 const editor = ref<any>(null)
 const toolbarConfig = {
   excludeKeys: [
@@ -21,7 +22,8 @@ const toolbarConfig = {
     "fullScreen", "codeBlock", "todo", "|", "group-video"
   ]
 }
-let html = ref(props.content)
+let html = ref(props.editorContent)
+
 const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
@@ -66,7 +68,6 @@ const onCreated = (createdEditor: any) => {
 
 };
 
-const computedContent = ref(html);
 
 onBeforeUnmount(() => {
   if (editor.value) {
@@ -78,7 +79,7 @@ onBeforeUnmount(() => {
 <template>
   <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: hidden" v-model="computedContent" :defaultConfig="editorConfig"
+    <Editor style="min-height:200px; overflow-y: hidden" v-model="html" :defaultConfig="editorConfig"
       :mode="mode" @onCreated="onCreated" />
   </div>
 </template>

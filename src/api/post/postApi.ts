@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\api\post\postApi.ts
  */
 import request from '@/utils/request'
-import { GetCommentListForm, FavoriteAndCollectionForm, PostForm,PostListForm, CommentForm,UserLikePostForm, UserCreatePostForm, GetPostDetailsForm } from '@/api/post/postType'
+import { GetCommentListForm, FavoriteAndCollectionForm, PostForm,PostListForm, CommentForm,UserLikePostForm, UserCreatePostForm, GetPostDetailsForm, DeletePostForm,CommentChildrenListForm,LikeCommentForm } from '@/api/post/postType'
 
 export function getPostById(post_id:number){
     return request({
@@ -108,5 +108,29 @@ export function uploadPicture(file:File){
         method:'post',
         url:'/communication/post/cover',
         data:formData
+    })
+}
+
+export function postDelete(form:DeletePostForm){
+    return request({
+        method:'delete',
+        url:'/communication/post/delete',
+        params:form
+    })
+}
+
+export function getChildComments(form:CommentChildrenListForm){
+    return request({
+        method:'get',
+        url:'/communication/comment/childrenList',
+        params:form
+    })
+}
+
+export function likeComment(form:LikeCommentForm){
+    return request({
+        method:'put',
+        url:'/communication/comment/favorite',
+        data:form
     })
 }
