@@ -40,7 +40,11 @@ const handleBlur = function () {
             + 新帖子
           </div>
         </RouterLink>
-
+        <RouterLink to="/newModel">
+          <div class="newModel">
+            + 新模型
+          </div>
+        </RouterLink>
         <div tabindex="-1" @click="handleClickSort" @blur="handleBlur" class="bell" :class="clickBell ? 'dither-animation' : ''">
           <div class="bell__point"></div>
           <img src="/icon/bell.svg" width="25" height="25">
@@ -93,6 +97,20 @@ const handleBlur = function () {
   color: rgba(165, 216, 255);
   line-height: 40px;
   background-color: rgba(26, 45, 63);
+  cursor: pointer;
+  margin-right: 10px;
+}
+.newModel{
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: rgba(165, 216, 255);
+  line-height: 40px;
+  background-color: rgba(30,54,38);
   cursor: pointer;
 }
 

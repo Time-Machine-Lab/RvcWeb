@@ -11,10 +11,23 @@ declare module 'vue' {
     CommentComponent: typeof import('./src/components/modelCommunication/commentComponent.vue')['default']
     CommentsComponent: typeof import('./src/components/modelCommunication/commentsComponent.vue')['default']
     EditorComponent: typeof import('./src/components/editor/editorComponent.vue')['default']
+
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
     FeedBackComponent: typeof import('./src/components/feedback/FeedBackComponent.vue')['default']
     FilterComponent: typeof import('./src/components/common/filterComponent.vue')['default']
@@ -24,6 +37,7 @@ declare module 'vue' {
     ModelCardComponentB: typeof import('./src/components/rvcModel/modelCardComponentB.vue')['default']
     ModelCommentComponent: typeof import('./src/components/rvcModel/modelCommentComponent.vue')['default']
     ModelCommentsComponent: typeof import('./src/components/rvcModel/modelCommentsComponent.vue')['default']
+    ModelEditorComponent: typeof import('./src/components/editor/modelEditorComponent.vue')['default']
     NewFeedbackComponent: typeof import('./src/components/feedback/NewFeedbackComponent.vue')['default']
     NoticeBoardComponent: typeof import('./src/components/intro/NoticeBoardComponent.vue')['default']
     PostCardComponentA: typeof import('./src/components/modelCommunication/postCardComponentA.vue')['default']
@@ -38,5 +52,10 @@ declare module 'vue' {
     UserStatus: typeof import('./src/components/user/userStatus.vue')['default']
     WaterFallComponent: typeof import('./src/components/layout/waterFallComponent.vue')['default']
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
