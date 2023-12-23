@@ -8,6 +8,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:vue/vue3-essential",
+    '.eslintrc-auto-import.json',
     "prettier",
   ],
   overrides: [

@@ -1,12 +1,13 @@
 <!--
  * @Author: Dhx
  * @Date: 2023-11-30 18:48:48
- * @Description: 
+ * @Description:
  * @FilePath: \RvcWeb\src\view\layout\header\layoutHeader.vue
 -->
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue"
 import searchComponent from "@/components/common/searchComponent.vue"
+import Navigation from "@/view/layout/header/navigation.vue"
 import { ref } from "vue";
 let clickBell = ref(false)
 let msgVisibility = ref(false)
@@ -28,6 +29,7 @@ const handleBlur = function () {
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
+    <Navigation></Navigation>
     <div class="search">
       <searchComponent></searchComponent>
     </div>
@@ -152,14 +154,16 @@ const handleBlur = function () {
 }
 
 .search {
-  position: relative;
+  position: absolute;
+  left:20%;
   height: 100%;
-  width: 70%;
+  width: 65%;
 }
 
 .header__right {
-  position: relative;
+  position: absolute;
   width: calc(30% - 500px);
+  right:0;
   min-width: 300px;
   height: 100%;
   display: flex;
