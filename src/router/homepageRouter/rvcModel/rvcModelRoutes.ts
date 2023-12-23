@@ -9,7 +9,11 @@ export default[
       path: "/model",
       name: "modelPage",
       component: () => import("@/view/rvcModel/pages/modelPageView.vue"),
-
+    },
+    {
+      path: "/newModel",
+      name: "newModel",
+      component: () => import('@/view/rvcModel/pages/newModelPageView.vue')
     }
   
   ];

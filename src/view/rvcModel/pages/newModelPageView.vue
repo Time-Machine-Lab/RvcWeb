@@ -1,0 +1,404 @@
+<script lang="ts" setup>
+import TagSelectComponent from '@/components/common/tagSelectComponent.vue';
+import ModelEditorComponent from '@/components/editor/modelEditorComponent.vue';
+import { ModelAddForm } from '@/api/rvcModel/modelType'
+import {uploadModel,uploadAudio} from '@/api/rvcModel/modelApi'
+import { ref } from 'vue';
+import { message } from '@/utils/message';
+import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
+let typeOptions = ref(['RVC'])
+let typeSelectvisibility = ref(false)
+let clickType = ref(false)
+let currentTypeIndex = ref(0)
+let content = ref('')
+let modelAddForm = ref<ModelAddForm>({
+    description: '',
+    fileId: [],
+    label: [],
+    name: '',
+    note: '',
+    picture: '',
+    typeId: 'RVC'
+})
+let process = ref<{
+    current: number
+}>({
+    current: 1
+})
+let options = ref<{
+    value: string,
+    label: string
+}[]>([{
+    value: '1',
+    label: '1'
+}, {
+    value: '2',
+    label: '2'
+}, {
+    value: '3',
+    label: '3'
+}, {
+    value: '4',
+    label: '4'
+}])
+const handleClickSort = function () {
+    clickType.value = true
+    typeSelectvisibility.value = !typeSelectvisibility.value
+    setTimeout(function () {
+        clickType.value = false
+    }, 200)
+}
+const handleBlur = function () {
+    setTimeout(function () {
+        typeSelectvisibility.value = false
+    }, 200)
+}
+const getContent = function (html: string) {
+    modelAddForm.value.description = html
+}
+const nextStep = function () {
+    if (modelAddForm.value.name != '' && modelAddForm.value.typeId != '' && modelAddForm.value.description != '') {
+        process.value.current = process.value.current + 1
+
+    } else {
+        message.warning('请填写以上信息')
+    }
+}
+const lastStep = function () {
+    if (process.value.current != 0) {
+        process.value.current = process.value.current - 1
+    }
+}
+const handleModelFileSuccess = function () { };
+const beforeModelFileUpload = function (rawFile: File) {
+    modelFiles.push(rawFile)
+    uploadModelFile()
+    return false
+};
+const uploadModelFile = function(){
+    if(modelFiles.length == 2){
+        uploadModel(modelFiles[0],modelFiles[1]).then((res:any)=>{
+            if(res.code == 200 && res.flag){
+                modelAddForm.value.fileId.push(res.data[0].fileId)
+                modelAddForm.value.fileId.push(res.data[1].fileId)
+                console.log(modelAddForm.value.fileId);
+                
+            } else{
+                message.error(res.message)
+            }
+        })
+    }
+}
+const handleAudioFileSuccess = function () { };
+const beforeAudioFileUpload = function (rawFile: File) {
+    uploadAudio(rawFile).then((res:any)=>{
+        if(res.code==200){
+            console.log(res);
+            
+        }
+    })
+    return false
+};
+
+const uploadModelRef = ref<UploadInstance>()
+const uploadAudioRef = ref<UploadInstance>()
+const handleUpload = function(){
+    modelFiles = []
+    uploadModelRef?.value?.submit()
+    uploadAudioRef?.value?.submit()
+}
+let modelFiles:any = []
+</script>
+<template>
+    <div class="new-model">
+        <div class="new-model__title">
+            上传模型
+        </div>
+        <div class="new-model__process">
+            <div class="new-model__process__ball"
+                :style="{ border: process.current == 1 ? 'rgba(25,113,194) 2px solid' : '', backgroundColor: process.current > 1 ? 'rgba(25,113,194)' : '' }">
+                1</div>
+            <div class="new-model__process__desc">
+                模型信息
+            </div>
+            <div class="new-model__process__dash"></div>
+            <div class="new-model__process__ball"
+                :style="{ border: process.current == 2 ? 'rgba(25,113,194) 2px solid' : '', backgroundColor: process.current > 2 ? 'rgba(25,113,194)' : '' }">
+                2</div>
+            <div class="new-model__process__desc">
+                上传文件
+            </div>
+            <div class="new-model__process__dash"></div>
+            <div class="new-model__process__ball"
+                :style="{ border: process.current == 3 ? 'rgba(25,113,194) 2px solid' : '', backgroundColor: process.current > 3 ? 'rgba(25,113,194)' : '' }">
+                3</div>
+            <div class="new-model__process__desc">
+                提交
+            </div>
+        </div>
+        <div v-show="process.current == 1">
+            <div class="new-model__title">
+                模型信息
+            </div>
+            <span class="label">模型名称<span class="important">*</span></span>
+            <input class="input" placeholder="模型名称" v-model="modelAddForm.name">
+
+            <span class="label">模型类型<span class="important">*</span></span>
+            <div class="select">
+                <div tabindex="-1" class="type-selecter"
+                    :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
+                    :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
+                    <div class="horizontal-center" style="width:100%;display: flex;">
+                        <span style="position: relative;left:0%;line-height: 35px;width:97%;text-align: left;">{{
+                            typeOptions[currentTypeIndex] }}</span>
+                        <span style="position: relative;right:0%;">
+                            <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
+                                :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
+                        </span>
+                    </div>
+
+                </div>
+                <div class="type-select" v-show="typeSelectvisibility">
+                    <div class="type-select__item" v-for="(tag, index) in typeOptions" :key="index"
+                        @click="currentTypeIndex = index; typeSelectvisibility = false; modelAddForm.typeId = tag"
+                        :style="{ backgroundColor: currentTypeIndex == index ? 'rgba(24,100,171)' : '' }">
+                        {{ tag }}
+                    </div>
+                </div>
+
+            </div>
+            <span class="label">标签<span class="important">*</span></span>
+            <TagSelectComponent :options="options"></TagSelectComponent>
+            <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
+            <ModelEditorComponent :get-content="getContent" :editorContent="content"></ModelEditorComponent>
+            <div class="button-group">
+                <div class="button-group__item" @click="lastStep"
+                    :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
+                    上一步
+                </div>
+                <div class="button-group__item" @click="nextStep">
+                    下一步
+                </div>
+            </div>
+        </div>
+        <div v-show="process.current == 2">
+            <div class="new-model__title">
+                上传模型文件
+            </div>
+            <el-upload ref="uploadModelRef" class="upload-demo" drag :auto-upload="false" :limit="2" :on-success="handleModelFileSuccess" :before-upload="beforeModelFileUpload" 
+                multiple>
+                
+                <div class="el-upload__text">
+                    将文件拖拽到此处或点击上传
+                </div>
+                <div class="el-upload__text">
+                    提示：上传.pth与.index文件
+                </div>
+            </el-upload>
+            <div class="new-model__title">
+                上传试听音频
+            </div>
+            <el-upload ref="uploadAudioRef" class="upload-demo" drag  :auto-upload="false" :limit="5"   :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"
+                multiple>
+
+                <div class="el-upload__text">
+                    将文件拖拽到此处或点击上传
+                </div>
+                <div class="el-upload__text">
+                    最多可上传5个文件
+                </div>
+            </el-upload>
+            <div class="button-group">
+                <div class="button-group__item" @click="lastStep"
+                    :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
+                    上一步
+                </div>
+                <div class="button-group__item" v-if="modelAddForm.fileId.length==2" @click="nextStep">
+                    下一步
+                </div>
+                <div class="button-group__item" v-else @click="handleUpload">
+                    上传
+                </div>
+            </div>
+        </div>
+        <div v-show="process.current == 3">
+
+        </div>
+    </div>
+</template>
+<style scoped>
+:deep(.upload-demo *) {
+    background-color: transparent;
+}
+
+.new-model {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    width: 40%;
+    text-align: left;
+    min-height: 100vh;
+}
+
+.new-model__title {
+    height: 70px;
+    width: 100%;
+    line-height: 70px;
+    font-weight: 700;
+    font-size: 30px;
+    color: rgba(193, 194, 197);
+}
+
+.new-model__process {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.new-model__process__ball {
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 36px;
+    width: 36px;
+    border-radius: 18px;
+    background-color: rgba(44, 46, 51);
+    text-align: center;
+    color: rgba(193, 194, 197);
+    line-height: 36px;
+}
+
+.new-model__process__desc {
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    color: rgba(193, 194, 197);
+}
+
+.new-model__process__dash {
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 30px;
+    height: 2px;
+    background-color: rgba(44, 46, 51);
+    margin-right: 10px;
+
+}
+
+.label {
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.important {
+    color: rgba(224, 49, 49);
+}
+
+.input {
+    position: relative;
+    display: block;
+    width: 100%;
+    float: left;
+    height: 35px;
+    border: rgba(55, 58, 64) 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background-color: rgba(37, 38, 43);
+    color: rgba(255, 255, 255, 0.7);
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.type-selecter {
+    width: calc(100% - 20px);
+    height: 35px;
+    padding: 0 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: rgba(37, 38, 43);
+    cursor: pointer;
+    display: flex;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s;
+    user-select: none;
+    border: rgba(55, 58, 64) 1px solid;
+}
+
+.type-select {
+    position: absolute;
+    top: 45px;
+    /* left: 10px; */
+    width: 100%;
+    border-radius: 5px;
+    border: rgba(55, 58, 64) 1px solid;
+    background-color: rgba(37, 38, 43);
+    padding: 5px;
+    z-index: 10;
+    user-select: none;
+}
+
+.type-select__item {
+    padding-left: 15px;
+    width: calc(100% - 15px);
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+    text-align: left;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.type-select__item:hover {
+    background-color: rgba(56, 58, 64);
+    cursor: pointer;
+}
+
+.select {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.revolve-animation {
+    transform: rotateZ(180deg);
+    transform-origin: 6px 2.5px;
+}
+
+.button-group {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group__item {
+    position: relative;
+    height: 35px;
+    padding: 0 20px;
+    background-color: rgba(25, 113, 194);
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 14px;
+    color: white;
+    line-height: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group__item:hover {
+    background-color: rgba(24, 100, 171);
+}
+</style>
