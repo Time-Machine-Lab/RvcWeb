@@ -78,16 +78,8 @@ const like = function () {
 const getimg = function (index: number) {
     const img = [
         "/testPic/1.jpeg",
-        "/testPic/2.jpeg",
-        "/testPic/3.jpeg",
-        "/testPic/4.jpeg",
-        "/testPic/5.jpeg",
-        "/testPic/6.jpeg",
-        "/testPic/7.jpeg",
-        "/testPic/8.jpeg",
-        "/testPic/9.jpeg",
     ]
-    return img[index % 9]
+    return img[index % 1]
 }
 const postDeleteFunc = function () {
     let form = ref<DeletePostForm>({

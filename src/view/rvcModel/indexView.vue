@@ -8,26 +8,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message'
 const models = ref<RvcModelVo[]>([])
 models.value = [
-    {
-        "id": "1735908399119151106",
-        "name": "C罗超越梅西",
-        "type": "RVC",
-        "label": [
-            "lol"
-        ],
-        "picture": "https://rvc1.oss-cn-beijing.aliyuncs.com/model//a0524982b9dca73d1a3896e7a035ea9a.png",
-        "description": "2024欧洲杯",
-        "note": "小心内马尔",
-        "viewNum": "1",
-        "likesNum": "0",
-        "collectionNum": "0",
-        "isLike": "0",
-        "isCollection": "0",
-        "uid": "1735662165315596290",
-        "username": "MZyTahcp",
-        "nickname": "welsir",
-        "avatar": ""
-    }
+
 ]
 
 
@@ -38,7 +19,7 @@ let tags = ref<{
 let page = ref(0)
 let form = ref<ModelListForm>({
     sortType: '1',
-    page: '0',
+    page: '1',
     size: '5',
 })
 // getModelType().then(res => {
@@ -51,12 +32,16 @@ let form = ref<ModelListForm>({
 //     }
 // })
 const load = function () {
+    if (disabled.value) {
+        return
+    }
     disabled.value = true
+
     // setTimeout(function(){
     //     disabled.value = false
     // },5000)
-    getModels(form.value).then(res => {
-        let data = res.data
+    getModels(form.value).then((res:any) => {
+        let data = res.data.records
         if (data.length == 0) {
             disabled.value = true
             message.warning('没有更多数据了')

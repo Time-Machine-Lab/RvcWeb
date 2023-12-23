@@ -41,8 +41,8 @@ const sendComment = function () {
     content: inputContent.value,
     postId: currentComment.value.postId,
     rootCommentId: currentComment.value.rootCommentId == '0' ? currentComment.value.postCommentId : currentComment.value.rootCommentId,
-    toCommentId: currentComment.value.rootCommentId == '0' ? '0' : currentComment.value.postCommentId,
-    toUserId: currentComment.value.rootCommentId == '0' ? undefined : currentComment.value.user?.uid
+    toCommentId: currentComment.value.rootCommentId == '0' ? '' : currentComment.value.postCommentId,
+    toUserId: currentComment.value.rootCommentId == '0' ? '' : currentComment.value.user?.uid
   })
   commentAdd(form.value).then((res: any) => {
     if (res.code == 200) {

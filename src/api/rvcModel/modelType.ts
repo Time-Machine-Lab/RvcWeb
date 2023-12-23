@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-21 21:18:41
+ * @Description: 
+ * @FilePath: \RvcWeb\src\api\rvcModel\modelType.ts
+ */
 export type RvcModelVo = {
     id: string;
   name: string;
@@ -39,5 +45,32 @@ export type FavoriteAndCollectionForm = {
 }
 
 export type ModelVo = {
-    [property: string]: any;
+    fileId: string;
+  name: string;
+  type: string;
+  label: Array<any>;
+  picture: string;
+  description: string;
+  note: string;
+  viewNum: string;
+  likesNum: string;
+  collectionNum: string;
+  isLike: string;
+  isCollection: string;
+  uid: string;
+  username: string;
+  nickname: string;
+  avatar: string;
+}
+
+export type ModelComment = {
+    id: string;
+  uid: string;
+  nickname: string;
+  picture:  string;
+  content: string;
+  likesNum: string;
+  commentTime: string;
+  modelId: string;
+  isLikes: string;
 }
