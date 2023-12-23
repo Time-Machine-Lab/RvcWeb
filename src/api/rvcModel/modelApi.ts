@@ -13,6 +13,16 @@ export function getModels (form:ModelListForm) {
         params:form
     })
 }
+export function getModelDetails(modelId:number){
+    return request({
+        url:'/model/getModelMsg',
+        method:'get',
+        params:{
+            modelId:modelId
+        }
+    })
+
+}
 export function getModelType(){
 
 }
@@ -30,5 +40,20 @@ export function collectModel(form:FavoriteAndCollectionForm){
         url:'',
         method:'',
         params:form
+    })
+}
+export function commentAdd(){
+    return request({
+        url:'',
+        method:'',
+        params:''
+    })
+}
+
+export function getModelById(id:number){
+    return request({
+        url:'',
+        method:'',
+        params:id
     })
 }

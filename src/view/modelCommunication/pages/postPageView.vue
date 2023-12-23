@@ -179,7 +179,7 @@ const sendComment = function () {
                     {{ localPost?.createAt }}
                 </div>
                 <div class="post-page__post__info__tags">
-                    <span>{{ localPost?.postType?.id }}</span>
+                    <span>{{ localPost?.postType?.tagName }}</span>
                 </div>
             </div>
             <div class="post-content post-page__post__content" v-html="localPost?.content">
@@ -295,11 +295,11 @@ const sendComment = function () {
 .post-page__post__title {
     position: relative;
     width: 100%;
-    height: 60px;
-    line-height: 60px;
-    font-size: 32px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 48px;
     white-space: nowrap;
-    font-weight: 700;
+    font-weight: 400;
     color: rgba(255, 255, 255, 0.7);
     text-align: left;
     overflow: hidden;
@@ -368,7 +368,7 @@ const sendComment = function () {
 
 .post-page__post__info__createAt {
     line-height: 20px;
-    font-size: 16px;
+    font-size: 12px;
     color: rgba(255, 255, 255, 0.4);
     text-align: left;
 }
@@ -376,9 +376,12 @@ const sendComment = function () {
 .post-page__post__info__tags {
     margin-left: 30px;
     line-height: 20px;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 1);
     text-align: left;
+    padding: 0 8px;
+    border-radius: 5px;
+    background-color: rgba(52,58,64);
 }
 
 .post-page__post__info__tags span:hover {
