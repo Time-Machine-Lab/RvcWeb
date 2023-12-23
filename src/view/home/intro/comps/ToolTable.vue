@@ -9,12 +9,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'ToolTable.vue',
   props: {
     tools: {
-      type: Array,
+      type: Array<any>,
       default: () => [],
     },
   },

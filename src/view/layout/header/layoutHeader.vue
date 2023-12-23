@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue"
 import searchComponent from "@/components/common/searchComponent.vue"
-import Navigation from "@/view/layout/header/navigation.vue"
+import navigationView from "@/view/layout/header/navigationView.vue"
 import { ref } from "vue";
 let clickBell = ref(false)
 let msgVisibility = ref(false)
@@ -29,7 +29,7 @@ const handleBlur = function () {
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
-    <Navigation></Navigation>
+    <navigationView></navigationView>
     <div class="search">
       <searchComponent></searchComponent>
     </div>
