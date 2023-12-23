@@ -130,7 +130,7 @@
 <script lang="ts" setup>
 import { useWindowScroll } from '@vueuse/core';
 const { x, y } = useWindowScroll();
-
+console.log(x)
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
