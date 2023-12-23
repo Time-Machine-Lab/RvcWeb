@@ -21,7 +21,7 @@ import { UserInfoVO } from '@/api/user/userTypes';
 // import { useUserStore } from '@/view/user/info/userStore.js'
 // const userStore = useUserStore()
 // let userProfile = userStore.getProfile
-getModelDetails((router.currentRoute.value.query.id as unknown as number)).then((res: any) => {
+getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) => {
     if (res.code == 200) {
         localModel.value = res.data
         user.value = {
@@ -50,7 +50,8 @@ let localModel = ref<ModelVo>({
     uid: '',
     username: '',
     nickname: '',
-    avatar: ''
+    avatar: '',
+    createTime: ''
 })
 // let inputContent = ref<string>('')
 
@@ -58,7 +59,7 @@ let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 let detailsvisibility = ref(false)
 let modelFilesvisibility = ref(false)
-let audiosvisibility =ref(false)
+let audiosvisibility = ref(false)
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
@@ -71,7 +72,7 @@ const collect = function () {
     }
         , 2000)
     let form = <FavoriteAndCollectionForm>{
-        modelId: (localModel.value.fileId as unknown as string),
+        modelId: (router.currentRoute.value.query.id as string),
         status: localModel.value.isCollection ? '0' : '1'
     }
     collectModel(form).then((res: any) => {
@@ -96,7 +97,7 @@ const like = function () {
         likeDisabled.value = true
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
-        modelId: (localModel.value.fileId as unknown as string),
+        modelId: (router.currentRoute.value.query.id as string),
         status: localModel.value.isLike ? '0' : '1'
     }
     favoriteModel(form).then((res: any) => {
@@ -115,10 +116,10 @@ const calcNum = function (num: number) {
 const handleClickDetails = function () {
     detailsvisibility.value = !detailsvisibility.value
 }
-const handleClickModelFiles = function(){
+const handleClickModelFiles = function () {
     modelFilesvisibility.value = !modelFilesvisibility.value
 }
-const handleClickAudiosFiles = function(){
+const handleClickAudiosFiles = function () {
     audiosvisibility.value = !audiosvisibility.value
 }
 calcNum(1000)
@@ -159,10 +160,10 @@ calcNum(1000)
             </div>
             <div class="model-page__model__info">
                 <div class="model-page__model__info__createAt">
-                    <!-- {{ localModel }} -->
+                    {{ localModel?.createTime }}
                 </div>
-                <div class="model-page__model__info__tags">
-                    <span>{{ localModel?.type }}</span>
+                <div v-for="(label, index) in localModel.label" :key="index" class="model-page__model__info__tags">
+                    <span>{{ label }}</span>
                 </div>
             </div>
             <div class="model-content model-page__model__content" v-html="localModel?.description">
@@ -228,9 +229,10 @@ calcNum(1000)
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickDetails">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;" :style="{backgroundColor:detailsvisibility?'rgba(26,27,30)':''}">
-                        <span style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;"
-                        >模型信息</span>
+                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
+                        :style="{ backgroundColor: detailsvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span
+                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型信息</span>
                         <span style="position: relative;right:0%;">
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="detailsvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
@@ -243,7 +245,9 @@ calcNum(1000)
                             类型
                         </div>
                         <div class="details-content__item__value">
-
+                            <span class="model_type">
+                                {{ localModel?.type }}
+                            </span>
                         </div>
                     </div>
                     <div class="details-content__item">
@@ -251,7 +255,9 @@ calcNum(1000)
                             上传时间
                         </div>
                         <div class="details-content__item__value">
-
+                            <div class="details-content__item__value--time">
+                                {{ localModel.createTime }}
+                            </div>
                         </div>
                     </div>
                     <div class="details-content__item">
@@ -259,16 +265,19 @@ calcNum(1000)
                             更新时间
                         </div>
                         <div class="details-content__item__value">
+                            <div class="details-content__item__value--time">
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;" :style="{backgroundColor:modelFilesvisibility?'rgba(26,27,30)':''}">
-                        <span style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;"
-                        >模型文件</span>
+                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
+                        :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span
+                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型文件</span>
                         <span style="position: relative;right:0%;">
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
@@ -278,16 +287,17 @@ calcNum(1000)
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;" :style="{backgroundColor:audiosvisibility?'rgba(26,27,30)':''}">
-                        <span style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;"
-                        >模型音频</span>
+                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
+                        :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span
+                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型音频</span>
                         <span style="position: relative;right:0%;">
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                         </span>
                     </div>
                 </div>
-            
+
             </div>
             <div class="author-box">
                 <userCardComponent :user="user"></userCardComponent>
@@ -297,7 +307,7 @@ calcNum(1000)
 
     </div>
     <suggestedModelsComponent></suggestedModelsComponent>
-    <modelCommentsComponent></modelCommentsComponent>
+    <modelCommentsComponent :model-id="(router.currentRoute.value.query.id as string)"></modelCommentsComponent>
 </template>
 <style scoped>
 .model-page {
@@ -469,38 +479,64 @@ calcNum(1000)
     width: 100%;
     overflow: hidden;
 }
-.details-content__item{
+
+.details-content__item {
     width: 100%;
     height: 40px;
     display: flex;
     border-top: rgba(55, 58, 64) 1px solid;
 }
-.details-content__item__label{
+
+.details-content__item__label {
     width: 30%;
     height: 100%;
-    background-color: rgba(37,38,43);
+    background-color: rgba(37, 38, 43);
     border-right: rgba(55, 58, 64) 1px solid;
-    color: rgba(193,194,197);
+    color: rgba(193, 194, 197);
     text-align: left;
     font-size: 14px;
     padding-left: 15px;
     line-height: 40px;
 
 }
-.details-content__item__value{
+
+.details-content__item__value {
+    position: relative;
     width: 70%;
     height: 100%;
-    background-color: rgba(26,27,30);
+    text-align: left;
+    background-color: rgba(26, 27, 30);
+}
+.details-content__item__value--time{
+    line-height: 40px;
+    color: white;
+    text-align: left;
+    font-size: 14px;
+    padding-left: 15px;
+}
+.model_type {
+    display: inline-block;
+    position: relative;
+    padding: 0 10px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 20px;
+    border-radius: 6px;
+    color: rgba(165, 216, 255);
+    background-color: rgba(26, 45, 63);
+    top: 50%;
+    left: 10%;
+    transform: translate(0, -50%);
 }
 
 .author-box {
     position: relative;
-    width: 90%;
+    width: calc(90% - 20px);
     height: 50px;
     /* left: 50%;
     transform: translate(-50%); */
     background-color: rgba(37, 38, 43);
-    padding: 10px 0;
+    padding: 10px 10px;
     /* height: 150px; */
     /* box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px; */
     border-radius: 5px;
@@ -512,5 +548,4 @@ calcNum(1000)
 .revolve-animation {
     transform: rotateZ(180deg);
     transform-origin: 6px 2px;
-}
-</style>
+}</style>

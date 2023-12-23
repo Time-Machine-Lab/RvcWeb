@@ -5,57 +5,70 @@
  * @FilePath: \RvcWeb\src\components\rvcModel\modelCommentsComponent.vue
 -->
 <script setup lang="ts">
-import { ModelComment } from '@/api/rvcModel/modelType';
-import { ref } from 'vue';
-import WaterFallComponent from '@/components/layout/waterFallComponent.vue';
+import { CommentAddForm, GetCommentForm, ModelComment } from '@/api/rvcModel/modelType'
+import { ref } from 'vue'
+import WaterFallComponent from '@/components/layout/waterFallComponent.vue'
 import modelCommentComponent from '@/components/rvcModel/modelCommentComponent.vue'
+import { getRootComments, commentAdd } from '@/api/rvcModel/modelApi'
+import { message } from '@/utils/message'
+const props = defineProps<{
+    modelId: string
+}>()
 let dialogVisible = ref(false)
-let comments = ref<ModelComment[]>([
-    {
-        "id": "1737173011389861889",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "袁总能带我打瓦吗,我想学Java!!!",
-        "likesNum": "0",
-        "commentTime": "2023-12-19 18:08:15",
-        "modelId": "1735910925897834498",
-        "isLikes": "0"
-    },
-    {
-        "id": "1737049447585087489",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "袁总能带我打瓦吗!!!",
-        "likesNum": "0",
-        "commentTime": "2023-12-19 09:57:15",
-        "modelId": "1735910925897834498",
-        "isLikes": "0"
-    },
-    {
-        "id": "1737025261651165185",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "袁总能带我打瓦吗",
-        "likesNum": "0",
-        "commentTime": "2023-12-19 08:21:09",
-        "modelId": "1735910925897834498",
-        "isLikes": "0"
-    },
-    {
-        "id": "1736285491279269890",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "学长太帅了",
-        "likesNum": "2",
-        "commentTime": "2023-12-17 15:21:34",
-        "modelId": "1735910925897834498",
-        "isLikes": "0"
-    }
-])
+let comments = ref<ModelComment[]>([])
+let page = ref(1)
+let getCommentsForm = ref<GetCommentForm>({
+    id: '',
+    page: '',
+    limit: '10',
+    sortType: '1'
+})
+let sendCommentForm = ref<CommentAddForm>({
+    replyId: '',
+    modelId: '',
+    content: ''
+})
+let disabled = ref(false)
+const load = function () {
+    if (disabled.value) return
+    disabled.value = true
+    getCommentsForm.value.page = (page as unknown as string)
+    getCommentsForm.value.id = props.modelId
+    getRootComments(getCommentsForm.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = ref<ModelComment[]>(res.data.records)
+            if (data.value.length != 0) disabled.value = false
+            else {
+                disabled.value = true
+                message.warning('没有更多评论了')
+            }
+            for (let i = 0; i < data.value.length; i++) {
+                comments.value.push(data.value[i])
+            }
+            page.value++
+        } else {
+            disabled.value = false
+            message.error(res.msg)
+        }
+    })
+}
+setTimeout(function () {
+    load()
+}, 1000)
+const commentAddFunc = function () {
+    dialogVisible.value = false
+    sendCommentForm.value.modelId = props.modelId
+    commentAdd(sendCommentForm.value).then((res: any) => {
+        if (res.code == 200) {
+            message.success('发表成功')
+        } else {
+            message.error(res.msg)
+        }
+    })
+}
+const getLength = function(str:string){
+    return str.length
+}
 </script>
 <template>
     <div class="model-comments">
@@ -64,12 +77,16 @@ let comments = ref<ModelComment[]>([
                 添加评论
             </div>
             <div class="dialog-input">
-                <input class="input">
+                <input class="input" v-model="sendCommentForm.content" maxlength="200">
+                <div style="text-align: right;">
+                    <span>{{ getLength(sendCommentForm.content) }}/200</span>
+
+                </div>
             </div>
             <template #footer>
                 <span class="dialog-footer">
                     <div @click="dialogVisible = false" class="dialog-footer__cancel">取消</div>
-                    <div type="primary" class="dialog-footer__confirm" @click="dialogVisible = false">
+                    <div type="primary" class="dialog-footer__confirm" @click="commentAddFunc">
                         发表
                     </div>
                 </span>
@@ -86,6 +103,7 @@ let comments = ref<ModelComment[]>([
                 <modelCommentComponent v-for="(comment, index) in comments" :key="index" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
+            <div class="model-comments__content__more" @click="load">加载更多</div>
         </div>
     </div>
 </template>
@@ -102,22 +120,25 @@ let comments = ref<ModelComment[]>([
     font-size: 14px;
     color: rgba(193, 194, 197);
 }
-.dialog-input{
+
+.dialog-input {
     width: 100%;
 }
-.input{
+
+.input {
     outline: none;
     width: calc(100% - 30px);
     height: 40px;
     line-height: 40px;
     padding: 0 15px;
-    background-color: rgba(26,27,30);
+    background-color: rgba(26, 27, 30);
     color: white;
     font-size: 16px;
     border-radius: 5px;
     margin-top: 10px;
     border: rgba(55, 58, 64) 1px solid;
 }
+
 .dialog-footer {
     display: flex;
 }
@@ -188,7 +209,15 @@ let comments = ref<ModelComment[]>([
 .model-comments__content {
     position: relative;
     width: 75%;
-    min-height: 430px;
+    min-height: 300px;
     left: 50%;
     transform: translate(-50%);
-}</style>
+    padding-bottom: 50px;
+}
+
+.model-comments__content__more {
+    cursor: pointer;
+    color: white;
+
+}
+</style>

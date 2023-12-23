@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\api\rvcModel\modelApi.ts
  */
 import request from '@/utils/request'
-import { FavoriteAndCollectionForm,ModelListForm } from '@/api/rvcModel/modelType'
+import { CommentAddForm, FavoriteAndCollectionForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelListForm } from '@/api/rvcModel/modelType'
 export function getModels (form:ModelListForm) {
     return request({
         url:'/model/list',
@@ -13,7 +13,7 @@ export function getModels (form:ModelListForm) {
         params:form
     })
 }
-export function getModelDetails(modelId:number){
+export function getModelDetails(modelId:string){
     return request({
         url:'/model/getModelMsg',
         method:'get',
@@ -42,18 +42,65 @@ export function collectModel(form:FavoriteAndCollectionForm){
         params:form
     })
 }
-export function commentAdd(){
+export function commentAdd(form:CommentAddForm){
     return request({
-        url:'',
-        method:'',
-        params:''
+        url:'/model/comment',
+        method:'post',
+        data:form
     })
 }
 
-export function getModelById(id:number){
+export function getModelById(id:string){
     return request({
         url:'',
         method:'',
         params:id
+    })
+}
+
+export function getRootComments(form:GetCommentForm){
+    return request({
+        url:'/model/comment/first',
+        method:'get',
+        params:form
+    })
+}
+
+export function likeComments(form:LikeCommentForm){
+    return request({
+        url:'/model/comment/likes',
+        method:'post',
+        params:form
+    })
+}
+
+export function getLabels(form:GetLabelForm){
+    return request({
+        url:'/model/label/labelHot',
+        method:'get',
+        params:form
+    })
+}
+
+export function uploadModel(file1:File,file2:File){
+    const formData = new FormData();
+    formData.append('file',file1);
+    formData.append('file',file2);
+
+    return request({
+        url:'/model/upload/model',
+        method:'post',
+        data:formData
+    })
+}
+
+export function uploadAudio(file:File){
+    const formData = new FormData();
+    formData.append('file',file);
+
+    return request({
+        url:'/model/upload/audio',
+        method:'post',
+        data:formData
     })
 }
