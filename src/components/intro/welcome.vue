@@ -9,11 +9,11 @@
     </div>
     <div class="welcome-card flex">
       <router-link to="/rvc" target="_blank" class="welcome-card__title flex"> 进入RVC </router-link>
-      <div class="welcome-card__contain flex">
+      <h4 class="welcome-card__contain flex">
         RVC模型交流社区<br />2022-2023<br />一起探索声音变换的无限可能,你梦想的声音从现在开始!
-      </div>
+      </h4>
       <div class="welcome-card__btn flex">
-        <router-link to="/login" target="_blank" class="welcome-card__register flex"> 立即注册 </router-link>
+        <router-link to="/login" target="_blank" class="welcome-card__register flex"><h4> 立即注册 </h4></router-link>
       </div>
 
     </div>

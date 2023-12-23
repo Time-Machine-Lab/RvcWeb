@@ -32,17 +32,18 @@
     </div>
     <!--社区功能板块-->
     <div class="Functions flex">
-      <div class="Functions-title flex">社区功能</div>
+      <h1 class="Functions-title flex">社区功能</h1>
       <div v-for="(tool, index) in Tools" :key="index" class="Function">
         <div class="Function-tool flex">{{ tool.tool }}</div>
         <div class="Function-img flex">
           <img :src="tool.img" alt="Team Member Image" />
+<!--          <img :src="img" alt="Team Member Image" />-->
         </div>
       </div>
     </div>
     <!--我们团队板块-->
     <div class="Team flex">
-      <div class="team-title flex">我们团队</div>
+      <h1 class="team-title flex">我们团队</h1>
       <div class="team-list">
         <div class="team-content">
           <div v-for="(teamMember, index) in Teams" :key="index" class="team-item">
@@ -61,10 +62,14 @@
       <div class="parent">
         <div class="card">
           <div class="content-box">
-            <span class="card-title">RVC官方社区</span>
-            <p class="card-content">
-              RVC社区是一个致力于分享和交流RVC（Retrieval based Voice Conversion，检索式声音转换）技术的平台。RVC是一个基于VITS语音合成系统的开源工具，能实现实时声音变换，适用于直播、视频录制等场景
-            </p>
+            <span class="card-title">
+              {{Infos.webName}}
+<!--              RVC官方社区-->
+            </span>
+            <h4 class="card-content">
+              {{Infos.webDescription}}
+<!--              RVC社区是一个致力于分享和交流RVC（Retrieval based Voice Conversion，检索式声音转换）技术的平台。RVC是一个基于VITS语音合成系统的开源工具，能实现实时声音变换，适用于直播、视频录制等场景-->
+            </h4>
             <router-link to="/about" target="_blank" class="see-more"> <p>关于我们</p> </router-link>
           </div>
         </div>
@@ -73,7 +78,7 @@
     </div>
     <!--RVC版本板块-->
     <div class="Versions">
-      <div class="Version-message flex">{{ Infos.rvcVersion }}</div>
+      <div class="Version-message flex">版本：{{ Infos.rvcVersion }}</div>
       <div class="VersionContain flex">RVC已经到来
       </div>
       <a href="https://github.com/Time-Machine-Lab" class="Versions-btn flex">
@@ -89,6 +94,7 @@ import { ref, onMounted } from "vue"
 import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue"
 import Welcome from "@/components/intro/welcome.vue";
 import {getInfo, getTeam, getTools} from "@/api/home/introAPI.ts";
+// import {preloadImages} from "@/utils/preload.ts";
 
 // 网站首页信息
 interface Info {
@@ -114,10 +120,28 @@ interface Team {
   nickname: string
   role: string
 }
-const Infos = ref<Info>({ id: 0, officialConcat: '', rvcDescription: '', rvcVersion: '', webDescription: '', webName: ''})
-const Tools = ref<Tools[]>([])
-const Teams = ref<Team[]>([])
-
+const Infos = ref<Info>(<Info>{id: 1, officialConcat: "",
+  rvcDescription: "训练出当前最强开源人声音高提取模型RMVPE，并用于RVC的训练、离线/实时推理，支持pytorch/onnx/DirectML\\\\r\\\\n通过pytorch-dml支持A卡和I卡的</br>（1）实时变声（2）推理（3）人声伴奏分离（4）训练暂未支持，会切换至CPU训练；通过onnx_dml支持rmvpe_gpu的推理",
+  rvcVersion: "1.6",
+  webDescription: "RVC社区是一个致力于分享和交流RVC（Retrieval based Voice Conversion，检索式声音转换）技术的平台。RVC是一个基于VITS语音合成系统的开源工具，能实现实时声音变换，适用于直播、视频录制等场景",
+  webName: "RVC官方社区"})
+const Tools = ref<Tools[]>([
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "个人账号", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "畅所欲言", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "在线试音", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "开源模型", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "炼丹大师", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "模型交易", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "云变声", url: ""},
+  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "炼丹心得", url: ""}])
+const Teams = ref<Team[]>([
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+  {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
+])
 const getInfoDate = () => {
   getInfo().then((res: any) => {
     console.log(res)
@@ -138,6 +162,7 @@ const getTeamDate = () => {
 }
 
 onMounted(() => {
+  // preloadImages();
   getInfoDate()
   getToolDate()
   getTeamDate()
@@ -196,7 +221,7 @@ onMounted(() => {
 }
 
 .content-box {
-  background: rgba(161, 197, 250, 0.84);
+  background: rgba(255, 255, 255, 0.44);
   /* border-radius: 10px 100px 10px 10px; */
   transition: all 0.5s ease-in-out;
   padding: 60px 25px 45px 25px;
@@ -218,8 +243,7 @@ onMounted(() => {
 
 .content-box .card-content {
   margin-top: 10px;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
   color: #f2f2f2;
   transition: all 0.5s ease-in-out;
   transform: translate3d(0px, 0px, 30px);
@@ -242,6 +266,7 @@ onMounted(() => {
   padding: 0.5rem 0.7rem;
   transition: all 0.5s ease-in-out;
   transform: translate3d(0px, 0px, 20px);
+  border-radius: 5px;
 }
 
 .content-box .see-more:hover {

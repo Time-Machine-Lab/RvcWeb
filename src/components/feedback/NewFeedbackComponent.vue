@@ -4,10 +4,6 @@ import {MdEditor} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import {Add} from '@/api/feedback/feedbackTypes.ts'
 import {postAdd} from '@/api/feedback/feedbackAPI.ts'
-// 富文本编辑器
-const onUploadImg = (files: any) => {
-  console.log(files)
-}
 
 // 交换按钮样式
 const button1 = ref<HTMLButtonElement | null>(null);
@@ -34,9 +30,6 @@ const submitForm = async () => {
     fbid: '1',  // 如果是添加新帖子，可以忽略这个属性
   };
   try {
-    // postAdd(formData).then(res=>{
-    //   console.log(res);
-    // })
     const response = await postAdd(formData);
     console.log('表单提交成功', response);
     // 这里你可以处理提交成功后的逻辑，例如重定向到其他页面等
@@ -68,7 +61,7 @@ const submitForm = async () => {
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor v-model="postContent" @on-upload-img="onUploadImg" theme="dark" noMermaid/>
+            <md-editor  v-model="postContent" noMermaid/>
           </div>
           <button type="submit" class="submit">提交帖子</button>
         </form>
@@ -90,19 +83,19 @@ button{
   position: fixed;
   backdrop-filter: blur(3px); /* 模糊效果 */
   width:100vw;
-  height:100%;
+  height:100vh;
   z-index: 7;
   overflow: scroll;
   .box__center{
     position: absolute;
     top:0;
     width:580px;
-    height:100vh;
+    height:80vh;
     z-index: 11;
     .box-contain{
       position: relative;
-      top:50px;
-      background: rgba(26, 32, 45, 0.82);
+      top:10px;
+      background: rgba(229, 229, 229, 0.91);
       width:100%;
       height:540px;
       border-radius: 10px;
@@ -113,27 +106,27 @@ button{
       h3{
         text-align: left;
         margin-bottom: 10px;
-        color:#ffffff;
+        color: #646464;
       }
       h4{
         text-align: left;
         margin-top: 10px;
         margin-bottom: 10px;
-        color: rgba(231, 231, 231, 0.72);
+        color: #646464;
       }
       .box-contain-mention{
         background: rgba(250, 213, 162, 0.24);
         justify-content: left;
         border-radius: 7px;
-        border: solid 1px #866641;
+        border: solid 1px #f6d9b7;
         width:100%;
         height:35px;
         h6{
-          color: #fcf1cc;
+          color: #9b7d16;
           margin-left: 10px;
         }
         p{
-          color: #fcf1cc;
+          color: #bd9d34;
           font-size: 12px;
         }
       }
@@ -141,23 +134,26 @@ button{
         background: rgba(252, 252, 252, 0.07);
         justify-content: left;
         border-radius: 8px;
-        border: solid 1px #3b3b3b;
+        border: solid 1px #9d9d9d;
         width:100%;
         height:35px;
       }
       .box-contain-title::placeholder{
         position: relative;
         left:10px;
-        color: #a6a6a6;
+        color: #949494;
       }
       .box-contain-btn{
         display: flex;
         justify-content: space-between;
         width:30%;
         .function{
+          border: solid 1px #9d9d9d;
           background: rgba(255, 255, 255, 0.09);
+          color:#72767b;
         }
         .mistake{
+          border: solid 1px #9d9d9d;
           background: #3784da;
           color:#ffffff;
         }
@@ -168,8 +164,9 @@ button{
         overflow-y: scroll;
       }
       .submit{
+        border: solid 1px #9d9d9d;
         background: #3784da;
-        color:#ffffff;
+        color: rgba(255, 255, 255, 0.91);
         position: absolute;
         bottom: 20px;
         right:5%;

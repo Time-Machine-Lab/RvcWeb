@@ -72,6 +72,7 @@
   outline: none;
 }
 .item-2 {
+  cursor: pointer;
   text-align: center;
   width: 28%;
   margin-left:2%;

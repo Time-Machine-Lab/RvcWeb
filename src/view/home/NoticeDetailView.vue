@@ -15,7 +15,7 @@ import {DetailVO} from "@/api/home/introTypes.ts";
 import {getDetail} from "@/api/home/introAPI.ts";
 import { useRoute } from 'vue-router';
 const noticeId = ref("");
-const Detail = ref<DetailVO>(<DetailVO>{});
+const Detail = ref<DetailVO>(<DetailVO>{author: "RVC官方", content: "1511", cover: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", createAt: "2023-12-20", likeNum: 0, noticeId: "", title: "关于一测的公告", watchNum: 0});
 
 onMounted(() => {
   noticeId.value = <string>useRoute().params.id;
