@@ -4,9 +4,9 @@
  * @LastEditors: Please set LastEditors
  * @LastEditTime: 2023-12-21 18:08:49
  * @FilePath: \RvcWeb\src\router\index.ts
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
  */
 import {
     createRouter,
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/home",
         name: "home",
-        component: () => import("../view/home/IntroView.vue"),
+        component: () => import("../view/home/intro/IntroView.vue"),
     },
     {
         path: "/feedback",

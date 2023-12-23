@@ -1,3 +1,8 @@
+@use "element-plus/theme-chalk/src/index.scss" as *; // all
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *; // html.dark
+
+@import "./_reboot.scss";
+
 html,
 body {
     text-align: center;
@@ -62,6 +67,9 @@ body {
     position: relative;
     left: 50%;
     transform: translate(-50%);
+}
+.justify-center{
+    justify-content: center;
 }
 
 //滚动条
