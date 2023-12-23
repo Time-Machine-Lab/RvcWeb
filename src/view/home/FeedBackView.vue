@@ -110,13 +110,9 @@ onMounted(() => {
     <!--关闭按钮-->
     <button @click="close()" v-if="isModalOpen || isNewOpen" class="close">X</button>
     <!--打开帖子详情-->
-    <transition name="fade">
-      <FeedBackComponent :data="selectedItem" v-if="isModalOpen"></FeedBackComponent>
-    </transition>
+    <FeedBackComponent :data="selectedItem" v-if="isModalOpen"></FeedBackComponent>
     <!--创建新帖子-->
-    <transition name="fade">
-      <NewFeedback v-if="isNewOpen"></NewFeedback>
-    </transition>
+    <NewFeedback v-if="isNewOpen"></NewFeedback>
     <!--反馈类型选项卡-->
     <div class="contain-choice">
       <div class="contain-choice__box flex">
