@@ -94,7 +94,7 @@ import { ref, onMounted } from "vue"
 import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue"
 import Welcome from "@/components/intro/welcome.vue";
 import {getInfo, getTeam, getTools} from "@/api/home/introAPI.ts";
-import {preloadImages} from "@/utils/preload.ts";
+// import {preloadImages} from "@/utils/preload.ts";
 
 // 网站首页信息
 interface Info {

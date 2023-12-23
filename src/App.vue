@@ -8,14 +8,14 @@
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import './style.css'
-import { preloadImages } from '@/utils/preload';
+// import { preloadImages } from '@/utils/preload';
 
 onBeforeMount(async () => {
   const loadingDom = document.querySelector(".before-app-render-loading");
   if (loadingDom) {
     console.log("loadingDom: ", loadingDom.parentElement);
     // 图片预加载
-    await preloadImages();
+    // await preloadImages();
     let count = 0;
     let imgs = [
       'https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg',
@@ -79,7 +79,7 @@ onBeforeMount(async () => {
   position: fixed;
   margin: 0;
   padding: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 .main {

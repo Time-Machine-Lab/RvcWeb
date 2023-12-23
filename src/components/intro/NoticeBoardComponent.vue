@@ -68,14 +68,14 @@ onMounted(() => {
   position: relative;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 17px;
+  font-size: 18px;
+  font-family: ZCool;
   border-radius: 10px;
   width: 8em;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #efefef;
-  box-shadow: 0 0 5px 2px #ffffff;
 }
 .tooltip {
   position: absolute;
@@ -90,7 +90,6 @@ onMounted(() => {
   border-radius: 5px;
   width: 7em;
   text-align: center;
-  font-family: 方正粗黑宋简体, serif;
 }
 .tooltip::before {
   position: absolute;
@@ -128,7 +127,8 @@ onMounted(() => {
   position: relative;
   padding: 0.7em 1.8em;
   overflow: hidden;
-  font-family: 方正粗黑宋简体, serif;
+  font-family: ZCool;
+  font-size: 17px;
 }
 .text::before {
   content: "(^_^)/";

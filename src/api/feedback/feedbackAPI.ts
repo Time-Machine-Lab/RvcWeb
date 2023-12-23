@@ -10,7 +10,7 @@ export function postAdd(formData: Add) {
       fbid:formData.fbid,
       title:formData.title,
       type:formData.type
-    }
+    },
   });
 }
 // 获取反馈帖子的所有类型
@@ -76,5 +76,26 @@ export function getCommentAdd(formData: postComment) {
     url: "/feedback/comment/add",
     method: "post",
     data: formData,
+  });
+}// 添加某个反馈帖子下的评论，同时会增加反馈帖子评论数
+export function getCommentLike(cmId:number,isLike:number) {
+  return request({
+    url: "/feedback/comment/like",
+    method: "get",
+    params:{
+      cmId,
+      isLike
+    }
+  });
+}
+// 对反馈帖子点赞，不能重复点赞，不能取消未点赞的帖子
+export function getLike(fbId:number,isLike:number) {
+  return request({
+    url: "/feedback/like",
+    method: "get",
+    params:{
+      fbId,
+      isLike
+    }
   });
 }

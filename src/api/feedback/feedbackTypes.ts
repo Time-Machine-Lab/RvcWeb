@@ -46,7 +46,7 @@ export interface TypeListItem {
 // 更新一个feedback帖子 1,必须拥有fbid 2,不可更改帖子id 与 帖子类型
 export interface Update {
     content: string;
-    fbid: string;
+    fbid: number;
     title: string;
     type: number;
     [property: string]: any;
@@ -105,7 +105,7 @@ export interface FeedbackItem {
     /**
      * 是否点赞
      */
-    hasUp: string;
+    hasUp: number;
     /**
      * 用户昵称
      */
@@ -161,6 +161,10 @@ export interface Comment {
     [property: string]: any;
 }
 export interface CommentList {
+    /**
+     * 是否点赞
+     */
+    hasLike: number;
     /**
      * 评论用户 头像
      */
