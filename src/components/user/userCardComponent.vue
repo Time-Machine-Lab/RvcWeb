@@ -1,0 +1,105 @@
+<script lang="ts" setup>
+import { UserInfoVO } from '@/api/user/userTypes';
+
+const props = defineProps<{
+    user:UserInfoVO
+}>()
+</script>
+<template>
+    <div class="user-card horizontal-center">
+        <div class="user-card__info vertical-center">
+            <div class="user-card__info__avatar" :style="{ backgroundImage: 'url(\''+props.user.avatar+'\')' }">
+
+            </div>
+            <div class="user-card__info__text">
+                <div class="user-card__info__text__username">
+                    {{props.user.nickname}}
+                </div>
+                <div class="user-card__info__text__creatAt">
+                    {{ props.user.description }}
+                </div>
+            </div>
+        </div>
+        <div class="user-card__button  vertical-center">
+            <span class="user-card__button__item follow vertical-center" v-show="props.user.isfollow!=null">
+                关注
+            </span>
+        </div>
+    </div>
+</template>
+<style scoped>
+.user-card {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+}
+
+.user-card__info {
+    height: 90%;
+    width: 60%;
+    display: flex;
+}
+
+.user-card__info__avatar {
+    min-width: 40px;
+    height: 100%;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+.user-card__info__text {
+    width: clac(100% - 40px);
+    height: 100%;
+}
+
+.user-card__info__text__username {
+    padding: 0 5px;
+    width: calc(100% - 10px);
+    height: 50%;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    font-weight: 500;
+    color: rgba(144, 146, 150);
+
+}
+
+.user-card__info__text__creatAt {
+    padding: 0 5px;
+    width: calc(100% - 10px);
+    height: 50%;
+    font-size: 10px;
+    line-height: 20px;
+    text-align: left;
+    word-wrap: normal;
+    color: rgba(144, 146, 150);
+
+}
+
+.user-card__button {
+    height: 100%;
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.user-card__button__item {
+    position: relative;
+    display: inline-block;
+    height: 25px;
+    padding: 0 15px;
+    line-height: 25px;
+    font-size: 12px;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.follow{
+    background-color: rgba(25,113,194)
+}
+.follow:hover {
+    background-color: rgba(24, 100, 171);
+}</style>
