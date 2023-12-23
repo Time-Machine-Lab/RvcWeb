@@ -1,0 +1,175 @@
+@import "../_custom-variable.scss";
+//
+// Feature 1
+//
+.feature1-component {
+.icon-round {
+    font-size: 45px;
+    width: 80px;
+    color: $accent;
+    line-height: 80px;
+    text-align: center;
+    display: inline-block;
+    margin: 20px 0 30px;
+    border-radius: 100%;
+}
+}
+
+.linking {
+i {
+    margin-left: 10px;
+    transition: 0.2s ease-in;
+    font-size: 16px;
+}
+&:hover {
+i {
+    margin-left: 15px;
+}
+}
+}
+
+@media (max-width: 767px) {
+    .section-title {
+        font-size: 23px;
+    }
+}
+
+//
+// Feature 2
+//
+.feature2-action-btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+    height: 100% !important;
+}
+
+@media (max-width: 767px) {
+    .feature2-action-btn {
+        border-radius: 0 0 0.25rem 0.25rem;
+        height: 50px !important;
+    }
+}
+
+.feature2-spacer {
+    margin-top: 60px !important;
+}
+
+//
+// Feature 3
+//
+
+.feature3-component {
+    position: relative;
+}
+
+.feature3-card {
+    position: absolute;
+    top: 17%;
+    right: 0;
+.feature3-title {
+    font-size: 24px;
+    line-height: 30px;
+    margin: 20px 0 15px;
+}
+.text-left {
+    color: $gray-500;
+}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .feature3-card {
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: 50%;
+
+        flex: 0 0 58%;
+        max-width: 58%;
+    }
+}
+
+@media (max-width: 767px) {
+    .feature3-card {
+        position: relative;
+    }
+}
+
+
+.parent {
+    width: 450px;
+    padding: 20px;
+    perspective: 1000px;
+}
+
+.card {
+    /* border-radius: 10px; */
+    border: 3px solid rgb(255, 255, 255);
+    transform-style: preserve-3d;
+    background-size: 60px 60px;
+    background-position: 0 0, 0 0;
+    width: 100%;
+    box-shadow: rgba(142, 142, 142, 0.3) 0px 30px 30px -10px;
+    transition: all 0.5s ease-in-out;
+}
+
+.card:hover {
+    background-position: -100px 100px, -100px 100px;
+    transform: rotate3d(0.5, 1, 0, 30deg);
+}
+
+.content-box {
+    background: rgba(255, 255, 255, 0.44);
+    /* border-radius: 10px 100px 10px 10px; */
+    transition: all 0.5s ease-in-out;
+    padding: 60px 25px 45px 25px;
+    transform-style: preserve-3d;
+}
+
+.content-box .card-title {
+    display: inline-block;
+    color: white;
+    font-size: 25px;
+    font-weight: 900;
+    transition: all 0.5s ease-in-out;
+    transform: translate3d(0px, 0px, 50px);
+}
+
+.content-box .card-title:hover {
+    transform: translate3d(0px, 0px, 60px);
+}
+
+.content-box .card-content {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #f2f2f2;
+    transition: all 0.5s ease-in-out;
+    transform: translate3d(0px, 0px, 30px);
+}
+
+.content-box .card-content:hover {
+    transform: translate3d(0px, 0px, 60px);
+}
+
+.content-box .see-more {
+    cursor: pointer;
+    margin-top: 1.5rem;
+    display: inline-block;
+    font-family: ZCool;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: rgb(73, 73, 73);
+    /* border-radius: 5px; */
+    background: white;
+    padding: 0.5rem 0.7rem;
+    transition: all 0.5s ease-in-out;
+    transform: translate3d(0px, 0px, 20px);
+    border-radius: 5px;
+}
+
+.content-box .see-more:hover {
+    transform: translate3d(0px, 0px, 60px);
+}
+
+.date-box span {
+    display: block;
+    text-align: center;
+}

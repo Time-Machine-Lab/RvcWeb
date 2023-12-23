@@ -1,0 +1,43 @@
+.portfolio-card {
+  .portfolio-img {
+    overflow: hidden;
+    max-height: 255px;
+    img {
+      width: 100%;
+      transition: 0.1s ease-in;
+      cursor: pointer;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.section-title {
+  font-size: 30px;
+  margin: 20px 0 15px;
+  line-height: 36px;
+}
+
+@media (min-width: 768px) {
+  .history-item {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .history-item {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .history-item {
+    flex: 0 0 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+}

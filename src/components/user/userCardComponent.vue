@@ -36,14 +36,14 @@ const props = defineProps<{
 }
 
 .user-card__info {
-    height: 90%;
+    height: 80%;
     width: 60%;
     display: flex;
 }
 
 .user-card__info__avatar {
-    min-width: 40px;
     height: 100%;
+    aspect-ratio: 1 / 1;
     border-radius: 20px;
     background-repeat: no-repeat;
     background-size: cover;

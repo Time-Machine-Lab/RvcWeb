@@ -1,12 +1,13 @@
 <!--
  * @Author: Dhx
  * @Date: 2023-11-30 18:48:48
- * @Description: 
+ * @Description:
  * @FilePath: \RvcWeb\src\view\layout\header\layoutHeader.vue
 -->
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue"
 import searchComponent from "@/components/common/searchComponent.vue"
+import navigationView from "@/view/layout/header/navigationView.vue"
 import { ref } from "vue";
 let clickBell = ref(false)
 let msgVisibility = ref(false)
@@ -28,6 +29,7 @@ const handleBlur = function () {
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
+    <navigationView></navigationView>
     <div class="search">
       <searchComponent></searchComponent>
     </div>
@@ -38,7 +40,11 @@ const handleBlur = function () {
             + 新帖子
           </div>
         </RouterLink>
-
+        <RouterLink to="/newModel">
+          <div class="newModel">
+            + 新模型
+          </div>
+        </RouterLink>
         <div tabindex="-1" @click="handleClickSort" @blur="handleBlur" class="bell" :class="clickBell ? 'dither-animation' : ''">
           <div class="bell__point"></div>
           <img src="/icon/bell.svg" width="25" height="25">
@@ -91,6 +97,20 @@ const handleBlur = function () {
   color: rgba(165, 216, 255);
   line-height: 40px;
   background-color: rgba(26, 45, 63);
+  cursor: pointer;
+  margin-right: 10px;
+}
+.newModel{
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: rgba(165, 216, 255);
+  line-height: 40px;
+  background-color: rgba(30,54,38);
   cursor: pointer;
 }
 
@@ -152,14 +172,16 @@ const handleBlur = function () {
 }
 
 .search {
-  position: relative;
+  position: absolute;
+  left:20%;
   height: 100%;
-  width: 70%;
+  width: 65%;
 }
 
 .header__right {
-  position: relative;
+  position: absolute;
   width: calc(30% - 500px);
+  right:0;
   min-width: 300px;
   height: 100%;
   display: flex;
