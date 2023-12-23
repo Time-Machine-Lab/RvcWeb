@@ -1,7 +1,7 @@
 /*
  * @Author: Dhx
  * @Date: 2023-11-30 14:50:51
- * @Description: 
+ * @Description:
  * @FilePath: \RvcWeb\vite.config.ts
  */
 import { defineConfig } from "vite";
@@ -9,11 +9,18 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import vuetify from "vite-plugin-vuetify";
 import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    vuetify({
+      autoImport: true,
+    }),
+    AutoImport({
+      imports: ["vue", "vue-router", "pinia"],
+    }),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),

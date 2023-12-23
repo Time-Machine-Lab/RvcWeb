@@ -4,9 +4,9 @@
  * @LastEditors: LisianthusLeaf 3106334435@qq.com
  * @LastEditTime: 2023-12-06 23:45:41
  * @FilePath: \RvcWeb\src\view\home\IntroView.vue
- * @Description: 
- * 
- * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved.
 -->
 <template>
   <div class="intro">
@@ -31,16 +31,7 @@
       </div>
     </div>
     <!--社区功能板块-->
-    <div class="Functions flex">
-      <h1 class="Functions-title flex">社区功能</h1>
-      <div v-for="(tool, index) in Tools" :key="index" class="Function">
-        <div class="Function-tool flex">{{ tool.tool }}</div>
-        <div class="Function-img flex">
-          <img :src="tool.img" alt="Team Member Image" />
-<!--          <img :src="img" alt="Team Member Image" />-->
-        </div>
-      </div>
-    </div>
+    <Portfolio :tools="Tools"/>
     <!--我们团队板块-->
     <div class="Team flex">
       <h1 class="team-title flex">我们团队</h1>
@@ -89,11 +80,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import "../../assets/css/HomePage.css"
+import "../../../assets/css/HomePage.css"
 import { ref, onMounted } from "vue"
 import NoticeBoard from "@/components/intro/NoticeBoardComponent.vue"
 import Welcome from "@/components/intro/welcome.vue";
 import {getInfo, getTeam, getTools} from "@/api/home/introAPI.ts";
+import Portfolio from "@/view/home/intro/comps/Portfolio.vue";
 // import {preloadImages} from "@/utils/preload.ts";
 
 // 网站首页信息
@@ -125,15 +117,7 @@ const Infos = ref<Info>(<Info>{id: 1, officialConcat: "",
   rvcVersion: "1.6",
   webDescription: "RVC社区是一个致力于分享和交流RVC（Retrieval based Voice Conversion，检索式声音转换）技术的平台。RVC是一个基于VITS语音合成系统的开源工具，能实现实时声音变换，适用于直播、视频录制等场景",
   webName: "RVC官方社区"})
-const Tools = ref<Tools[]>([
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "个人账号", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "畅所欲言", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "在线试音", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "开源模型", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "炼丹大师", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "模型交易", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "云变声", url: ""},
-  {id: 0, img: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", tool: "炼丹心得", url: ""}])
+const Tools = ref<Tools[]>([])
 const Teams = ref<Team[]>([
   {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
   {avatar: "https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg", description: "RVC开源项目创始人", id: 1, nickname: "花儿不哭", role: "社区创造者"},
@@ -197,84 +181,6 @@ onMounted(() => {
 //   }, 15000);
 // });
 </script>
-<style scoped>
-.parent {
-  width: 450px;
-  padding: 20px;
-  perspective: 1000px;
-}
-
-.card {
-  /* border-radius: 10px; */
-  border: 3px solid rgb(255, 255, 255);
-  transform-style: preserve-3d;
-  background-size: 60px 60px;
-  background-position: 0 0, 0 0;
-  width: 100%;
-  box-shadow: rgba(142, 142, 142, 0.3) 0px 30px 30px -10px;
-  transition: all 0.5s ease-in-out;
-}
-
-.card:hover {
-  background-position: -100px 100px, -100px 100px;
-  transform: rotate3d(0.5, 1, 0, 30deg);
-}
-
-.content-box {
-  background: rgba(255, 255, 255, 0.44);
-  /* border-radius: 10px 100px 10px 10px; */
-  transition: all 0.5s ease-in-out;
-  padding: 60px 25px 45px 25px;
-  transform-style: preserve-3d;
-}
-
-.content-box .card-title {
-  display: inline-block;
-  color: white;
-  font-size: 25px;
-  font-weight: 900;
-  transition: all 0.5s ease-in-out;
-  transform: translate3d(0px, 0px, 50px);
-}
-
-.content-box .card-title:hover {
-  transform: translate3d(0px, 0px, 60px);
-}
-
-.content-box .card-content {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #f2f2f2;
-  transition: all 0.5s ease-in-out;
-  transform: translate3d(0px, 0px, 30px);
-}
-
-.content-box .card-content:hover {
-  transform: translate3d(0px, 0px, 60px);
-}
-
-.content-box .see-more {
-  cursor: pointer;
-  margin-top: 1.5rem;
-  display: inline-block;
-  font-family: ZCool;
-  font-size: 18px;
-  text-transform: uppercase;
-  color: rgb(73, 73, 73);
-  /* border-radius: 5px; */
-  background: white;
-  padding: 0.5rem 0.7rem;
-  transition: all 0.5s ease-in-out;
-  transform: translate3d(0px, 0px, 20px);
-  border-radius: 5px;
-}
-
-.content-box .see-more:hover {
-  transform: translate3d(0px, 0px, 60px);
-}
-
-.date-box span {
-  display: block;
-  text-align: center;
-}
+<style lang="scss" scoped>
+@import "@/style/scss/intro/_intro.scss";
 </style>
