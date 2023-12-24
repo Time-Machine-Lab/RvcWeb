@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import commentComponent from '@/components/modelCommunication/commentComponent.vue'
 import { CommentVo, CommentChildrenListForm } from '@/api/post/postType'
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { getChildComments } from '@/api/post/postApi';
 let props = defineProps<{

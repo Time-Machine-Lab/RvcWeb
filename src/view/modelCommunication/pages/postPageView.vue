@@ -236,7 +236,7 @@ const sendComment = function () {
                             </div>
                         </div>
                     </div>
-                    <div class="author-box__userInfo__data">
+                    <!-- <div class="author-box__userInfo__data">
                         <div class="author-box__userInfo__data__item" v-for="(figure, index) in figures" :key="index">
                             <div class="author-box__userInfo__data__item--number">
                                 {{ figure.number }}
@@ -245,7 +245,7 @@ const sendComment = function () {
                                 {{ figure.desc }}
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -498,7 +498,7 @@ const sendComment = function () {
     left: 50%;
     transform: translate(-50%);
     background-color: rgba(37, 38, 43);
-    height: 150px;
+    height: 100px;
     /* box-shadow: rgba(0, 0, 0, 0.8) 0 0 10px 1px; */
     border-radius: 5px;
     margin-top: 10px;
