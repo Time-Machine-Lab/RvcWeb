@@ -8,6 +8,7 @@ export default[
   {
     path: "/user",
     name: "userPage",
+    redirect: '/user/likes',
     component: () => import("@/view/user/info/userPage.vue"),
     children: [
       {

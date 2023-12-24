@@ -10,7 +10,7 @@ import { ref } from 'vue';
 const activeIndex = ref(0);
 const menuList = [
   // { to: '/', text: '首页' ,icon:'mdi mdi-home' },
-  { to: '/rvc/communication', text: '交流分区' ,icon:'mdi mdi-chat'  },
+  { to: '/rvc/posts', text: '交流分区' ,icon:'mdi mdi-chat'  },
   { to: '/rvc/models', text: '模型展厅' ,icon:"mdi mdi-robot-excited" },
 ];
 const click = (index:number)=>{
