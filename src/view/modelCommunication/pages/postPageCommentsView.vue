@@ -15,7 +15,7 @@ let props = defineProps<{
 }>()
 let scrollDisabled = ref(false)
 let limit = ref('10')
-let page = ref(0)
+let page = ref(1)
 let disalbed = ref(false)
 
 const load = function () {
@@ -31,7 +31,6 @@ const load = function () {
     getCommentList(form.value).then(res => {
         if (res.data.length == 0) {
             message.warning('没有更多评论了')
-            scrollDisabled.value = true
             disalbed.value = true
             return
         }

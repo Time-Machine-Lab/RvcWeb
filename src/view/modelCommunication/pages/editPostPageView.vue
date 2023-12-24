@@ -68,6 +68,8 @@ const savePost = function () {
         if (res.code == 200) {
             message.success('保存成功')
             router.back()
+        } else {
+            message.error(res.msg)
         }
     })
 }
@@ -87,8 +89,6 @@ const beforeCoverUpload = function (rawFile: File) {
         } else {
             message.success('上传失败')
         }
-
-
     })
     return false
 }
