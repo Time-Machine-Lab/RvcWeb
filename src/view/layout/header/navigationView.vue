@@ -2,7 +2,7 @@
  * @Author: Dhx
  * @Date: 2023-12-24 05:26:22
  * @Description: 
- * @FilePath: \RvcWeb\src\view\layout\header\Navigation.vue
+ * @FilePath: \RvcWeb\src\view\layout\header\navigationView.vue
 -->
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -10,8 +10,8 @@ import { ref } from 'vue';
 const activeIndex = ref(0);
 const menuList = [
   { to: '/', text: '首页' ,icon:'mdi mdi-home' },
-  { to: '/community', text: '交流分区' ,icon:'mdi mdi-chat'  },
-  { to: '/model-home', text: '模型展厅' ,icon:"mdi mdi-robot-excited" },
+  { to: '/rvc/communication', text: '交流分区' ,icon:'mdi mdi-chat'  },
+  { to: '/rvc/models', text: '模型展厅' ,icon:"mdi mdi-robot-excited" },
 ];
 const click = (index:number)=>{
   activeIndex.value=index
