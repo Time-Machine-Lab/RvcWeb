@@ -30,16 +30,16 @@ export function getModelType(){
 
 export function favoriteModel(form:FavoriteAndCollectionForm){
     return request({
-        url:'',
-        method:'',
+        url:'/model/relative/likes',
+        method:'post',
         params:form
     })
 }
 
 export function collectModel(form:FavoriteAndCollectionForm){
     return request({
-        url:'',
-        method:'',
+        url:'/model/relative/collection',
+        method:'post',
         params:form
     })
 }

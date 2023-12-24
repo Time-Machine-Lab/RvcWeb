@@ -105,7 +105,7 @@ const getimg = function (index: number) {
 
             </div>
             <div class="model-card__info__creatAt" @click="$router.push('/model?id=' + localModel.id)">
-                {{ localModel.avatar }}
+                {{ localModel.createTime }}
             </div>
             <div class="model-card__info__title" @click="$router.push('/model?id=' + localModel.id)">
                 {{ localModel.name }}
@@ -142,6 +142,7 @@ const getimg = function (index: number) {
 .model-card {
     position: relative;
     width: 380px;
+    min-height: 400px;
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;

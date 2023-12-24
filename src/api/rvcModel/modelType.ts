@@ -8,19 +8,22 @@ export type RvcModelVo = {
   id: string;
   name: string;
   type: string;
-  label: string[];
-  picture: string;
-  description: string;
-  note: string;
-  viewNum: string;
-  likesNum: string;
-  collectionNum: string;
-  isLike: string;
-  isCollection: string;
-  uid: string;
-  username: string;
-  nickname: string;
+  label: any[];
+  picture: string | null;
   avatar: string;
+  collectionNum: string;
+  createTime: string;
+  description: string;
+  isCollection: string;
+  isFollow: any; 
+  isLike: string;
+  likesNum: string;
+  nickname: string;
+  note: string;
+  uid: string;
+  updateTime: string;
+  username: string;
+  viewNum: string;
 }
 export type ModelListForm = {
   page: string;
