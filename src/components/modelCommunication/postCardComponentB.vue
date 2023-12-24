@@ -125,7 +125,7 @@ const editPost = function () {
             <div class="user-info" @click="$router.push('/user?id=' + localPost.author.uid)">
 
                 <div class="user-info__avatar"
-                    :style="{ backgroundImage: 'url(' + localPost.author?.avatar ? localPost.author?.avatar : '/teamPic/default.png' + ')' }">
+                    :style="{ backgroundImage: 'url(' + localPost.author?.avatar  + ')' }">
 
                 </div>
                 <div class="user-info__usename">
