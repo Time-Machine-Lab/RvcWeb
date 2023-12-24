@@ -9,7 +9,6 @@ import { ref } from "vue";
 import { editUserInfo,uploadAvatar } from "@/api/user/userApi.ts";
 import { Profile, ProfileForm } from "@/api/user/userTypes";
 import { message } from "@/utils/message";
-import { routerKey } from "vue-router";
 import router from "@/router";
 const props = defineProps<{
   userProfile: Profile;
