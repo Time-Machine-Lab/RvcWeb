@@ -16,7 +16,7 @@ import { ref } from "vue";
 import router from "@/router";
 import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
 import { message } from "@/utils/message";
-import { storage } from "@/utils/storage";
+// import { storage } from "@/utils/storage";
 import { UserInfoVO } from '@/api/user/userTypes';
 // import { useUserStore } from '@/view/user/info/userStore.js'
 // const userStore = useUserStore()
@@ -63,10 +63,10 @@ let audiosvisibility = ref(false)
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
-    if (localModel.value.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
-        return
-    }
+    // if (localModel.value.uid == storage.get<string>('uid')) {
+    //     message.warning('这是你的贴子哦')
+    //     return
+    // }
     setTimeout(function () {
         collectDisabled.value = true
     }
@@ -89,10 +89,10 @@ const collect = function () {
 const like = function () {
     if (!likeDisabled.value) return
     likeDisabled.value = false
-    if (localModel.value.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
-        return
-    }
+    // if (localModel.value.uid == storage.get<string>('uid')) {
+    //     message.warning('这是你的贴子哦')
+    //     return
+    // }
     setTimeout(function () {
         likeDisabled.value = true
     }, 2000)
@@ -213,14 +213,14 @@ calcNum(1000)
 
                 </div>
                 <div class="button-group__item" @click="like">
-                    <img class="vertical-center" src="/icon/heart.svg" height="20" width="20">
+                    <img class="vertical-center" :src="localModel.isLike=='1'?'/icon/heart-fill.svg':'/icon/heart.svg'" height="20" width="20">
                     <div class="button-group__item__msg">
                         喜欢
                     </div>
 
                 </div>
                 <div class="button-group__item" @click="collect">
-                    <img class="vertical-center" src="/icon/mark.svg" height="20" width="20">
+                    <img class="vertical-center" :src="localModel.isCollection=='1'?'/icon/mark-fill.svg':'/icon/mark.svg'" height="20" width="20">
                     <div class="button-group__item__msg">
                         收藏
                     </div>
