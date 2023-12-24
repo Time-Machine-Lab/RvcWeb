@@ -53,6 +53,7 @@ const props = defineProps<{
     rvcDescription: string;
   };
 }>()
+console.log(props)
 </script>
 
 <style scoped>
