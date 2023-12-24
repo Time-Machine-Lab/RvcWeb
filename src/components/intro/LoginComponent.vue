@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-24 17:20:03
+ * @LastEditTime: 2023-12-24 18:28:59
  * @FilePath: \RvcWeb\src\components\intro\LoginComponent.vue
  * @Description: 
  * 
@@ -13,6 +13,7 @@ import { defineComponent, ref } from "vue";
 import { LoginForm } from "@/api/user/userTypes";
 import { login } from "@/api/user/userApi";
 import { storage } from "@/utils/storage";
+import { message } from "@/utils/message";
 export default defineComponent({
   name: "login-page",
   data() {
@@ -33,7 +34,10 @@ export default defineComponent({
         if (res.code == 200) {
           storage.set('token', (res.data.token as string))
           storage.set('user', res.data)
-          this.$router.push('/')
+          message.success('登陆成功')
+          this.$router.push('/rvc/posts')
+        } else {
+          message.error(res.msg)
         }
       })
     }
