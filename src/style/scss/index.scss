@@ -20,9 +20,20 @@ body {
 
 @font-face {
     font-family: "ZCool";
-    src: url("@/assets/ttf/ZCOOLKuaiLe-Regular.ttf");
+    src: url("public/font/ZCOOLKuaiLe-Regular.ttf");
 }
-
+@font-face {
+    font-family: "OpenSans";
+    src: url("public/font/OpenSans-Regular.ttf");
+}
+@font-face {
+    font-family: "NotoSerif";
+    src: url("public/font/NotoSerif-Black.ttf");
+}
+@font-face {
+    font-family: "NotoSerif";
+    src: url("public/font/BreeSerif-Regular.ttf");
+}
 * {
     list-style: none;
     margin: 0;

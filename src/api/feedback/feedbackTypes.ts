@@ -62,11 +62,11 @@ export interface ListItems {
     /**
      * 一页的内容
      */
-    limit: string;
+    limit: number;
     /**
      * 页数
      */
-    page: string;
+    page: number;
     /**
      * 一页数据
      */
@@ -74,8 +74,7 @@ export interface ListItems {
     /**
      * 总共数据
      */
-    total: string;
-    [property: string]: any;
+    total: number;
 }
 export interface FeedbackItem {
     /**

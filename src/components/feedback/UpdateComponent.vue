@@ -2,34 +2,56 @@
 import { ref } from 'vue'
 import {MdEditor} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import {Add, TypeListItem} from '@/api/feedback/feedbackTypes.ts'
-import {getTypeList, postAdd} from '@/api/feedback/feedbackAPI.ts'
-
+import {FeedbackItem, TypeListItem, Update} from '@/api/feedback/feedbackTypes.ts'
+import {getFeedback, getTypeList, postUpdate} from '@/api/feedback/feedbackAPI.ts'
+import {onMounted} from "vue";
+// 关闭弹窗
 const emits = defineEmits();
 const close = () => {
   emits('close');
 };
-// 交换按钮样式
+// 获取帖子fbid
+const { data } = defineProps(['data']);
+// 获取数据
+const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
+const FeedbackData = ref<FeedbackItem>(<FeedbackItem>{})
 const selectedButtonIndex = ref(0);
-
+const postTitle = ref("")
+const postContent = ref("")
+const postType = ref(0)
+const getData = () => {
+  // 获取反馈帖子的所有类型
+  getTypeList().then((res: any) => {
+    console.log(res);
+    Type.value = res.data.list;
+  });
+  // 根据fb_id获取对应的feedback帖子
+  getFeedback(data).then((res: any) => {
+    console.log(res);
+    FeedbackData.value = res.data.feedback;
+    selectedButtonIndex.value = FeedbackData.value.type
+    postTitle.value = FeedbackData.value.title
+    postContent.value = FeedbackData.value.content
+    postType.value = FeedbackData.value.type
+  });
+};
+// 交换按钮样式
 const setType = (index: number) => {
   selectedButtonIndex.value = index;
   postType.value = index;
 };
 // 提交表单
-const postTitle = ref('');
-const postContent = ref('');
-const postType = ref<number | null>(2);
+
 
 const submitForm = async () => {
-  const formData: Add = {
+  const formData: Update = {
     title: postTitle.value,
     content: postContent.value,
-    type: Number(postType.value),
-    fbid: "",  // 如果是添加新帖子，可以忽略这个属性
+    type: postType.value,
+    fbid: data,  // 如果是添加新帖子，可以忽略这个属性
   };
   try {
-    const response = await postAdd(formData);
+    const response = await postUpdate(formData);
     console.log('表单提交成功', response);
     // 这里你可以处理提交成功后的逻辑，例如重定向到其他页面等
   } catch (error) {
@@ -37,15 +59,14 @@ const submitForm = async () => {
     // 这里你可以处理提交失败后的逻辑，例如显示错误消息等
   }
 };
-// 获取反馈帖子的所有类型
-const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
-getTypeList().then((res: any) => {
-  console.log(res);
-  Type.value = res.data.list;
+onMounted(() => {
+  getData()
+
 });
-const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
+const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
   'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
   'preview', 'htmlPreview']
+
 </script>
 
 <template>
@@ -55,13 +76,13 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
         <button @click="close" class="close flex">X</button>
         <!--表单内容-->
         <form class="box-contain-form" >
-          <h3>创建帖子</h3>
+          <h3>编辑帖子</h3>
           <div class="box-contain-mention flex">
             <h6>已启用帖子审核。</h6>
             <p>您的帖子将被转发给团队，但在批准之前不会公开显示。</p>
           </div>
           <h4>标题</h4>
-          <input v-model="postTitle" placeholder="帖子标题" class="box-contain-title">
+          <input v-model="postTitle" class="box-contain-title">
           <h4>板</h4>
           <div class="box-contain-btn">
             <!--点击按钮交换样式-->
@@ -71,7 +92,7 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor  v-model="postContent" :ToolbarNames="toolbars" noMermaid/>
+            <md-editor  v-model="postContent" :ToolbarNames="toobars" noMermaid/>
           </div>
           <button @click="submitForm" type="submit" class="submit">提交帖子</button>
         </form>
@@ -81,7 +102,6 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
 </template>
 
 <style scoped>
-
 .close{
   position: absolute;
   right:20px;

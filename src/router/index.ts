@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
 ];
 const options: RouterOptions = {
     history: createWebHashHistory(),
-    routes,
+    routes
 };
 
 const router: Router = createRouter(options);
