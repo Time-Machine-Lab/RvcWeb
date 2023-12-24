@@ -15,9 +15,6 @@ import { resolve } from "path";
 export default defineConfig({
   plugins: [
     vue(),
-    vuetify({
-      autoImport: true,
-    }),
     AutoImport({
       imports: ["vue", "vue-router", "pinia"],
     }),
