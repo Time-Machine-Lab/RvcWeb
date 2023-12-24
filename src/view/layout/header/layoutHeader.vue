@@ -40,11 +40,11 @@ const handleBlur = function () {
             + 新帖子
           </div>
         </RouterLink>
-        <RouterLink to="/newModel">
+        <!-- <RouterLink to="/newModel">
           <div class="newModel">
             + 新模型
           </div>
-        </RouterLink>
+        </RouterLink> -->
         <div tabindex="-1" @click="handleClickSort" @blur="handleBlur" class="bell" :class="clickBell ? 'dither-animation' : ''">
           <div class="bell__point"></div>
           <img src="/icon/bell.svg" width="25" height="25">

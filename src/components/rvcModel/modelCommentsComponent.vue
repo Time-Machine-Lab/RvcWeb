@@ -14,7 +14,7 @@ import { message } from '@/utils/message'
 const props = defineProps<{
     modelId: string
 }>()
-let dialogVisible = ref(false)
+let sendCommentDialogVisible = ref(false)
 let comments = ref<ModelComment[]>([])
 let page = ref(1)
 let getCommentsForm = ref<GetCommentForm>({
@@ -53,10 +53,21 @@ const load = function () {
     })
 }
 setTimeout(function () {
-    load()
+    // load()
+    comments.value  = [{
+                "id": "1736285491279269890",
+                "uid": "1735662165315596290",
+                "nickname": "蔡徐坤",
+                "picture": "",
+                "content": "学长太帅了",
+                "likesNum": "2",
+                "commentTime": "2023-12-17 15:21:34",
+                "modelId": "1735910925897834498",
+                "isLikes": "1"
+            }]
 }, 1000)
 const commentAddFunc = function () {
-    dialogVisible.value = false
+    sendCommentDialogVisible.value = false
     sendCommentForm.value.modelId = props.modelId
     commentAdd(sendCommentForm.value).then((res: any) => {
         if (res.code == 200) {
@@ -72,7 +83,7 @@ const getLength = function(str:string){
 </script>
 <template>
     <div class="model-comments">
-        <el-dialog v-model="dialogVisible" style="background-color: rgba(26,27,30);border-radius: 5px;" width="20%">
+        <el-dialog v-model="sendCommentDialogVisible" style="background-color: rgba(26,27,30);border-radius: 5px;" width="20%">
             <div class="dialog-title">
                 添加评论
             </div>
@@ -85,16 +96,17 @@ const getLength = function(str:string){
             </div>
             <template #footer>
                 <span class="dialog-footer">
-                    <div @click="dialogVisible = false" class="dialog-footer__cancel">取消</div>
+                    <div @click="sendCommentDialogVisible = false" class="dialog-footer__cancel">取消</div>
                     <div type="primary" class="dialog-footer__confirm" @click="commentAddFunc">
                         发表
                     </div>
                 </span>
             </template>
         </el-dialog>
+    
         <div class="model-comments__title">
             <span>评论</span>
-            <div class="add-comment" @click="dialogVisible = true">
+            <div class="add-comment" @click="sendCommentDialogVisible = true">
                 发表评论
             </div>
         </div>

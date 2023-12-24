@@ -133,7 +133,11 @@ export type CommentForm = {
     [property: string]: any;
 }
 export type UserLikePostForm = {
-    data?: string;
+    limit?: string;
+    page?: string;
+    [property: string]: any;
+}
+export type UserCollectPostForm = {
     limit?: string;
     page?: string;
     [property: string]: any;

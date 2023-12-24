@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-21 21:00:56
+ * @LastEditTime: 2023-12-24 16:16:09
  * @FilePath: \RvcWeb\src\components\intro\RegisterComponent.vue
  * @Description: 
  * 
@@ -64,15 +64,20 @@ export default defineComponent({
         uuid: this.preCode.uuid,
         code: this.preCode.inputCode
       })
-      getCode(form.value).then(res => {
-        console.log(res)
-        message.success('发送成功')
-        this.hasSendCode = true
-        this.preCode.time = 60
-        setTimeout(function () {
-          that.hasSendCode = false
-        }, 60000)
-        this.centerDialogVisible = false
+      getCode(form.value).then((res: any) => {
+        if (res.code == 200) {
+          message.success('发送成功')
+          this.hasSendCode = true
+          this.preCode.time = 60
+          setTimeout(function () {
+            that.hasSendCode = false
+          }, 60000)
+          this.centerDialogVisible = false
+          message.success('注册成功')
+        } else {
+          message.error(res.msg)
+        }
+
       })
     },
     registerFunc() {
@@ -107,11 +112,11 @@ export default defineComponent({
   mounted() {
     let that = this
     setInterval(
-      function(){
-        if(that.preCode.time >= 0){
-          that.preCode.time -- 
+      function () {
+        if (that.preCode.time >= 0) {
+          that.preCode.time--
         }
-      },1000)
+      }, 1000)
   }
 });
 </script>
@@ -125,7 +130,8 @@ export default defineComponent({
 
       </div>
       <div>
-        <input v-model="preCode.inputCode" placeholder="图片验证码" type="text" name="password" style="margin-top: 20px;" class="item-1" />
+        <input v-model="preCode.inputCode" placeholder="图片验证码" type="text" name="password" style="margin-top: 20px;"
+          class="item-1" />
 
       </div>
 
