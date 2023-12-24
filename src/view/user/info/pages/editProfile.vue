@@ -38,7 +38,7 @@ const sexOptions = ref([
 ]);
 let sexSelectvisibility = ref(false)
 let clickSex = ref(false)
-let currentSexIndex = ref(2)
+let currentSexIndex = ref(-1)
 const handleClickSort = function () {
   clickSex.value = true
   sexSelectvisibility.value = !sexSelectvisibility.value
@@ -74,6 +74,8 @@ reader.onload = function(){
   uploadAvatar(rawFile).then((res:any)=>{
     if(res.code == 200){
       message.success('上传成功，等待审核')
+    } else {
+      message.error(res.msg)
     }
     
   })
@@ -131,7 +133,7 @@ const profileHasChanged = function () {
             :class="clickSex ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
             <div class="horizontal-center" style="display: flex;">
               <span style="line-height: 30px;margin-left: 3px;width: 140px;">{{
-                sexOptions[currentSexIndex]?.label }}</span>
+                currentSexIndex==-1?userProfile.sex:sexOptions[currentSexIndex]?.label }}</span>
               <span>
                 <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
                   :class="sexSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
