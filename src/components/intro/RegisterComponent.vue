@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-24 16:16:09
+ * @LastEditTime: 2023-12-24 16:57:01
  * @FilePath: \RvcWeb\src\components\intro\RegisterComponent.vue
  * @Description: 
  * 
@@ -14,6 +14,7 @@ import { getCode, register, getPreCode } from '@/api/user/userApi'
 import { EmailCodeForm, RegisterForm } from '@/api/user/userTypes'
 import { defineComponent, ref } from "vue";
 import { storage } from "@/utils/storage";
+import router from "@/router";
 
 export default defineComponent({
   name: "register-page",
@@ -73,7 +74,6 @@ export default defineComponent({
             that.hasSendCode = false
           }, 60000)
           this.centerDialogVisible = false
-          message.success('注册成功')
         } else {
           message.error(res.msg)
         }
@@ -90,8 +90,14 @@ export default defineComponent({
         emailCode: this.form.code,
         password: this.form.password
       })
-      register(form.value).then(res => {
-        storage.set('token', res.data.token)
+      register(form.value).then((res:any) => {
+        if(res.code==200){
+          message.success('注册成功')
+          storage.set('token', res.data.token)
+          router.go(0)
+        } else {
+          message.error(res.msg)
+        }
       })
     },
     checkEmain(email: string) {

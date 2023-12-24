@@ -55,8 +55,10 @@ const submitPost = function () {
   postForm.value.content = content.value
   postAdd(postForm.value).then((res: any) => {
     if (res.code == 200) {
-      message.success('保存成功')
+      message.success('发布成功')
       router.back()
+    }else{
+      message.error(res.msg)
     }
   })
   storage.remove('postDraft')

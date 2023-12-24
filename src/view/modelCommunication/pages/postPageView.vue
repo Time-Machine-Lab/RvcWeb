@@ -18,8 +18,13 @@ import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
 const userStore = useUserStore()
 let userProfile = userStore.getProfile
-getPostById((router.currentRoute.value.query.id as unknown as number)).then(res => {
-    localPost.value = res.data
+getPostById((router.currentRoute.value.query.id as unknown as number)).then((res:any) => {
+    if(res.code == 200){
+        console.log('');
+    
+    } else {
+        message.error(res.msg)
+    }
 })
 let localPost = ref<PostVo>({
     postId: "",

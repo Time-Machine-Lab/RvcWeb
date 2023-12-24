@@ -28,16 +28,12 @@ let newProfile = ref<ProfileForm>({
 });
 const sexOptions = ref([
   {
-    value: "m",
+    value: "男",
     label: "男",
   },
   {
-    value: "f",
+    value: "女",
     label: "女",
-  },
-  {
-    value: "u",
-    label: "未知",
   },
 ]);
 let sexSelectvisibility = ref(false)
@@ -87,8 +83,13 @@ const submitChange = function () {
   if (!profileHasChanged()) {
     return
   }
-  editUserInfo(newProfile.value).then((res) => {
-    console.log(res + "res");
+  editUserInfo(newProfile.value).then((res:any) => {
+    if(res.code == 200){
+      message.success("修改成功")
+    }
+    else{
+      message.error(res.msg)
+    }
   });
 };
 const profileHasChanged = function () {

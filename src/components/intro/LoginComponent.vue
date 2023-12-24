@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-18 15:19:43
+ * @LastEditTime: 2023-12-24 17:20:03
  * @FilePath: \RvcWeb\src\components\intro\LoginComponent.vue
  * @Description: 
  * 
@@ -32,9 +32,9 @@ export default defineComponent({
       login(form.value).then((res: any) => {
         if (res.code == 200) {
           storage.set('token', (res.data.token as string))
+          storage.set('user', res.data)
           this.$router.push('/')
         }
-
       })
     }
   }
