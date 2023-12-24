@@ -16,16 +16,17 @@ import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postT
 import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
+import { Profile } from "@/api/user/userTypes";
 const userStore = useUserStore()
-let userProfile = userStore.getProfile
 getPostById((router.currentRoute.value.query.id as unknown as number)).then((res:any) => {
     if(res.code == 200){
-        console.log('');
-    
+        localPost.value = res.data
     } else {
         message.error(res.msg)
     }
+    getH1()
 })
+let userProfile = ref<Profile>({})
 let localPost = ref<PostVo>({
     postId: "",
     author: {
@@ -80,11 +81,9 @@ let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 const getH1 = function () {
     H1Elements.value = document.querySelectorAll(".post-content h1")
+    userProfile.value = userStore.getProfile
 }
-setTimeout(function () {
-    getH1()
 
-}, 2000)
 const to = function (index: number) {
     console.log(H1Elements.value[index].getBoundingClientRect().top);
 

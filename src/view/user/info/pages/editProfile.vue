@@ -9,6 +9,8 @@ import { ref } from "vue";
 import { editUserInfo,uploadAvatar } from "@/api/user/userApi.ts";
 import { Profile, ProfileForm } from "@/api/user/userTypes";
 import { message } from "@/utils/message";
+import { routerKey } from "vue-router";
+import router from "@/router";
 const props = defineProps<{
   userProfile: Profile;
 }>();
@@ -88,6 +90,7 @@ const submitChange = function () {
   editUserInfo(newProfile.value).then((res:any) => {
     if(res.code == 200){
       message.success("修改成功")
+      router.go(0)
     }
     else{
       message.error(res.msg)

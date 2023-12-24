@@ -119,7 +119,7 @@ const load = () => {
       loading.value = false
       noMore.value = true
     }
-  }, 2000);
+  }, 500);
 };
 
 onMounted(() => {
