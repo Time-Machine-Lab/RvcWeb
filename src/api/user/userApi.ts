@@ -31,9 +31,9 @@ export function getUserInfoById(id: string) {
     })
 }
 
-export function getFollowUsers(id: string) {
+export function getFollowUsers() {
     return request({
-        url: '/m1/3628624-0-3e257297/getFollowUsers?id=' + id,
+        url: '/user/getMyFollowUser',
         method: 'get',
     })
 }

@@ -2,28 +2,26 @@
 import { ref } from 'vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
-import { PostVo, UserLikePostForm } from '@/api/post/postType';
-import { getUserLikePosts } from '@/api/post/postApi';
+import { PostVo, UserCollectPostForm, UserLikePostForm } from '@/api/post/postType';
+import { getUserCollectPosts } from '@/api/post/postApi';
+import { UserLikeModelForm,UserCollectModelForm } from '@/api/rvcModel/modelType';
+import { message } from '@/utils/message';
+import { getUserCollectModels } from '@/api/rvcModel/modelApi';
 let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
-let postScrollDisabled = ref(false)
 let posts = ref<PostVo[]>([])
-let form = ref<UserLikePostForm>({
-    data: '',
-    limit: '5',
-    page: '0'
+let page = ref(1)
+let postForm = ref<UserCollectPostForm>({
+    limit: '10',
+    page: page.value as unknown as string
 })
-getUserLikePosts(form.value).then((res: any) => {
-    if (res.code == 200) {
-        let data = res.data
-        for (let i = 0; i < data.length; i++) {
-            posts.value.push(data[i])
-        }
-    }
-
+let modelForm = ref<UserCollectModelForm>({
+    page: page.value as unknown as string,
+    limit: '10'
 })
+let disabled = ref(false)
 const handleClickSelect = function () {
     clickSelect.value = true
     selectVisibility.value = !selectVisibility.value
@@ -37,11 +35,66 @@ const handleBlur = function () {
     }, 200)
 }
 const handleOptionChange = function (index: number) {
+    if(currentSelectIndex.value == index)return
     currentSelectIndex.value = index
     selectVisibility.value = false
+    page.value = 1
+    disabled.value = false
+    if(currentSelectIndex.value == 0){
+        loadPost()
+    } else if(currentSelectIndex.value == 1){
+        loadModel()
+    }
 }
 const loadPost = function () {
+    if (disabled.value) return
+    disabled.value = true
+    postForm = ref<UserLikePostForm>({
+        limit: '5',
+        page: page.value as unknown as string
+    })
+    getUserCollectPosts(postForm.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = res.data
+            if (data.length == 0) {
+                message.warning('已滑到底部了')
+                disabled.value = true
+            }
+            for (let i = 0; i < data.length; i++) {
+                posts.value.push(data[i])
+            }
+            page.value++
+            disabled.value = false
+        } else {
+            message.error(res.msg)
+        }
 
+    })
+}
+const loadModel = function () {
+    if (disabled.value) return
+    disabled.value = true
+    modelForm = ref<UserLikeModelForm>({
+        limit: '10',
+        page: page.value as unknown as string
+    })
+    getUserCollectModels(modelForm.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = res.data.records
+            if (data.length == 0) {
+                message.warning('已滑到底部了')
+                disabled.value = true
+            }
+            for (let i = 0; i < data.length; i++) {
+                posts.value.push(data[i])
+            }
+            page.value++
+            disabled.value = false
+        } else {
+            message.error(res.msg)
+        }
+
+    })
 }
 </script>
 <template>
@@ -67,7 +120,11 @@ const loadPost = function () {
         </div>
         <div class="like-pages__content">
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" :infinite-scroll-immediate="true">
+                :infinite-scroll-immediate="true" v-if="currentSelectIndex == 0">
+                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+            </waterFallComponent>
+            <waterFallComponent v-infinite-scroll="loadModel" infinite-scroll-distance="100"
+                :infinite-scroll-immediate="true">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
             </waterFallComponent>
         </div>

@@ -85,6 +85,13 @@ export function getUserLikePosts(form:UserLikePostForm){
         params:form
     })
 }
+export function getUserCollectPosts(form:UserLikePostForm){
+    return request({
+        method:'get',
+        url:'/communication/post/user/collect',
+        params:form
+    })
+}
 
 export function getUserCreatePosts(form:UserCreatePostForm){
     return request({

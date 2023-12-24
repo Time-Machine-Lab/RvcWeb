@@ -28,7 +28,8 @@ const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
     uploadImage: {
-      server: '/rvcApi//model/upload/image',
+      fieldName: 'file',
+      server: '/rvcApi/model/upload/image',
       maxFileSize: 5 * 1024 * 1024,
       maxNumberOfFiles: 20,
       allowedFileTypes: ['image/*'],

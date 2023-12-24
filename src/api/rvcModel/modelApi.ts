@@ -5,7 +5,8 @@
  * @FilePath: \RvcWeb\src\api\rvcModel\modelApi.ts
  */
 import request from '@/utils/request'
-import { CommentAddForm, FavoriteAndCollectionForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelListForm } from '@/api/rvcModel/modelType'
+import { CommentAddForm, FavoriteAndCollectionForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelAddForm,ModelListForm, UserLikeModelForm } from '@/api/rvcModel/modelType'
+import { UserCollectPostForm } from '../post/postType'
 export function getModels (form:ModelListForm) {
     return request({
         url:'/model/list',
@@ -90,7 +91,8 @@ export function uploadModel(file1:File,file2:File){
     return request({
         url:'/model/upload/model',
         method:'post',
-        data:formData
+        data:formData,
+        timeout:3600000
     })
 }
 
@@ -101,6 +103,41 @@ export function uploadAudio(file:File){
     return request({
         url:'/model/upload/audio',
         method:'post',
-        data:formData
+        data:formData,
+        timeout:300000
+    })
+}
+
+export function uploadImages(file:File){
+    const formData = new FormData();
+    formData.append('file',file);
+
+    return request({
+        url:'/model/upload/image',
+        method:'post',
+        data:formData,
+        timeout:300000
+    })
+}
+
+export function getUserLikeModels(form:UserLikeModelForm){
+    return request({
+        url:'/model/likes',
+        method:'get',
+        params:form,
+    })
+}   
+export function getUserCollectModels(form:UserCollectPostForm){
+    return request({
+        url:'/model/collection',
+        method:'post',
+        params:form
+    })
+}
+export function modelAdd(form:ModelAddForm){
+    return request({
+        url:'/model/addModel',
+        method:'post',
+        params:form
     })
 }

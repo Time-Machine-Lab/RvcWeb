@@ -63,7 +63,6 @@ export type ModelVo = {
   nickname: string;
   avatar: string;
 }
-
 export type ModelComment = {
   id: string;
   uid: string;
@@ -157,4 +156,24 @@ export type ModelAddForm = {
     typeId: string;
     [property: string]: any;
 
+}
+
+export type UserLikeModelForm = {
+  /**
+   * 每页条数限制
+   */
+  limit?: string;
+  /**
+   * 排序规则，0,1,2
+   */
+  order?: string;
+  /**
+   * 第几页
+   */
+  page: string;
+  [property: string]: any;
+}
+
+export type UserCollectModelForm = {
+  [property: string]: any;
 }

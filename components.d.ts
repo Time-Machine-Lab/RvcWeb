@@ -23,11 +23,16 @@ declare module 'vue' {
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
+<<<<<<< Updated upstream
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+=======
+    ElRow: typeof import('element-plus/es')['ElRow']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+>>>>>>> Stashed changes
     ElTag: typeof import('element-plus/es')['ElTag']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FeedBackComponent: typeof import('./src/components/feedback/FeedBackComponent.vue')['default']
@@ -37,6 +42,7 @@ declare module 'vue' {
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
     ModelCardComponentB: typeof import('./src/components/rvcModel/modelCardComponentB.vue')['default']
     ModelCommentComponent: typeof import('./src/components/rvcModel/modelCommentComponent.vue')['default']
+    ModelCommentComponentB: typeof import('./src/components/rvcModel/modelCommentComponentB.vue')['default']
     ModelCommentsComponent: typeof import('./src/components/rvcModel/modelCommentsComponent.vue')['default']
     ModelEditorComponent: typeof import('./src/components/editor/modelEditorComponent.vue')['default']
     NewFeedbackComponent: typeof import('./src/components/feedback/NewFeedbackComponent.vue')['default']

@@ -8,20 +8,26 @@
 import { ref, nextTick } from 'vue'
 import { ELSelect } from 'element-plus'
 let props = defineProps<{
-    options:Array<{
-    value:string
-    label:string
-}>
+    options: Array<{
+        value: string
+        label: string
+    }>
+    getValue: (dynamicTags:{
+        value: string
+        label: string
+    }[]) => void
 }>()
-const selectValue = ref('')
-const dynamicTags = ref<string[]>([])
-const selectVisible = ref(false)
+const dynamicTags = ref<{
+        value: string
+        label: string
+    }[]>([])
+let selectVisible = ref(false)
 const SelectRef = ref<InstanceType<typeof ELSelect>>()
 let typeOptions = ref(props.options)
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
 let currentTypeIndex = ref(0)
-const handleClickSort = function () {
+const handleClickType = function () {
     clickType.value = true
     typeSelectvisibility.value = !typeSelectvisibility.value
     setTimeout(function () {
@@ -29,13 +35,20 @@ const handleClickSort = function () {
     }, 200)
 }
 const handleBlur = function () {
+
     setTimeout(function () {
         typeSelectvisibility.value = false
+        selectVisible.value = false
+
     }, 200)
     handleSelectConfirm(-1)
 }
-const handleClose = (tag: string) => {
+const handleClose = (tag: {
+        value: string
+        label: string
+    }) => {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
+    props.getValue(dynamicTags.value)
 }
 
 const showSelect = () => {
@@ -46,51 +59,49 @@ const showSelect = () => {
 
 }
 
-const handleSelectConfirm = (index:number) => {
-    if(index==-1)return
-    if(dynamicTags.value.includes(typeOptions.value[index].value))return
-    dynamicTags.value.push(typeOptions.value[index].value)
+const handleSelectConfirm = (index: number) => {
+    if (index == -1) {
+        return
+    }
+    if (dynamicTags.value.includes(typeOptions.value[index])) return
+    dynamicTags.value.push(typeOptions.value[index])
+    props.getValue(dynamicTags.value)
     selectVisible.value = false
-    selectValue.value = ''
 }
 </script>
 <template style="display:flex">
     <el-tag v-for="tag in dynamicTags" :key="tag" style="margin-right: 2px;"
         :style="{ backgroundColor: 'rgba(37, 38, 43)', border: 'rgba(55,58,64) 1px solid' }" closable
         :disable-transitions="false" @close="handleClose(tag)">
-        {{ tag }}
+        {{ tag.label }}
     </el-tag>
-    <div class="select" v-if="selectVisible" ref="SelectRef" >
-            <div tabindex="-1" class="type-selecter"
-                :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
-                :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
-                <div class="horizontal-center" style="width:100%;display: flex;">
-                    <span style="position: relative;left:0%;line-height: 20px;width:97%;text-align: left;">{{
-                        typeOptions[currentTypeIndex].value }}</span>
-                    <span style="position: relative;right:0%;">
-                        <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
-                            :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                    </span>
-                </div>
-
-            </div>
-            <div class="type-select" v-show="typeSelectvisibility">
-                <div class="type-select__item" v-for="(tag, index) in typeOptions" :key="index"
-                    @click="handleSelectConfirm(index);currentTypeIndex = index; typeSelectvisibility = false;"
-                    :style="{ backgroundColor: currentTypeIndex == index ? 'rgba(24,100,171)' : '' }">
-                    {{ tag.value }}
-                </div>
+    <div class="select" v-if="selectVisible" ref="SelectRef">
+        <div tabindex="-1" class="type-selecter"
+            :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
+            :class="clickType ? 'dither-animation' : ''" @click="handleClickType" @blur="handleBlur">
+            <div class="horizontal-center" style="width:100%;display: flex;">
+                <span style="position: relative;left:0%;line-height: 20px;width:97%;text-align: left;">{{
+                    typeOptions[currentTypeIndex].label }}</span>
+                <span style="position: relative;right:0%;">
+                    <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
+                        :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
+                </span>
             </div>
 
         </div>
-    <!-- <el-select v-if="selectVisible"  v-model="selectValue"
-        :style="{ width: '100px', backgroundColor: 'rgba(40,40,40)', border: 'rgba(70,70,70) 1px solid' }" size="small"
-        @change="handleSelectConfirm" @blur="handleSelectConfirm" placeholder="选择标签">
-        <el-option
-            v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value" />
-    </el-select> -->
+        <div class="type-select" v-show="typeSelectvisibility">
+            <div class="type-select__item" v-for="(tag, index) in typeOptions" :key="index"
+                @click="handleSelectConfirm(index); currentTypeIndex = index; typeSelectvisibility = false;"
+                :style="{ backgroundColor: currentTypeIndex == index ? 'rgba(24,100,171)' : '' }">
+                {{ tag.label }}
+            </div>
+        </div>
+
+    </div>
+
     <el-button v-else class="button-new-tag"
-        :style="{ backgroundColor: 'rgba(37, 38, 43)', border: 'rgba(55,58,64) 1px solid' }" size="small" @click="showSelect">
+        :style="{ backgroundColor: 'rgba(37, 38, 43)', border: 'rgba(55,58,64) 1px solid' }" size="small"
+        @click="showSelect">
         + New Tag
     </el-button>
 </template>
@@ -104,11 +115,12 @@ const handleSelectConfirm = (index:number) => {
 :deep(.el-input__wrapper) {
     background-color: rgba(40, 40, 40);
 }
+
 .type-selecter {
     width: calc(100% - 20px);
     height: 21px;
     padding: 0 15px;
-    transform: translate(0,1px);
+    transform: translate(0, 1px);
     border-radius: 5px;
     font-size: 14px;
     background-color: rgba(37, 38, 43);
@@ -154,8 +166,9 @@ const handleSelectConfirm = (index:number) => {
     width: 60px;
     text-align: left;
     display: inline-block;
-    
+
 }
+
 .revolve-animation {
     transform: rotateZ(180deg);
     transform-origin: 6px 2px;

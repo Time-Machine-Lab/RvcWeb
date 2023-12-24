@@ -9,18 +9,18 @@ import { OtherUser } from '@/api/user/userTypes'
 import FollowUserCard from "@/components/user/followUserCardComponent.vue";
 import { getFollowUsers } from "@/api/user/userApi";
 import router from "@/router/index.ts";
-import { useUserStore } from "@/view/user/info/userStore.js";
 import { ref } from "vue";
-const userStore = useUserStore();
+import { storage } from '@/utils/storage';
+import { message } from '@/utils/message';
 let followUsers = ref<OtherUser[]>();
-if ((router.currentRoute.value.query.id as string) != undefined) {
-  getFollowUsers(router.currentRoute.value.query.id as string).then((res) => {
-    followUsers.value = res.data;
-  });
-} else if (userStore.getProfile.id != undefined) {
-  getFollowUsers(userStore.getProfile.id as unknown as string).then((res) => {
-    followUsers.value = res.data;
-    console.log(followUsers);
+if ((router.currentRoute.value.query.id as string) == storage.get<string>('uid')) {
+  getFollowUsers().then((res:any) => {
+    if(res.code==200){
+      followUsers.value = res.data;
+      console.log(followUsers);
+    } else{
+      message.error('获取关注列表失败')
+    }
   });
 }
 

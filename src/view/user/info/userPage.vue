@@ -6,6 +6,7 @@
 -->
 <script lang="ts" setup>
 import router from "@/router/index.ts";
+// import { storage } from "@/utils/storage";
 import BaseInfo from "@/view/user/info/pages/baseInfo.vue";
 import { useUserStore } from "@/view/user/info/userStore.js";
 const userStore = useUserStore();
@@ -26,19 +27,19 @@ setTimeout(function () {
     </div>
     <div class="other-info-container">
       <div class="router-link-container">
-        <div class="user-home__link__item" :style="{
+        <!-- <div class="user-home__link__item" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/followUser' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/followUser' ? '2px 2px 1px 1px black' : ''
         }">
           <router-link :to="{ path: '/user/followUser', query: $route.query }"
-            style="display: block;height: 100%;width: 100%;">
+            style="display: block;height: 100%;width: 100%;" v-show="$route.query.id == storage.get<string>('uid')">
             <span class="img_back"
               :style="{ backgroundColor: $router.currentRoute.value.path == '/user/followUser' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
               <img width="12" height="12" src="/icon/follow.svg" class="vh-center">
             </span>
             <span>关注</span>
           </router-link>
-        </div>
+        </div> -->
         <div class="user-home__link__item" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/likes' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/likes' ? '2px 2px 1px 1px black' : ''

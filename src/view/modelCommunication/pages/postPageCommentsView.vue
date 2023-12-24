@@ -15,7 +15,7 @@ let props = defineProps<{
 }>()
 let scrollDisabled = ref(false)
 let limit = ref('10')
-let page = ref(1)
+let page = ref(0)
 let disalbed = ref(false)
 
 const load = function () {
@@ -28,9 +28,8 @@ const load = function () {
         page: page as unknown as string,
         limit: limit.value
     })
-    getCommentList(form.value).then((res:any) => {
-        if(res.code == 200){
-            if (res.data.length == 0) {
+    getCommentList(form.value).then(res => {
+        if (res.data.length == 0) {
             message.warning('没有更多评论了')
             scrollDisabled.value = true
             disalbed.value = true
@@ -42,8 +41,6 @@ const load = function () {
             commentList.value.push(data.value[i])
         }
         page.value++
-        }
-        
     })
 }
 load()
@@ -52,7 +49,7 @@ let commentList = ref<CommentVo[]>([
 ])
 </script>
 <template>
-    <commentsComponent v-if="commentList.length!=0" style="position: relative;" v-infinite-scroll="load" infinite-scroll-distance="20"
+    <commentsComponent style="position: relative;" v-infinite-scroll="load" infinite-scroll-distance="20"
         :infinite-scroll-disabled="scrollDisabled" :infinite-scroll-immediate="false" :comment-list="commentList">
     </commentsComponent>
 </template>
