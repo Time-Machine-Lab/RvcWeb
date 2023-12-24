@@ -144,7 +144,7 @@ button{
       top:10px;
       background: rgba(229, 229, 229, 0.91);
       width:100%;
-      height:540px;
+      height:560px;
       border-radius: 10px;
       .box-contain-form{
         width:90%;

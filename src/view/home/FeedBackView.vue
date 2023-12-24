@@ -138,7 +138,7 @@ onMounted(() => {
     <!--反馈类型选项卡-->
     <div class="contain-choice">
       <div class="contain-choice__box flex">
-        <div v-for="(item, index) in Type" :key="index" class="choice-item flex">{{ item.type }}</div>
+        <div class="choice-item flex"><h3 style="color:#cccccc">社区开发建议</h3></div>
       </div>
     </div>
     <div class="contain flex">
@@ -318,7 +318,7 @@ button{
   .contain-search__item{
     font-family: 方正粗黑宋简体;
     letter-spacing: 1px;
-    padding: 10px 20px;
+    padding: 5px 20px;
     border-radius: 8px;
     background: #3a3a3a;
     margin-right: 10px;
@@ -326,7 +326,8 @@ button{
     border:solid 1px #7191a9;
   }
   .contain-search__item p{
-    margin-right: 4px;
+    margin-top:8px;
+    margin-left: 4px;
   }
 }
 
@@ -398,6 +399,7 @@ button{
   }
   .invitation__comment p{
     margin-left: 3px;
+    margin-top:7px;
   }
 }
 

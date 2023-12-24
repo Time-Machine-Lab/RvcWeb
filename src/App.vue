@@ -56,7 +56,7 @@ onBeforeMount(async () => {
     </el-container>
   </div>
 </template>
-<style lang="scss" scoped>
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
 
 * {

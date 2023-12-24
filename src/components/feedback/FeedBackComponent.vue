@@ -314,6 +314,7 @@ button{
   border-radius: 8px;
   color: #646464;
   cursor: pointer;
+  letter-spacing: 1px;
 }
 .box{
   position: fixed;
@@ -473,6 +474,7 @@ button{
   }
 }
 .box-contain-right{
+  font-family: OpenSans;
   width:30%;
   height:100%;
   p{
