@@ -58,24 +58,24 @@ let localPost = ref<PostVo>({
     collect: false
 })
 let inputContent = ref<string>('')
-let figures = ref([
-    {
-        desc: "关注",
-        number: 0,
-    },
-    {
-        desc: "贴子",
-        number: 0,
-    },
-    {
-        desc: "粉丝",
-        number: 0,
-    },
-    {
-        desc: "上传模型",
-        number: 0,
-    }
-]);
+// let figures = ref([
+//     {
+//         desc: "关注",
+//         number: 0,
+//     },
+//     {
+//         desc: "贴子",
+//         number: 0,
+//     },
+//     {
+//         desc: "粉丝",
+//         number: 0,
+//     },
+//     {
+//         desc: "上传模型",
+//         number: 0,
+//     }
+// ]);
 let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
