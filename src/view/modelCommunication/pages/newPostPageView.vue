@@ -27,17 +27,17 @@ let draft = ref<{
   tagId: string,
   tagName: string
 }>()
-let formWarning = ref<{
-  tilte:boolean,
-  content:boolean,
-  cover:boolean,
-  tag:boolean
-}>({
-tilte: false,
-content: false,
-cover: false,
-tag: false
-})
+// let formWarning = ref<{
+//   tilte:boolean,
+//   content:boolean,
+//   cover:boolean,
+//   tag:boolean
+// }>({
+// tilte: false,
+// content: false,
+// cover: false,
+// tag: false
+// })
 getPostType().then(res => {
   let data = <RvcCommunicationPostType[]>(res.data)
   for (let i = 0; i < data.length; i++) {
@@ -65,7 +65,7 @@ const handleBlur = function () {
 const submitPost = function () {
   postForm.value.content = content.value
   if(postForm.value.title == ''){
-    formWarning.value?.tilte = true
+    // formWarning.value?.tilte = true
   }
   postAdd(postForm.value).then((res: any) => {
     if (res.code == 200) {
