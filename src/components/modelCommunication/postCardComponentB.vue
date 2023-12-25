@@ -243,12 +243,13 @@ const editPost = function () {
 
 .post-card__info__title {
     position: relative;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     height: 30px;
     line-height: 30px;
     color: white;
-    margin-left: 10px;
+    padding:0 10px;
     text-overflow: ellipsis;
+    overflow:hidden;
     font-size: 20px;
     text-align: left;
     z-index: 1;

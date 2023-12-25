@@ -27,6 +27,17 @@ let draft = ref<{
   tagId: string,
   tagName: string
 }>()
+let formWarning = ref<{
+  tilte:boolean,
+  content:boolean,
+  cover:boolean,
+  tag:boolean
+}>({
+tilte: false,
+content: false,
+cover: false,
+tag: false
+})
 getPostType().then(res => {
   let data = <RvcCommunicationPostType[]>(res.data)
   for (let i = 0; i < data.length; i++) {
@@ -53,6 +64,9 @@ const handleBlur = function () {
 }
 const submitPost = function () {
   postForm.value.content = content.value
+  if(postForm.value.title == ''){
+    formWarning.value?.tilte = true
+  }
   postAdd(postForm.value).then((res: any) => {
     if (res.code == 200) {
       message.success('发布成功')
@@ -65,9 +79,7 @@ const submitPost = function () {
 }
 const handleCoverSuccess = function () { };
 const beforeCoverUpload = function (rawFile: File) {
-  if (rawFile.type !== 'image/jpeg') {
-    return false
-  } else if (rawFile.size / 1024 / 1024 > 10) {
+  if (rawFile.size / 1024 / 1024 > 10) {
     message.warning('请上传小于10M的图片')
     return false
   }
@@ -127,13 +139,13 @@ loadDraft()
         </el-breadcrumb>
 
         <div class="label">
-          标题
+          标题<span class="important">*</span>
         </div>
         <div style="width: 100%;height: 30px;">
           <input class="input" placeholder="标题" v-model="postForm.title">
         </div>
         <div class="label">
-          内容
+          内容<span class="important">*</span>
         </div>
         <div style="width: 90%;">
           <editorComponent :getContent="getContent" :editor-content="postForm.content"></editorComponent>
@@ -157,7 +169,7 @@ loadDraft()
         </div>
       </div>
       <div class="label">
-        封面
+        封面<span class="important">*</span>
       </div>
       <div>
         <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess"
@@ -167,7 +179,7 @@ loadDraft()
         </el-upload>
       </div>
       <div class="label">
-        标签
+        标签<span class="important">*</span>
       </div>
       <div style="text-align: left;">
         <div tabindex="-1" class="type-selecter"
@@ -272,6 +284,9 @@ loadDraft()
   text-align: left;
   margin-top: 30px;
   margin-bottom: 5px;
+}
+.important {
+    color: rgba(224, 49, 49);
 }
 
 .type-selecter {
@@ -392,5 +407,8 @@ loadDraft()
 
 .button-group__submit:hover {
   background-color: rgba(20, 142, 224);
+}
+.formWarning{
+  border: rgba(224,49,49) 1px solid;
 }
 </style>

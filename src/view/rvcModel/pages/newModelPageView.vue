@@ -176,7 +176,7 @@ const submit = function () {
 let modelFiles: any = []
 </script>
 <template>
-    <div class="new-model" v-if="false">
+    <div class="new-model">
         <div class="new-model__title">
             上传模型
         </div>

@@ -15,28 +15,7 @@ let userProfile = userStore.getProfile
 let inputContent = ref('')
 let localComment = ref<ModelComment>(props.comment)
 let childComments = ref<ModelComment[]>([
-    {
-        "id": "1736285491279269890",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "学长太帅了",
-        "likesNum": "2",
-        "commentTime": "2023-12-17 15:21:34",
-        "modelId": "1735910925897834498",
-        "isLikes": "1"
-    },
-    {
-        "id": "1736285491279269890",
-        "uid": "1735662165315596290",
-        "nickname": "蔡徐坤",
-        "picture": "",
-        "content": "学长太帅了",
-        "likesNum": "2",
-        "commentTime": "2023-12-17 15:21:34",
-        "modelId": "1735910925897834498",
-        "isLikes": "1"
-    }
+    
 ])
 let user = ref<UserInfoVO>({
     avatar: props.comment.picture,

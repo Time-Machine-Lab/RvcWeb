@@ -208,6 +208,7 @@ const getimg = function (index: number) {
     text-overflow: ellipsis;
     font-size: 20px;
     text-align: left;
+    text-overflow: ellipsis;
     z-index: 1;
 }
 
@@ -225,14 +226,14 @@ const getimg = function (index: number) {
 }
 
 .user-info {
-    position: relative;
+    position: absolute;
     height: 40px;
     width: 100%;
     transition: all 0.3s;
     display: flex;
-    margin-left: 15px;
     /* background-color: rgba(0, 0, 0, 0.8); */
-
+    bottom: 90px;
+    left: 10px;
 }
 
 .user-info__avatar {
