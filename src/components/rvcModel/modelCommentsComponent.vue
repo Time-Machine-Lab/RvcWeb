@@ -52,20 +52,7 @@ const load = function () {
         }
     })
 }
-setTimeout(function () {
-    // load()
-    comments.value  = [{
-                "id": "1736285491279269890",
-                "uid": "1735662165315596290",
-                "nickname": "蔡徐坤",
-                "picture": "",
-                "content": "学长太帅了",
-                "likesNum": "2",
-                "commentTime": "2023-12-17 15:21:34",
-                "modelId": "1735910925897834498",
-                "isLikes": "1"
-            }]
-}, 1000)
+
 const commentAddFunc = function () {
     sendCommentDialogVisible.value = false
     sendCommentForm.value.modelId = props.modelId
