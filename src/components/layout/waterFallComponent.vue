@@ -2,9 +2,16 @@
 import { defineComponent, onMounted, ref, onUnmounted } from 'vue'
 
 export default defineComponent({
-  setup() {
-    const minWidth = ref(320)
-    const columnCount = ref(5)
+  props: {
+    minWidth: {
+      type: Number,
+      default: 240
+    }
+  },
+  setup(props) {
+
+    const minWidth = ref<number>(props.minWidth)
+    const columnCount = ref(6)
     const margin = ref(15)
     const width = ref(0)
     const height = ref([0, 0, 0, 0, 0])
@@ -14,8 +21,8 @@ export default defineComponent({
 
 
     const sortElement = function () {
-      height.value.fill(0, 0, 5)
-      columnCount.value = 5
+      height.value.fill(0, 0, 6)
+      columnCount.value = 6
       if (containerRef.value) {
         containerElement = containerRef.value as HTMLElement
         childElements = containerElement.children as HTMLCollection
@@ -57,7 +64,6 @@ export default defineComponent({
       }
       return index
     }
-
     onMounted(() => {
       window.addEventListener('resize', function () { sortElement() })
       const observer = new MutationObserver(handleMutation)
@@ -66,9 +72,12 @@ export default defineComponent({
       observer.observe(container as Node, config)
       if (childElements) {
         for (let i = 0; i < childElements.length; i++) {
-          const imgElement = childElements[i].querySelector('img');
-          if (imgElement) {
-            imgElement.addEventListener('load', sortElement);
+          const imgElement = childElements[i].querySelectorAll('img');
+          if (imgElement.length != 0) {
+            for (let i = 0; i < imgElement.length; i++) {
+              imgElement[0].addEventListener('load', sortElement);
+
+            }
           }
         }
       }
@@ -86,9 +95,7 @@ export default defineComponent({
     //   { deep: true,immediate: true }
 
     // )
-    const handleMutation = function (mutationsList: any, observer: any) {
-      console.log(mutationsList, observer)
-      console.log('sort')
+    const handleMutation = function () { //mutationsList: any, observer: any
       // mutationsList.forEach((mutation:any) => {
       //   switch (mutation.type) {
       //     case "childList":

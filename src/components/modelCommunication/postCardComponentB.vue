@@ -75,12 +75,12 @@ const like = function () {
 
     })
 }
-const getimg = function (index: number) {
-    const img = [
-        "/testPic/1.jpeg",
-    ]
-    return img[index % 1]
-}
+// const getimg = function (index: number) {
+//     const img = [
+//         "/testPic/1.jpeg",
+//     ]
+//     return img[index % 1]
+// }
 const postDeleteFunc = function () {
     let form = ref<DeletePostForm>({
         postId: localPost.value.postId
@@ -97,7 +97,7 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover? props.post.cover:getimg(localPost.postId as unknown as number)"
+        <img :src="props.post.cover!"
             @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:100px;width: 100%;margin: 0;padding: 0;">
         <div class="tag">
@@ -274,7 +274,7 @@ const editPost = function () {
     width: 100%;
     transition: all 0.3s;
     display: flex;
-    margin-left: 15px;
+    margin-left: 10px;
     /* background-color: rgba(0, 0, 0, 0.8); */
 
 }
@@ -285,7 +285,7 @@ const editPost = function () {
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
-    border-radius: 10px;
+    border-radius: 15px;
     /* background-image: url("/public/teamPic/dhx.jpg"); */
     background-size: cover;
     background-repeat: no-repeat;

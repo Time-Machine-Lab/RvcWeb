@@ -22,7 +22,6 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElRow: typeof import('element-plus/es')['ElRow']
-    ElTag: typeof import('element-plus/es')['ElTag']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FeedBackComponent: typeof import('./src/components/feedback/FeedBackComponent.vue')['default']
     FilterComponent: typeof import('./src/components/common/filterComponent.vue')['default']
