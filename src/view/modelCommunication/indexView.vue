@@ -89,7 +89,7 @@ let disabled = ref(false)
             <filterComponent @getTag="getTag" @getSort="getSort" :tags="tags"></filterComponent>
         </div>
         <div class="post-list">
-            <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
+            <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" ></postCardComponentB>
             </waterFallComponent>

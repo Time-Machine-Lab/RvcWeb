@@ -80,7 +80,7 @@ const lastStep = function () {
 const handleModelFileSuccess = function () { };
 const beforeModelFileUpload = function (rawFile: File) {
     modelFiles.push(rawFile)
-    if(modelFiles.length == 2)
+    if (modelFiles.length == 2)
         uploadModelFile()
     return false
 };
@@ -122,7 +122,7 @@ const beforeAudioFileUpload = function (rawFile: File) {
 
 const handleCoverSuccess = function () { };
 const beforeCoverUpload = function (rawFile: File) {
-    uploadModelLoading.value=true
+    uploadModelLoading.value = true
     uploadImages(rawFile).then((res: any) => {
         if (res.code == 200) {
             const reader = new FileReader()
@@ -166,10 +166,10 @@ const beforeRemove = function () {
 }
 const submit = function () {
     modelAddForm.value.typeId = "1734224118915072002"
-    modelAdd(modelAddForm.value).then((res:any)=>{
-        if(res.code==200){
+    modelAdd(modelAddForm.value).then((res: any) => {
+        if (res.code == 200) {
             console.log(modelAddForm);
-            
+
         }
     })
 }
@@ -269,7 +269,7 @@ let modelFiles: any = []
             <div class="new-model__title">
                 上传试听音频
             </div>
-            <el-upload  ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"
+            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"
                 :on-exceed="handleExceed" :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"
                 :before-remove="beforeRemove" multiple>
                 <div class="loadding" v-if="uploadAudioLoading"></div>
@@ -285,7 +285,7 @@ let modelFiles: any = []
             <div class="new-model__title">
                 上传封面
             </div>
-            <el-upload  ref="uploadAudioRef" class="upload-demo" drag :auto-upload="false" :limit="1"
+            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="false" :limit="1"
                 :on-exceed="handleExceed" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload"
                 :before-remove="beforeRemove" multiple>
                 <div class="loadding" v-if="uploadCoverLoading"></div>
@@ -320,22 +320,24 @@ let modelFiles: any = []
 :deep(.upload-demo *) {
     background-color: transparent;
 }
-.loadding{
+
+.loadding {
     position: relative;
     left: 50%;
     transform: translate(-50%);
     height: 34px;
     width: 34px;
     border-radius: 17px;
-    background-color: rgba(44,46,51);
+    background-color: rgba(44, 46, 51);
     font-size: 20px;
     line-height: 36px;
     color: white;
     font-weight: 700;
-    border-top: rgba(25,113,194) 1px solid;
+    border-top: rgba(25, 113, 194) 1px solid;
     margin-bottom: 20px;
     animation: roll 1s linear infinite;
 }
+
 @keyframes roll {
     0% {
         transform: rotate(0deg);
@@ -345,6 +347,7 @@ let modelFiles: any = []
         transform: rotate(360deg);
     }
 }
+
 .success {
     position: relative;
     left: 50%;
@@ -359,14 +362,15 @@ let modelFiles: any = []
     font-weight: 700;
     margin-bottom: 20px;
 }
-.error{
+
+.error {
     position: relative;
     left: 50%;
     transform: translate(-50%);
     height: 36px;
     width: 36px;
     border-radius: 18px;
-    background-color: rgba(44,46,51);
+    background-color: rgba(44, 46, 51);
     font-size: 20px;
     line-height: 36px;
     color: white;
@@ -543,5 +547,4 @@ let modelFiles: any = []
 
 .button-group__item:hover {
     background-color: rgba(24, 100, 171);
-}
-</style>
+}</style>

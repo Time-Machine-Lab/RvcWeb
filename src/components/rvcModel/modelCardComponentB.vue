@@ -34,8 +34,8 @@ const collect = function () {
         modelId: (localModel.value.id as unknown as string),
         status: localModel.value.isCollection ? '0' : '1'
     }
-    collectModel(form).then(res => {
-        if (res.status == 200) {
+    collectModel(form).then((res:any) => {
+        if (res.code == 200) {
             localModel.value.isCollection = localModel.value.isCollection == '0'?'1':'0'
             localModel.value.collectionNum = ((localModel.value.collectionNum as unknown as number) + 1) as unknown as string
         }
@@ -53,8 +53,8 @@ const like = function () {
         modelId: (localModel.value.id as unknown as string),
         status: localModel.value.isLike ? '0' : '1'
     }
-    favoriteModel(form).then(res => {
-        if (res.status == 200) {
+    favoriteModel(form).then((res:any) => {
+        if (res.code == 200) {
             localModel.value.isLike = localModel.value.isLike == '0'?'1':'0'
             localModel.value.likesNum = ((localModel.value.likesNum as unknown as number) + 1) as unknown as string
         }
@@ -62,25 +62,11 @@ const like = function () {
 
     })
 }
-const getimg = function (index: number) {
-    const img = [
-        "/testPic/1.jpeg",
-        "/testPic/2.jpeg",
-        "/testPic/3.jpeg",
-        "/testPic/4.jpeg",
-        "/testPic/5.jpeg",
-        "/testPic/6.jpeg",
-        "/testPic/7.jpeg",
-        "/testPic/8.jpeg",
-        "/testPic/9.jpeg",
-    ]
-    return img[index % 9]
-}
 </script>
 <template>
     <div class="model-card">
-        <img :src="props.model.picture ? props.model.picture : getimg(localModel.id as unknown as number)"
-            @click="$router.push('/model?id=' + localModel.id)" style="min-height:100px;width: 100%;margin: 0;padding: 0;">
+        <img  :src="localModel.picture!" class="model-card__cover"
+            @click="$router.push('/model?id=' + localModel.id)">
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
             :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
             <div
@@ -96,7 +82,7 @@ const getimg = function (index: number) {
             <div class="user-info" @click="$router.push('/user?id=' + localModel.uid)">
 
                 <div class="user-info__avatar"
-                    :style="{ backgroundImage: 'url(' + localModel.avatar ? localModel.avatar : '/teamPic/default.png' + ')' }">
+                    :style="{ backgroundImage: 'url(\'' + localModel.avatar + '\')' }">
 
                 </div>
                 <div class="user-info__usename">
@@ -142,11 +128,17 @@ const getimg = function (index: number) {
 .model-card {
     position: relative;
     width: 380px;
-    min-height: 400px;
+    min-height: 200px;
     cursor: pointer;
     border-radius: 10px;
     overflow: hidden;
     border: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.model-card__cover{
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .model-card:hover>img {
@@ -226,14 +218,13 @@ const getimg = function (index: number) {
 }
 
 .user-info {
-    position: absolute;
+    position: relative;
     height: 40px;
     width: 100%;
     transition: all 0.3s;
     display: flex;
     /* background-color: rgba(0, 0, 0, 0.8); */
-    bottom: 90px;
-    left: 10px;
+    margin-left: 10px;
 }
 
 .user-info__avatar {
@@ -242,7 +233,7 @@ const getimg = function (index: number) {
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
-    border-radius: 10px;
+    border-radius: 15px;
     background-image: url("/public/teamPic/dhx.jpg");
     background-size: cover;
     background-repeat: no-repeat;

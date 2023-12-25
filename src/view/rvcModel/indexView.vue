@@ -40,19 +40,24 @@ const load = function () {
     // setTimeout(function(){
     //     disabled.value = false
     // },5000)
-    getModels(form.value).then((res:any) => {
-        let data = res.data.records
-        if (data.length == 0) {
-            disabled.value = true
-            message.warning('没有更多数据了')
-            return
+    getModels(form.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = res.data.records
+            if (data.length == 0) {
+                disabled.value = true
+                message.warning('没有更多数据了')
+                return
+            }
+            for (let i = 0; i < data.length; i++) {
+                models.value.push(data[i])
+            }
+            page.value++
+            form.value.page = page.value as unknown as string
+            disabled.value = false
+        } else {
+            message.error('网络异常')
         }
-        for (let i = 0; i < data.length; i++) {
-            models.value.push(data[i])
-        }
-        page.value++
-        form.value.page = page.value as unknown as string
-        disabled.value = false
+
     })
 }
 
@@ -68,7 +73,7 @@ let disabled = ref(false)
             <filterComponent :tags="tags"></filterComponent>
         </div>
         <div class="model-list">
-            <waterFallComponent v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
+            <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
                 <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
             </waterFallComponent>

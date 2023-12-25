@@ -77,7 +77,7 @@ const calcNum = function (num: number) {
         </router-link>
 
         <div class="comment-content">
-          <span style="display: inline-block;background-color: rgba(102,102,102,0.2);height: 80%;border-radius: 5px;padding: 0 10px;
+          <span style="display: inline-block;background-color: rgba(102,102,102,0.2);height: 80%;border-radius: 5px;padding: 10px 0px;
   margin-right: 5px;">
             {{ currentComment?.replayUser ? '@' + currentComment?.replayUser?.nickname : '' }}
           </span>
