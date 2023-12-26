@@ -75,7 +75,7 @@ export default defineComponent({
           const imgElement = childElements[i].querySelectorAll('img');
           if (imgElement.length != 0) {
             for (let i = 0; i < imgElement.length; i++) {
-              imgElement[0].addEventListener('load', sortElement);
+              imgElement[0].addEventListener('onload', sortElement);
 
             }
           }

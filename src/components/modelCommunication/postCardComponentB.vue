@@ -105,13 +105,9 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="getimg(localPost.postId as unknown as number)"
-            @click="$router.push('/post?id=' + localPost.postId)"
-            style="width:100%;margin: 0;padding: 0;">
-            <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
-        <div class="tag">
-            {{ localPost.postType.tagName }}
-        </div>
+        <img :src="getimg(localPost.postId as unknown as number)" @click="$router.push('/post?id=' + localPost.postId)"
+            style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
+        <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
             :class="clickMore ? 'dither-animation' : ''">
             <div
@@ -130,21 +126,27 @@ const editPost = function () {
                 编辑贴子
             </div>
         </div>
-        <div class="post-card__info">
+        <div class="post-card__user">
             <div class="user-info" @click="$router.push('/user?id=' + localPost.author.uid)">
 
-                <div class="user-info__avatar"
-                    :style="{ backgroundImage: 'url(' + localPost.author?.avatar  + ')' }">
+                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localPost.author?.avatar + ')' }">
 
                 </div>
-                <div class="user-info__usename">
-                    {{ localPost.author?.nickname }}
-                </div>
+                <div class="user-info__text">
 
+                    <div class="user-info__text__usename">
+                        {{ localPost.author?.nickname }}
+                    </div>
+                    <div class="user-info__text__creatAt" @click="$router.push('/post?id=' + localPost.postId)">
+                        {{ localPost.createAt }}
+                    </div>
+                </div>
             </div>
-            <div class="post-card__info__creatAt" @click="$router.push('/post?id=' + localPost.postId)">
-                {{ localPost.createAt }}
-            </div>
+        </div>
+        <div class="tag">
+            {{ localPost.postType.tagName }}
+        </div>
+        <div class="post-card__info">
             <div class="post-card__info__title" @click="$router.push('/post?id=' + localPost.postId)">
                 {{ localPost.title }}
             </div>
@@ -178,6 +180,7 @@ const editPost = function () {
 </template>
 <style>
 .post-card {
+    font-family: 'ZCool';
     position: relative;
     min-height: 200px;
     width: 380px;
@@ -193,15 +196,15 @@ const editPost = function () {
 }
 
 .tag {
-    padding: 0 10px;
-    height: 20px;
-    line-height: 20px;
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
     position: absolute;
     left: 10px;
-    top: 10px;
-    font-size: 10px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.2);
+    top: 70px;
+    font-size: 12px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     z-index: 30;
 }
@@ -236,7 +239,26 @@ const editPost = function () {
     cursor: pointer;
 }
 
-
+.post-card__user {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    /* height: 150px; */
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+    border-radius: 5px;
+    padding: 5px 0;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    gap: 20px;
+    border-radius: 0px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.046);
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px;
+    border: 0px rgba(255, 255, 255, 0.4) solid;
+    border-bottom: 0px rgba(40, 40, 40, 0.35) solid;
+    border-right: 0px rgba(40, 40, 40, 0.35) solid;
+}
 
 .post-card__info {
     position: absolute;
@@ -247,7 +269,16 @@ const editPost = function () {
     transform: translate(-50%);
     z-index: 1;
     border-radius: 5px;
+    padding-top: 10px;
     background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    gap: 20px;
+    border-radius: 0px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.046);
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px;
+    border: 0px rgba(255, 255, 255, 0.4) solid;
+    border-bottom: 0px rgba(40, 40, 40, 0.35) solid;
+    border-right: 0px rgba(40, 40, 40, 0.35) solid;
 }
 
 .post-card__info__title {
@@ -256,30 +287,18 @@ const editPost = function () {
     height: 30px;
     line-height: 30px;
     color: white;
-    padding:0 10px;
+    padding: 0 10px;
     text-overflow: ellipsis;
-    overflow:hidden;
-    font-size: 20px;
+    overflow: hidden;
+    font-size: 16px;
     text-align: left;
     z-index: 1;
 }
 
-.post-card__info__creatAt {
-    position: relative;
-    width: calc(100% - 10px);
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    margin-left: 10px;
-    color: rgba(255, 255, 255, 1);
-    z-index: 1;
-    text-align: left;
-
-}
 
 .user-info {
     position: relative;
-    height: 40px;
+    height: 50px;
     width: 100%;
     transition: all 0.3s;
     display: flex;
@@ -289,28 +308,46 @@ const editPost = function () {
 }
 
 .user-info__avatar {
-    height: 30px;
-    min-width: 30px;
+    height: 40px;
+    min-width: 40px;
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
-    border-radius: 15px;
+    border-radius: 20px;
     /* background-image: url("/public/teamPic/dhx.jpg"); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
+.user-info__text {
+    height: 50px;
+    padding-left: 15px;
+    width: calc(100% - 65px);
 
-
-.user-info__usename {
-    height: 30px;
-    line-height: 30px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    text-align: left;
-    padding-left: 5px;
 }
+
+.user-info__text__usename {
+    height: 25px;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    text-align: left;
+}
+
+.user-info__text__creatAt {
+    position: relative;
+    width: calc(100% - 10px);
+    height: 25px;
+    line-height: 25px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    z-index: 1;
+    text-align: left;
+
+}
+
+
 
 .user-info__usename:hover {
     color: white;
@@ -350,11 +387,12 @@ const editPost = function () {
     position: absolute;
     width: 30px;
     height: 30px;
-    top: 10px;
+    top: 20px;
     right: 10px;
+    z-index: 20;
 }
 
 .dither-animation {
-    top: 11px;
+    top: 21px;
 }
 </style>
