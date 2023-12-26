@@ -41,6 +41,14 @@ const handleSortClick = function (index:number) {
 </script>
 <template>
     <div class="filter-box">
+        
+        <div class="filter-box__tags">
+            <div class="filter-box__tags__item" v-for="(tag, index) in tags"
+                :style="{ backgroundColor: currentTagsIndex == index ? 'rgba(33,37,41)' : '' }" :key="index"
+                @click="handleTagClick(index)">
+                {{ tag.name }}
+            </div>
+        </div>
         <div class="filter-box__filter">
             <div tabindex="-1" class="filter-box__filter__sort" :class="clickSort ? 'dither-animation' : ''"
                 @click="handleClickSort" @blur="handleBlur">
@@ -67,27 +75,18 @@ const handleSortClick = function (index:number) {
                 </div>
             </div>
         </div>
-        <div class="filter-box__tags">
-            <div class="filter-box__tags__item" v-for="(tag, index) in tags"
-                :style="{ backgroundColor: currentTagsIndex == index ? 'rgba(33,37,41)' : '' }" :key="index"
-                @click="handleTagClick(index)">
-                {{ tag.name }}
-            </div>
-        </div>
     </div>
 </template>
 <style scoped>
 .filter-box {
     /* min-height: 50px; */
     width: 100%;
+    display: flex;
     /* background-color: rgba(0, 0, 0, 0.1); */
 }
 
 .filter-box__filter {
-    position: absolute;
-    top: -70px;
-    right: 0;
-    right: 10px;
+    position: relative;
     height: 70px;
     width: 30%;
     display: flex;
@@ -162,6 +161,7 @@ const handleSortClick = function (index:number) {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    padding: 15px;
     justify-content: left;
 }
 

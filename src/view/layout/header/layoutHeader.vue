@@ -7,7 +7,6 @@
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue"
 import searchComponent from "@/components/common/searchComponent.vue"
-import navigationView from "@/view/layout/header/navigationView.vue"
 import { ref } from "vue";
 let clickBell = ref(false)
 let msgVisibility = ref(false)
@@ -29,7 +28,46 @@ const handleBlur = function () {
     <RouterLink to="/">
       <div class="logo"></div>
     </RouterLink>
-    <navigationView></navigationView>
+    <div class="header__link">
+            <div class="header__link__item" :style="{
+                backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                boxShadow: $router.currentRoute.value.path == '/rvc/posts' ? '2px 2px 1px 1px black' : ''
+            }">
+                <router-link to="/rvc/posts" style="display: block;height: 100%;width: 100%;">
+                    <span class="img_back"
+                        :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
+                        <img width="12" height="12" src="/icon/post.svg" class="vh-center">
+                    </span>
+                    <span>贴子</span>
+                </router-link>
+            </div>
+            <div class="header__link__item" :style="{
+                backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                boxShadow: $router.currentRoute.value.path == '/rvc/models' ? '2px 2px 1px 1px black' : ''
+            }">
+                <router-link to="/rvc/models" style="display: block;height: 100%;width: 100%;">
+                    <span class="img_back"
+                        :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/models' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
+                        <img width="12" height="12" src="/icon/model.svg" class="vh-center">
+                    </span>
+
+                    <span>模型</span>
+                </router-link>
+            </div>
+            <div class="header__link__item" :style="{
+                backgroundColor: $router.currentRoute.value.path == '/feedback' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                boxShadow: $router.currentRoute.value.path == '/feedback' ? '2px 2px 1px 1px black' : ''
+            }">
+                <router-link to="/feedback" style="display: block;height: 100%;width: 100%;">
+                    <span class="img_back"
+                        :style="{ backgroundColor: $router.currentRoute.value.path == '/feedback' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
+                        <img width="12" height="12" src="/icon/bulb.svg" class="vh-center">
+                    </span>
+
+                    <span>反馈</span>
+                </router-link>
+            </div>
+        </div>
     <div class="search">
       <searchComponent></searchComponent>
     </div>
@@ -85,7 +123,51 @@ const handleBlur = function () {
   cursor: pointer;
   background-position: center;
 }
+.header__link {
+    width: 20%;
+    height: 70px;
+    display: flex;
+}
 
+.header__link__item {
+    position: relative;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 40px;
+    line-height: 40px;
+    width: 80px;
+    padding: 0 8px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.img_back {
+    position: relative;
+    display: block;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+.header__link__item span {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    margin-left: 3px;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1);
+    font-family: '黑体';
+}
+
+.header__link__item span:hover {
+    color: rgba(255, 255, 255, 1);
+}
 .newPost {
   position: relative;
   top: 50%;
@@ -172,10 +254,9 @@ const handleBlur = function () {
 }
 
 .search {
-  position: absolute;
-  left:20%;
+  position: relative;
   height: 100%;
-  width: 65%;
+  width: 40%;
 }
 
 .header__right {

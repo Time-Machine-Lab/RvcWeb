@@ -5,20 +5,23 @@
  * @FilePath: \RvcWeb\src\components\user\userStatus.vue
 -->
 <script lang="ts" setup>
-import { getLoginUserInfo,logout } from '@/api/user/userApi.js'
+import { getLoginUserInfo, logout } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { Profile } from '@/api/user/userTypes'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
+import router from '@/router';
 const userStore = useUserStore()
-let userProfile =ref<Profile>()
+let userProfile = ref<Profile>()
 let userStatusVisibility = ref(false)
-getLoginUserInfo().then(res => {
-    console.log(res.data)
-    userStore.setProfile(<Profile>res.data)
-    userProfile.value = userStore.getProfile
-    storage.set('uid',res.data.uid)
+getLoginUserInfo().then((res: any) => {
+    if (res.code == 200) {
+        userStore.setProfile(<Profile>res.data)
+        userProfile.value = userStore.getProfile
+        storage.set('uid', res.data.uid)
+    }
+
 })
 const handleClickUser = function () {
     userStatusVisibility.value = !userStatusVisibility.value
@@ -28,12 +31,13 @@ const handleBlur = function () {
         userStatusVisibility.value = false
     }, 200)
 }
-const logoutFunc = function (){
-    logout().then(res=>{
+const logoutFunc = function () {
+    logout().then(res => {
         console.log(res)
-        
+
         message.success('登出成功')
         storage.remove('token')
+        router.go(0)
     })
 }
 </script>
@@ -50,18 +54,18 @@ const logoutFunc = function (){
 
         </div>
         <div class="user-more" v-show="userStatusVisibility">
-            <RouterLink :to="'/user?id='+userProfile?.uid">
+            <RouterLink :to="'/user?id=' + userProfile?.uid">
                 <div class="user-more__item">
-                <div class="horizontal-center" style="display: flex;">
-                    <span>
-                        <img width="24" height="24" class="vertical-center" src="/icon/user.svg">
-                    </span>
-                    <span style="line-height: 50px;margin-left: 15px;margin-right: 7px;">个人主页</span>
+                    <div class="horizontal-center" style="display: flex;">
+                        <span>
+                            <img width="24" height="24" class="vertical-center" src="/icon/user.svg">
+                        </span>
+                        <span style="line-height: 50px;margin-left: 15px;margin-right: 7px;">个人主页</span>
 
+                    </div>
                 </div>
-            </div>
             </RouterLink>
-            
+
             <div class="user-more__item" @click="logoutFunc">
                 <div class="horizontal-center" style="display: flex;">
                     <span style="margin-left: 2px;">

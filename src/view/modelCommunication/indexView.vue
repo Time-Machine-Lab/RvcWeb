@@ -359,12 +359,12 @@ let disabled = ref(false)
 <template>
     <div class="communicationView">
         <div class="filter-container">
-            <filterComponent @getTag="getTag" @getSort="getSort" :tags="tags"></filterComponent>
+            <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags"></filterComponent>
         </div>
         <div class="post-list">
             <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="position: absolute;left: -500px;" :key="index" ></postCardComponentB>
+                <postCardComponentB v-for="(post, index) in posts" :post="post" :key="index" ></postCardComponentB>
             </waterFallComponent>
         </div>
     </div>
