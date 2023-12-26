@@ -63,7 +63,7 @@ const calcNum = function (num: number) {
             <div class="comment-left">
                 <router-link :to="'/user?id=' + currentComment.uid">
                     <div class="avatar-border">
-                        <img height="40" width="40" :src="currentComment?.picture" alt="commenter-avatar">
+                        <img height="40" width="40" style="object-fit: cover;" :src="currentComment?.picture" alt="commenter-avatar">
                     </div>
                 </router-link>
             </div>
@@ -88,7 +88,7 @@ const calcNum = function (num: number) {
                     <div class="status-item" @click="like">
                         <div class="vertical-center"
                             style="top:100%;transform:translate(0,-100%);height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                            :style="{ backgroundImage: currentComment.isLikes ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                            :style="{ backgroundImage: currentComment.isLikes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                         </div>
                         <span>{{ calcNum(currentComment.likesNum as unknown as number) }}</span>
                     </div>

@@ -7,10 +7,10 @@
 
 <script lang="ts" setup>
 import userCardComponent from '@/components/user/userCardComponent.vue'
-import suggestedModelsComponent from '@/components/rvcModel/suggestedModelsComponent.vue'
+// import suggestedModelsComponent from '@/components/rvcModel/suggestedModelsComponent.vue'
 import modelCommentsComponent from '@/components/rvcModel/modelCommentsComponent.vue'
 import "@/assets/css/post/postContent.css"
-import { getModelDetails } from "@/api/rvcModel/modelApi"
+import { getModelDetails, getModelFiles } from "@/api/rvcModel/modelApi"
 import { favoriteModel, collectModel } from '@/api/rvcModel/modelApi'
 import { ref } from "vue";
 import router from "@/router";
@@ -53,6 +53,11 @@ let localModel = ref<ModelVo>({
     avatar: '',
     createTime: ''
 })
+let fileList = ref<{
+    fileName: string
+    id: string
+    url: string
+}[]>([])
 // let inputContent = ref<string>('')
 
 let likeDisabled = ref(true)
@@ -118,32 +123,56 @@ const handleClickDetails = function () {
 }
 const handleClickModelFiles = function () {
     modelFilesvisibility.value = !modelFilesvisibility.value
+    getModelFilesFunc()
 }
 const handleClickAudiosFiles = function () {
     audiosvisibility.value = !audiosvisibility.value
 }
 calcNum(1000)
-// const sendComment = function () {
-//     if (inputContent.value == '') {
-//         return
-//     }
-//     let form = ref<CommentForm>({
-//         content: inputContent.value,
-//         modelId: (router.currentRoute.value.query.id as string),
-//         rootCommentId: "",
-//         toCommentId: "",
-//         toUserId: ""
-//     })
-//     commentAdd(form.value).then((res: any) => {
-//         if (res.code == 200) {
-//             message.success('发送成功，等待审核')
-//         } else {
-//             message.error(res.msg)
-//         }
-//         inputContent.value = ""
-//     })
+const getModelFilesFunc = function () {
+    modelFilesvisibility.value = false
+    setTimeout(function(){
+        modelFilesvisibility.value = true
+    },1000)
+    if(fileList.value.length !=0)return
+    
+    getModelFiles((router.currentRoute.value.query.id as string)).then((res: any) => {
+        if (res.code == 200) {
+            let data = res.data
+            if (data.length == 0) {
+                message.warning('模型文件为空')
+                return
+            }
+            for (let i = 0; i < data.length; i++) {
+                fileList.value.push({
+                    fileName: localModel.value.name + data[i].fileName,
+                    id: data[i].id,
+                    url: data[i].url
+                })
+            }
 
-// }
+        }
+    })
+}
+const download = function(index:number){
+    if(fileList.value[index].url == null||fileList.value[index].url == ""){
+        message.warning('文件失效')
+        return
+    }
+    let file = fileList.value[index]
+    const link = document.createElement('a');
+  link.href = file.url;
+
+  if (file.fileName) {
+    link.download = file.fileName;
+  }
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+}
 </script>
 <template>
     <div class="model-page">
@@ -169,39 +198,20 @@ calcNum(1000)
             <div class="model-content model-page__model__content" v-html="localModel?.description">
 
             </div>
-            <!-- <div class="model-page__model__footer">
-                <div class="model-page__model__footer__editTime">
-                    最后编辑于:{{ localModel?.updateAt }}
-                </div>
-                <div class="model-page__model__footer__operation">
-                    <div class="operation-item" @click="collect">
-                        <div class="vertical-center" style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: localModel.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
-                    </div>
-                    <span>{{ calcNum(localModel.collectNum) }}</span>
-                    </div>
-                    <div class="operation-item" @click="like">
-                        <div class="vertical-center" style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: localModel.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                    </div>
-                    <span>{{ calcNum(localModel.likeNum) }}</span>
-                    </div>
-                </div>
-            </div> -->
 
         </div>
         <div class="model-page__sidebar">
             <div class="button-group">
-                <div class="button-group__item">
+                <div class="button-group__item"  @click="getModelFilesFunc">
                     <img class="vertical-center" src="/icon/download.svg" height="20" width="20">
                     <div class="button-group__item__msg">
                         下载模型
                     </div>
                 </div>
-                <div class="button-group__item" @click="message.warning('开发中')">
+                <div class="button-group__item">
                     <img class="vertical-center" src="/icon/play.svg" height="30" width="30">
                     <div class="button-group__item__msg">
-                        运行模型
+                        试听音频
                     </div>
 
                 </div>
@@ -213,14 +223,17 @@ calcNum(1000)
 
                 </div>
                 <div class="button-group__item" @click="like">
-                    <img class="vertical-center" :src="localModel.isLike=='1'?'/icon/heart-fill.svg':'/icon/heart.svg'" height="20" width="20">
+                    <img class="vertical-center"
+                        :src="localModel.isLike == '1' ? '/icon/heart-fill.svg' : '/icon/heart.svg'" height="20" width="20">
                     <div class="button-group__item__msg">
                         喜欢
                     </div>
 
                 </div>
                 <div class="button-group__item" @click="collect">
-                    <img class="vertical-center" :src="localModel.isCollection=='1'?'/icon/mark-fill.svg':'/icon/mark.svg'" height="20" width="20">
+                    <img class="vertical-center"
+                        :src="localModel.isCollection == '1' ? '/icon/mark-fill.svg' : '/icon/mark.svg'" height="20"
+                        width="20">
                     <div class="button-group__item__msg">
                         收藏
                     </div>
@@ -229,11 +242,9 @@ calcNum(1000)
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickDetails">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
-                        :style="{ backgroundColor: detailsvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span
-                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型信息</span>
-                        <span style="position: relative;right:0%;">
+                    <div :style="{ backgroundColor: detailsvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span>模型信息</span>
+                        <span>
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="detailsvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                         </span>
@@ -274,24 +285,36 @@ calcNum(1000)
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
-                        :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span
-                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型文件</span>
-                        <span style="position: relative;right:0%;">
+                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span>模型文件</span>
+                        <span>
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                         </span>
                     </div>
                 </div>
+                <div class="details-content" v-show="modelFilesvisibility">
+                    <div class="details-content__item" v-for="(file,index) in fileList" :key="index">
+                        <div class="details-content__item__label">
+                            文件{{index + 1}}
+                        </div>
+                        <div class="details-content__item__value">
+                            <span class="fileName vertical-center">
+                                {{ file.fileName}}
+                            </span>
+                            <spna class="button vertical-center" @click="download(index)">
+                                下载
+                            </spna>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
             <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">
-                    <div style="width:100%;display: flex;padding-left: 10px;transition: all 0.3s;"
-                        :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span
-                            style="position: relative;left:0%;line-height: 40px;width:90%;margin-left: 3px;text-align: left;">模型音频</span>
-                        <span style="position: relative;right:0%;">
+                    <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">
+                        <span>模型音频</span>
+                        <span>
                             <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
                                 :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                         </span>
@@ -306,7 +329,7 @@ calcNum(1000)
         </div>
 
     </div>
-    <suggestedModelsComponent></suggestedModelsComponent>
+    <!-- <suggestedModelsComponent></suggestedModelsComponent> -->
     <modelCommentsComponent :model-id="(router.currentRoute.value.query.id as string)"></modelCommentsComponent>
 </template>
 <style scoped>
@@ -474,6 +497,27 @@ calcNum(1000)
     /* border-bottom: rgba(55, 58, 64) 1px solid; */
 }
 
+.details-switch span:nth-child(1) {
+    position: relative;
+    left: 0%;
+    line-height: 40px;
+    width: 90%;
+    margin-left: 3px;
+    text-align: left;
+}
+
+.details-switch span:nth-child(2) {
+    position: relative;
+    right: 0%;
+}
+
+.details-switch div {
+    width: 100%;
+    display: flex;
+    padding-left: 10px;
+    transition: all 0.3s;
+}
+
 .details-content {
     position: relative;
     width: 100%;
@@ -506,14 +550,42 @@ calcNum(1000)
     height: 100%;
     text-align: left;
     background-color: rgba(26, 27, 30);
+    display: flex;
+    justify-content: space-around;
 }
-.details-content__item__value--time{
+.fileName{
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    padding: 0 10px;
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+}
+.button{
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    padding: 0 10px;
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgba(51, 154, 240);
+}
+
+.button:hover {
+    background-color: rgba(24, 100, 171);
+}
+.details-content__item__value--time {
     line-height: 40px;
     color: white;
     text-align: left;
     font-size: 14px;
     padding-left: 15px;
 }
+
 .model_type {
     display: inline-block;
     position: relative;
@@ -548,4 +620,5 @@ calcNum(1000)
 .revolve-animation {
     transform: rotateZ(180deg);
     transform-origin: 6px 2px;
-}</style>
+}
+</style>

@@ -37,14 +37,14 @@ const props = defineProps<{
 
 .user-card__info {
     height: 80%;
-    width: 60%;
+    width: 80%;
     display: flex;
 }
 
 .user-card__info__avatar {
     height: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 20px;
+    border-radius: 50%;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -72,7 +72,6 @@ const props = defineProps<{
     width: calc(100% - 10px);
     height: 50%;
     font-size: 10px;
-    line-height: 20px;
     text-align: left;
     word-wrap: normal;
     color: rgba(144, 146, 150);
