@@ -43,8 +43,10 @@ const load = function () {
     // setTimeout(function(){
     //     disabled.value = false
     // },5000)
-    getPosts(form.value).then(res => {
-        let data = [
+    getPosts(form.value).then((res:any) => {
+        console.log(res)
+        
+        let data = ref<PostVo[]>([
         {
             "postId": "1",
             "author": {
@@ -52,8 +54,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -82,8 +84,8 @@ const load = function () {
                 "username": "OnrIkvMG",
                 "birthday": null,
                 "nickname": "OnrIkvMG",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": null,
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/50e7e1b31d1d33188dc0717ba1956923.png",
                 "description": null
@@ -112,8 +114,8 @@ const load = function () {
                 "username": "aFerHEIH",
                 "birthday": "2023-12-24",
                 "nickname": "我就是lxc",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/a0b06619f78d0879d5497266d2305e79.jpg",
                 "description": "一个成分复杂的农批"
@@ -142,8 +144,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -172,8 +174,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -202,8 +204,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -232,8 +234,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -262,8 +264,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -292,8 +294,8 @@ const load = function () {
                 "username": "KoYAflwQ",
                 "birthday": "2023-12-01",
                 "nickname": "Genius",
-                "followNum": 0,
-                "fansNum": 0,
+                "followNum": "0",
+                "fansNum": "0",
                 "sex": "男",
                 "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
                 "description": "准备跑路"
@@ -315,14 +317,14 @@ const load = function () {
             "like": false,
             "collect": true
         }
-    ]
-        if(data.length == 0){
+    ])
+        if(data.value.length == 0){
             disabled.value = true
             message.warning('没有更多数据了')
             return
         }
-        for(let i =0 ;i<data.length;i++){
-            posts.value.push(data[i])
+        for(let i =0 ;i<data.value.length;i++){
+            posts.value.push(data.value[i])
         }
         page.value ++
         form.value.page = page.value as unknown as string

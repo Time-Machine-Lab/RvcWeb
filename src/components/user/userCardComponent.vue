@@ -21,9 +21,9 @@ const props = defineProps<{
             </div>
         </div>
         <div class="user-card__button  vertical-center">
-            <span class="user-card__button__item follow vertical-center" v-show="props.user.isfollow!=null">
+            <!-- <span class="user-card__button__item follow vertical-center" v-show="props.user.isfollow!=null">
                 关注
-            </span>
+            </span> -->
         </div>
     </div>
 </template>

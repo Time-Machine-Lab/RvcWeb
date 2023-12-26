@@ -63,40 +63,39 @@ export type UserInfoVO = {
   /**
    * 用户头像
    */
-  avatar?: string;
+  avatar?: string|null;
   /**
    * 生日
    */
-  birthsday?: string;
+  birthday?: string|null;
   /**
    * 简介
    */
-  description?: string;
+  description?: string|null;
   /**
    * 粉丝数
    */
-  fansNum?: string;
+  fansNum?: string|null;
   /**
    * 关注数
    */
-  followNum?: string;
+  followNum?: string|null;
   /**
    * 用户昵称
    */
-  nickname?: string;
+  nickname?: string|null;
   /**
    * 性别
    */
-  sex?: string;
+  sex?: string|null;
   /**
    * uid
    */
-  uid?: string;
+  uid?: string|null;
   /**
    * 用户名
    */
   username?: string;
-  [property: string]: any;
 }
 
 export type EmailCodeForm = {
