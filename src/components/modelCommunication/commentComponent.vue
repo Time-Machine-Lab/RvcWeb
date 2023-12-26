@@ -65,7 +65,7 @@ const calcNum = function (num: number) {
       <div class="comment-left">
         <router-link :to="'/user?id=' + currentComment.userId">
           <div class="avatar-border">
-            <img height="40" width="40" :src="currentComment?.user?.avatar" alt="commenter-avatar">
+            <img height="40" width="40" :src="currentComment?.user?.avatar!" alt="commenter-avatar">
           </div>
         </router-link>
       </div>

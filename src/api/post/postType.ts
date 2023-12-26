@@ -129,7 +129,7 @@ export type CommentForm = {
     /**
      * 回复目标用户id
      */
-    toUserId: string|undefined;
+    toUserId: string|undefined|null;
     [property: string]: any;
 }
 export type UserLikePostForm = {

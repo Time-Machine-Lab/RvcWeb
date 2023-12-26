@@ -105,7 +105,7 @@ const loadChildComment = function () {
                 "content": "袁总能带我打瓦吗1",
                 "likesNum": "1",
                 "commentTime": "2023-12-19 10:00:45",
-                "parentId": "1736285491279269890",
+                "modelId": "1736285491279269890",
                 "isLikes": "0"
             },
             {
@@ -116,7 +116,7 @@ const loadChildComment = function () {
                 "content": "伍老板太帅了",
                 "likesNum": "0",
                 "commentTime": "2023-12-17 19:14:01",
-                "parentId": "1736285491279269890",
+                "modelId": "1736285491279269890",
                 "isLikes": "0"
             }
         ]

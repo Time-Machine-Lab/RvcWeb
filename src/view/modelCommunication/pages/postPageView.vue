@@ -31,7 +31,7 @@ let localPost = ref<PostVo>({
     postId: "",
     author: {
         avatar: undefined,
-        birthsday: undefined,
+        birthday: undefined,
         description: undefined,
         fansNum: undefined,
         followNum: undefined,
