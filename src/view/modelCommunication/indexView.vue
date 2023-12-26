@@ -44,7 +44,278 @@ const load = function () {
     //     disabled.value = false
     // },5000)
     getPosts(form.value).then(res => {
-        let data = res.data
+        let data = [
+        {
+            "postId": "1",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "1",
+                "tagImg": "https://p1.ssl.qhmsg.com/t01da032a5036754f87.jpg",
+                "tagName": "谈天说地"
+            },
+            "title": "大家今晚晚上吃的什么",
+            "content": "<h1>大家好</h1><blockquote>大家今晚吃的是什么</blockquote>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/32b305bdd4b1b1eff9256f4b171450ba.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 0,
+            "watchNum": 3,
+            "createAt": "2023-12-25T14:26:46",
+            "updateAt": "2023-12-25T14:26:46",
+            "like": false,
+            "collect": false
+        },
+        {
+            "postId": "2",
+            "author": {
+                "uid": "1738886620986802178",
+                "username": "OnrIkvMG",
+                "birthday": null,
+                "nickname": "OnrIkvMG",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": null,
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/50e7e1b31d1d33188dc0717ba1956923.png",
+                "description": null
+            },
+            "postType": {
+                "id": "1",
+                "tagImg": "https://p1.ssl.qhmsg.com/t01da032a5036754f87.jpg",
+                "tagName": "谈天说地"
+            },
+            "title": "皮卡丘万岁！！",
+            "content": "<p>寻找妙蛙种子</p><p><img src=\"https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/dfb49e297ff8245058cf8c807ee57365.jpg\" alt=\"\" data-href=\"\" style=\"\"/></p><p><br></p><p><br></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/219900c3e6a1ce66d8ffd1f06799c92d.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 0,
+            "watchNum": 2,
+            "createAt": "2023-12-25T14:52:07",
+            "updateAt": "2023-12-25T14:52:07",
+            "like": false,
+            "collect": false
+        },
+        {
+            "postId": "3",
+            "author": {
+                "uid": "1738841730227699714",
+                "username": "aFerHEIH",
+                "birthday": "2023-12-24",
+                "nickname": "我就是lxc",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/a0b06619f78d0879d5497266d2305e79.jpg",
+                "description": "一个成分复杂的农批"
+            },
+            "postType": {
+                "id": "1",
+                "tagImg": "https://p1.ssl.qhmsg.com/t01da032a5036754f87.jpg",
+                "tagName": "谈天说地"
+            },
+            "title": "【原神】活动你说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏",
+            "content": "<p>说的对，但是《原神》是由米哈游自主研发的一款全新开放世界冒险游戏。游戏发生在一个被称作「提瓦特」的幻想世界，在这里，被神选中的人将被授予「神之眼」，导引元素之力。你将扮演一位名为「旅行者」的神秘角色，在自由的旅行中邂逅性格各异、能力独特的同伴们，和他们一起击败强敌，找回失散的亲人——同时，逐步发掘「原神」的真相。.......................................... 作者：不想说话的33 https://www.bilibili.com/read/cv21234240/ 出处：bilibili</p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/7b13de2231ea16c182bf7e3cdaacc267.jpg",
+            "commentNum": 0,
+            "likeNum": 2,
+            "collectNum": 1,
+            "watchNum": 6,
+            "createAt": "2023-12-25T14:56:12",
+            "updateAt": "2023-12-25T14:56:12",
+            "like": true,
+            "collect": true
+        },
+        {
+            "postId": "4",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        },
+        {
+            "postId": "5",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        },
+        {
+            "postId": "6",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        },
+        {
+            "postId": "7",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        },
+        {
+            "postId": "8",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        },
+        {
+            "postId": "9",
+            "author": {
+                "uid": "1738852810807115778",
+                "username": "KoYAflwQ",
+                "birthday": "2023-12-01",
+                "nickname": "Genius",
+                "followNum": 0,
+                "fansNum": 0,
+                "sex": "男",
+                "avatar": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/3eea3ce13d035905c493f0cf7ef22652.jpg",
+                "description": "准备跑路"
+            },
+            "postType": {
+                "id": "3",
+                "tagImg": "https://img0.baidu.com/it/u=835765349,4058962119&fm=253&fmt=auto&app=138&f=PNG?w=875&h=450",
+                "tagName": "炼丹心得"
+            },
+            "title": "大家有什么好模型分享吗",
+            "content": "<h1>大家有什么好模型分享嘛</h1><p>i<code>nt main(){</code></p><p><code>print(\"hello\");</code></p><p><code>}</code></p>",
+            "cover": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/image3/28d6d57cb9d48ab7317737db08d33964.jpg",
+            "commentNum": 0,
+            "likeNum": 0,
+            "collectNum": 1,
+            "watchNum": 3,
+            "createAt": "2023-12-26T07:53:07",
+            "updateAt": "2023-12-26T07:53:07",
+            "like": false,
+            "collect": true
+        }
+    ]
         if(data.length == 0){
             disabled.value = true
             message.warning('没有更多数据了')
@@ -89,9 +360,9 @@ let disabled = ref(false)
             <filterComponent @getTag="getTag" @getSort="getSort" :tags="tags"></filterComponent>
         </div>
         <div class="post-list">
-            <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
+            <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" ></postCardComponentB>
+                <postCardComponentB v-for="(post, index) in posts" :post="post" style="position: absolute;left: -500px;" :key="index" ></postCardComponentB>
             </waterFallComponent>
         </div>
     </div>

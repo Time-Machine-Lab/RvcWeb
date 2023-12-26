@@ -99,7 +99,7 @@ const getLength = function(str:string){
         </div>
         <div class="model-comments__content">
             <WaterFallComponent>
-                <modelCommentComponent v-for="(comment, index) in comments" :key="index" :comment="comment">
+                <modelCommentComponent style="visibility: hidden;" v-for="(comment, index) in comments" :key="index" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
             <div class="model-comments__content__more" @click="load">加载更多</div>

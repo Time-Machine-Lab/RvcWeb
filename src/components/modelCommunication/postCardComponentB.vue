@@ -75,12 +75,20 @@ const like = function () {
 
     })
 }
-// const getimg = function (index: number) {
-//     const img = [
-//         "/testPic/1.jpeg",
-//     ]
-//     return img[index % 1]
-// }
+const getimg = function (index: number) {
+    const img = [
+        "/testPic/1.jpeg",
+        "/testPic/2.jpeg",
+        "/testPic/3.jpeg",
+        "/testPic/4.jpeg",
+        "/testPic/5.jpeg",
+        "/testPic/6.jpeg",
+        "/testPic/7.jpeg",
+        "/testPic/8.jpeg",
+        "/testPic/9.jpeg",
+    ]
+    return img[index % 9]
+}
 const postDeleteFunc = function () {
     let form = ref<DeletePostForm>({
         postId: localPost.value.postId
@@ -97,9 +105,10 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="props.post.cover!"
+        <img :src="getimg(localPost.postId as unknown as number)"
             @click="$router.push('/post?id=' + localPost.postId)"
-            style="min-height:100px;width: 100%;margin: 0;padding: 0;">
+            style="width:100%;margin: 0;padding: 0;">
+            <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
         <div class="tag">
             {{ localPost.postType.tagName }}
         </div>

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { LikeCommentForm, ModelComment } from '@/api/rvcModel/modelType';
+import { GetChildCommentForm, LikeCommentForm, ModelComment, CommentAddForm } from '@/api/rvcModel/modelType';
 import userCardComponent from '../user/userCardComponent.vue';
 import { UserInfoVO } from '@/api/user/userTypes';
 import { message } from '@/utils/message';
 import { ref } from 'vue';
-import { likeComments } from '@/api/rvcModel/modelApi';
+import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/modelApi';
 import { useUserStore } from "@/view/user/info/userStore.js";
 import ModelCommentComponentB from './modelCommentComponentB.vue';
 const userStore = useUserStore();
@@ -15,7 +15,7 @@ let userProfile = userStore.getProfile
 let inputContent = ref('')
 let localComment = ref<ModelComment>(props.comment)
 let childComments = ref<ModelComment[]>([
-    
+
 ])
 let user = ref<UserInfoVO>({
     avatar: props.comment.picture,
@@ -28,6 +28,18 @@ let showCommentDialogVisible = ref(false)
 let moreVisibility = ref(false)
 let dialogMoreVisibility = ref(false)
 let likeDisabled = ref(false)
+let page = ref(1)
+let childCommentDisabled = ref(false)
+let getChildCommentForm = ref<GetChildCommentForm>({
+    id: '',
+    page: (page.value as unknown as string),
+    limit: '5'
+})
+let commentAddForm = ref<CommentAddForm>({
+    replyId: '',
+    modelId: '',
+    content: ''
+})
 const like = function () {
     if (likeDisabled.value) return
     likeDisabled.value = true
@@ -77,6 +89,62 @@ const handleDialogClickMore = function () {
         dialogClickMore.value = false
     }, 200)
 }
+const loadChildComment = function () {
+    if (childCommentDisabled.value == true) return
+    childCommentDisabled.value = true
+    getChildCommentForm.value.id = localComment.value.modelId
+    getChildCommentForm.value.page = page.value as unknown as string
+    getChildComments(getChildCommentForm.value).then((res: any) => {
+        if (res.code != 200) {
+            let data = [
+            {
+                "id": "",
+                "uid": "1735662165315596290",
+                "nickname": "蔡徐坤",
+                "picture": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/b44b50059741d114e051141f3f7712d9.jpg",
+                "content": "袁总能带我打瓦吗1",
+                "likesNum": "1",
+                "commentTime": "2023-12-19 10:00:45",
+                "parentId": "1736285491279269890",
+                "isLikes": "0"
+            },
+            {
+                "id": "",
+                "uid": "1735662165315596290",
+                "nickname": "蔡徐坤",
+                "picture": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/b44b50059741d114e051141f3f7712d9.jpg",
+                "content": "伍老板太帅了",
+                "likesNum": "0",
+                "commentTime": "2023-12-17 19:14:01",
+                "parentId": "1736285491279269890",
+                "isLikes": "0"
+            }
+        ]
+            if (data.length == 0) {
+                childCommentDisabled.value = true
+                return
+            }
+            for (let i = 0; i < data.length; i++) {
+                childComments.value.push(data[i])
+            }
+            childCommentDisabled.value = false
+        }
+    })
+}
+const sendComment = function () {
+    if(inputContent.value == '')return
+    commentAddForm.value.content = inputContent.value
+    commentAddForm.value.modelId = localComment.value.modelId
+    commentAddForm.value.replyId = localComment.value.id
+    commentAdd(commentAddForm.value).then((res:any)=>{
+        if(res.code==200){
+            message.success('评论成功')
+            inputContent.value == ''
+        } else{
+            message.error('评论失败')
+        }
+    })
+}
 </script>
 <template>
     <div class="model-comment">
@@ -112,15 +180,22 @@ const handleDialogClickMore = function () {
 
             <div class="dialog-input">
                 <div style="display: flex;">
-                    <img width="40" height="40" :src="userProfile.avatar" style="border-radius: 20px;margin-right: 20px;">
+                    <img width="40" height="40" :src="userProfile.avatar"
+                        style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                     <input class="input" v-model="inputContent" maxlength="200">
                 </div>
                 <div style="text-align: right;">
                     <span>{{ getLength(inputContent) }}/200</span>
 
                 </div>
+                <div class="button-group" v-show="inputContent != ''">
+                    <span class="button-group__item" @click="sendComment">
+                        发送
+                    </span>
+                </div>
             </div>
-            <div class="child-comments">
+            <div class="child-comments" v-infinite-scroll="loadChildComment" infinite-scroll-distance="20"
+                :infinite-scroll-disabled="childCommentDisabled" :infinite-scroll-immediate="true">
                 <ModelCommentComponentB v-for="(comment, index) in childComments" :key="index" :comment="comment"
                     :index="index"></ModelCommentComponentB>
             </div>
@@ -166,7 +241,7 @@ const handleDialogClickMore = function () {
         </div>
     </div>
 </template>
-<style>
+<style scoped>
 .model-comment {
     width: 280px;
     background-color: rgba(37, 38, 43);
@@ -187,7 +262,7 @@ const handleDialogClickMore = function () {
     word-break: break-all;
     color: rgba(193, 194, 197);
     font-size: 14px;
-    margin-top: 20px;
+    margin-top: 50px;
     text-align: left;
 }
 
@@ -211,6 +286,31 @@ const handleDialogClickMore = function () {
     font-size: 16px;
     border-radius: 5px;
     border: rgba(55, 58, 64) 1px solid;
+}
+
+.button-group {
+    margin-top: 10px;
+    position: relative;
+    height: 50px;
+    width: 100%;
+    text-align: right;
+}
+
+.button-group__item {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    padding: 0 20px;
+    color: white;
+    font-size: 16px;
+    line-height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgba(51, 154, 240);
+}
+
+.button-group__item:hover {
+    background-color: rgba(24, 100, 171);
 }
 
 .child-comments {
@@ -295,7 +395,7 @@ const handleDialogClickMore = function () {
     font-size: 14px;
     text-align: left;
     border-radius: 5px;
-
+    cursor: pointer;
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -306,4 +406,5 @@ const handleDialogClickMore = function () {
 
 .dither-animation {
     top: 26px;
-}</style>
+}
+</style>

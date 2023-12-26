@@ -107,4 +107,4 @@ let disabled = ref(false)
     margin-top: 5px;
     transform: translate(-50%);
 }
-</style>@/api/rvcModel/modelApi@/api/rvcModel/modelType
+</style>

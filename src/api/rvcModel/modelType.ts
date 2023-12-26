@@ -180,3 +180,23 @@ export type UserLikeModelForm = {
 export type UserCollectModelForm = {
   [property: string]: any;
 }
+
+export type GetChildCommentForm = {
+  /**
+   * 父评论id
+   */
+  id: string;
+  /**
+   * 每页限制条件
+   */
+  limit?: string;
+  /**
+   * 第几页
+   */
+  page: string;
+  /**
+   * 分页获取数据排序顺序，默认时间倒排
+   */
+  sortType?: string;
+  [property: string]: any;
+}
