@@ -32,14 +32,19 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isCollection ? '0' : '1'
+        status: localModel.value.isCollection ? '1' : '0'
     }
     collectModel(form).then((res:any) => {
         if (res.code == 200) {
             localModel.value.isCollection = localModel.value.isCollection == '0'?'1':'0'
-            localModel.value.collectionNum = ((localModel.value.collectionNum as unknown as number) + 1) as unknown as string
+            let num:number = Number(localModel.value.collectionNum)
+            num += localModel.value.isCollection=='0'?1:-1
+            localModel.value.collectionNum = String(num)
         }
-        message.error('收藏失败，请稍后再试')
+        else{
+            message.error('收藏失败，请稍后再试')
+        }
+        
     })
 }
 const like = function () {
@@ -51,22 +56,26 @@ const like = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isLike ? '0' : '1'
+        status: localModel.value.isLike ? '1' : '0'
     }
     favoriteModel(form).then((res:any) => {
         if (res.code == 200) {
             localModel.value.isLike = localModel.value.isLike == '0'?'1':'0'
-            localModel.value.likesNum = ((localModel.value.likesNum as unknown as number) + 1) as unknown as string
+            let num:number = Number(localModel.value.likesNum)
+            num += localModel.value.isLike=='0'?1:-1
+            localModel.value.likesNum = String(num)
         }
-        message.error('点赞失败，请稍后再试')
+        else{
+            message.error('点赞失败，请稍后再试')
+        }
 
     })
 }
 </script>
 <template>
     <div class="model-card">
-        <img  :src="localModel.picture!" class="model-card__cover"
-            @click="$router.push('/model?id=' + localModel.id)">
+        <img  :src="localModel.picture!" class="model-card__cover" 
+            @click="$router.push('/model?id=' + localModel.id)" style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
             :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
             <div
@@ -78,22 +87,28 @@ const like = function () {
                 举报
             </div>
         </div>
-        <div class="model-card__info">
+        <div class="post-card__user">
             <div class="user-info" @click="$router.push('/user?id=' + localModel.uid)">
 
-                <div class="user-info__avatar"
-                    :style="{ backgroundImage: 'url(\'' + localModel.avatar + '\')' }">
+                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localModel.avatar + ')' }">
 
                 </div>
-                <div class="user-info__usename">
-                    {{ localModel.nickname }}
-                </div>
+                <div class="user-info__text">
 
+                    <div class="user-info__text__usename">
+                        {{ localModel.nickname }}
+                    </div>
+                    <div class="user-info__text__creatAt" @click="$router.push('/post?id=' + localModel.id)">
+                        {{ localModel.createTime }}
+                    </div>
+                </div>
             </div>
-            <div class="model-card__info__creatAt" @click="$router.push('/model?id=' + localModel.id)">
-                {{ localModel.createTime }}
-            </div>
-            <div class="model-card__info__title" @click="$router.push('/model?id=' + localModel.id)">
+        </div>
+        <div class="tag">
+            {{ localModel.label }}
+        </div>
+        <div class="post-card__info">
+            <div class="post-card__info__title" @click="$router.push('/post?id=' + localModel.id)">
                 {{ localModel.name }}
             </div>
 
@@ -105,20 +120,20 @@ const like = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isCollection == '1' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localModel.isCollection ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isLike == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localModel.isLike ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
-                    <span>{{ localModel.collectionNum }}</span>
+                    <span>{{ localModel.likesNum }}</span>
                 </div>
                 <!-- <div class="other-info__stats__item">
                     <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/chat.svg\')' }">
                     </div>
-                    <span>{{ localModel.commentNum }}</span>
+                    <span>{{ localModel }}</span>
                 </div> -->
             </div>
         </div>
@@ -178,7 +193,28 @@ const like = function () {
 
 
 
-.model-card__info {
+.post-card__user {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    /* height: 150px; */
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+    border-radius: 5px;
+    padding: 5px 0;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    gap: 20px;
+    border-radius: 0px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.046);
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px;
+    border: 0px rgba(255, 255, 255, 0.4) solid;
+    border-bottom: 0px rgba(40, 40, 40, 0.35) solid;
+    border-right: 0px rgba(40, 40, 40, 0.35) solid;
+}
+
+.post-card__info {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -187,69 +223,85 @@ const like = function () {
     transform: translate(-50%);
     z-index: 1;
     border-radius: 5px;
+    padding-top: 10px;
     background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+    gap: 20px;
+    border-radius: 0px;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.046);
+    box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px;
+    border: 0px rgba(255, 255, 255, 0.4) solid;
+    border-bottom: 0px rgba(40, 40, 40, 0.35) solid;
+    border-right: 0px rgba(40, 40, 40, 0.35) solid;
 }
 
-.model-card__info__title {
+.post-card__info__title {
     position: relative;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     height: 30px;
     line-height: 30px;
     color: white;
-    margin-left: 10px;
+    padding: 0 10px;
     text-overflow: ellipsis;
-    font-size: 20px;
+    overflow: hidden;
+    font-size: 16px;
     text-align: left;
-    text-overflow: ellipsis;
     z-index: 1;
 }
 
-.model-card__info__creatAt {
-    position: relative;
-    width: calc(100% - 10px);
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    margin-left: 10px;
-    color: rgba(255, 255, 255, 1);
-    z-index: 1;
-    text-align: left;
-
-}
 
 .user-info {
     position: relative;
-    height: 40px;
+    height: 50px;
     width: 100%;
     transition: all 0.3s;
     display: flex;
-    /* background-color: rgba(0, 0, 0, 0.8); */
     margin-left: 10px;
+    /* background-color: rgba(0, 0, 0, 0.8); */
+
 }
 
 .user-info__avatar {
-    height: 30px;
-    min-width: 30px;
+    height: 40px;
+    min-width: 40px;
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
-    border-radius: 15px;
-    background-image: url("/public/teamPic/dhx.jpg");
+    border-radius: 20px;
+    /* background-image: url("/public/teamPic/dhx.jpg"); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
+.user-info__text {
+    height: 50px;
+    padding-left: 15px;
+    width: calc(100% - 65px);
 
-
-.user-info__usename {
-    height: 30px;
-    line-height: 30px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    text-align: left;
-    padding-left: 5px;
 }
+
+.user-info__text__usename {
+    height: 25px;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    text-align: left;
+}
+
+.user-info__text__creatAt {
+    position: relative;
+    width: calc(100% - 10px);
+    height: 25px;
+    line-height: 25px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    z-index: 1;
+    text-align: left;
+
+}
+
+
 
 .user-info__usename:hover {
     color: white;
@@ -289,10 +341,12 @@ const like = function () {
     position: absolute;
     width: 30px;
     height: 30px;
-    top: 10px;
+    top: 20px;
     right: 10px;
+    z-index: 20;
 }
 
 .dither-animation {
-    top: 11px;
-}</style>@/api/rvcModel/modelType@/api/rvcModel/modelApi
+    top: 21px;
+}
+</style>

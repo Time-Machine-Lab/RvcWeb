@@ -73,7 +73,7 @@ let disabled = ref(false)
             <filterComponent :tags="tags"></filterComponent>
         </div>
         <div class="model-list">
-            <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
+            <waterFallComponent :minWidth="300" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
                 :infinite-scroll-immediate="true">
                 <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
             </waterFallComponent>
