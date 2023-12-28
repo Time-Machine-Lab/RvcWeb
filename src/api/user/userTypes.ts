@@ -45,11 +45,11 @@ export type Profile = {
 };
 
 export type ProfileForm = {
-  avatar?: string;
-  nickname?: string;
-  description?: string;
-  sex?: string;
-  birthday?: string;
+  avatar?: string|null;
+  nickname?: string|null;
+  description?: string|null;
+  sex?: string|null;
+  birthday?: string|null;
 };
 
 export type OtherUser = {

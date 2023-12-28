@@ -7,21 +7,20 @@
 <script lang="ts" setup>
 import { getLoginUserInfo, logout } from '@/api/user/userApi.js'
 import { useUserStore } from '@/view/user/info/userStore.js'
-import { Profile } from '@/api/user/userTypes'
+import { UserInfoVO } from '@/api/user/userTypes'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 import router from '@/router';
 const userStore = useUserStore()
-let userProfile = ref<Profile>()
+let userProfile = ref<UserInfoVO>()
 let userStatusVisibility = ref(false)
 getLoginUserInfo().then((res: any) => {
     if (res.code == 200) {
-        userStore.setProfile(<Profile>res.data)
+        userStore.setProfile(<UserInfoVO>res.data)
         userProfile.value = userStore.getProfile
         storage.set('uid', res.data.uid)
     }
-
 })
 const handleClickUser = function () {
     userStatusVisibility.value = !userStatusVisibility.value
@@ -34,7 +33,6 @@ const handleBlur = function () {
 const logoutFunc = function () {
     logout().then(res => {
         console.log(res)
-
         message.success('登出成功')
         storage.remove('token')
         router.go(0)

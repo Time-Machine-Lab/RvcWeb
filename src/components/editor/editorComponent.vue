@@ -78,8 +78,8 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
-    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: hidden" v-model="html" :defaultConfig="editorConfig"
+    <Toolbar style="border-bottom: 1px solid #ccc;" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
+    <Editor style="min-height:200px; overflow-y: scroll;max-height: 500px;" v-model="html" :defaultConfig="editorConfig"
       :mode="mode" @onCreated="onCreated" />
   </div>
 </template>

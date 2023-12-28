@@ -75,20 +75,20 @@ const like = function () {
 
     })
 }
-const getimg = function (index: number) {
-    const img = [
-        "/testPic/1.jpeg",
-        "/testPic/2.jpeg",
-        "/testPic/3.jpeg",
-        "/testPic/4.jpeg",
-        "/testPic/5.jpeg",
-        "/testPic/6.jpeg",
-        "/testPic/7.jpeg",
-        "/testPic/8.jpeg",
-        "/testPic/9.jpeg",
-    ]
-    return img[index % 9]
-}
+// const getimg = function (index: number) {
+//     const img = [
+//         "/testPic/1.jpeg",
+//         "/testPic/2.jpeg",
+//         "/testPic/3.jpeg",
+//         "/testPic/4.jpeg",
+//         "/testPic/5.jpeg",
+//         "/testPic/6.jpeg",
+//         "/testPic/7.jpeg",
+//         "/testPic/8.jpeg",
+//         "/testPic/9.jpeg",
+//     ]
+//     return img[index % 9]
+// }
 const postDeleteFunc = function () {
     let form = ref<DeletePostForm>({
         postId: localPost.value.postId
@@ -105,7 +105,8 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <img :src="getimg(localPost.postId as unknown as number)" @click="$router.push('/post?id=' + localPost.postId)"
+        <div style="position: absolute;width: 100%;height: 100%;" @click="$router.push('/post?id=' + localPost.postId)"></div>
+        <img :src="localPost.cover!" @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
@@ -118,11 +119,11 @@ const editPost = function () {
             <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
             </div>
-            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid"
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author?.uid"
                 @click="postDeleteFunc">
                 删除贴子
             </div>
-            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author.uid" @click="editPost">
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author?.uid" @click="editPost">
                 编辑贴子
             </div>
         </div>

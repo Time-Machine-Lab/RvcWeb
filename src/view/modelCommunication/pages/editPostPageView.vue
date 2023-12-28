@@ -100,18 +100,23 @@ const loadOldPost = function () {
     let form = ref<GetPostDetailsForm>({
         postId: (router.currentRoute.value.query.postId as string)
     })
-    getPostDetails(form.value).then(res => {
-        let data = ref<PostVo>(res.data)
-        oldPost.value.title = data.value.title
-        oldPost.value.content = data.value.content
-        oldPost.value.tagId = data.value.postType.id
-        oldPost.value.coverId = data.value.cover
-        oldPost.value.tagName = data.value.postType.tagName
-        postForm.value.title = oldPost.value.title
-        postForm.value.content = oldPost.value.content
-        postForm.value.tagId = oldPost.value.tagId
-        postForm.value.coverId = oldPost.value.coverId
-        postForm.value.tagName = oldPost.value.tagName
+    getPostDetails(form.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = ref<PostVo>(res.data)
+            oldPost.value.title = data.value.title
+            oldPost.value.content = data.value.content
+            oldPost.value.tagId = data.value.postType.id
+            oldPost.value.coverId = data.value.cover
+            oldPost.value.tagName = data.value.postType.tagName
+            postForm.value.title = oldPost.value.title
+            postForm.value.content = oldPost.value.content
+            postForm.value.tagId = oldPost.value.tagId
+            postForm.value.coverId = oldPost.value.coverId
+            postForm.value.tagName = oldPost.value.tagName
+        } else {
+            message.error(res.msg)
+        }
+
     })
 
 }

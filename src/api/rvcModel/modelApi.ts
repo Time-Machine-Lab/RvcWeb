@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\api\rvcModel\modelApi.ts
  */
 import request from '@/utils/request'
-import { CommentAddForm, FavoriteAndCollectionForm,GetChildCommentForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelAddForm,ModelListForm, UserLikeModelForm } from '@/api/rvcModel/modelType'
+import { CommentAddForm, FavoriteAndCollectionForm,GetChildCommentForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelAddForm,ModelListForm, UserCreateModelForm, UserLikeModelForm } from '@/api/rvcModel/modelType'
 import { UserCollectPostForm } from '../post/postType'
 export function getModels (form:ModelListForm) {
     return request({
@@ -131,6 +131,13 @@ export function getUserCollectModels(form:UserCollectPostForm){
     return request({
         url:'/model/collection',
         method:'post',
+        params:form
+    })
+}
+export function getUserCreateModels(form:UserCreateModelForm){
+    return request({
+        url:'/model/user/model',
+        method:'get',
         params:form
     })
 }

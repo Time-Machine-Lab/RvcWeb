@@ -5,13 +5,15 @@ import postCardComponentB from '@/components/modelCommunication/postCardComponen
 import { PostVo, UserLikePostForm } from '@/api/post/postType';
 import { getUserLikePosts } from '@/api/post/postApi';
 import { message } from '@/utils/message';
-import { UserLikeModelForm } from '@/api/rvcModel/modelType';
+import { RvcModelVo, UserLikeModelForm } from '@/api/rvcModel/modelType';
 import { getUserLikeModels } from '@/api/rvcModel/modelApi';
+import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue';
 let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
 let posts = ref<PostVo[]>([])
+let models = ref<RvcModelVo[]>([])
 let page = ref(1)
 let postForm = ref<UserLikePostForm>({
     data: '',
@@ -42,8 +44,10 @@ const handleOptionChange = function (index: number) {
     page.value = 1
     disabled.value = false
     if(currentSelectIndex.value == 0){
+        posts.value = []
         loadPost()
     } else if(currentSelectIndex.value == 1){
+        models.value = []
         loadModel()
     }
 }
@@ -88,7 +92,7 @@ const loadModel = function () {
                 disabled.value = true
             }
             for (let i = 0; i < data.length; i++) {
-                posts.value.push(data[i])
+                models.value.push(data[i])
             }
             page.value++
             disabled.value = false
@@ -121,13 +125,14 @@ const loadModel = function () {
             </div>
         </div>
         <div class="like-pages__content">
+            <el-empty :image-size="200" v-if="posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
                 :infinite-scroll-immediate="true" v-if="currentSelectIndex == 0">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
             </waterFallComponent>
-            <waterFallComponent v-infinite-scroll="loadModel" infinite-scroll-distance="100"
+            <waterFallComponent v-infinite-scroll="loadModel"  v-if="currentSelectIndex == 1"  infinite-scroll-distance="100"
                 :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index"></ModelCardComponentB>
             </waterFallComponent>
         </div>
     </div>
@@ -142,15 +147,18 @@ const loadModel = function () {
 }
 
 .like-pages__filter {
-    position: relative;
+    position: absolute;
+    top: -70px;
     height: 70px;
-    width: 100%;
+    width: 30%;
+    right: 0;
 }
 
 .like-pages__filter__select {
-    position: relative;
+    position: absolute;
+    right: 10px;
     top: 50%;
-    transform: translate(0, -50%);
+    transform: translate(0,-50%);
     height: 40px;
     padding: 0 5px;
     border-radius: 20px;
@@ -176,13 +184,13 @@ const loadModel = function () {
 .select-window {
     position: absolute;
     top: 60px;
-    left: 10px;
+    right: 10px;
     width: 100px;
     border-radius: 10px;
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
-    z-index: 20;
+    z-index: 30;
     user-select: none;
 }
 

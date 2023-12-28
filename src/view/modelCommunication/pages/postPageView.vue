@@ -16,7 +16,7 @@ import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postT
 import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
-import { Profile } from "@/api/user/userTypes";
+import { UserInfoVO } from "@/api/user/userTypes";
 const userStore = useUserStore()
 getPostById((router.currentRoute.value.query.id as unknown as number)).then((res:any) => {
     if(res.code == 200){
@@ -26,7 +26,7 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then((res
     }
     getH1()
 })
-let userProfile = ref<Profile>({})
+let userProfile = ref<UserInfoVO>({})
 let localPost = ref<PostVo>({
     postId: "",
     author: {
@@ -255,7 +255,7 @@ const sendComment = function () {
     <div class="comment">评论</div>
     <div class="post-page__post__commentBox">
         <div class="post-page__post__commentBox--row1">
-            <img width="40" height="40" :src="userProfile.avatar" style="border-radius: 20px;margin-right: 20px;">
+            <img width="40" height="40" :src="userProfile.avatar!" style="border-radius: 20px;margin-right: 20px;">
             <input maxlength="300" v-model="inputContent">
         </div>
         <div class="post-page__post__commentBox--row2">
