@@ -4,30 +4,27 @@ import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue'
 import { PostVo, UserCreatePostForm } from '@/api/post/postType'
 import { getUserCreatePosts } from '@/api/post/postApi'
-import { useUserStore } from "@/view/user/info/userStore.js"
-const userStore = useUserStore();
+import { message } from '@/utils/message'
+import { RvcModelVo, UserCreateModelForm } from '@/api/rvcModel/modelType'
+import { getUserCreateModels } from '@/api/rvcModel/modelApi'
+import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue'
 
-let selectOptions = ref([ '贴子','模型'])
+let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
 let postScrollDisabled = ref(false)
+let page = ref(1)
 let posts = ref<PostVo[]>([])
-let form = ref<UserCreatePostForm>({
-    data: '',
-    limit: '5',
-    page: '0'
+let models = ref<RvcModelVo[]>([])
+let disabled = ref(false)
+let postForm = ref<UserCreatePostForm>({
+    limit: '10',
+    page: page.value as unknown as string
 })
-getUserCreatePosts(form.value).then((res:any) => {
-    if(res.code == 200){
-        let data = res.data
-        let userProfile = userStore.getProfile
-        for(let i=0;i<data.length;i++){
-            data[i].author = userProfile
-            posts.value.push(data[i])
-        }
-    }
-
+let modelForm = ref<UserCreateModelForm>({
+    page: page.value as unknown as string,
+    limit: '10'
 })
 const handleClickSelect = function () {
     clickSelect.value = true
@@ -42,11 +39,65 @@ const handleBlur = function () {
     }, 200)
 }
 const handleOptionChange = function (index: number) {
+    if(currentSelectIndex.value == index)return
     currentSelectIndex.value = index
     selectVisibility.value = false
+    page.value = 1
+    disabled.value = false
+    if(currentSelectIndex.value == 0){
+        loadPost()
+    } else if(currentSelectIndex.value == 1){
+        loadModel()
+    }
 }
 const loadPost = function () {
+    if (disabled.value) return
+    disabled.value = true
+    postForm = ref<UserCreatePostForm>({
+        limit: '10',
+        page: page.value as unknown as string
+    })
+    getUserCreatePosts(postForm.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = res.data
+            if (data.length == 0) {
+                message.warning('已滑到底部了')
+                disabled.value = true
+            }
+            for (let i = 0; i < data.length; i++) {
+                posts.value.push(data[i])
+            }
+            page.value++
+            disabled.value = false
+        } else {
+            message.error(res.msg)
+        }
+    })
+}
+const loadModel = function(){
+    if (disabled.value) return
+    disabled.value = true
+    modelForm = ref<UserCreateModelForm>({
+        limit: '10',
+        page: page.value as unknown as string
+    })
+    getUserCreateModels(modelForm.value).then((res:any)=>{
+        if (res.code == 200) {
+            let data = res.data.records
+            if (data.length == 0) {
+                message.warning('已滑到底部了')
+                disabled.value = true
+            }
+            for (let i = 0; i < data.length; i++) {
+                models.value.push(data[i])
+            }
+            page.value++
+            disabled.value = false
+        } else {
+            message.error(res.msg)
+        }
 
+    })
 }
 </script>
 <template>
@@ -71,9 +122,14 @@ const loadPost = function () {
             </div>
         </div>
         <div class="create-pages__content">
+            <el-empty :image-size="200" v-if="posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" :infinite-scroll-immediate="true">
+                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 0" :infinite-scroll-immediate="true">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+            </waterFallComponent>
+            <waterFallComponent v-infinite-scroll="loadModel" infinite-scroll-distance="100"
+                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 1" :infinite-scroll-immediate="true">
+                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index"></ModelCardComponentB>
             </waterFallComponent>
         </div>
     </div>
@@ -88,14 +144,18 @@ const loadPost = function () {
 }
 
 .create-pages__filter {
-    position: relative;
+    position: absolute;
+    top: -70px;
     height: 70px;
-    width: 100%;
+    width: 30%;
+    right: 0;
+
 }
 
 .create-pages__filter__select {
-    position: relative;
+    position: absolute;
     top: 50%;
+    right: 10px;
     transform: translate(0, -50%);
     height: 40px;
     padding: 0 5px;
@@ -122,13 +182,13 @@ const loadPost = function () {
 .select-window {
     position: absolute;
     top: 60px;
-    left: 10px;
+    right: 10px;
     width: 100px;
     border-radius: 10px;
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
-    z-index: 20;
+    z-index: 30;
     user-select: none;
 }
 

@@ -2,120 +2,42 @@
   <footer class="footer2-wrap" :class="{ hidden: y > 10 }">
     <div class="footer-copy">© RVC 2023</div>
     <div class="footer-center">
-      <a
-        class="mantine-12d6g0a"
-        type="button"
-        data-button="true"
-        href="javascript:void(0);"
-      >
+      <a class="mantine-1innaxq" type="button" data-button="true" href="/join-us">
         <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">Support Us ❤️</span>
+          <span class="mantine-qo1k2 mantine-Button-label">加入我们 💼</span>
         </div>
       </a>
-      <a
-        class="mantine-1innaxq"
-        type="button"
-        data-button="true"
-        href="/join-us"
-      >
+      <a class="mantine-x6buan" type="button" data-button="true"  @click="userAgreementDialogVisible = true">
         <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">Join Us 💼</span>
+          <span class="mantine-qo1k2 mantine-Button-label">用户协议</span>
         </div>
-      </a>
-      <a
-        class="mantine-x6buan"
-        type="button"
-        data-button="true"
-        href="javascript:void(0);"
-      >
-        <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">
-            Terms of Service
-          </span>
-        </div>
-      </a>
-      <a
-        class="mantine-x6buan"
-        type="button"
-        data-button="true"
-        href="javascript:void(0);"
-      >
-        <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">Privacy</span>
-        </div>
-      </a>
-      <a class="mantine-x6buan" data-button="true" href="javascript:void(0);">
-        <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">API</span>
-        </div>
-      </a>
-      <a class="mantine-x6buan" data-button="true" href="javascript:void(0);">
-        <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">Status</span>
-        </div>
-      </a>
-      <a
-        class="icon-wrap flex items-center"
-        style="width: 34px; height: 34px"
-        href="javascript:void(0);"
-        target="_blank"
-        rel="noopener noreferrer"
-        v-for="(item, index) in [
-          'discord',
-          'twitter',
-          'instagram',
-          'youtube',
-          'tiktok',
-          'reddit',
-          'github',
-        ]"
-        :key="index"
-      >
-        <SvgIcon :name="item" color="#fff" />
       </a>
     </div>
+    <el-dialog v-model="userAgreementDialogVisible" style="background-color: rgba(26,27,30);color: white;" title="用户协议" width="30%">
+      <span></span>
+      <template #footer>
+        <span class="dialog-footer" style="display: flex;justify-content: right;">
+          <span @click="userAgreementDialogVisible = false" class="dialog-footer__cancel">关闭</span>
+        </span>
+      </template>
+    </el-dialog>
     <div class="footer-right">
-      <a
-        class="mantine-96znl7"
-        type="button"
-        data-button="true"
-        href="javascript:void(0);"
-        target="_blank"
-      >
+      <a class="mantine-96znl7" type="button" data-button="true" href="javascript:void(0);" target="_blank">
         <div class="mantine-3xbgk5 mantine-Button-inner">
           <span class="mantine-qo1k2 mantine-Button-label">
-            <router-link to="/feedback" target="_blank">🪲 Bugs</router-link>
+            <router-link to="" target="_blank">关于我们❓</router-link>
           </span>
         </div>
       </a>
-      <router-link class="mantine-ua08er" to="/feedback" target="_blank">
-        <div class="mantine-3xbgk5 mantine-Button-inner">
-          <span class="mantine-qo1k2 mantine-Button-label">💡 反馈</span>
-        </div>
-      </router-link>
     </div>
+
   </footer>
-  <div
-    class="scroll-to-top-wrap"
-    style="transition: bottom 300ms linear 0s"
-    @click="scrollToTop"
-    v-show="y > 50"
-  >
+  <div class="scroll-to-top-wrap" style="transition: bottom 300ms linear 0s" @click="scrollToTop" v-show="y > 50">
     <button class="scroll-to-top-btn">
       <div class="scroll-to-top-btn-content">
         <span class="scroll-to-top__icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class=" "
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=" ">
             <path d="M12 5l0 14"></path>
             <path d="M18 11l-6 -6"></path>
             <path d="M6 11l6 -6"></path>
@@ -129,6 +51,7 @@
 
 <script lang="ts" setup>
 import { useWindowScroll } from '@vueuse/core';
+import { ref } from 'vue';
 const { x, y } = useWindowScroll();
 console.log(x)
 const scrollToTop = () => {
@@ -137,9 +60,24 @@ const scrollToTop = () => {
     behavior: 'smooth',
   });
 };
+let userAgreementDialogVisible = ref(false)
 </script>
 
 <style scoped lang="scss">
+.dialog-footer__cancel {
+    color: white;
+    height: 35px;
+    padding: 0 20px;
+    line-height: 35px;
+    border-radius: 5px;
+    border: rgba(55, 58, 64) 1px solid;
+    background-color: rgba(37, 38, 43);
+    cursor: pointer;
+}
+
+.dialog-footer__cancel:hover {
+    background-color: rgba(44, 46, 51);
+}
 .footer2-wrap {
   min-width: 1111px;
   width: 100%;
@@ -188,6 +126,7 @@ const scrollToTop = () => {
   white-space: nowrap;
   user-select: none;
 }
+
 .footer-center {
   box-sizing: border-box;
   display: flex;
@@ -252,6 +191,7 @@ const scrollToTop = () => {
     padding-right: 10px;
     padding-left: 10px;
   }
+
   .mantine-1innaxq {
     font-family:
       -apple-system,
@@ -304,6 +244,7 @@ const scrollToTop = () => {
     padding-right: 10px;
     padding-left: 10px;
   }
+
   .mantine-x6buan {
     font-family:
       -apple-system,
@@ -354,6 +295,7 @@ const scrollToTop = () => {
     padding-left: 10px;
   }
 }
+
 .footer-right {
   box-sizing: border-box;
 
@@ -369,6 +311,7 @@ const scrollToTop = () => {
 
   flex-wrap: nowrap;
   margin-left: auto;
+
   .mantine-96znl7 {
     -webkit-tap-highlight-color: transparent;
     font-family:
@@ -422,6 +365,7 @@ const scrollToTop = () => {
     padding-left: 10px;
     padding-right: 10px;
   }
+
   .mantine-ua08er {
     font-family:
       -apple-system,
@@ -474,6 +418,7 @@ const scrollToTop = () => {
     color: #ffec99;
     padding-left: 4px;
     padding-right: 10px;
+
     .mantine-3xbgk5 {
       display: flex;
 
@@ -482,6 +427,7 @@ const scrollToTop = () => {
       justify-content: center;
       height: 100%;
       overflow: visible;
+
       a {
         text-decoration: none;
       }
@@ -494,6 +440,7 @@ const scrollToTop = () => {
   z-index: 111;
   bottom: 12px;
   right: 12px;
+
   .scroll-to-top-btn {
     transition-property: transform, opacity;
     transition-duration: 250ms;
@@ -523,18 +470,21 @@ const scrollToTop = () => {
     background-color: var(--el-color-primary);
 
     color: rgb(255, 255, 255);
+
     .scroll-to-top-btn-content {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100%;
       overflow: visible;
+
       .scroll-to-top__icon {
         display: flex;
 
         align-items: center;
         margin-right: 10px;
       }
+
       .scroll-to-top__text {
         white-space: nowrap;
         height: 100%;

@@ -114,7 +114,8 @@ export function uploadPicture(file:File){
     return request({
         method:'post',
         url:'/communication/post/cover',
-        data:formData
+        data:formData,
+        timeout: 100000
     })
 }
 

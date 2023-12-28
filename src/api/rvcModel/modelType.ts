@@ -176,7 +176,10 @@ export type UserLikeModelForm = {
   page: string;
   [property: string]: any;
 }
-
+export type UserCreateModelForm = {
+  page?: string;
+  limit?: string;
+}
 export type UserCollectModelForm = {
   [property: string]: any;
 }
@@ -200,3 +203,4 @@ export type GetChildCommentForm = {
   sortType?: string;
   [property: string]: any;
 }
+

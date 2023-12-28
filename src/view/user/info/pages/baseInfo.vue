@@ -6,15 +6,15 @@
 -->
 <script setup lang="ts">
 import editProfile from "@/view/user/info/pages/editProfile.vue";
-import { Profile } from "@/api/user/userTypes";
+import { UserInfoVO } from "@/api/user/userTypes";
 import {  ref } from "vue";
 import { getUserInfoById } from "@/api/user/userApi.js";
 import { useUserStore } from "@/view/user/info/userStore.js";
 
 import router from "@/router/index.ts";
+import { storage } from "@/utils/storage";
 const userStore = useUserStore();
 
-let style = true;
 let hasFollow = ref(false);
 const loaded = ref(true);
 let drawer = ref(false);
@@ -27,15 +27,8 @@ let figures = ref([
 const open = () => {
   drawer.value = true;
 };
-let userProfile = ref<Profile>({
-  id: 0,
-  avatar: "", //头像链接
-  nickname: "", //昵称
-  description: "", //简介
-  register_date: "", //注册时间
-  sex: "", //性别
-  fansNum: '0', //粉丝数量
-  followNum: '0', //关注数
+let userProfile = ref<UserInfoVO>({
+ 
 });
 
 const follow = function () {
@@ -44,8 +37,7 @@ const follow = function () {
 
 setTimeout(function () {
   if (
-    (router.currentRoute.value.query.id as string) ==
-      (userStore.getProfile.id as unknown as string) ||
+    (router.currentRoute.value.query.id as string) == storage.get<string>('uid') ||
     router.currentRoute.value.query.id == undefined
   ) {
     userProfile.value = userStore.getProfile;
@@ -63,7 +55,6 @@ setTimeout(function () {
         number: userStore.getProfile.followNum!,
       },
     ];
-    style = false;
   } else {
     getUserInfoById(router.currentRoute.value.query.id as string).then(
       (res) => {
@@ -101,18 +92,18 @@ setTimeout(function () {
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-           {{ userProfile.birthsday ? userProfile.birthsday : "1970-01-01" }}
+           {{ userProfile.birthday }}
         </span>
       </div>
     </div>
     <div class="button-container">
-      <span class="button" v-if="!style && !hasFollow" @click="follow">
+      <span class="button" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && !hasFollow" @click="follow">
         关注
       </span>
-      <span class="greybutton" v-if="!style && hasFollow" @click="follow">
+      <span class="greybutton" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && hasFollow" @click="follow">
         已关注
       </span>
-      <span class="button" v-if="style" @click="open"> 编辑资料 </span>
+      <span class="button" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" @click="open"> 编辑资料 </span>
     </div>
     <div class="line"></div>
     <div class="figures-container">
@@ -143,19 +134,19 @@ setTimeout(function () {
 
 .base-info .avatar-container {
   width: 100%;
-  height: 220px;
+  height: 170px;
   position: relative;
 }
 
 .base-info .avatar-container .avatar {
-  width: 180px;
-  height: 180px;
+  width: 50%;
+  aspect-ratio: 1 / 1;
   position: relative;
   margin-left: 15px;
   top: 50%;
   transform: translate(0, -50%);
   background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 30px;
+  border-radius: 10px;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;

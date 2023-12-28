@@ -257,7 +257,7 @@ let modelFiles: any = []
                 <div class="loadding" v-if="uploadModelLoading"></div>
 
                 <div class="success" v-else-if="modelAddForm.fileId.length == 2">✓</div>
-                <div class="error" v-else>✓</div>
+                <div class="error" v-else>×</div>
                 <div class="el-upload__text">
                     将文件拖拽到此处或点击上传
                 </div>
@@ -274,7 +274,7 @@ let modelFiles: any = []
                 :before-remove="beforeRemove" multiple>
                 <div class="loadding" v-if="uploadAudioLoading"></div>
                 <div class="success" v-else-if="modelAddForm.picture">✓</div>
-                <div class="error" v-else>✓</div>
+                <div class="error" v-else>×</div>
                 <div class="el-upload__text">
                     将文件拖拽到此处或点击上传
                 </div>
@@ -285,7 +285,7 @@ let modelFiles: any = []
             <div class="new-model__title">
                 上传封面
             </div>
-            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="false" :limit="1"
+            <el-upload ref="uploadCoverRef" class="upload-demo" drag :auto-upload="false" :limit="1"
                 :on-exceed="handleExceed" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload"
                 :before-remove="beforeRemove" multiple>
                 <div class="loadding" v-if="uploadCoverLoading"></div>

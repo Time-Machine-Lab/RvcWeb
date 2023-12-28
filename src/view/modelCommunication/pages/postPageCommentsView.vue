@@ -42,7 +42,6 @@ const load = function () {
         page.value++
     })
 }
-load()
 let commentList = ref<CommentVo[]>([
 
 ])

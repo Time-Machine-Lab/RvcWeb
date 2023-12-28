@@ -14,9 +14,9 @@ const userStore = useUserStore();
 setTimeout(function () {
   if (
     router.currentRoute.value.query.id == undefined &&
-    userStore.getProfile.id
+    userStore.getProfile.uid
   ) {
-    router.push({ query: { id: userStore.getProfile.id } });
+    router.push({ query: { id: userStore.getProfile.uid } });
   }
 }, 1000);
 </script>
@@ -104,14 +104,14 @@ setTimeout(function () {
 .userPage .base-info-container {
   display: inline-block;
   position: relative;
-  width: 15%;
-  min-width: 200px;
+  width: 17%;
+  min-width: 280px;
   background-color: rgba(37, 38, 43);
 }
 
 .userPage .other-info-container {
   display: inline-block;
-  width: 85%;
+  width: 83%;
 }
 
 .userPage .other-info-container .router-link-container {

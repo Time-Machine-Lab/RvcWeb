@@ -7,11 +7,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { editUserInfo,uploadAvatar } from "@/api/user/userApi.ts";
-import { Profile, ProfileForm } from "@/api/user/userTypes";
+import { UserInfoVO, ProfileForm } from "@/api/user/userTypes";
 import { message } from "@/utils/message";
 import router from "@/router";
 const props = defineProps<{
-  userProfile: Profile;
+  userProfile: UserInfoVO;
 }>();
 const oldProfile = ref<ProfileForm>({
   avatar: props.userProfile.avatar,

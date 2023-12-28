@@ -27,17 +27,17 @@ let draft = ref<{
   tagId: string,
   tagName: string
 }>()
-// let formWarning = ref<{
-//   tilte:boolean,
-//   content:boolean,
-//   cover:boolean,
-//   tag:boolean
-// }>({
-// tilte: false,
-// content: false,
-// cover: false,
-// tag: false
-// })
+let formWarning = ref<{
+  title: boolean,
+  content: boolean,
+  cover: boolean,
+  tag: boolean
+}>({
+  title: false,
+  content: false,
+  cover: false,
+  tag: false
+})
 getPostType().then(res => {
   let data = <RvcCommunicationPostType[]>(res.data)
   for (let i = 0; i < data.length; i++) {
@@ -49,7 +49,9 @@ getPostType().then(res => {
 })
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
+let uploadCoverLoading = ref(false)
 let currentTypeIndex = ref(-1)
+let uploadFailed = ref(false)
 const handleClickSort = function () {
   clickType.value = true
   typeSelectvisibility.value = !typeSelectvisibility.value
@@ -64,14 +66,27 @@ const handleBlur = function () {
 }
 const submitPost = function () {
   postForm.value.content = content.value
-  if(postForm.value.title == ''){
-    // formWarning.value?.tilte = true
+  console.log(postForm.value);
+
+  if (check()) {
+    formWarning.value.content = postForm.value.content == '<p><br></p>'
+    formWarning.value.title = postForm.value.title == ''
+    formWarning.value.cover = postForm.value.coverUrl == ''
+    formWarning.value.tag = postForm.value.tagId == ''
+    setTimeout(function () {
+      formWarning.value.content = false
+      formWarning.value.title = false
+      formWarning.value.cover = false
+      formWarning.value.tag = false
+    }, 300)
+    return
   }
+
   postAdd(postForm.value).then((res: any) => {
     if (res.code == 200) {
       message.success('发布成功')
       router.back()
-    }else{
+    } else {
       message.error(res.msg)
     }
   })
@@ -83,16 +98,24 @@ const beforeCoverUpload = function (rawFile: File) {
     message.warning('请上传小于10M的图片')
     return false
   }
-  uploadPicture(rawFile).then((res:any) => {
-    if(res.code == 200){
-postForm.value.coverId = res.data.id
-    postForm.value.coverUrl = res.data.url
-    message.success('上传成功')
-    } else{
+  uploadCoverLoading.value = true
+  setTimeout(function(){
+    if(postForm.value.coverUrl == ''){
+      uploadCoverLoading.value = false
+      uploadFailed.value = true
+    }
+  },100000)
+  uploadPicture(rawFile).then((res: any) => {
+    if (res.code == 200) {
+      uploadCoverLoading.value = false
+      postForm.value.coverId = res.data.id
+      postForm.value.coverUrl = res.data.url
+      message.success('上传成功')
+    } else {
+      uploadCoverLoading.value = false
+      uploadFailed.value = true
       message.error('上传失败')
     }
-    
-
   })
   return false
 };
@@ -111,6 +134,9 @@ const saveDraft = function () {
   })
   message.success('保存成功')
 }
+const check = function () {
+  return postForm.value.title == '' || postForm.value.tagId == '' || postForm.value.content == '<p><br></p>' || postForm.value.coverId == ''
+}
 const loadDraft = function () {
   draft.value = storage.get<{
     title: string,
@@ -120,6 +146,8 @@ const loadDraft = function () {
     tagId: string,
     tagName: string
   }>("postDraft")!
+  if (!draft.value) return
+
   postForm.value.title = draft.value?.title
   postForm.value.content = draft.value?.content
   postForm.value.tagId = draft.value?.tagId
@@ -142,12 +170,13 @@ loadDraft()
           标题<span class="important">*</span>
         </div>
         <div style="width: 100%;height: 30px;">
-          <input class="input" placeholder="标题" v-model="postForm.title">
+          <input class="input" placeholder="标题" :class="formWarning.title ? 'formWarning' : 'formDefault'"
+            v-model="postForm.title">
         </div>
         <div class="label">
           内容<span class="important">*</span>
         </div>
-        <div style="width: 90%;">
+        <div style="width: 90%;border-radius: 10px;" :class="formWarning.content ? 'formWarning' : 'formDefault'">
           <editorComponent :getContent="getContent" :editor-content="postForm.content"></editorComponent>
         </div>
       </div>
@@ -172,11 +201,17 @@ loadDraft()
         封面<span class="important">*</span>
       </div>
       <div>
-        <el-upload class="cover-uploader" :show-file-list="false" :on-success="handleCoverSuccess"
-          :before-upload="beforeCoverUpload">
-          <img v-if="postForm.coverUrl" :src="postForm.coverUrl" class="cover" />
-          <el-icon v-else class="cover-uploader-icon"> + </el-icon>
-        </el-upload>
+        <el-upload ref="uploadAudioRef"  class="upload-demo" :class="formWarning.tag ? 'el-formWarning' : 'el-formDefault'" drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload" >
+                <div class="loadding" v-if="uploadCoverLoading"></div>
+                <div class="error" v-if="uploadFailed&&!postForm.coverUrl">×</div>
+                <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl"/>
+                <div class="el-upload__text">
+                    将文件拖拽到此处或点击上传
+                </div>
+                <div class="el-upload__text">
+                    最多可上传1个封面
+                </div>
+            </el-upload>
       </div>
       <div class="label">
         标签<span class="important">*</span>
@@ -184,7 +219,8 @@ loadDraft()
       <div style="text-align: left;">
         <div tabindex="-1" class="type-selecter"
           :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
-          :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
+          :class="[clickType ? 'dither-animation' : '', formWarning.tag ? 'formWarning' : 'formDefault']"
+          @click="handleClickSort" @blur="handleBlur">
           <div class="horizontal-center" style="display: flex;">
             <span style="line-height: 40px;margin-left: 3px;width: 300px;">{{
               currentTypeIndex != -1 ? tagsOption[currentTypeIndex]?.label : draft?.tagName }}</span>
@@ -207,10 +243,20 @@ loadDraft()
   </div>
 </template>
 <style scoped>
+
+:deep(.upload-demo *) {
+    background-color: transparent;
+}
+.upload-demo{
+  position: relative;
+  width: 100%;
+}
+
 .newPost-page {
   position: relative;
-  height: 100vh;
+  height: 100%;
   width: 100%;
+  overflow: hidden;
   background-color: rgba(26, 27, 30);
 }
 
@@ -242,15 +288,50 @@ loadDraft()
   color: white;
 }
 
-.cover-uploader .cover {
-  width: 100%;
-  min-height: 178px;
-  display: block;
-}
 
 .cover-uploader {
   display: flex;
   justify-content: left;
+}
+.loadding {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 34px;
+    width: 34px;
+    border-radius: 17px;
+    background-color: rgba(44, 46, 51);
+    font-size: 20px;
+    line-height: 36px;
+    color: white;
+    font-weight: 700;
+    border-top: rgba(25, 113, 194) 1px solid;
+    margin-bottom: 20px;
+    animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.error {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 36px;
+    width: 36px;
+    border-radius: 18px;
+    background-color: rgba(44, 46, 51);
+    font-size: 20px;
+    line-height: 36px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
 :deep(.cover-uploader .el-upload) {
@@ -285,8 +366,9 @@ loadDraft()
   margin-top: 30px;
   margin-bottom: 5px;
 }
+
 .important {
-    color: rgba(224, 49, 49);
+  color: rgba(224, 49, 49);
 }
 
 .type-selecter {
@@ -307,7 +389,6 @@ loadDraft()
   margin-top: 10px;
   width: 340px;
   border-radius: 10px;
-  border: rgba(55, 58, 64) 1px solid;
   background-color: rgba(37, 38, 43);
   padding: 5px;
   z-index: 10;
@@ -335,7 +416,6 @@ loadDraft()
   width: 90%;
   float: left;
   height: 30px;
-  border: rgba(100, 100, 100) 1px solid;
   outline: none;
   border-radius: 5px;
   background-color: rgba(37, 38, 43);
@@ -355,7 +435,7 @@ loadDraft()
   position: relative;
   /* height: 50px; */
   width: 100%;
-
+  margin-top: 80px;
 }
 
 .button-group__save {
@@ -408,7 +488,17 @@ loadDraft()
 .button-group__submit:hover {
   background-color: rgba(20, 142, 224);
 }
-.formWarning{
-  border: rgba(224,49,49) 1px solid;
+
+.formWarning {
+  border: rgba(224, 49, 49) 1px solid;
+}
+:deep(.el-formWarning .el-upload-dragger){
+  border: rgba(224, 49, 49) 1px dashed;
+}
+.formDefault {
+  border: rgba(55, 58, 64) 1px solid;
+}
+:deep(.el-formDefault .el-upload-dragger){
+  border: rgba(55, 58, 64) 1px dashed;
 }
 </style>
