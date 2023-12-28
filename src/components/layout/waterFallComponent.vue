@@ -5,7 +5,7 @@ export default defineComponent({
   props: {
     minWidth: {
       type: Number,
-      default: 240
+      default: 280
     }
   },
   setup(props) {

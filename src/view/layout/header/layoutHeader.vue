@@ -121,7 +121,14 @@ const handleBlur = function () {
             <span>通知</span>
           </div>
           <div class="msg-window__content">
-
+            <div class="msg-window__content__item " >
+              <span class="scroll-text">欢迎来到RVC！
+                --2023/12/31</span>
+            </div>
+            <!-- <div class="msg-window__content__item " >
+              <span class="scroll-text">欢迎来到RVC！
+                --2023/12/31</span>
+            </div> -->
           </div>
         </div>
       </div>
@@ -251,9 +258,28 @@ const handleBlur = function () {
 }
 
 .msg-window__content {
-  width: 100%;
-  min-height: 100px;
+  width: calc(100% - 10px);
+  padding: 5px;
 }
+.msg-window__content__item{
+  position: relative;
+  padding-left: 15px;
+  overflow: hidden;
+  width: calc(100% - 15px);
+  /* height: 80px; */
+  line-height: 40px;
+  font-size: 14px;
+  text-align: left;
+  display: flex;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.msg-window__content__item:hover {
+  background-color: rgba(56, 58, 64);
+}
+
 
 .msg-window__item:hover {
   background-color: rgba(56, 58, 64);
