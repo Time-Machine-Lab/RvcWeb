@@ -74,7 +74,13 @@ export function getPreCode(){
         method:'get'
     })
 }
-
+export function updatePassword(form:any){
+    return request({
+        url: '/user/updatePassword',
+        method:'post',
+        data: form
+    })
+}
 export function uploadAvatar(file:File){
     const formData = new FormData();
     formData.append('file', file);
