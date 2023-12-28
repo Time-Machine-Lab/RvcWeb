@@ -5,16 +5,16 @@
  * @FilePath: \RvcWeb\src\components\user\followUserCardComponent.vue
 -->
 <script lang="ts" setup>
-import { OtherUser } from '@/api/user/userTypes'
+import { UserInfoVO } from '@/api/user/userTypes'
 import { useUserStore } from "@/view/user/info/userStore.js";
 const userStore = useUserStore();
 const props = defineProps<{
-  followUser: OtherUser;
+  followUser: UserInfoVO;
 }>();
 </script>
 <template>
   <div class="user-card">
-    <RouterLink :to="'/user/likeModels?id=' + props.followUser.id">
+    <RouterLink :to="'/user/likeModels?id=' + props.followUser.uid">
       <div
         class="avatar"
         :style="{ backgroundImage: 'url(' + props.followUser.avatar + ')' }"
@@ -30,7 +30,7 @@ const props = defineProps<{
       </div>
     </div>
     <div class="operation">
-      <span class="button" v-if="followUser.id != userStore.getProfile.id">
+      <span class="button" v-if="followUser.uid != userStore.getProfile.uid">
         已关注
       </span>
     </div>

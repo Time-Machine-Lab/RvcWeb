@@ -180,7 +180,7 @@ const sendComment = function () {
 
             <div class="dialog-input">
                 <div style="display: flex;">
-                    <img width="40" height="40" :src="userProfile.avatar"
+                    <img width="40" height="40" :src="userProfile.avatar!"
                         style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                     <input class="input" v-model="inputContent" maxlength="200">
                 </div>
