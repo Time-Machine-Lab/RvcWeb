@@ -13,14 +13,10 @@ import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postT
 import { ref } from 'vue';
 import { message } from '@/utils/message'
 const posts = ref<PostVo[]>([])
-posts.value = [
-
-]
-
 
 let tags = ref<{
-    id:string|undefined
-    name:string|undefined
+    id: string | undefined
+    name: string | undefined
 }[]>([])
 let page = ref(1)
 let form = ref<PostListForm>({
@@ -29,37 +25,47 @@ let form = ref<PostListForm>({
     limit: '5',
     tagId: ''
 })
-getPostType().then(res => {
-    let data = ref<RvcCommunicationPostType[]>(res.data)
-    for(let i=0;i<data.value.length;i++){
-        tags.value.push({
-            id:data.value[i].id,
-            name:data.value[i].tagName
-        })
+getPostType().then((res: any) => {
+    if (res.code == 200) {
+        let data = ref<RvcCommunicationPostType[]>(res.data)
+        for (let i = 0; i < data.value.length; i++) {
+            tags.value.push({
+                id: data.value[i].id,
+                name: data.value[i].tagName
+            })
+        }
+    } else {
+        message.error('服务器异常')
     }
+
 })
 const load = function () {
     disabled.value = true
     // setTimeout(function(){
     //     disabled.value = false
     // },5000)
-    getPosts(form.value).then((res:any) => {        
-        let data = ref<PostVo[]>(res.data)
-        if(data.value.length == 0){
-            disabled.value = true
-            message.warning('没有更多数据了')
-            return
+    getPosts(form.value).then((res: any) => {
+        if (res.code == 200) {
+            let data = ref<PostVo[]>(res.data)
+            if (data.value.length == 0) {
+                disabled.value = true
+                message.warning('没有更多数据了')
+                return
+            }
+            for (let i = 0; i < data.value.length; i++) {
+                posts.value.push(data.value[i])
+            }
+            page.value++
+            form.value.page = page.value as unknown as string
+            disabled.value = false
+        } else {
+            message.error('服务器异常')
         }
-        for(let i =0 ;i<data.value.length;i++){
-            posts.value.push(data.value[i])
-        }
-        page.value ++
-        form.value.page = page.value as unknown as string
-        disabled.value = false
+
     })
 }
-const getTag = function(index:number){    
-    if(index == -1){
+const getTag = function (index: number) {
+    if (index == -1) {
         form.value.tagId = ''
     } else {
         form.value.tagId = tags.value[index]?.id
@@ -68,9 +74,9 @@ const getTag = function(index:number){
     posts.value = []
     load()
 }
-const getSort  = function(index:number){
-    if((index as unknown as string) == form.value.data)return
-    else{
+const getSort = function (index: number) {
+    if ((index as unknown as string) == form.value.data) return
+    else {
         form.value.data = (index as unknown as string)
     }
     form.value.page = '1'
@@ -79,19 +85,22 @@ const getSort  = function(index:number){
 }
 // const load = function () {
 //     console.log('load');
-    
+
 // }
 let disabled = ref(false)
 </script>
 <template>
     <div class="communicationView">
         <div class="filter-container">
-            <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags"></filterComponent>
+            <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags">
+            </filterComponent>
         </div>
         <div class="post-list">
-            <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
-                :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" :key="index" ></postCardComponentB>
+            <el-empty :image-size="200" v-if="posts?.length == 0" style="font-family: 'ZCool';" description="这里空空如也~"
+                image="/icon/empty.svg" />
+            <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
+                :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
+                <postCardComponentB v-for="(post, index) in posts" :post="post" :key="index"></postCardComponentB>
             </waterFallComponent>
         </div>
     </div>
@@ -123,5 +132,4 @@ let disabled = ref(false)
     margin-top: 5px;
     transform: translate(-50%);
 }
-
 </style>

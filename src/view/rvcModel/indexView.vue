@@ -6,11 +6,8 @@ import { getModels } from '@/api/rvcModel/modelApi'
 import { RvcModelVo, ModelListForm } from '@/api/rvcModel/modelType'
 import { ref } from 'vue';
 import { message } from '@/utils/message'
+// import { RvcCommunicationPostType } from '@/api/post/postType'
 const models = ref<RvcModelVo[]>([])
-models.value = [
-
-]
-
 
 let tags = ref<{
     id: string | undefined
@@ -22,14 +19,19 @@ let form = ref<ModelListForm>({
     page: '1',
     size: '5',
 })
-// getModelType().then(res => {
-//     let data = ref<RvcCommunicationPostType[]>(res.data)
-//     for(let i=0;i<data.value.length;i++){
-//         tags.value.push({
-//             id:data.value[i].tagId,
-//             name:data.value[i].tagName
-//         })
+// getModelLabel(form.value).then((res: any) => {
+//     if (res.code == 200) {
+//         let data = ref<RvcCommunicationPostType[]>(res.data)
+//         for (let i = 0; i < data.value.length; i++) {
+//             tags.value.push({
+//                 id: data.value[i].tagId,
+//                 name: data.value[i].tagName
+//             })
+//         }
+//     } else {
+//         message.error('服务器异常')
 //     }
+
 // })
 const load = function () {
     if (disabled.value) {
@@ -73,8 +75,10 @@ let disabled = ref(false)
             <filterComponent :tags="tags"></filterComponent>
         </div>
         <div class="model-list">
-            <waterFallComponent :minWidth="300" v-infinite-scroll="load" infinite-scroll-distance="100" :infinite-scroll-disabled="disabled"
-                :infinite-scroll-immediate="true">
+            <el-empty :image-size="200" v-if="models?.length == 0" style="font-family: 'ZCool';" description="这里空空如也~"
+                image="/icon/empty.svg" />
+            <waterFallComponent :minWidth="300" v-infinite-scroll="load" infinite-scroll-distance="100"
+                :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
                 <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
             </waterFallComponent>
         </div>
