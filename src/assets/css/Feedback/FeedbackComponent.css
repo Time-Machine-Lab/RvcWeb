@@ -1,0 +1,248 @@
+
+.close{
+  position: absolute;
+  right:-100px;
+  top:20px;
+  width:40px;
+  height:40px;
+  background: rgba(255, 255, 255, 0.47);
+  cursor: pointer;
+  border: solid 1px #cccccc;
+  border-radius: 50%;
+  font-size: 16px;
+  transition-duration: 0.2s;
+}
+.close:hover{
+  top:30px;
+  color:#ffffff;
+  background: #4d7a8f;
+}
+.submit{
+  padding: 8px 30px;
+  background: #4f7c94;
+  color:#ffffff;
+  position: relative;
+  top:10px;
+}
+.left-write{
+  margin-left: 5%;
+  margin-top:20px;
+  width:90%;
+  height:150px;
+  overflow: hidden;
+}
+button{
+  padding: 8px;
+  border: solid 1px #cccccc;
+  background: transparent;
+  border-radius: 8px;
+  color: #646464;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.box{
+  position: fixed;
+  backdrop-filter: blur(2px); /* 模糊效果 */
+  width:100vw;
+  height:100vh;
+  z-index: 7;
+  overflow: scroll;
+  .box__center{
+    position: absolute;
+    top:0;
+    width:1000px;
+    height:80vh;
+    z-index: 11;
+    .box-contain{
+      position: relative;
+      top:10px;
+      background: rgba(229, 229, 229, 0.91);
+      width:100%;
+      height:100%;
+      border-radius: 10px;
+    }
+  }
+}
+.box-contain-left{
+  overflow: scroll;
+  width:70%;
+  height:100%;
+  border-right:solid 1px #e7e7e7;
+  .left-message{
+    width:90%;
+    margin-left: 5%;
+    padding: 30px 0 0 0;
+    font-family: 华文中宋;
+    text-align: left;
+    p{
+      color: #646464;
+      font-size: 17px;
+      letter-spacing: 1px;
+      margin-top:10px;
+    }
+  }
+  .left-login{
+    font-family: 宋体, serif;
+    justify-content: space-between;
+    margin-left:5%;
+    margin-top: 20px;
+    width:90%;
+    height:50px;
+    box-shadow: 4px 4px 5px #cccccc;
+    background: rgba(248, 248, 250, 0.94);
+    border-radius: 8px;
+    p{
+      margin-left:20px;
+    }
+    button{
+      border: none;
+    }
+    .login{
+      margin-right:10px;
+      transition-duration: 0.3s;
+    }
+    .login:hover{
+      color:#000000;
+      font-weight: bold;
+    }
+  }
+}
+.left-review{
+  width:90%;
+  margin-left:5%;
+  position: relative;
+  z-index:0;
+  .left-review-tab{
+    height:60px;
+    width:100%;
+    display: flex;
+    align-items: end;
+    font-family: 华文中宋;
+    p{
+      padding: 10px;
+      border-bottom: solid 1px #cccccc;
+    }
+  }
+  .left-review-contain{
+    width:100%;
+    .left-review-item{
+      width:90%;
+      margin-left: 5%;
+      margin-top: 20px;
+      position: relative;
+      border-left:solid 1px #cccccc;
+      img{
+        position: absolute;
+        top:-10px;
+        left:-20px;
+        width:40px;
+        height:40px;
+        border-radius: 50px;
+      }
+      .left-review-edit{
+        justify-content: left;
+        height:50px;
+        width:90%;
+        margin-left: 5%;
+      }
+      .left-review-text{
+        text-align: left;
+        padding: 0 30px 10px 30px;
+      }
+      .left-review-reply{
+        justify-content: left;
+        margin-left:5%;
+        p{
+          color: #545454;
+          padding: 0 5px;
+        }
+        button{
+          border: none;
+        }
+      }
+
+    }
+  }
+}
+.left-review-write{
+  position: absolute;
+  bottom:0;
+  right:300px;
+  justify-content: right;
+  height:70px;
+  width:400px;
+  .write{
+    width:80%;
+    height:50%;
+    .write__input{
+      width:100%;
+      height:70%;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      padding: 10px 0 15px 10px;
+      resize: unset;
+    }
+  }
+  .reply-btn{
+    width:20%;
+    height:100%;
+    button{
+      height:70%;
+      width:90%;
+      background: #00ae9e;
+      color:#ffffff;
+      font-family: Zcool;
+      font-size: 18px;
+    }
+  }
+}
+.box-contain-right{
+  font-family: OpenSans;
+  width:30%;
+  height:100%;
+  p{
+    color: #646464;
+  }
+  .right-top{
+    justify-content: space-around;
+    flex-direction: column;
+    height:200px;
+    border-bottom: solid 1px #e7e7e7;
+    .right-top-item{
+      justify-content: space-between;
+      width:80%;
+      height:20%;
+    }
+    .right-top-item button{
+      border: 1px solid rgba(159, 183, 180, 0.87);
+      background: rgba(207, 238, 238, 0.29);
+      color: #949393;
+    }
+  }
+  .right-center{
+    justify-content: space-around;
+    flex-direction: column;
+    height:100px;
+    border-bottom: solid 1px #e7e7e7;
+    .right-center-item{
+      justify-content: space-between;
+      width:80%;
+      height:50%;
+    }
+  }
+  .right-bottom{
+    padding: 30px;
+    text-align: left;
+    height:200px;
+    p{
+      margin-top:10px;
+    }
+    button{
+      margin-top:10px;
+      background: #4d7a8f;
+      color: #ffffff;
+      padding: 8px 30px;
+    }
+  }
+}
