@@ -23,13 +23,13 @@ import rvcModelRoutes from "./homepageRouter/rvcModel/rvcModelRoutes.ts";
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
-        redirect: "/login",
+        redirect: "/home",
     },
-    // {
-    //     path: "/home",
-    //     name: "home",
-    //     component: () => import("../view/home/intro/IntroView.vue"),
-    // },
+    {
+        path: "/home",
+        name: "home",
+        component: () => import("../view/home/intro/IntroView.vue"),
+    },
     {
         path: "/feedback",
         name: "feedback",

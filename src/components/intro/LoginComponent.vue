@@ -32,8 +32,8 @@ export default defineComponent({
       })
       login(form.value).then((res: any) => {
         if (res.code == 200) {
+          storage.remove('token')
           storage.set('token', (res.data.token as string))
-          storage.set('user', res.data)
           message.success('登陆成功')
           this.$router.push('/rvc/posts')
         } else {

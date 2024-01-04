@@ -32,7 +32,7 @@ onBeforeMount(async () => {
     loadingDom.classList.add("unmount");
     setTimeout(() => {
       loadingDom.remove();
-    }, 500);
+    }, 100);
     loadingDom.classList.add("unmount");
   }
 });
@@ -58,7 +58,18 @@ onBeforeMount(async () => {
 </template>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
-
+@font-face {
+  font-family: "ZCool";
+  src: url("public/font/ZCOOLKuaiLe-Regular.ttf");
+}
+@font-face {
+  font-family: "OpenSans";
+  src: url("public/font/OpenSans-Regular.ttf");
+}
+@font-face {
+  font-family: "NotoSerif";
+  src: url("public/font/NotoSerif-Black.ttf");
+}
 * {
   margin: 0;
   padding: 0;

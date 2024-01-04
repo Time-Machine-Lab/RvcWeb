@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {MdEditor} from 'md-editor-v3'
+import {MdEditor, ToolbarNames} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import {Add, TypeListItem} from '@/api/feedback/feedbackTypes.ts'
 import {getTypeList, postAdd} from '@/api/feedback/feedbackAPI.ts'
@@ -22,6 +22,15 @@ const postContent = ref('');
 const postType = ref<number | null>(2);
 
 const submitForm = async () => {
+  if(!postTitle.value) {
+    alert("标题不能为空")
+    return
+  }
+  if(!postContent.value){
+    alert("内容不能为空")
+    return
+  }
+
   const formData: Add = {
     title: postTitle.value,
     content: postContent.value,
@@ -36,6 +45,7 @@ const submitForm = async () => {
     console.error('表单提交失败', error);
     // 这里你可以处理提交失败后的逻辑，例如显示错误消息等
   }
+  // emits('close');
 };
 // 获取反馈帖子的所有类型
 const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
@@ -43,7 +53,8 @@ getTypeList().then((res: any) => {
   console.log(res);
   Type.value = res.data.list;
 });
-const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
+const toolbars: ToolbarNames[] =
+    ['bold', 'underline', 'italic', 'strikeThrough',
   'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
   'preview', 'htmlPreview']
 </script>
@@ -71,7 +82,7 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor  v-model="postContent" :ToolbarNames="toolbars" noMermaid/>
+            <md-editor  v-model="postContent" :toolbars="toolbars" noMermaid/>
           </div>
           <button @click="submitForm" type="submit" class="submit">提交帖子</button>
         </form>
@@ -81,14 +92,13 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
 </template>
 
 <style scoped>
-
 .close{
   position: absolute;
   right:20px;
   top:10px;
   width:40px;
   height:40px;
-  background: rgba(255, 255, 255, 0.47);
+  background: #919191;
   cursor: pointer;
   border: solid 1px #cccccc;
   border-radius: 50%;
@@ -97,7 +107,7 @@ const toolbars = ['bold', 'underline', 'italic', 'strikeThrough',
 }
 .close:hover{
   color:#ffffff;
-  background: #4d7a8f;
+  background: #777777;
 }
 button{
   padding: 8px 15px;
@@ -122,7 +132,7 @@ button{
     .box-contain{
       position: relative;
       top:10px;
-      background: rgba(229, 229, 229, 0.91);
+      background: rgba(255, 255, 255, 0.95);
       width:100%;
       height:560px;
       border-radius: 10px;
@@ -153,6 +163,7 @@ button{
           margin-left: 10px;
         }
         p{
+          margin-top: 8px;
           color: #bd9d34;
           font-size: 12px;
         }
@@ -176,7 +187,7 @@ button{
         justify-content: left;
         width:100%;
         button{
-          width:120px;
+          width:130px;
           margin-right:10px;
         }
         .function{
@@ -186,7 +197,7 @@ button{
         }
         .mistake{
           border: solid 1px #9d9d9d;
-          background: #3784da;
+          background: #6e6f70;
           color:#ffffff;
         }
       }
@@ -197,11 +208,13 @@ button{
       }
       .submit{
         border: solid 1px #9d9d9d;
-        background: #3784da;
-        color: rgba(255, 255, 255, 0.91);
-        position: absolute;
-        bottom: 20px;
-        right:5%;
+        background: #6e6f70;
+        color: rgba(255, 255, 255, 0.98);
+        transition-duration: 0.1s;
+      }
+      .submit:hover{
+        background: #fcfcfc;
+        color: #101010;
       }
     }
   }

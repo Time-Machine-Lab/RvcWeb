@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '@/assets/css/Feedback/FeedbackComponent.css'
 import FeedBackComponent from "@/components/feedback/FeedBackComponent.vue";
 import NewFeedback from '@/components/feedback/NewFeedbackComponent.vue'
 import UpdateComponent from "@/components/feedback/UpdateComponent.vue";
@@ -134,7 +135,7 @@ onMounted(() => {
     <FeedBackComponent :data="selectedItem" v-if="isOpen" @close="closeFeedbackComponent"></FeedBackComponent>
     <!--创建新帖子-->
     <NewFeedback v-if="isChildComponentVisible " @close="closeChildComponent"></NewFeedback>
-    <UpdateComponent :data="update" v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
+    <UpdateComponent :data="update"  v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
     <!--反馈类型选项卡-->
     <div class="contain-choice">
       <div class="contain-choice__box flex">
@@ -165,7 +166,9 @@ onMounted(() => {
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul v-infinite-scroll="load" class="list" :infinite-scroll-disabled="disabled">
             <li  v-for="(item, index) in Feedback" :key="index" class="contain-invitation__item flex">
-              <button class="update" v-if="item.uid == uid" @click="openUpdate(item.fbid)">...</button>
+              <button class="update flex" v-if="item.uid == uid" @click="openUpdate(item.fbid)">
+                <svg t="1703683064760" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2361" width="30" height="30"><path d="M512 74.666667C270.933333 74.666667 74.666667 270.933333 74.666667 512S270.933333 949.333333 512 949.333333 949.333333 753.066667 949.333333 512 753.066667 74.666667 512 74.666667z m0 810.666666c-204.8 0-373.333333-168.533333-373.333333-373.333333S307.2 138.666667 512 138.666667 885.333333 307.2 885.333333 512 716.8 885.333333 512 885.333333z" fill="#dbdbdb" p-id="2362"></path><path d="M512 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333334 0 42.666667 42.666667 0 1 0-85.333334 0Z" fill="#dbdbdb" p-id="2363"></path><path d="M341.333333 512m-42.666666 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2364"></path><path d="M682.666667 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2365"></path></svg>
+              </button>
               <!--用于判断是否展示-->
 <!--              <div v-if="item.hasShow" style="width:100%">-->
               <div style="width:100%" @click="openFeedback(item.fbid)">
@@ -207,8 +210,8 @@ onMounted(() => {
               </div>
             </li>
           </ul>
-          <p v-if="loading" style="color:#cccccc;height:50px">Loading...</p>
-          <p v-if="noMore" style="color:#cccccc;height:50px">No more</p>
+          <p v-if="loading" style="color:rgba(204,204,204,0.81);height:50px">Loading...</p>
+          <p v-if="noMore" style="color:rgba(204,204,204,0.33);height:50px">No more</p>
         </div>
     </div>
   </div>
@@ -219,21 +222,20 @@ onMounted(() => {
   z-index: 8;
   font-size: 20px;
   position: absolute;
-  right:-50px;
-  top:40%;
-  width:30px;
-  background: rgba(161, 161, 162, 0.68);
+  right:0;
+  top:10px;
   border: none;
   transition-duration: 0.3s;
 }
 .update:hover{
-  background: #cccccc;
+  transform: scale(1.1);
 }
 .infinite-list-wrapper {
   position: relative;
   text-align: center;
   width:100%;
-  background: rgba(56, 59, 73, 0.63);
+  background: rgb(68, 69, 72);
+  box-shadow:0 0 30px 1px #3f3f3f;
   border-radius: 10px;
 }
 .infinite-list-wrapper .list {
@@ -324,27 +326,31 @@ button{
     margin-right: 10px;
     color: #a8a8a8;
     border:solid 1px #7191a9;
+    transition-duration: 0.2s;
   }
   .contain-search__item p{
     margin-top:8px;
     margin-left: 4px;
   }
+  .contain-search__item:hover{
+    background: #72767b;
+    p{
+      color:#ffffff;
+    }
+  }
 }
-
 .contain-invitation__item{
   position: relative;
   flex-direction: column;
   text-align: left;
   margin-left: 3%;
-  width:90%;
+  width:94%;
   border-bottom:solid 1px #5e5e5e;
-  border-right:solid 1px #5e5e5e;
   cursor: pointer;
 }
 .invitation__outline{
   width:100%;
   color:#ffffff;
-
   .status{
     justify-content: left;
     margin-top: 10px;
@@ -352,10 +358,11 @@ button{
   .status p{
     padding: 3px 8px;
     font-size: 12px;
-    border: solid 1px #79bbff;
-    background: rgba(121, 179, 255, 0.42);
-    border-radius: 10px;
+    border: solid 1px #4c80b6;
+    background: rgba(59, 104, 164, 0.64);
+    border-radius: 1px;
     margin-right: 10px;
+    color: rgba(255, 255, 255, 0.89);
   }
   .invitation__text{
     margin-top: 5px;
@@ -364,6 +371,9 @@ button{
     height:50%;
     text-overflow: ellipsis;
     overflow: scroll;
+  }
+  h3{
+    color:#ffffff;
   }
 }
 .invitation__message{
@@ -402,6 +412,4 @@ button{
     margin-top:7px;
   }
 }
-
-
 </style>

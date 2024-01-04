@@ -51,12 +51,12 @@ const props = defineProps<{
 }
 
 .user-card__info__text {
-    width: clac(100% - 40px);
+    width: calc(100% - 40px);
     height: 100%;
 }
 
 .user-card__info__text__username {
-    padding: 0 5px;
+    padding: 10px 10px;
     width: calc(100% - 10px);
     height: 50%;
     font-size: 14px;
@@ -64,7 +64,6 @@ const props = defineProps<{
     text-align: left;
     font-weight: 500;
     color: rgba(144, 146, 150);
-
 }
 
 .user-card__info__text__creatAt {

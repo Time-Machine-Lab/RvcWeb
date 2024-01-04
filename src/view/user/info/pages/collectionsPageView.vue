@@ -6,7 +6,7 @@ import { PostVo, UserCollectPostForm, UserLikePostForm } from '@/api/post/postTy
 import { getUserCollectPosts } from '@/api/post/postApi';
 import { UserLikeModelForm,UserCollectModelForm, RvcModelVo } from '@/api/rvcModel/modelType';
 import { message } from '@/utils/message';
-import { getUserCollectModels } from '@/api/rvcModel/modelApi';
+import { getUserCollectModels } from '@/api/rvcModel/userApi.ts';
 import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue';
 let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)

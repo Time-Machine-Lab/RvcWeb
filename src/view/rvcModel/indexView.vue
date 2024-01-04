@@ -77,7 +77,7 @@ let disabled = ref(false)
         <div class="model-list">
             <el-empty :image-size="200" v-if="models?.length == 0" style="font-family: 'ZCool';" description="这里空空如也~"
                 image="/icon/empty.svg" />
-            <waterFallComponent :minWidth="300" v-infinite-scroll="load" infinite-scroll-distance="100"
+            <waterFallComponent :min-width="250" v-infinite-scroll="load" infinite-scroll-distance="100"
                 :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
                 <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
             </waterFallComponent>

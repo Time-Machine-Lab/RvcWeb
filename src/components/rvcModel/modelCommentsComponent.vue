@@ -9,7 +9,7 @@ import { CommentAddForm, GetCommentForm, ModelComment } from '@/api/rvcModel/mod
 import { ref } from 'vue'
 import WaterFallComponent from '@/components/layout/waterFallComponent.vue'
 import modelCommentComponent from '@/components/rvcModel/modelCommentComponent.vue'
-import { getRootComments, commentAdd } from '@/api/rvcModel/modelApi'
+import { getRootComments, commentAdd } from '@/api/rvcModel/commentApi.ts'
 import { message } from '@/utils/message'
 const props = defineProps<{
     modelId: string

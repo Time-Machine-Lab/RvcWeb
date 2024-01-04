@@ -5,13 +5,7 @@ import {Notice, NoticeVO} from "@/api/home/introTypes.ts";
 import {getWebNotice} from "@/api/home/introAPI.ts";
 
 const NoticePage = ref<Notice>(<Notice>{page: "1", limit: "6",pageList:[],total:"6"});
-const Notices = ref<NoticeVO[]>([
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25},
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25},
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25},
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25},
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25},
-  {author: "RVC官方", content: "1", cover: "1", createAt: "1", likeNum: 0, noticeId: "1", title: "RVC一测公告", watchNum: 25}]);
+const Notices = ref<NoticeVO[]>([]);
 const getNoticeData = () => {
   getWebNotice(NoticePage.value.page).then((res: any) => {
     console.log(res)
@@ -140,8 +134,10 @@ onMounted(() => {
 }
 
 .avatar {
-  width: 2.75rem;
-  height: 2.75rem;
+  overflow:hidden;
+  width: 10px;
+  height: 20px;
+  object-fit:cover;
   line-height: 3rem;
   border-radius: 50%;
   display: inline-block;

@@ -5,7 +5,13 @@
  * @FilePath: \RvcWeb\src\api\rvcModel\modelApi.ts
  */
 import request from '@/utils/request'
-import { CommentAddForm, FavoriteAndCollectionForm,GetChildCommentForm,GetCommentForm,GetLabelForm,LikeCommentForm,ModelAddForm,ModelListForm, UserCollectModelForm, UserCreateModelForm, UserLikeModelForm } from '@/api/rvcModel/modelType'
+import {
+    FavoriteAndCollectionForm,
+    GetLabelForm,
+    ModelAddForm,
+    ModelListForm,
+} from '@/api/rvcModel/modelType'
+// 获取所有模型列表并按规则排序
 export function getModels (form:ModelListForm) {
     return request({
         url:'/model/list',
@@ -13,137 +19,69 @@ export function getModels (form:ModelListForm) {
         params:form
     })
 }
+// 根据type(AI_Type)获取模型列表
+export function getModelsByType(page: number,limit:number,sortType:string,typeId:string) {
+    return request({
+        url: "/model/listByType",
+        method: "get",
+        params: {
+            page,
+            limit,
+            sortType,
+            typeId
+        },
+    });
+}
+// 获取指定模型详细信息
 export function getModelDetails(modelId:string){
     return request({
         url:'/model/getModelMsg',
         method:'get',
-        params:{
-            modelId:modelId
+        params: {
+            modelId
         }
     })
-
 }
+// 动态获取label热度最高的list集合
 export function getModelLabel(form:GetLabelForm){
     return request({
         url:'/model/label/labelHot',
-        method:'',
-        params:form
-    })
-}
-
-export function favoriteModel(form:FavoriteAndCollectionForm){
-    return request({
-        url:'/model/relative/likes',
-        method:'post',
-        params:form
-    })
-}
-
-export function collectModel(form:FavoriteAndCollectionForm){
-    return request({
-        url:'/model/relative/collection',
-        method:'post',
-        params:form
-    })
-}
-export function commentAdd(form:CommentAddForm){
-    return request({
-        url:'/model/comment',
-        method:'post',
-        data:form
-    })
-}
-
-export function getModelById(id:string){
-    return request({
-        url:'',
-        method:'',
-        params:id
-    })
-}
-
-export function getRootComments(form:GetCommentForm){
-    return request({
-        url:'/model/comment/first',
         method:'get',
         params:form
     })
 }
-
-export function likeComments(form:LikeCommentForm){
+// 获取模型类型
+export function getType(){
     return request({
-        url:'/model/comment/likes',
-        method:'post',
-        params:form
+        url:'/model/model/type',
+        method:'get'
     })
 }
-
-export function getLabels(form:GetLabelForm){
+// 模型新建标签
+export function postLabel(label:string) {
     return request({
-        url:'/model/label/labelHot',
-        method:'get',
-        params:form
-    })
+        url: "/model/label",
+        method: "post",
+        params: {label}
+    });
 }
-
-export function uploadModel(file1:File,file2:File){
-    const formData = new FormData();
-    formData.append('file',file1);
-    formData.append('file',file2);
-
+// 模型表单修改。表单目前包括：名称、描述、注意事项、图片
+export function postUpdate(id:string) {
     return request({
-        url:'/model/upload/model',
-        method:'post',
-        data:formData,
-        timeout:3600000
-    })
+        url: "/model/update",
+        method: "post",
+        params: {id}
+    });
 }
-
-export function uploadAudio(file:File){
-    const formData = new FormData();
-    formData.append('file',file);
-
+// 删除用户创建的模型
+export function delModel(label:string) {
     return request({
-        url:'/model/upload/audio',
-        method:'post',
-        data:formData,
-        timeout:300000
-    })
+        url: "/model/delModel",
+        method: "post",
+        params: {label}
+    });
 }
-
-export function uploadImages(file:File){
-    const formData = new FormData();
-    formData.append('file',file);
-
-    return request({
-        url:'/model/upload/image',
-        method:'post',
-        data:formData,
-        timeout:300000
-    })
-}
-
-export function getUserLikeModels(form:UserLikeModelForm){
-    return request({
-        url:'/model/likes',
-        method:'get',
-        params:form,
-    })
-}   
-export function getUserCollectModels(form:UserCollectModelForm){
-    return request({
-        url:'/model/collection',
-        method:'post',
-        params:form
-    })
-}
-export function getUserCreateModels(form:UserCreateModelForm){
-    return request({
-        url:'/model/user/model',
-        method:'get',
-        params:form
-    })
-}
+// 新增模型接口
 export function modelAdd(form:ModelAddForm){
     return request({
         url:'/model/addModel',
@@ -151,21 +89,25 @@ export function modelAdd(form:ModelAddForm){
         params:form
     })
 }
-
-export function getChildComments(form:GetChildCommentForm){
+// 用户点赞模型
+export function favoriteModel(form:FavoriteAndCollectionForm){
     return request({
-        url:'/model/comment/second',
-        method:'get',
+        url:'/model/relative/likes',
+        method:'post',
+        params:form
+    })
+}
+// 用户收藏模型
+export function collectModel(form:FavoriteAndCollectionForm){
+    return request({
+        url:'/model/relative/collection',
+        method:'post',
         params:form
     })
 }
 
-export function getModelFiles(modelId:string){
-    return request({
-        url:'/model/model/modelFile',
-        method:'get',
-        params: {
-            modelId: modelId
-        }
-    })
-}
+
+
+
+
+

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {MdEditor} from 'md-editor-v3'
+import {MdEditor, ToolbarNames} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import {FeedbackItem, TypeListItem, Update} from '@/api/feedback/feedbackTypes.ts'
 import {getFeedback, getTypeList, postUpdate} from '@/api/feedback/feedbackAPI.ts'
@@ -63,9 +63,10 @@ onMounted(() => {
   getData()
 
 });
-const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
-  'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
-  'preview', 'htmlPreview']
+const toolbars: ToolbarNames[] =
+    ['bold', 'underline', 'italic', 'strikeThrough',
+      'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
+      'preview', 'htmlPreview']
 
 </script>
 
@@ -76,7 +77,7 @@ const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
         <button @click="close" class="close flex">X</button>
         <!--表单内容-->
         <form class="box-contain-form" >
-          <h3>编辑帖子</h3>
+          <h3>编辑反馈</h3>
           <div class="box-contain-mention flex">
             <h6>已启用帖子审核。</h6>
             <p>您的帖子将被转发给团队，但在批准之前不会公开显示。</p>
@@ -92,9 +93,9 @@ const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor  v-model="postContent" :ToolbarNames="toobars" noMermaid/>
+            <md-editor  v-model="postContent" :toolbars="toolbars" noMermaid/>
           </div>
-          <button @click="submitForm" type="submit" class="submit">提交帖子</button>
+          <button @click="submitForm" type="submit" class="submit">提交反馈</button>
         </form>
       </div>
     </div>
@@ -108,7 +109,7 @@ const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
   top:10px;
   width:40px;
   height:40px;
-  background: rgba(255, 255, 255, 0.47);
+  background: #919191;
   cursor: pointer;
   border: solid 1px #cccccc;
   border-radius: 50%;
@@ -117,7 +118,7 @@ const toobars = ['bold', 'underline', 'italic', 'strikeThrough',
 }
 .close:hover{
   color:#ffffff;
-  background: #4d7a8f;
+  background: #777777;
 }
 button{
   padding: 8px 15px;
@@ -142,7 +143,7 @@ button{
     .box-contain{
       position: relative;
       top:10px;
-      background: rgba(229, 229, 229, 0.91);
+      background: rgba(243, 243, 243, 0.98);
       width:100%;
       height:560px;
       border-radius: 10px;
@@ -173,6 +174,7 @@ button{
           margin-left: 10px;
         }
         p{
+          margin-top: 8px;
           color: #bd9d34;
           font-size: 12px;
         }
@@ -196,7 +198,7 @@ button{
         justify-content: left;
         width:100%;
         button{
-          width:120px;
+          width:130px;
           margin-right:10px;
         }
         .function{
@@ -206,7 +208,7 @@ button{
         }
         .mistake{
           border: solid 1px #9d9d9d;
-          background: #3784da;
+          background: #6e6f70;
           color:#ffffff;
         }
       }
@@ -217,11 +219,13 @@ button{
       }
       .submit{
         border: solid 1px #9d9d9d;
-        background: #3784da;
-        color: rgba(255, 255, 255, 0.91);
-        position: absolute;
-        bottom: 20px;
-        right:5%;
+        background: #6e6f70;
+        color: rgba(255, 255, 255, 0.98);
+        transition-duration: 0.1s;
+      }
+      .submit:hover{
+        background: #fcfcfc;
+        color: #101010;
       }
     }
   }
