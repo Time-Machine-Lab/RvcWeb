@@ -203,6 +203,7 @@
     -webkit-box-reflect: below 25px -webkit-linear-gradient(transparent 50%, rgba(255, 255, 255, 0.3));
     /* 创建倒影效果 */
     /* border: 25px dotted #ffffff; */
+    /*border: 25px dotted #ffffff;*/
   }
   .team-item__img{
     height:100%;

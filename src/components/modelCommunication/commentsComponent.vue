@@ -79,7 +79,6 @@ const getChildCommentsFunc = function (index: number) {
         <div v-for="(comment, index) in rootComments" :key="index">
             <commentComponent :show-reply="showReply" :index="index" :comment="comment"></commentComponent>
             <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
-
                 <commentComponent :show-reply="showReply" :index="-1" :comment="childComment"></commentComponent>
             </div>
             <div style="color: white;cursor:pointer;font-size: 14px;text-align: center;"

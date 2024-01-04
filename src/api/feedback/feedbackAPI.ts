@@ -77,7 +77,8 @@ export function getCommentAdd(formData: postComment) {
     method: "post",
     data: formData,
   });
-}// 添加某个反馈帖子下的评论，同时会增加反馈帖子评论数
+}
+// 添加某个反馈帖子下的评论，同时会增加反馈帖子评论数
 export function getCommentLike(cmId:number,isLike:number) {
   return request({
     url: "/feedback/comment/like",

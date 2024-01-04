@@ -4,7 +4,7 @@ import userCardComponent from '../user/userCardComponent.vue';
 import { UserInfoVO } from '@/api/user/userTypes';
 import { message } from '@/utils/message';
 import { ref } from 'vue';
-import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/modelApi';
+import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/commentApi.ts';
 import { useUserStore } from "@/view/user/info/userStore.js";
 import ModelCommentComponentB from './modelCommentComponentB.vue';
 const userStore = useUserStore();

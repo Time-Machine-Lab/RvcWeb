@@ -10,7 +10,8 @@ import userCardComponent from '@/components/user/userCardComponent.vue'
 // import suggestedModelsComponent from '@/components/rvcModel/suggestedModelsComponent.vue'
 import modelCommentsComponent from '@/components/rvcModel/modelCommentsComponent.vue'
 import "@/assets/css/post/postContent.css"
-import { getModelDetails, getModelFiles } from "@/api/rvcModel/modelApi"
+import { getModelDetails } from "@/api/rvcModel/modelApi"
+import { getModelFiles } from "@/api/rvcModel/fileApi.ts"
 import { favoriteModel, collectModel } from '@/api/rvcModel/modelApi'
 import { ref } from "vue";
 import router from "@/router";
@@ -18,22 +19,26 @@ import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
 import { message } from "@/utils/message";
 // import { storage } from "@/utils/storage";
 import { UserInfoVO } from '@/api/user/userTypes';
+import {storage} from "@/utils/storage.ts";
 // import { useUserStore } from '@/view/user/info/userStore.js'
 // const userStore = useUserStore()
 // let userProfile = userStore.getProfile
+let user = ref<UserInfoVO>({})
+let isLike = ref("")
 getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) => {
     if (res.code == 200) {
         localModel.value = res.data
+        isLike.value = localModel.value.isLike
         user.value = {
             avatar: localModel.value.avatar,
             nickname: localModel.value.nickname,
         }
+        if(user.value.nickname == null){
+          user.value.nickname = "匿名"
+        }
     }
-
 })
-let user = ref<UserInfoVO>({
 
-})
 let localModel = ref<ModelVo>({
     fileId: '',
     name: '',
@@ -60,18 +65,17 @@ let fileList = ref<{
 }[]>([])
 // let inputContent = ref<string>('')
 
-let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 let detailsvisibility = ref(false)
 let modelFilesvisibility = ref(false)
-let audiosvisibility = ref(false)
+// let audiosvisibility = ref(false)
 const collect = function () {
     if (!collectDisabled.value) return
     collectDisabled.value = false
-    // if (localModel.value.uid == storage.get<string>('uid')) {
-    //     message.warning('这是你的贴子哦')
-    //     return
-    // }
+    if (localModel.value.uid == storage.get<string>('uid')) {
+        message.warning('这是你的贴子哦')
+        return
+    }
     setTimeout(function () {
         collectDisabled.value = true
     }
@@ -91,29 +95,29 @@ const collect = function () {
 
     })
 }
-const like = function () {
-    if (!likeDisabled.value) return
-    likeDisabled.value = false
-    // if (localModel.value.uid == storage.get<string>('uid')) {
-    //     message.warning('这是你的贴子哦')
-    //     return
-    // }
-    setTimeout(function () {
-        likeDisabled.value = true
-    }, 2000)
-    let form = <FavoriteAndCollectionForm>{
-        modelId: (router.currentRoute.value.query.id as string),
-        status: localModel.value.isLike ? '0' : '1'
-    }
-    favoriteModel(form).then((res: any) => {
-        if (res.code == 200) {
-            localModel.value.isLike = localModel.value.isLike == '0' ? '1' : '0'
-            localModel.value.likesNum = localModel.value.likesNum + (localModel.value.isLike == '1' ? 1 : -1)
-            message.success('')
-        } else {
-            message.error(res.msg)
-        }
-    })
+const like = () => {
+  let form = <FavoriteAndCollectionForm>{
+    modelId: (router.currentRoute.value.query.id as string),
+    status: '0'
+  }
+  if (isLike.value == "true"){
+    isLike.value = "false"
+    localModel.value.isLike = "false"
+    form.status = '1'
+  }
+  else if (isLike.value == "false"){
+    isLike.value = "true"
+    localModel.value.isLike = "true"
+    form.status = '0'
+  }
+  console.log(isLike.value)
+  favoriteModel(form).then((res: any) => {
+      if (res.code == 200) {
+          message.success('操作成功')
+      } else {
+          message.error('操作失败')
+      }
+  })
 }
 const calcNum = function (num: number) {
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
@@ -121,13 +125,13 @@ const calcNum = function (num: number) {
 const handleClickDetails = function () {
     detailsvisibility.value = !detailsvisibility.value
 }
-const handleClickModelFiles = function () {
-    modelFilesvisibility.value = !modelFilesvisibility.value
-    getModelFilesFunc()
-}
-const handleClickAudiosFiles = function () {
-    audiosvisibility.value = !audiosvisibility.value
-}
+// const handleClickModelFiles = function () {
+//     modelFilesvisibility.value = !modelFilesvisibility.value
+//     getModelFilesFunc()
+// }
+// const handleClickAudiosFiles = function () {
+//     audiosvisibility.value = !audiosvisibility.value
+// }
 calcNum(1000)
 const getModelFilesFunc = function () {
     modelFilesvisibility.value = false
@@ -154,25 +158,25 @@ const getModelFilesFunc = function () {
         }
     })
 }
-const download = function(index:number){
-    if(fileList.value[index].url == null||fileList.value[index].url == ""){
-        message.warning('文件失效')
-        return
-    }
-    let file = fileList.value[index]
-    const link = document.createElement('a');
-  link.href = file.url;
-
-  if (file.fileName) {
-    link.download = file.fileName;
-  }
-
-  document.body.appendChild(link);
-
-  link.click();
-
-  document.body.removeChild(link);
-}
+// const download = function(index:number){
+//     if(fileList.value[index].url == null||fileList.value[index].url == ""){
+//         message.warning('文件失效')
+//         return
+//     }
+//     let file = fileList.value[index]
+//     const link = document.createElement('a');
+//   link.href = file.url;
+//
+//   if (file.fileName) {
+//     link.download = file.fileName;
+//   }
+//
+//   document.body.appendChild(link);
+//
+//   link.click();
+//
+//   document.body.removeChild(link);
+// }
 </script>
 <template>
     <div class="model-page">
@@ -195,8 +199,10 @@ const download = function(index:number){
                     <span>{{ label }}</span>
                 </div>
             </div>
-            <div class="model-content model-page__model__content" v-html="localModel?.description">
-
+            <div class="model-content model-page__model__content" >
+              <a href="localModel?.description" target="_blank">
+                <img :src=localModel.picture>
+              </a>
             </div>
 
         </div>
@@ -224,7 +230,7 @@ const download = function(index:number){
                 </div>
                 <div class="button-group__item" @click="like">
                     <img class="vertical-center"
-                        :src="localModel.isLike == '1' ? '/icon/heart-fill.svg' : '/icon/heart.svg'" height="20" width="20">
+                        :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'" height="20" width="20">
                     <div class="button-group__item__msg">
                         喜欢
                     </div>
@@ -250,7 +256,7 @@ const download = function(index:number){
                         </span>
                     </div>
                 </div>
-                <div class="details-content" v-show="detailsvisibility">
+                <div class="details-content" v-show="!detailsvisibility">
                     <div class="details-content__item">
                         <div class="details-content__item__label">
                             类型
@@ -283,45 +289,45 @@ const download = function(index:number){
                     </div>
                 </div>
             </div>
-            <div class="details">
-                <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">
-                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span>模型文件</span>
-                        <span>
-                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
-                                :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                        </span>
-                    </div>
-                </div>
-                <div class="details-content" v-show="modelFilesvisibility">
-                    <div class="details-content__item" v-for="(file,index) in fileList" :key="index">
-                        <div class="details-content__item__label">
-                            文件{{index + 1}}
-                        </div>
-                        <div class="details-content__item__value">
-                            <span class="fileName vertical-center">
-                                {{ file.fileName}}
-                            </span>
-                            <spna class="button vertical-center" @click="download(index)">
-                                下载
-                            </spna>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-            <div class="details">
-                <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">
-                    <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span>模型音频</span>
-                        <span>
-                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
-                                :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                        </span>
-                    </div>
-                </div>
+<!--            <div class="details">-->
+<!--                <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">-->
+<!--                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">-->
+<!--                        <span>模型文件</span>-->
+<!--                        <span>-->
+<!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
+<!--                                :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="details-content" v-show="modelFilesvisibility">-->
+<!--                    <div class="details-content__item" v-for="(file,index) in fileList" :key="index">-->
+<!--                        <div class="details-content__item__label">-->
+<!--                            文件{{index + 1}}-->
+<!--                        </div>-->
+<!--                        <div class="details-content__item__value">-->
+<!--                            <span class="fileName vertical-center">-->
+<!--                                {{ file.fileName}}-->
+<!--                            </span>-->
+<!--                            <spna class="button vertical-center" @click="download(index)">-->
+<!--                                下载-->
+<!--                            </spna>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    -->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="details">-->
+<!--                <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">-->
+<!--                    <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">-->
+<!--                        <span>模型音频</span>-->
+<!--                        <span>-->
+<!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
+<!--                                :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-            </div>
+<!--            </div>-->
             <div class="author-box">
                 <userCardComponent :user="user"></userCardComponent>
             </div>
@@ -442,10 +448,15 @@ const download = function(index:number){
 
 .model-page__model__content {
     position: relative;
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     padding: 10px;
     min-height: 600px;
     /* border-bottom: rgba(255, 255, 255, 0.2) 1px solid; */
+  img{
+    width:100%;
+    height:100%;
+    cursor: pointer;
+  }
 }
 
 .model-page__model__info__createAt {

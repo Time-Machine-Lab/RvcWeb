@@ -2,7 +2,8 @@
 import TagSelectComponent from '@/components/common/tagSelectComponent.vue';
 import ModelEditorComponent from '@/components/editor/modelEditorComponent.vue';
 import { ModelAddForm } from '@/api/rvcModel/modelType'
-import { uploadModel, uploadAudio, uploadImages, modelAdd } from '@/api/rvcModel/modelApi'
+import { modelAdd } from '@/api/rvcModel/modelApi'
+import { uploadImages } from '@/api/rvcModel/fileApi.ts'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
@@ -13,7 +14,6 @@ let currentTypeIndex = ref(0)
 let content = ref('')
 let coverBase64 = ref('')
 let uploadModelLoading = ref(false)
-let uploadAudioLoading = ref(false)
 let uploadCoverLoading = ref(false)
 let modelAddForm = ref<ModelAddForm>({
     description: '',
@@ -81,42 +81,7 @@ const handleModelFileSuccess = function () { };
 const beforeModelFileUpload = function (rawFile: File) {
     modelFiles.push(rawFile)
     if (modelFiles.length == 2)
-        uploadModelFile()
-    return false
-};
-const uploadModelFile = function () {
-    if (modelFiles.length == 2) {
-        uploadModelLoading.value = true
-        uploadModel(modelFiles[0], modelFiles[1]).then((res: any) => {
-            if (res.code == 200 && res.flag) {
-                modelAddForm.value.fileId.push(res.data[0].fileId)
-                modelAddForm.value.fileId.push(res.data[1].fileId)
-                console.log(modelAddForm.value.fileId);
-                message.success('模型文件上传成功')
-
-            } else {
-                message.error(res.message)
-            }
-            uploadModelLoading.value = false
-        })
-    }
-    return false
-}
-const handleAudioFileSuccess = function () { };
-const beforeAudioFileUpload = function (rawFile: File) {
-    uploadAudioLoading.value = true
-    uploadAudio(rawFile).then((res: any) => {
-        if (res.code == 200) {
-            modelAddForm.value.audioId = res.data
-            message.success('音频上传成功')
-
-        } else {
-            message.error(res.message)
-        }
-        uploadAudioLoading.value = false
-
-    })
-
+        // uploadModelFile()
     return false
 };
 
@@ -140,7 +105,6 @@ const beforeCoverUpload = function (rawFile: File) {
     return false
 };
 const uploadModelRef = ref<UploadInstance>()
-const uploadAudioRef = ref<UploadInstance>()
 // const handleUpload = function () {
 //     modelFiles = []
 //     uploadModelRef?.value?.submit()
@@ -269,19 +233,19 @@ let modelFiles: any = []
             <div class="new-model__title">
                 上传试听音频
             </div>
-            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"
-                :on-exceed="handleExceed" :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"
-                :before-remove="beforeRemove" multiple>
-                <div class="loadding" v-if="uploadAudioLoading"></div>
-                <div class="success" v-else-if="modelAddForm.picture">✓</div>
-                <div class="error" v-else>×</div>
-                <div class="el-upload__text">
-                    将文件拖拽到此处或点击上传
-                </div>
-                <div class="el-upload__text">
-                    最多可上传1个文件
-                </div>
-            </el-upload>
+<!--            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"-->
+<!--                :on-exceed="handleExceed" :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"-->
+<!--                :before-remove="beforeRemove" multiple>-->
+<!--                <div class="loadding" v-if="uploadAudioLoading"></div>-->
+<!--                <div class="success" v-else-if="modelAddForm.picture">✓</div>-->
+<!--                <div class="error" v-else>×</div>-->
+<!--                <div class="el-upload__text">-->
+<!--                    将文件拖拽到此处或点击上传-->
+<!--                </div>-->
+<!--                <div class="el-upload__text">-->
+<!--                    最多可上传1个文件-->
+<!--                </div>-->
+<!--            </el-upload>-->
             <div class="new-model__title">
                 上传封面
             </div>

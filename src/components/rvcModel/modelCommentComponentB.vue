@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ModelComment, CommentAddForm, LikeCommentForm } from '@/api/rvcModel/modelType'
-import { commentAdd, likeComments } from '@/api/rvcModel/modelApi'
+import { commentAdd, likeComments } from '@/api/rvcModel/commentApi'
 import { message } from '@/utils/message';
 let props = defineProps<{
     comment: ModelComment,

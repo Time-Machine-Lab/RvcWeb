@@ -6,7 +6,7 @@ import { PostVo, UserCreatePostForm } from '@/api/post/postType'
 import { getUserCreatePosts } from '@/api/post/postApi'
 import { message } from '@/utils/message'
 import { RvcModelVo, UserCreateModelForm } from '@/api/rvcModel/modelType'
-import { getUserCreateModels } from '@/api/rvcModel/modelApi'
+import { getUserCreateModels } from '@/api/rvcModel/userApi.ts'
 import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue'
 
 let selectOptions = ref(['贴子', '模型'])

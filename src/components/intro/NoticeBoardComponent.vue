@@ -38,7 +38,7 @@ onMounted(() => {
           <div class="message flex">
             <div class="message-title flex">{{item.title}}</div>
             <div class="message-author flex">{{item.author}}</div>
-            <div class="message-watch flex">{{item.watchNum}}</div>
+            <div class="message-watch flex">{{item.createAt}}</div>
           </div>
         </router-link>
       </el-carousel-item>
