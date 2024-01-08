@@ -15,13 +15,15 @@ import router from '@/router';
 const userStore = useUserStore()
 let userProfile = ref<UserInfoVO>()
 let userStatusVisibility = ref(false)
-getLoginUserInfo().then((res: any) => {
-    if (res.code == 200) {
-        userStore.setProfile(<UserInfoVO>res.data)
-        userProfile.value = userStore.getProfile
-        storage.set('uid', res.data.uid)
-    }
-})
+if (storage.get<string>('token')) {
+    getLoginUserInfo().then((res: any) => {
+        if (res.code == 200) {
+            userStore.setProfile(<UserInfoVO>res.data)
+            userProfile.value = userStore.getProfile
+            storage.set('uid', res.data.uid)
+        }
+    })
+}
 const handleClickUser = function () {
     userStatusVisibility.value = !userStatusVisibility.value
 }
@@ -31,11 +33,16 @@ const handleBlur = function () {
     }, 200)
 }
 const logoutFunc = function () {
-    logout().then(res => {
-        console.log(res)
-        message.success('登出成功')
-        storage.remove('token')
-        router.go(0)
+    logout().then((res: any) => {
+        if (res.code == 200) {
+            console.log(res)
+            message.success('登出成功')
+            storage.remove('token')
+            storage.remove('uid')
+            setTimeout(() => {
+                router.go(0)
+            }, 500)
+        }
     })
 }
 </script>

@@ -14,7 +14,7 @@ import './style.css'
 onBeforeMount(async () => {
   const loadingDom = document.querySelector(".before-app-render-loading");
   if (loadingDom) {
-    console.log("loadingDom: ", loadingDom.parentElement);
+    // console.log("loadingDom: ", loadingDom.parentElement);
     // 图片预加载
     // await preloadImages();
     let count = 0;

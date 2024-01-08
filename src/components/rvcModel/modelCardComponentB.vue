@@ -24,7 +24,10 @@ const handleBlur = function () {
     }, 200)
 }
 const collect = function () {
-    if (!collectDisabled.value) return
+    if (!collectDisabled.value){
+        message.warning('请稍后再试')    
+        return
+    }
     collectDisabled.value = false
     setTimeout(function () {
         collectDisabled.value = true
@@ -38,8 +41,9 @@ const collect = function () {
         if (res.code == 200) {
             localModel.value.isCollection = localModel.value.isCollection == '0'?'1':'0'
             let num:number = Number(localModel.value.collectionNum)
-            num += localModel.value.isCollection=='0'?1:-1
+            num += localModel.value.isCollection=='1'?1:-1
             localModel.value.collectionNum = String(num)
+            message.success((localModel.value.isCollection=='1'?'':'取消')+'收藏成功')
         }
         else{
             message.error('收藏失败，请稍后再试')
@@ -48,7 +52,10 @@ const collect = function () {
     })
 }
 const like = function () {
-    if (!likeDisabled.value) return
+    if (!likeDisabled.value){
+        message.warning('请稍后再试')    
+        return
+    }
     likeDisabled.value = false
     setTimeout(function () {
         likeDisabled.value = true
@@ -62,8 +69,9 @@ const like = function () {
         if (res.code == 200) {
             localModel.value.isLike = localModel.value.isLike == '0'?'1':'0'
             let num:number = Number(localModel.value.likesNum)
-            num += localModel.value.isLike=='0'?1:-1
+            num += localModel.value.isLike=='1'?1:-1
             localModel.value.likesNum = String(num)
+            message.success((localModel.value.isLike=='1'?'':'取消')+'点赞成功')
         }
         else{
             message.error('点赞失败，请稍后再试')
@@ -83,7 +91,7 @@ const like = function () {
             </div>
         </div>
         <div class="more-window" v-show="moreVisibility">
-            <div class="more-window__item" @click="message.warning('敬请期待')">
+            <div class="more-window__item" @click="message.warning('开发中')">
                 举报
             </div>
         </div>
@@ -105,7 +113,7 @@ const like = function () {
             </div>
         </div>
         <div class="tag">
-            {{ localModel.label }}
+            {{ localModel.type }}
         </div>
         <div class="post-card__info">
             <div class="post-card__info__title" @click="$router.push('/post?id=' + localModel.id)">
@@ -120,13 +128,13 @@ const like = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isCollection ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localModel.isCollection == '1' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isLike ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localModel.isLike == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ localModel.likesNum }}</span>
                 </div>
@@ -160,7 +168,19 @@ const like = function () {
     transition: all 0.5s;
     scale: 1.02;
 }
-
+.tag {
+    padding: 0 15px;
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    left: 10px;
+    top: 70px;
+    font-size: 12px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    z-index: 30;
+}
 .more-window {
     position: absolute;
     right: 40px;

@@ -20,12 +20,12 @@ export default defineComponent({
     let childElements: HTMLCollection | undefined
 
 
-    const sortElement = function () {
+    const sortElement = function () {      
       height.value.fill(0, 0, 6)
       columnCount.value = 6
       if (containerRef.value) {
         containerElement = containerRef.value as HTMLElement
-        childElements = containerElement.children as HTMLCollection
+        childElements = containerElement.children as HTMLCollection        
       }
       while (columnCount.value) {
         if (containerRef.value) {
@@ -37,7 +37,7 @@ export default defineComponent({
         columnCount.value--
       }
       for (let i = 0; i < (childElements?.length as number); i++) {
-        if (childElements && containerElement) {
+        if (childElements) {
           const currentElement = childElements[i] as HTMLElement;
           currentElement.style.position = 'absolute';
           currentElement.style.display = 'inline-block';
@@ -70,19 +70,23 @@ export default defineComponent({
       const container = containerRef.value
       const config = { childList: true, subtree: true }
       observer.observe(container as Node, config)
-      if (childElements) {
-        for (let i = 0; i < childElements.length; i++) {
-          const imgElement = childElements[i].querySelectorAll('img');
+      sortElement()
+      setTimeout(()=>{
+        if (childElements) {        
+          let elementsArray = Array.from(childElements)
+        for (let i = 0; i < elementsArray.length; i++) {          
+          let imgElement = elementsArray[i].querySelectorAll('img');                              
           if (imgElement.length != 0) {
-            for (let i = 0; i < imgElement.length; i++) {
-              imgElement[0].addEventListener('onload', sortElement);
-
+            for (let j = 0; j < imgElement.length; j++) {
+              imgElement[j].onload= ()=>{
+                sortElement()
+              }
             }
           }
         }
       }
-      sortElement()
-
+      },500)
+      
     })
     // watch(
     //   () => childElements,
@@ -123,7 +127,11 @@ export default defineComponent({
         for (let i = 0; i < childElements.length; i++) {
           const imgElement = childElements[i].querySelector('img');
           if (imgElement) {
-            imgElement.removeEventListener('load', sortElement);
+            imgElement.removeEventListener('load', function () {
+              setTimeout(
+                sortElement
+                , 100)
+            });
           }
         }
       }

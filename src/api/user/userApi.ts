@@ -6,6 +6,7 @@
  */
 import request from '@/utils/request'
 import { ProfileForm, EmailCodeForm, RegisterForm, LoginForm } from '@/api/user/userTypes'
+import { toFormData } from 'axios'
 
 export function editUserInfo(form: ProfileForm) {
     return request({
@@ -23,11 +24,20 @@ export function getLoginUserInfo() {
 
 export function getUserInfoById(id: string) {
     return request({
-        url: '/user/getUserInfo',
+        url: '/user/getUserInfoById',
         method: 'get',
-        headers:{
-            'uid':id
+        params: {
+            targetUid: id
         }
+    })
+}
+
+export function followUser(followUid: string) {
+    return request({
+        url: '/user/follow',
+        method: 'post',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data:toFormData({followUid:followUid})
     })
 }
 
@@ -62,31 +72,31 @@ export function login(form: LoginForm) {
     })
 }
 
-export function logout(){
+export function logout() {
     return request({
         url: '/user/logout',
         method: 'post'
     })
 }
-export function getPreCode(){
+export function getPreCode() {
     return request({
         url: '/user/preCode',
-        method:'get'
+        method: 'get'
     })
 }
-export function updatePassword(form:any){
+export function updatePassword(form: any) {
     return request({
         url: '/user/updatePassword',
-        method:'post',
+        method: 'post',
         data: form
     })
 }
-export function uploadAvatar(file:File){
+export function uploadAvatar(file: File) {
     const formData = new FormData();
     formData.append('file', file);
     return request({
         url: '/user/avatar',
-        method:'post',
+        method: 'post',
         data: formData
     })
 }

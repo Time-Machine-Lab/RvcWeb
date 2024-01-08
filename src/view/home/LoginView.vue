@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-24 17:15:27
+ * @LastEditTime: 2024-01-08 14:25:02
  * @FilePath: \RvcWeb\src\view\home\LoginView.vue
  * @Description: 
  * 
@@ -70,9 +70,8 @@ export default defineComponent({
       login(form).then((res: any) => {
         if (res.code == 200) {
           storage.set("token", res.data.token as string);
-          storage.set("user", res.data);
-          message.success("登陆成功");
-          this.$router.push("/rvc/posts");
+          message.success("登录成功");
+          this.$router.go(0)
         } else {
           message.error(res.msg);
         }
@@ -226,7 +225,10 @@ export default defineComponent({
       if (that.preCode.time >= 0) {
         that.preCode.time--;
       }
-    }, 1000);
+    }, 1000)
+    if(storage.get<string>('token')){
+      this.$router.replace('/rvc/posts')
+    }
   },
 });
 </script>

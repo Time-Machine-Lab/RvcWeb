@@ -32,8 +32,9 @@ let page = ref(1)
 let childCommentDisabled = ref(false)
 let getChildCommentForm = ref<GetChildCommentForm>({
     id: '',
-    page: (page.value as unknown as string),
-    limit: '5'
+    page: String(page.value),
+    limit: '5',
+    sortType: ''
 })
 let commentAddForm = ref<CommentAddForm>({
     replyId: '',
@@ -92,42 +93,22 @@ const handleDialogClickMore = function () {
 const loadChildComment = function () {
     if (childCommentDisabled.value == true) return
     childCommentDisabled.value = true
-    getChildCommentForm.value.id = localComment.value.modelId
-    getChildCommentForm.value.page = page.value as unknown as string
+    getChildCommentForm.value.id = localComment.value.id
+    getChildCommentForm.value.page = String(page.value)
     getChildComments(getChildCommentForm.value).then((res: any) => {
-        if (res.code != 200) {
-            let data = [
-            {
-                "id": "",
-                "uid": "1735662165315596290",
-                "nickname": "蔡徐坤",
-                "picture": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/b44b50059741d114e051141f3f7712d9.jpg",
-                "content": "袁总能带我打瓦吗1",
-                "likesNum": "1",
-                "commentTime": "2023-12-19 10:00:45",
-                "modelId": "1736285491279269890",
-                "isLikes": "0"
-            },
-            {
-                "id": "",
-                "uid": "1735662165315596290",
-                "nickname": "蔡徐坤",
-                "picture": "https://rvc1.oss-cn-beijing.aliyuncs.com/rvc/user/avatar/b44b50059741d114e051141f3f7712d9.jpg",
-                "content": "伍老板太帅了",
-                "likesNum": "0",
-                "commentTime": "2023-12-17 19:14:01",
-                "modelId": "1736285491279269890",
-                "isLikes": "0"
-            }
-        ]
+        if (res.code == 200) {
+            let data = res.data.records
             if (data.length == 0) {
                 childCommentDisabled.value = true
                 return
             }
             for (let i = 0; i < data.length; i++) {
-                childComments.value.push(data[i])
+                childComments.value.push(data[i])                
             }
             childCommentDisabled.value = false
+            page.value++
+        } else {
+            message.error
         }
     })
 }
