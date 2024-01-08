@@ -42,7 +42,7 @@ const props = defineProps<{
                     <img src="/public/icon/star-fill.svg">
                     <span>{{ props.model.collectionNum }}</span>
                 </div>
-                <div class="model-card__info__stats__item" v-if="!props.model.likes">
+                <div class="model-card__info__stats__item" v-if="!props.model.isLike">
                     <img src="/public/icon/heart.svg">
                     <span>{{ props.model.likesNum }}</span>
                 </div>
