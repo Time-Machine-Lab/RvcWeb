@@ -15,7 +15,7 @@ export type RvcModelVo = {
   createTime: string;
   description: string;
   isCollection: string;
-  isFollow: any; 
+  isFollow: string; 
   isLike: string;
   likesNum: string;
   nickname: string;

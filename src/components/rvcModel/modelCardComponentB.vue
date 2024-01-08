@@ -35,15 +35,15 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isCollection ? '1' : '0'
+        status: localModel.value.isCollection == 'true' ? '1' : '0'
     }
     collectModel(form).then((res:any) => {
         if (res.code == 200) {
-            localModel.value.isCollection = localModel.value.isCollection == '0'?'1':'0'
+            localModel.value.isCollection = localModel.value.isCollection == 'true'?'false':'true'
             let num:number = Number(localModel.value.collectionNum)
-            num += localModel.value.isCollection=='1'?1:-1
+            num += localModel.value.isCollection=='true'?1:-1
             localModel.value.collectionNum = String(num)
-            message.success((localModel.value.isCollection=='1'?'':'取消')+'收藏成功')
+            message.success((localModel.value.isCollection=='true'?'':'取消')+'收藏成功')
         }
         else{
             message.error('收藏失败，请稍后再试')
@@ -63,15 +63,15 @@ const like = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isLike ? '1' : '0'
+        status: localModel.value.isLike == 'true' ? '1' : '0'
     }
     favoriteModel(form).then((res:any) => {
         if (res.code == 200) {
-            localModel.value.isLike = localModel.value.isLike == '0'?'1':'0'
+            localModel.value.isLike = localModel.value.isLike == 'true'?'false':'true'
             let num:number = Number(localModel.value.likesNum)
-            num += localModel.value.isLike=='1'?1:-1
+            num += localModel.value.isLike == 'true'?1:-1
             localModel.value.likesNum = String(num)
-            message.success((localModel.value.isLike=='1'?'':'取消')+'点赞成功')
+            message.success((localModel.value.isLike == 'true'?'':'取消')+'点赞成功')
         }
         else{
             message.error('点赞失败，请稍后再试')
@@ -128,13 +128,13 @@ const like = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isCollection == '1' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localModel.isCollection == 'true' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isLike == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localModel.isLike == 'true' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ localModel.likesNum }}</span>
                 </div>
