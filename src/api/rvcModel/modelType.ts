@@ -75,7 +75,7 @@ export type ModelComment = {
   likesNum: string;
   commentTime: string;
   modelId: string;
-  isLikes: string;
+  likes: boolean;
 }
 
 export type GetCommentForm = {
