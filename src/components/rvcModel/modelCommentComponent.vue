@@ -153,7 +153,7 @@ const sendComment = function () {
                 <div class="status-item" @click="like">
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: comment.likes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: comment.likes ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
