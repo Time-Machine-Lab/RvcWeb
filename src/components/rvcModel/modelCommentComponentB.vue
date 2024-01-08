@@ -23,13 +23,13 @@ const handleBlur = function () {
 const like = function () {
     let form = ref<LikeCommentForm>({
         id: currentComment.value.id,
-        type: currentComment.value.isLikes == '1' ? '0' : '1'
+        type: currentComment.value.likes?'1':'0'
     })
     likeComments(form.value).then((res: any) => {
         if (res.code == 200) {
-            currentComment.value.isLikes = currentComment.value.isLikes == '1' ? '0' : '1'
+            currentComment.value.likes = !currentComment.value.likes
             let num = Number(currentComment.value.likesNum)
-            num += (currentComment.value.isLikes == '1' ? 1 : -1)
+            num += (currentComment.value.likes ? 1 : -1)
             currentComment.value.likesNum = String(num)
         } else {
             message.error(res.msg)
@@ -88,7 +88,7 @@ const calcNum = function (num: number) {
                     <div class="status-item" @click="like">
                         <div class="vertical-center"
                             style="top:100%;transform:translate(0,-100%);height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                            :style="{ backgroundImage: currentComment.isLikes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                            :style="{ backgroundImage: currentComment.likes? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                         </div>
                         <span>{{ calcNum(currentComment.likesNum as unknown as number) }}</span>
                     </div>
