@@ -9,6 +9,7 @@ import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
 // import router from '@/router/index.ts'
 import { message } from './message'
+import router from '@/router'
 
 
 const request = axios.create({
@@ -81,9 +82,11 @@ request.interceptors.response.use(
       const statusText = statusTextMap[error.response.status] ?? '其他错误'
       message.error(`${statusText}(${error.response.status})`)
       if (error.response.status === 401) {
-        // router.replace({
-        //   path: '/Login'
-        // })
+        router.replace({
+          path: '/Login'
+        })
+        storage.remove('token')
+      storage.remove('uid')
       }
       return Promise.reject(error)
     }

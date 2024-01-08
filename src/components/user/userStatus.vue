@@ -15,15 +15,14 @@ import router from '@/router';
 const userStore = useUserStore()
 let userProfile = ref<UserInfoVO>()
 let userStatusVisibility = ref(false)
-if (storage.get<string>('token')) {
-    getLoginUserInfo().then((res: any) => {
-        if (res.code == 200) {
-            userStore.setProfile(<UserInfoVO>res.data)
-            userProfile.value = userStore.getProfile
-            storage.set('uid', res.data.uid)
-        }
-    })
-}
+
+getLoginUserInfo().then((res: any) => {
+    if (res.code == 200) {
+        userStore.setProfile(<UserInfoVO>res.data)
+        userProfile.value = userStore.getProfile
+        storage.set('uid', res.data.uid)
+    }
+})
 const handleClickUser = function () {
     userStatusVisibility.value = !userStatusVisibility.value
 }
