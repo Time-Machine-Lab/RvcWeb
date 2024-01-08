@@ -23,6 +23,7 @@ request.interceptors.request.use(
     const token = storage.get<string>('token')
     // const uid = storage.get<string>('uid')
     // const username = storage.get<string>('username')
+    console.log(token)
     if (token!='') {
       // 将token添加到请求头中
       config.headers.token = token
@@ -32,6 +33,7 @@ request.interceptors.request.use(
     // if(uid!=''){
     //   config.headers.uid = uid
     // }
+    console.log(config)
     return config
   },
   error => {
@@ -51,6 +53,10 @@ request.interceptors.response.use(
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
     if (res.status == 200) {
       return Promise.resolve(res.data)
+    }else if(res.status == 401){
+      storage.remove('token')
+      storage.remove('uid')
+      return Promise.reject(res)
     } else {
       message.error(res.data.message)
       return Promise.reject(res)
