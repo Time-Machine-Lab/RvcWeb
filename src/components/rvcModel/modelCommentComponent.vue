@@ -46,13 +46,13 @@ const like = function () {
     likeDisabled.value = true
     let form = <LikeCommentForm>{
         id: localComment.value.id,
-        type: localComment.value.isLikes == '0' ? '0' : '1'
+        type: localComment.value.likes?'1':'0'
     }
     likeComments(form).then((res: any) => {
         if (res.code == 200) {
-            localComment.value.isLikes = localComment.value.isLikes == '0' ? '1' : '0'
+            localComment.value.likes = !localComment.value.likes
             let num = Number(localComment.value.likesNum)
-            num += (localComment.value.isLikes == '1' ? 1 : -1)
+            num += (localComment.value.likes? 1 : -1)
             localComment.value.likesNum = String(num)
             message.success('')
             likeDisabled.value = false
@@ -153,7 +153,7 @@ const sendComment = function () {
                 <div class="status-item" @click="like">
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: comment.isLikes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: comment.likes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
@@ -208,7 +208,7 @@ const sendComment = function () {
                 <div class="status-item" @click="like">
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: comment.isLikes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: comment.likes ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>

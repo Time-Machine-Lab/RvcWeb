@@ -11,6 +11,7 @@ import WaterFallComponent from '@/components/layout/waterFallComponent.vue'
 import modelCommentComponent from '@/components/rvcModel/modelCommentComponent.vue'
 import { getRootComments, commentAdd } from '@/api/rvcModel/commentApi.ts'
 import { message } from '@/utils/message'
+import router from '@/router'
 const props = defineProps<{
     modelId: string
 }>()
@@ -21,7 +22,7 @@ let getCommentsForm = ref<GetCommentForm>({
     id: '',
     page: '',
     limit: '10',
-    sortType: '1'
+    sortType: '3'
 })
 let sendCommentForm = ref<CommentAddForm>({
     replyId: '',
@@ -59,6 +60,9 @@ const commentAddFunc = function () {
     commentAdd(sendCommentForm.value).then((res: any) => {
         if (res.code == 200) {
             message.success('发表成功')
+            setTimeout(()=>{
+                router.go(0)
+            },300)
         } else {
             message.error(res.msg)
         }
@@ -75,9 +79,9 @@ const getLength = function(str:string){
                 添加评论
             </div>
             <div class="dialog-input">
-                <input class="input" v-model="sendCommentForm.content" maxlength="200">
+                <input class="input" v-model="sendCommentForm.content" maxlength="300">
                 <div style="text-align: right;">
-                    <span>{{ getLength(sendCommentForm.content) }}/200</span>
+                    <span>{{ getLength(sendCommentForm.content) }}/300</span>
 
                 </div>
             </div>
@@ -102,7 +106,7 @@ const getLength = function(str:string){
                 <modelCommentComponent style="" v-for="(comment, index) in comments" :key="index" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
-            <div class="model-comments__content__more" @click="load">加载更多</div>
+            <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>
         </div>
     </div>
 </template>
