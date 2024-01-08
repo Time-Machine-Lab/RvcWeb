@@ -100,7 +100,7 @@ let disabled = ref(false)
                 image="/icon/empty.svg" />
             <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
                 :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" :key="index"></postCardComponentB>
+                <postCardComponentB  v-for="(post, index) in posts" :post="post" :key="index"></postCardComponentB>
             </waterFallComponent>
         </div>
     </div>

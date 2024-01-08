@@ -51,12 +51,12 @@ const props = defineProps<{
 }
 
 .user-card__info__text {
-    width: calc(100% - 40px);
+    width: calc(100% - 20px);
     height: 100%;
 }
 
 .user-card__info__text__username {
-    padding: 10px 10px;
+    padding: 0 5px;
     width: calc(100% - 10px);
     height: 50%;
     font-size: 14px;
@@ -79,7 +79,7 @@ const props = defineProps<{
 
 .user-card__button {
     height: 100%;
-    width: 40%;
+    width: 20%;
     display: flex;
     justify-content: space-around;
 }

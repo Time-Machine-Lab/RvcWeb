@@ -7,17 +7,19 @@
 <script setup lang="ts">
 import editProfile from "@/view/user/info/pages/editProfile.vue";
 import { UserInfoVO } from "@/api/user/userTypes";
-import {  ref } from "vue";
-import { getUserInfoById } from "@/api/user/userApi.js";
+import { ref } from "vue";
+import { getUserInfoById,followUser } from "@/api/user/userApi.js";
 import { useUserStore } from "@/view/user/info/userStore.js";
 
 import router from "@/router/index.ts";
 import { storage } from "@/utils/storage";
+import { message } from "@/utils/message";
 const userStore = useUserStore();
 
 let hasFollow = ref(false);
 const loaded = ref(true);
 let drawer = ref(false);
+let followDisabled = ref(false)
 let figures = ref([
   {
     desc: "",
@@ -28,11 +30,27 @@ const open = () => {
   drawer.value = true;
 };
 let userProfile = ref<UserInfoVO>({
- 
+
 });
 
 const follow = function () {
-  hasFollow.value = !hasFollow.value;
+  if(followDisabled.value){
+    message.warning('请稍后再试')
+    return
+  }
+  followDisabled.value = true
+  setTimeout(function(){
+    followDisabled.value = false
+  },2000)
+  followUser(userProfile.value.uid!).then((res:any)=>{
+    if(res.code == 200){
+      message.success(hasFollow.value?'取消':''+'关注成功')
+      hasFollow.value = !hasFollow.value
+
+    } else {
+      message.error('服务器异常')
+    }
+  })
 };
 
 setTimeout(function () {
@@ -47,31 +65,33 @@ setTimeout(function () {
 
     figures.value = [
       {
-        desc: "LIKES",
+        desc: "粉丝",
         number: userStore.getProfile.fansNum!,
       },
       {
-        desc: "FOLLOWERS",
+        desc: "关注",
         number: userStore.getProfile.followNum!,
       },
     ];
   } else {
-    getUserInfoById(router.currentRoute.value.query.id as string).then(
-      (res) => {
-        userProfile.value = res.data;
+    getUserInfoById(router.currentRoute.value.query.id as string).then((res: any) => {
+      if (res.code == 200) {
+        userProfile.value = res.data.userInfo
+        hasFollow.value = res.data.follow
         figures.value = [
           {
-            desc: "LIKES",
+            desc: "粉丝",
             number: res.data.fansNum,
           },
           {
-            desc: "FOLLOWERS",
+            desc: "关注",
             number: res.data.followNum,
           },
         ];
-        loaded.value = false;
-
-      },
+      } else {
+        message.error('服务器异常')
+      }
+    },
     );
   }
 }, 300);
@@ -79,10 +99,7 @@ setTimeout(function () {
 <template>
   <div class="base-info">
     <div class="avatar-container">
-      <div
-        class="avatar"
-        :style="{ backgroundImage: 'url(\'' + userProfile.avatar + '\')' }"
-      ></div>
+      <div class="avatar" :style="{ backgroundImage: 'url(\'' + userProfile.avatar + '\')' }"></div>
     </div>
     <div class="information">
       <div class="username-container">
@@ -92,18 +109,21 @@ setTimeout(function () {
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-           {{ userProfile.birthday }}
+          {{ userProfile.birthday }}
         </span>
       </div>
     </div>
     <div class="button-container">
-      <span class="button" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && !hasFollow" @click="follow">
+      <span class="button" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && !hasFollow"
+        @click="follow">
         关注
       </span>
-      <span class="greybutton" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && hasFollow" @click="follow">
+      <span class="greybutton" v-if="router.currentRoute.value.query.id != storage.get<string>('uid') && hasFollow"
+        @click="follow">
         已关注
       </span>
-      <span class="button" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" @click="open"> 编辑资料 </span>
+      <span class="button" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" @click="open"> 编辑资料
+      </span>
     </div>
     <div class="line"></div>
     <div class="figures-container">
@@ -117,11 +137,8 @@ setTimeout(function () {
       </div>
     </div>
     <el-drawer v-model="drawer" :with-header="false">
-      <edit-profile
-        v-loading="loaded"
-        :userProfile="userProfile!"
-        element-loading-background="transparent"
-      ></edit-profile>
+      <edit-profile v-loading="loaded" :userProfile="userProfile!"
+        element-loading-background="transparent"></edit-profile>
     </el-drawer>
   </div>
 </template>
@@ -188,7 +205,7 @@ setTimeout(function () {
   height: 40px;
   border-radius: 20px;
   margin: 20px auto auto;
-  background-color: rgba(25,113,194);
+  background-color: rgba(25, 113, 194);
   line-height: 40px;
   font-size: 16px;
   color: white;
@@ -196,13 +213,14 @@ setTimeout(function () {
   cursor: pointer;
   user-select: none;
 }
+
 .button-container .greybutton {
   display: block;
   width: 90%;
   height: 40px;
   border-radius: 20px;
   margin: 20px auto auto;
-  background-color: rgba(25,113,194);
+  background-color: rgba(25, 113, 194);
   line-height: 40px;
   font-size: 16px;
   color: white;
@@ -212,7 +230,7 @@ setTimeout(function () {
 }
 
 .button-container .button:hover {
-  background-color: rgba(24,100,171);
+  background-color: rgba(24, 100, 171);
 }
 
 .line {
@@ -233,6 +251,7 @@ setTimeout(function () {
 
 .figures-container .figures {
   height: 50px;
+  padding: 0 15px;
 }
 
 .figures-container .figures .number {
@@ -254,7 +273,7 @@ setTimeout(function () {
 }
 
 :deep .el-drawer__body {
-  background-color: rgba(26,27,30) !important;
+  background-color: rgba(26, 27, 30) !important;
 }
 </style>
 ../userStore

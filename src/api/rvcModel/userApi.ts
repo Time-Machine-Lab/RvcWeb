@@ -20,7 +20,7 @@ export function getUserLikeModels(form:UserLikeModelForm){
 export function getUserCollectModels(form:UserCollectModelForm){
     return request({
         url:'/model/collection',
-        method:'post',
+        method:'get',
         params:form
     })
 }

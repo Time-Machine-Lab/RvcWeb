@@ -32,7 +32,7 @@ let disabled = ref(false)
 const load = function () {
     if (disabled.value) return
     disabled.value = true
-    getCommentsForm.value.page = (page as unknown as string)
+    getCommentsForm.value.page = String(page.value)
     getCommentsForm.value.id = props.modelId
     getRootComments(getCommentsForm.value).then((res: any) => {
         if (res.code == 200) {
@@ -99,7 +99,7 @@ const getLength = function(str:string){
         </div>
         <div class="model-comments__content">
             <WaterFallComponent>
-                <modelCommentComponent style="visibility: hidden;" v-for="(comment, index) in comments" :key="index" :comment="comment">
+                <modelCommentComponent style="" v-for="(comment, index) in comments" :key="index" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
             <div class="model-comments__content__more" @click="load">加载更多</div>

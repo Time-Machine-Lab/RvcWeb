@@ -116,7 +116,7 @@ const editPost = function () {
             </div>
         </div>
         <div class="more-window" v-show="moreVisibility">
-            <div class="more-window__item" @click="message.warning('敬请期待')">
+            <div class="more-window__item" @click="message.warning('开发中')">
                 举报
             </div>
             <div class="more-window__item" v-show="storage.get<string>('uid') == localPost.author?.uid"

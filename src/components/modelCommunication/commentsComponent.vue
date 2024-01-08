@@ -40,8 +40,6 @@ const showReply = function (index: number) {
 
         getChildCommentsFunc(index)
     }
-    console.log(rootComments.value[index].childrenComment);
-    console.log(1);
 
     showChildComments.value[index] = !showChildComments.value[index]
     return showChildComments.value[index]
@@ -54,7 +52,7 @@ const getChildCommentsFunc = function (index: number) {
     setTimeout(function () {
         disalbed.value = false
 
-    }, 5000)
+    }, 5000)    
     getChildComments(childForm.value[index]).then((res: any) => {
         if (res.code == 200) {
             if (res.data.length == 0) {
@@ -67,9 +65,9 @@ const getChildCommentsFunc = function (index: number) {
             for (let i = 0; i < data.value.length; i++) {
                 rootComments.value[index].childrenComment?.push(data.value[i])
             }
-            let page = childForm.value[index].page as unknown as number
+            let page = Number(childForm.value[index].page)
             page++
-            childForm.value[index].page = page as unknown as string
+            childForm.value[index].page = String(page)
         }
     })
 }
