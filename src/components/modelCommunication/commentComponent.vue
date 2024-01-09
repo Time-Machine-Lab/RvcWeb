@@ -61,16 +61,22 @@ const calcNum = function (num: number) {
 let clickMore = ref(false)
 let moreVisibility = ref(false)
 const handleClickMore = function () {
-    clickMore.value = true
-    moreVisibility.value = !moreVisibility.value
-    setTimeout(function () {
-        clickMore.value = false
-    }, 200)
+  clickMore.value = true
+  moreVisibility.value = !moreVisibility.value
+  setTimeout(function () {
+    clickMore.value = false
+  }, 200)
 }
 const handleBlur2 = function () {
-    setTimeout(function () {
-        moreVisibility.value = false
-    }, 200)
+  setTimeout(function () {
+    moreVisibility.value = false
+  }, 200)
+}
+const isAudio = function (str: string) {
+  return str.includes('<audio>') && str.includes('</audio>')
+}
+const parseUrl = function (str: string) {
+  return str.match(/<audio>(.*?)<\/audio>/)?.[1];
 }
 </script>
 <template>
@@ -96,9 +102,12 @@ const handleBlur2 = function () {
             style="display: inline-block;background-color: rgba(102,102,102,0.2);height: 80%;border-radius: 5px;font-family: 'ZCool';">
             {{ currentComment?.replayUser ? '@' + currentComment?.replayUser?.nickname : '' }}
           </span>
-          <span>
+          <span v-if="!isAudio(currentComment?.content)">
             {{ currentComment?.content }}
           </span>
+          <div style="position: relative" v-else>
+            <audioPlayerComponent :src="parseUrl(currentComment?.content)"></audioPlayerComponent>
+          </div>
         </div>
         <div class="comment-status">
           {{ currentComment?.createAt }}
@@ -135,10 +144,10 @@ const handleBlur2 = function () {
         </div>
       </div>
       <div class="more-window" v-show="moreVisibility">
-            <div class="more-window__item" @click="message.warning('开发中')">
-                举报
-            </div>
+        <div class="more-window__item" @click="message.warning('开发中')">
+          举报
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -147,45 +156,47 @@ const handleBlur2 = function () {
 * {
   text-align: left;
 }
+
 .more {
-    position: relative;
-    top: 50%;
-    transform: translate(0, -50%);
-    width: 30px;
-    height: 30px;
-    z-index: 20;
-    cursor: pointer;
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 30px;
+  height: 30px;
+  z-index: 20;
+  cursor: pointer;
 }
 
 .more-window {
-    position: absolute;
-    right: 10px;
-    top: 60px;
-    width: 120px;
-    border-radius: 10px;
-    border: rgba(55, 58, 64) 1px solid;
-    background-color: rgba(37, 38, 43);
-    padding: 5px;
-    z-index: 20;
-    user-select: none;
+  position: absolute;
+  right: 10px;
+  top: 60px;
+  width: 120px;
+  border-radius: 10px;
+  border: rgba(55, 58, 64) 1px solid;
+  background-color: rgba(37, 38, 43);
+  padding: 5px;
+  z-index: 20;
+  user-select: none;
 }
 
 .more-window__item {
-    padding-left: 15px;
-    width: calc(100% - 15px);
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-align: left;
-    border-radius: 5px;
+  padding-left: 15px;
+  width: calc(100% - 15px);
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  text-align: left;
+  border-radius: 5px;
 
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .more-window__item:hover {
-    background-color: rgba(56, 58, 64);
-    cursor: pointer;
+  background-color: rgba(56, 58, 64);
+  cursor: pointer;
 }
+
 .comment {
   position: relative;
   width: 100%;
@@ -323,7 +334,7 @@ const handleBlur2 = function () {
   text-align: center;
   line-height: 30px;
 }
+
 .dither-animation {
-    top: 34px;
-}
-</style>
+  top: 34px;
+}</style>

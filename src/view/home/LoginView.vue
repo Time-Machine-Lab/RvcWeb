@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:33:46
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-08 14:25:02
+ * @LastEditTime: 2024-01-10 01:43:54
  * @FilePath: \RvcWeb\src\view\home\LoginView.vue
  * @Description: 
  * 
@@ -355,6 +355,7 @@ export default defineComponent({
             >
               <button
                 v-if="LoginStatus"
+                type="button"
                 class="right-button-item"
                 @click="loginFunc"
               >

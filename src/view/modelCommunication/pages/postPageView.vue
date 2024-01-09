@@ -88,6 +88,7 @@ let inputContent = ref<string>('')
 //         number: 0,
 //     }
 // ]);
+let audioUrl = ref<string>('')
 let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
@@ -198,6 +199,11 @@ const handleShare = function () {
 }
 const getLength = function (str: string) {
     return str.length
+}
+const getUrl = function(url:string){
+    audioUrl.value = url
+    inputContent.value = '<audio>'+audioUrl.value+'</audio>'
+    sendComment()
 }
 </script>
 <template>
@@ -351,7 +357,7 @@ const getLength = function (str: string) {
                 <img width="40" height="40" :src="userProfile.avatar!"
                     style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                 <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
-                <div style="text-align: right;line-height: 40px;color: white;">
+                <div style="right:40px;text-align: right;line-height: 40px;color: rgba(255,255,255,0.4);position:absolute">
                     <span>{{ getLength(inputContent) }}/300</span>
                 </div>
             </div>
@@ -361,7 +367,7 @@ const getLength = function (str: string) {
         </div>
         <div class="post-page__post__commentBox--row2">
             <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">
-                <recordingComponnent></recordingComponnent>
+                <recordingComponnent :getUrl="getUrl"></recordingComponnent>
             </div>
             <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')" @click="sendComment">发送</button>
         </div>
@@ -665,7 +671,7 @@ const getLength = function (str: string) {
     display: flex;
 }
 .post-page__post__commentBox--row1--login input {
-    width: calc(90% - 10px);
+    width: calc(90% - 85px);
     height: 30px;
     border-radius: 5px;
     border: rgba(255, 255, 255, 0.2) 1px solid;
@@ -674,6 +680,7 @@ const getLength = function (str: string) {
     background-color: rgba(26, 27, 30);
     transition: all 0.2s;
     padding: 5px;
+    padding-right: 80px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
 }

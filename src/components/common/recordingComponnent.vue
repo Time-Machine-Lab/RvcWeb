@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-var-requires -->
 <!--
  * @Author: Dhx
  * @Date: 2024-01-09 20:53:12
@@ -7,7 +8,11 @@
 <script lang="ts" setup>
 import { message } from '@/utils/message';
 import { ref } from 'vue';
-
+const lamejs = require('lamejs');
+let props = defineProps<{
+    getUrl: (url:string)=>void
+}>()
+let file = ref<File>()
 let dialogVisible = ref(false)
 let recordedChunks = ref<any[]>([]);
 let mediaRecorder: MediaRecorder;
@@ -25,7 +30,12 @@ const start = function startRecording() {
                 }
             };
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(recordedChunks.value, { type: 'audio/wav' });
+                const encoder = new lamejs.Mp3Encoder(1, 44100, 128);
+                const buffer = mergeBuffers(recordedChunks.value);
+                const mp3Data = encoder.encodeBuffer(buffer);
+
+                const audioBlob = new Blob(mp3Data, { type: 'audio/mp3' });
+                file.value = new File([audioBlob],'file.mp3',{ type: 'audio/mp3' })
                 src.value = URL.createObjectURL(audioBlob);
                 startRecord.value = false
             };
@@ -40,6 +50,22 @@ const stop = function () {
     mediaRecorder.stop();
     startRecord.value = false
 }
+const mergeBuffers = function(buffers:any[]) {
+      let offset = 0;
+      const length = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
+      const result = new Float32Array(length);
+
+      buffers.forEach(buffer => {
+        result.set(buffer, offset);
+        offset += buffer.length;
+      });
+
+      return result;
+    }
+const send = function(){
+    props.getUrl('https://media-1318544158.cos.ap-nanjing.myqcloud.com/merry%20christmas.mp3')
+}
+
 </script>
 <template>
     <div class="recordButton" @click="dialogVisible = true">
@@ -66,7 +92,7 @@ const stop = function () {
                         <span>结束</span>
                     </div>
                 </div>
-                <div class="send-button">
+                <div class="send-button" @click="send">
                     发送
                 </div>
             </div>
