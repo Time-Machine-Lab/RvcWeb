@@ -56,7 +56,7 @@ const handleBlur = function () {
             :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
             <img width="12" height="12" src="/icon/post.svg" class="vh-center">
           </span>
-          <span>贴子</span>
+          <span class="tab">贴子</span>
         </router-link>
       </div>
       <div class="header__link__item" :style="{
@@ -69,7 +69,7 @@ const handleBlur = function () {
             <img width="12" height="12" src="/icon/model.svg" class="vh-center">
           </span>
 
-          <span>模型</span>
+          <span class="tab">模型</span>
         </router-link>
       </div>
       <div class="header__link__item" :style="{
@@ -82,7 +82,7 @@ const handleBlur = function () {
             <img width="12" height="12" src="/icon/bulb.svg" class="vh-center">
           </span>
 
-          <span>反馈</span>
+          <span class="tab">反馈</span>
         </router-link>
       </div>
     </div>
@@ -409,4 +409,5 @@ const handleBlur = function () {
   transform: rotateZ(90deg);
   transform-origin: 52% 50%;
 }
+
 </style>

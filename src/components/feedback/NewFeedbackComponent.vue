@@ -4,6 +4,7 @@ import {MdEditor, ToolbarNames} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import {Add, TypeListItem} from '@/api/feedback/feedbackTypes.ts'
 import {getTypeList, postAdd} from '@/api/feedback/feedbackAPI.ts'
+import {message} from "@/utils/message.ts";
 
 const emits = defineEmits();
 const close = () => {
@@ -18,10 +19,10 @@ const setType = (index: number) => {
 };
 // 提交表单
 const postTitle = ref('');
-const postContent = ref('');
+let postContent = ref('');
 const postType = ref<number | null>(2);
 
-const submitForm = async () => {
+const submitForm = () => {
   if(!postTitle.value) {
     alert("标题不能为空")
     return
@@ -30,22 +31,21 @@ const submitForm = async () => {
     alert("内容不能为空")
     return
   }
-
+  postContent.value = html.value
   const formData: Add = {
     title: postTitle.value,
     content: postContent.value,
     type: Number(postType.value),
     fbid: "",  // 如果是添加新帖子，可以忽略这个属性
   };
-  try {
-    const response = await postAdd(formData);
-    console.log('表单提交成功', response);
-    // 这里你可以处理提交成功后的逻辑，例如重定向到其他页面等
-  } catch (error) {
-    console.error('表单提交失败', error);
-    // 这里你可以处理提交失败后的逻辑，例如显示错误消息等
-  }
-  // emits('close');
+  postAdd(formData).then((res: any) => {
+    if (res.code == 200) {
+      message.success('操作成功')
+      emits('close');
+    } else {
+      message.error('操作失败')
+    }
+  });
 };
 // 获取反馈帖子的所有类型
 const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
@@ -53,10 +53,16 @@ getTypeList().then((res: any) => {
   console.log(res);
   Type.value = res.data.list;
 });
+// 富文本编辑器插槽
 const toolbars: ToolbarNames[] =
     ['bold', 'underline', 'italic', 'strikeThrough',
   'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
   'preview', 'htmlPreview']
+const html = ref("")
+const saveHtml = (h: string) => {
+  html.value = h
+}
+
 </script>
 
 <template>
@@ -65,7 +71,7 @@ const toolbars: ToolbarNames[] =
       <div class="box-contain flex">
         <button @click="close" class="close flex">X</button>
         <!--表单内容-->
-        <form class="box-contain-form" >
+        <div class="box-contain-form" >
           <h3>创建帖子</h3>
           <div class="box-contain-mention flex">
             <h6>已启用帖子审核。</h6>
@@ -82,10 +88,10 @@ const toolbars: ToolbarNames[] =
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor  v-model="postContent" :toolbars="toolbars" noMermaid/>
+            <md-editor v-model="postContent" :toolbars="toolbars" @onHtmlChanged="saveHtml" :max-length="500" noMermaid/>
           </div>
           <button @click="submitForm" type="submit" class="submit">提交帖子</button>
-        </form>
+        </div>
       </div>
     </div>
   </div>

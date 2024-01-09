@@ -5,6 +5,7 @@ import 'md-editor-v3/lib/style.css'
 import {FeedbackItem, TypeListItem, Update} from '@/api/feedback/feedbackTypes.ts'
 import {getFeedback, getTypeList, postUpdate} from '@/api/feedback/feedbackAPI.ts'
 import {onMounted} from "vue";
+import {message} from "@/utils/message.ts";
 // 关闭弹窗
 const emits = defineEmits();
 const close = () => {
@@ -43,31 +44,32 @@ const setType = (index: number) => {
 // 提交表单
 
 
-const submitForm = async () => {
+const submitForm =  () => {
   const formData: Update = {
     title: postTitle.value,
     content: postContent.value,
     type: postType.value,
     fbid: data,  // 如果是添加新帖子，可以忽略这个属性
   };
-  try {
-    const response = await postUpdate(formData);
-    console.log('表单提交成功', response);
-    // 这里你可以处理提交成功后的逻辑，例如重定向到其他页面等
-  } catch (error) {
-    console.error('表单提交失败', error);
-    // 这里你可以处理提交失败后的逻辑，例如显示错误消息等
-  }
+  postUpdate(formData).then((res: any) => {
+    if (res.code == 200) {
+      message.success('修改成功')
+    } else {
+      message.error('修改失败')
+    }
+  });
+  close()
 };
 onMounted(() => {
   getData()
-
 });
 const toolbars: ToolbarNames[] =
     ['bold', 'underline', 'italic', 'strikeThrough',
       'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
       'preview', 'htmlPreview']
-
+const saveHtml = (h: string) => {
+  postContent.value = h
+}
 </script>
 
 <template>
@@ -93,7 +95,7 @@ const toolbars: ToolbarNames[] =
           </div>
           <h4>内容</h4>
           <div class="box-contain-editor">
-            <md-editor  v-model="postContent" :toolbars="toolbars" noMermaid/>
+            <md-editor v-model="FeedbackData.content" :toolbars="toolbars" @onHtmlChanged="saveHtml" :max-length="500" noMermaid/>
           </div>
           <button @click="submitForm" type="submit" class="submit">提交反馈</button>
         </form>

@@ -26,15 +26,32 @@ export type RvcModelVo = {
   viewNum: string;
 }
 export type ModelListForm = {
-  page: string;
-  size?: string;
+  limit?: number;
+  page: number;
   /**
    * 排序类型，默认为-->1:"time",2:"view",3:"likes"，只需要传入数字即可
    */
   sortType?: string;
   [property: string]: any;
 }
-
+export type ModelListType = {
+  limit?: number;
+  page: number;
+  /**
+   * 默认时间倒排
+   */
+  sortType?: string;
+  /**
+   * 模型类型Id
+   */
+  typeId: string;
+  [property: string]: any;
+}
+export type ModelType = {
+  id: string;
+  type: string;
+  createTime: string;
+}
 export type FavoriteAndCollectionForm = {
   /**
    * 模型唯一Id

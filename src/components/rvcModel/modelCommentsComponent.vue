@@ -12,9 +12,22 @@ import modelCommentComponent from '@/components/rvcModel/modelCommentComponent.v
 import { getRootComments, commentAdd } from '@/api/rvcModel/commentApi.ts'
 import { message } from '@/utils/message'
 import router from '@/router'
+// import {storage} from "@/utils/storage.ts";
+// import {UserInfoVO} from "@/api/user/userTypes.ts";
 const props = defineProps<{
     modelId: string
 }>()
+// let userProfile = ref<UserInfoVO>({
+//   avatar: '',
+//   birthday: '',
+//   description: '',
+//   fansNum: '',
+//   followNum: '',
+//   nickname: '',
+//   sex: '',
+//   uid: "",
+//   username: ""
+// })
 let sendCommentDialogVisible = ref(false)
 let comments = ref<ModelComment[]>([])
 let page = ref(1)
@@ -108,9 +121,146 @@ const getLength = function(str:string){
             </WaterFallComponent>
             <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>
         </div>
+
+
+
+<!--      <div class="comment">评论</div>-->
+<!--      <div class="post-page__post__commentBox">-->
+<!--        <div class="post-page__post__commentBox&#45;&#45;row1">-->
+<!--          <div class="post-page__post__commentBox&#45;&#45;row1&#45;&#45;login" v-if="storage.get<string>('token')">-->
+<!--            <img width="40" height="40" :src="userProfile.avatar!"-->
+<!--                 style="border-radius: 20px;margin-right: 20px;object-fit: cover;">-->
+<!--            <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">-->
+<!--            <div style="text-align: right;line-height: 40px;color: white;">-->
+<!--              <span>{{ getLength(inputContent) }}/300</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="post-page__post__commentBox&#45;&#45;row1&#45;&#45;noLogin" v-else>-->
+<!--            <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="post-page__post__commentBox&#45;&#45;row2">-->
+<!--          <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">-->
+<!--            <recordingComponnent></recordingComponnent>-->
+<!--          </div>-->
+<!--          <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')" @click="sendComment">发送</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div style="padding-bottom:50px;width:70%;position: relative;left: 50%;transform: translate(-50%);">-->
+<!--        <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)"></postPageCommentsView>-->
+<!--      </div>-->
     </div>
 </template>
 <style scoped>
+.comment {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 30px;
+  width: 70%;
+  line-height: 30px;
+  font-size: 30px;
+  text-align: left;
+  /* padding-left: 10px; */
+  font-weight: 700;
+  color: white;
+  font-family: 'ZCool';
+}
+
+.post-page__post__commentBox {
+  user-select: none;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  width: 70%;
+  height: 100px;
+  margin-top: 30px;
+  border-radius: 5px;
+  /* border: rgba(255, 255, 255, 0.2) 1px solid; */
+}
+.post-page__post__commentBox--row1 {
+  height: 50px;
+  width: 100%;
+}
+.post-page__post__commentBox--row1--login{
+  height: 50px;
+  width: 100%;
+  display: flex;
+}
+.post-page__post__commentBox--row1--login input {
+  width: calc(90% - 10px);
+  height: 30px;
+  border-radius: 5px;
+  border: rgba(255, 255, 255, 0.2) 1px solid;
+  resize: none;
+  outline: none;
+  background-color: rgba(26, 27, 30);
+  transition: all 0.2s;
+  padding: 5px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+.post-page__post__commentBox--row1--login input::placeholder{
+  font-family: 'ZCool';
+}
+.post-page__post__commentBox--row1--noLogin{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26,45,63);
+  line-height: 50px;
+  text-align: center;
+  color: white;
+  font-family: 'ZCool';
+  font-size: 14px;
+}
+.post-page__post__commentBox--row1 textarea:hover {
+  border: rgba(255, 255, 255, 0.4) 1px solid;
+}
+
+.post-page__post__commentBox--row1 textarea:focus {
+  border: #fb7299 1px solid;
+}
+
+.post-page__post__commentBox--row2 {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 40px;
+  width: 90%;
+  margin-top: 5px;
+  display: flex;
+  justify-content: right;
+}
+
+.post-page__post__commentBox--row2 button {
+  /* position: absolute; */
+  /* right: 10px; */
+  bottom: 0;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(25, 113, 194);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .model-comments {
     width: 100%;
     background-color: rgba(26, 27, 30);

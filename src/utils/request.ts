@@ -7,9 +7,8 @@
 import axios from 'axios'
 import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
-// import router from '@/router/index.ts'
+import router from '@/router/index.ts'
 import { message } from './message'
-// import router from '@/router'
 
 
 const request = axios.create({
@@ -22,18 +21,16 @@ request.interceptors.request.use(
   (config: InternalAxiosRequestConfig<any> ) => {
     // 从storage中获取token
     const token = storage.get<string>('token')
-    // const uid = storage.get<string>('uid')
+    const uid = storage.get<string>('uid')
     // const username = storage.get<string>('username')
     console.log(token)
-    if (token!='') {
       // 将token添加到请求头中
-      config.headers.token = token
-      // config.headers.uid = uid
-      // config.headers.useranme = username
-    }
-    // if(uid!=''){
-    //   config.headers.uid = uid
-    // }
+      if(token != ""){
+          config.headers.token = token
+      }
+      if(uid != ""){
+          config.headers.uid = uid
+      }
     console.log(config)
     return config
   },
@@ -54,10 +51,6 @@ request.interceptors.response.use(
     // 对响应数据进行处理，例如检查统一的字段（如 statusCode)
     if (res.status == 200) {
       return Promise.resolve(res.data)
-    }else if(res.status == 401){
-      storage.remove('token')
-      storage.remove('uid')
-      return Promise.reject(res)
     } else {
       message.error(res.data.message)
       return Promise.reject(res)
@@ -66,7 +59,7 @@ request.interceptors.response.use(
   error => {
     const statusTextMap: Record<number, string> = {
       400: '发出的请求有错误，服务器没有进行新建或修改数据的操作',
-      401: '用户未登录',
+      401: '登录失效，请重新登录',
       403: '用户得到授权，但是访问是被禁止的',
       404: '网络请求不存在',
       406: '请求的格式不可得',
@@ -82,17 +75,14 @@ request.interceptors.response.use(
       const statusText = statusTextMap[error.response.status] ?? '其他错误'
       message.error(`${statusText}(${error.response.status})`)
       if (error.response.status === 401) {
-        // router.replace({
-        //   path: '/Login'
-        // })
-        storage.remove('token')
-      storage.remove('uid')
+        router.replace({
+          path: '/Login'
+        })
       }
       return Promise.reject(error)
     }
     return Promise.reject(new Error('网络请求失败，请稍后重试'))
   }
-
 )
 
 export default request

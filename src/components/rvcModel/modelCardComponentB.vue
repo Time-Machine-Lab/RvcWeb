@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { RvcModelVo, FavoriteAndCollectionForm } from '@/api/rvcModel/modelType'
-import { favoriteModel, collectModel } from '@/api/rvcModel/modelApi'
+import {favoriteModel, collectModel, delModel} from '@/api/rvcModel/modelApi'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
+import {storage} from "@/utils/storage.ts";
+import router from "@/router";
 let props = defineProps<{
     model: RvcModelVo
 }>()
 let localModel = ref<RvcModelVo>(props.model)
-let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 let clickMore = ref(false)
 let moreVisibility = ref(false)
@@ -24,10 +25,7 @@ const handleBlur = function () {
     }, 200)
 }
 const collect = function () {
-    if (!collectDisabled.value){
-        message.warning('请稍后再试')    
-        return
-    }
+    if (!collectDisabled.value) return
     collectDisabled.value = false
     setTimeout(function () {
         collectDisabled.value = true
@@ -35,15 +33,14 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isCollection == 'true' ? '1' : '0'
+        status: localModel.value.isCollection ? '1' : '0'
     }
     collectModel(form).then((res:any) => {
         if (res.code == 200) {
-            localModel.value.isCollection = localModel.value.isCollection == 'true'?'false':'true'
+            localModel.value.isCollection = localModel.value.isCollection == '0'?'1':'0'
             let num:number = Number(localModel.value.collectionNum)
-            num += localModel.value.isCollection=='true'?1:-1
+            num += localModel.value.isCollection=='0'?1:-1
             localModel.value.collectionNum = String(num)
-            message.success((localModel.value.isCollection=='true'?'':'取消')+'收藏成功')
         }
         else{
             message.error('收藏失败，请稍后再试')
@@ -51,33 +48,40 @@ const collect = function () {
         
     })
 }
-const like = function () {
-    if (!likeDisabled.value){
-        message.warning('请稍后再试')    
-        return
+let isLike = ref("")
+isLike.value = localModel.value.isLike
+const like = () => {
+  let form = <FavoriteAndCollectionForm>{
+    modelId: localModel.value.id,
+    status: '0'
+  }
+  if (isLike.value == "true"){
+    isLike.value = "false"
+    localModel.value.isLike = "false"
+    form.status = '1'
+  }
+  else if (isLike.value == "false"){
+    isLike.value = "true"
+    localModel.value.isLike = "true"
+    form.status = '0'
+  }
+  favoriteModel(form).then((res: any) => {
+    if (res.code == 200) {
+      message.success('操作成功')
+    } else {
+      message.error('操作失败')
     }
-    likeDisabled.value = false
-    setTimeout(function () {
-        likeDisabled.value = true
+  })
+}
+const modelDeleteFunc = function () {
+  delModel(localModel.value.id).then((res: any) => {
+    if (res.code == 200) {
+      message.success('删除成功')
     }
-        , 2000)
-    let form = <FavoriteAndCollectionForm>{
-        modelId: (localModel.value.id as unknown as string),
-        status: localModel.value.isLike == 'true' ? '1' : '0'
-    }
-    favoriteModel(form).then((res:any) => {
-        if (res.code == 200) {
-            localModel.value.isLike = localModel.value.isLike == 'true'?'false':'true'
-            let num:number = Number(localModel.value.likesNum)
-            num += localModel.value.isLike == 'true'?1:-1
-            localModel.value.likesNum = String(num)
-            message.success((localModel.value.isLike == 'true'?'':'取消')+'点赞成功')
-        }
-        else{
-            message.error('点赞失败，请稍后再试')
-        }
-
-    })
+  })
+}
+const editModel = function () {
+  router.push('/editModel?id=' + localModel.value.id)
 }
 </script>
 <template>
@@ -91,18 +95,21 @@ const like = function () {
             </div>
         </div>
         <div class="more-window" v-show="moreVisibility">
-            <div class="more-window__item" @click="message.warning('开发中')">
+            <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
+            </div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid"
+                 @click="modelDeleteFunc">
+              删除贴子
+            </div>
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid" @click="editModel">
+              编辑贴子
             </div>
         </div>
         <div class="post-card__user">
             <div class="user-info" @click="$router.push('/user?id=' + localModel.uid)">
-
-                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localModel.avatar + ')' }">
-
-                </div>
+                <div class="user-info__avatar" :style="{ backgroundImage: 'url(' + localModel.avatar + ')' }"></div>
                 <div class="user-info__text">
-
                     <div class="user-info__text__usename">
                         {{ localModel.nickname }}
                     </div>
@@ -128,13 +135,13 @@ const like = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isCollection == 'true' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: localModel.isCollection ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>
                 <div class="other-info__stats__item" @click="like()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: localModel.isLike == 'true' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: isLike == 'true' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ localModel.likesNum }}</span>
                 </div>
@@ -168,28 +175,6 @@ const like = function () {
     transition: all 0.5s;
     scale: 1.02;
 }
-.tag {
-    padding: 0 15px;
-    height: 25px;
-    line-height: 25px;
-    position: absolute;
-    left: 10px;
-    top: 70px;
-    font-size: 12px;
-    border-radius: 15px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    z-index: 30;
-    font-family: 'ZCool';
-}
-.more {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 20px;
-    right: 10px;
-    z-index: 20;
-}
 
 .more-window {
     position: absolute;
@@ -212,7 +197,7 @@ const like = function () {
     font-size: 14px;
     text-align: left;
     border-radius: 5px;
-    font-family: 'ZCool';
+
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -277,7 +262,6 @@ const like = function () {
     font-size: 16px;
     text-align: left;
     z-index: 1;
-    font-family: 'ZCool';
 }
 
 
@@ -318,7 +302,6 @@ const like = function () {
     color: rgba(255, 255, 255, 1);
     font-size: 16px;
     text-align: left;
-    font-family: 'ZCool';
 }
 
 .user-info__text__creatAt {
@@ -330,7 +313,7 @@ const like = function () {
     color: rgba(255, 255, 255, 0.6);
     z-index: 1;
     text-align: left;
-    font-family: 'ZCool';
+
 }
 
 
@@ -366,8 +349,16 @@ const like = function () {
     line-height: 16px;
     font-size: 14px;
     margin-left: 4px;
-    font-family: 'ZCool';
     color: rgba(255, 255, 255, 0.7);
+}
+
+.more {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 20px;
+    right: 10px;
+    z-index: 20;
 }
 
 .dither-animation {

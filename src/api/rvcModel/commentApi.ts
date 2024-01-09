@@ -10,7 +10,7 @@ export function commentAdd(form:CommentAddForm){
         data:form
     })
 }
-// 点赞取消点赞模型
+// 点赞取消点赞模型 √
 export function likeComments(form:LikeCommentForm){
     return request({
         url:'/model/comment/likes',
