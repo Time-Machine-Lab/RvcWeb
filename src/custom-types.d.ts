@@ -18,3 +18,4 @@ declare module '@wangeditor/editor' {
         children: SlateDescendant[]
     }
 }
+declare module 'lamejs' {}

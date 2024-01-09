@@ -73,7 +73,7 @@ export default {
             <div class="controls-button" @click="togglePlayPause">
                 <img width="24" height="24" :src="isPlaying ? '/icon/pause.svg' : '/icon/play-fill.svg'">
             </div>
-            <input type="range" v-model="currentTime" :max="duration" @input="seek">
+            <!-- <input type="range" v-model="currentTime" :max="duration" @input="seek"> -->
             <span style="line-height: 28px;">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
         </div>
     </div>
@@ -83,14 +83,12 @@ export default {
 <style scoped>
 .audio-player {
     position: relative;
-    left: 50%;
-    transform: translate(-50%);
     width: 80%;
 }
 
 .controls {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     width: 100%;
 }
 
