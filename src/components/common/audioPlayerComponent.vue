@@ -4,7 +4,7 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\components\common\audioPlayerComponent.vue
 -->
-<script>
+<script lang="ts">
 export default {
     data() {
         return {
@@ -15,7 +15,7 @@ export default {
     },
     computed: {
         audioPlayer() {
-            return this.$refs.audioPlayer;
+            return this.$refs.audioPlayer as any;
         },
     },
     props: {
@@ -32,7 +32,7 @@ export default {
             }
             this.isPlaying = !this.isPlaying;
         },
-        updateProgress(e) {
+        updateProgress(e:any) {
             var target = e.target
             if (!Number.isFinite(target.duration)) {
                 target.currentTime = Number.MAX_SAFE_INTEGER;
@@ -50,7 +50,7 @@ export default {
             this.isPlaying = false;
             this.currentTime = 0;
         },
-        formatTime(seconds) {
+        formatTime(seconds:number) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.floor(seconds % 60);
             return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
