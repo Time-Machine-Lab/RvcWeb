@@ -45,9 +45,6 @@ getPostType().then((res: any) => {
 const load = function () {
     // if(disabled.value)return
     disabled.value = true
-    // setTimeout(function(){
-    //     disabled.value = false
-    // },5000)
     getPosts(form.value).then((res: any) => {
         if (res.code == 200) {
             let data = ref<PostVo[]>(res.data)

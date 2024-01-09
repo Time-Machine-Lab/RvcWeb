@@ -9,7 +9,7 @@ import {
     FavoriteAndCollectionForm,
     GetLabelForm,
     ModelAddForm,
-    ModelListForm,
+    ModelListForm, ModelListType,
 } from '@/api/rvcModel/modelType'
 // 获取所有模型列表并按规则排序
 export function getModels (form:ModelListForm) {
@@ -20,16 +20,11 @@ export function getModels (form:ModelListForm) {
     })
 }
 // 根据type(AI_Type)获取模型列表
-export function getModelsByType(page: number,limit:number,sortType:string,typeId:string) {
+export function getModelsByType(form:ModelListType) {
     return request({
         url: "/model/listByType",
         method: "get",
-        params: {
-            page,
-            limit,
-            sortType,
-            typeId
-        },
+        params: form
     });
 }
 // 获取指定模型详细信息
@@ -51,7 +46,7 @@ export function getModelLabel(form:GetLabelForm){
     })
 }
 // 获取模型类型
-export function getType(){
+export function getModelType(){
     return request({
         url:'/model/model/type',
         method:'get'
@@ -74,11 +69,11 @@ export function postUpdate(id:string) {
     });
 }
 // 删除用户创建的模型
-export function delModel(label:string) {
+export function delModel(id:string) {
     return request({
         url: "/model/delModel",
         method: "post",
-        params: {label}
+        params: {id}
     });
 }
 // 新增模型接口

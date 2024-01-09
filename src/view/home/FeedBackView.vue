@@ -179,7 +179,7 @@ onMounted(() => {
                     <p>{{item.typeName}}</p>
                   </div>
                   <h3 style="margin-top:10px">{{item.title}}</h3>
-                  <div class="invitation__text">{{item.content}}</div>
+                  <div class="invitation__text" v-html="item.content"></div>
                 </div>
                 <!--帖子底部信息-->
                 <div class="invitation__message flex">
