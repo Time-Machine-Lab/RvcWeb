@@ -5,14 +5,14 @@
  * @FilePath: \RvcWeb\src\view\user\info\pages\followUser.vue
 -->
 <script setup lang="ts">
-import { OtherUser } from '@/api/user/userTypes'
+import { UserInfoVO } from '@/api/user/userTypes'
 import FollowUserCard from "@/components/user/followUserCardComponent.vue";
 import { getFollowUsers } from "@/api/user/userApi";
 import router from "@/router/index.ts";
 import { ref } from "vue";
 import { storage } from '@/utils/storage';
 import { message } from '@/utils/message';
-let followUsers = ref<OtherUser[]>();
+let followUsers = ref<UserInfoVO[]>();
 if ((router.currentRoute.value.query.id as string) == storage.get<string>('uid')) {
   getFollowUsers().then((res:any) => {
     if(res.code==200){
@@ -37,7 +37,7 @@ const scroll = function () {
         style="overflow: auto"
       >
         <li v-for="(followUser, index) in followUsers" :key="index">
-          <FollowUserCard :followUser="followUser"></FollowUserCard>
+          <FollowUserCard :user="followUser"></FollowUserCard>
         </li>
       </ul>
     </el-scrollbar>

@@ -22,9 +22,11 @@ let page = ref(1)
 let form = ref<PostListForm>({
     data: '1',
     page: '1',
-    limit: '5',
+    limit: '10',
     tagId: ''
 })
+let disabled = ref(false)
+
 getPostType().then((res: any) => {
     if (res.code == 200) {
         let data = ref<RvcCommunicationPostType[]>(res.data)
@@ -39,7 +41,9 @@ getPostType().then((res: any) => {
     }
 
 })
+
 const load = function () {
+    // if(disabled.value)return
     disabled.value = true
     // setTimeout(function(){
     //     disabled.value = false
@@ -49,7 +53,7 @@ const load = function () {
             let data = ref<PostVo[]>(res.data)
             if (data.value.length == 0) {
                 disabled.value = true
-                message.warning('没有更多数据了')
+                message.warning('已经滑倒底部了')
                 return
             }
             for (let i = 0; i < data.value.length; i++) {
@@ -64,6 +68,7 @@ const load = function () {
 
     })
 }
+load()
 const getTag = function (index: number) {
     if (index == -1) {
         form.value.tagId = ''
@@ -87,7 +92,6 @@ const getSort = function (index: number) {
 //     console.log('load');
 
 // }
-let disabled = ref(false)
 </script>
 <template>
     <div class="communicationView">
@@ -99,7 +103,7 @@ let disabled = ref(false)
             <el-empty :image-size="200" v-if="posts?.length == 0" style="font-family: 'ZCool';" description="这里空空如也~"
                 image="/icon/empty.svg" />
             <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
+                :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
                 <postCardComponentB  v-for="(post, index) in posts" :post="post" :key="index"></postCardComponentB>
             </waterFallComponent>
         </div>

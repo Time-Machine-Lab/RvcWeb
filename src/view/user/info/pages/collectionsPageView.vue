@@ -78,7 +78,8 @@ const loadModel = function () {
     disabled.value = true
     modelForm = ref<UserLikeModelForm>({
         limit: '10',
-        page: page.value as unknown as string
+        page: page.value as unknown as string,
+        order: '3'
     })
     getUserCollectModels(modelForm.value).then((res: any) => {
         if (res.code == 200) {
@@ -167,6 +168,7 @@ const loadModel = function () {
     transition: all 0.3s;
     /* text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1); */
     user-select: none;
+    font-family: 'ZCool';
 }
 
 .like-pages__filter__select:hover {
@@ -190,7 +192,6 @@ const loadModel = function () {
     background-color: rgba(37, 38, 43);
     padding: 5px;
     z-index: 30;
-
     user-select: none;
 }
 
@@ -203,6 +204,7 @@ const loadModel = function () {
     text-align: left;
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.7);
+    font-family: 'ZCool';
 }
 
 .select-window__item:hover {

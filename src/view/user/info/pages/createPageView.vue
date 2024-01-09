@@ -23,8 +23,9 @@ let postForm = ref<UserCreatePostForm>({
     page: page.value as unknown as string
 })
 let modelForm = ref<UserCreateModelForm>({
-    page: page.value as unknown as string,
-    limit: '10'
+page: page.value as unknown as string,
+limit: '10',
+order: '3'
 })
 const handleClickSelect = function () {
     clickSelect.value = true
@@ -79,7 +80,8 @@ const loadModel = function(){
     disabled.value = true
     modelForm = ref<UserCreateModelForm>({
         limit: '10',
-        page: page.value as unknown as string
+        page: page.value as unknown as string,
+        order: '3'
     })
     getUserCreateModels(modelForm.value).then((res:any)=>{
         if (res.code == 200) {
@@ -168,6 +170,7 @@ const loadModel = function(){
     transition: all 0.3s;
     /* text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1); */
     user-select: none;
+    font-family: 'ZCool';
 }
 
 .create-pages__filter__select:hover {
@@ -202,6 +205,7 @@ const loadModel = function(){
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
+    font-family: 'ZCool';
 }
 
 .select-window__item:hover {

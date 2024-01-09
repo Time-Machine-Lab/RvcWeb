@@ -183,10 +183,11 @@ const profileHasChanged = function () {
 
 .edit-profile-container .header .title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.6);
   line-height: 40px;
   float: left;
+  font-family: 'ZCool';
 }
 
 .edit-profile-container .header .button {
@@ -198,11 +199,12 @@ const profileHasChanged = function () {
   border-radius: 20px;
   line-height: 40px;
   color: rgba(255, 255, 255, 1);
-  font-size: 16px;
+  font-size: 18px;
   user-select: none;
   margin-right: 10px;
   top: 50%;
   transform: translate(0, -50%);
+  font-family: 'ZCool';
 }
 .edit-profile-container .header .button:hover{
   background-color: rgba(24,100,171);
@@ -221,6 +223,7 @@ const profileHasChanged = function () {
   width: 178px;
   height: 178px;
   display: block;
+  object-fit: cover;
 }
 
 .content .row {
@@ -250,9 +253,10 @@ const profileHasChanged = function () {
   display: block;
   width: 100%;
   color: rgba(255, 255, 255, 0.5);
-  font-weight: 700;
+  font-weight: 400;
   text-align: left;
   margin-bottom: 5px;
+  font-family: 'ZCool';
 }
 
 :deep(.avatar-uploader .el-upload) {

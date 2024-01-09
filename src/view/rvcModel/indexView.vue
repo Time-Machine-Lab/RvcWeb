@@ -19,6 +19,8 @@ let form = ref<ModelListForm>({
     page: '1',
     size: '5',
 })
+let disabled = ref(false)
+
 // getModelLabel(form.value).then((res: any) => {
 //     if (res.code == 200) {
 //         let data = ref<RvcCommunicationPostType[]>(res.data)
@@ -47,7 +49,7 @@ const load = function () {
             let data = res.data.records
             if (data.length == 0) {
                 disabled.value = true
-                message.warning('没有更多数据了')
+                message.warning('已经滑倒底部了')
                 return
             }
             for (let i = 0; i < data.length; i++) {
@@ -62,12 +64,11 @@ const load = function () {
 
     })
 }
-
+load()
 // const load = function () {
 //     console.log('load');
 
 // }
-let disabled = ref(false)
 </script>
 <template>
     <div class="modellistView">

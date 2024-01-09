@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { message } from '@/utils/message';
 import { ref } from 'vue';
 let searchType = ref(["模型", "用户", "贴子"])
 let currentTypeIndex = ref(0)
@@ -24,11 +25,11 @@ const handleBlur = function () {
                 @click="currentTypeIndex = index; searchSelectVisibility = false">{{ method }}
             </div>
         </div>
-        <div class="search-box__input">
-            <input :placeholder="'搜索'+searchType[currentTypeIndex]" class="input">
+        <div class="search-box__input" >
+            <input :placeholder="'搜索'+searchType[currentTypeIndex]"  disabled class="input">
         </div>
         <div class="search-box__button">
-            <img class="vh-center" src="/icon/search.svg">
+            <img class="vh-center" @click="message.warning('开发中')" src="/icon/search.svg">
         </div>
 
     </div>
@@ -45,6 +46,7 @@ const handleBlur = function () {
     background-color: rgba(52, 58, 64);
     display: flex;
     user-select: none;
+    font-family: 'ZCool';
 }
 
 .search-box__select {
@@ -91,6 +93,12 @@ const handleBlur = function () {
     color: white;
     outline: none;
     border: none;
+}
+input:hover{
+    cursor:not-allowed
+}
+.input::placeholder{
+    font-family: 'ZCool';
 }
 
 .input:focus {

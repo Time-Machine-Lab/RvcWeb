@@ -79,7 +79,7 @@ const getChildCommentsFunc = function (index: number) {
             <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
                 <commentComponent :show-reply="showReply" :index="-1" :comment="childComment"></commentComponent>
             </div>
-            <div style="color: white;cursor:pointer;font-size: 14px;text-align: center;"
+            <div style="color: white;cursor:pointer;font-size: 14px;text-align: center;font-family: 'ZCool';"
                 @click="getChildCommentsFunc(index)" v-show="showChildComments[index] && hasChildComments[index]">加载更多</div>
         </div>
     </div>

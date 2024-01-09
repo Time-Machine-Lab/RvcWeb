@@ -185,8 +185,9 @@ export type UserLikeModelForm = {
   [property: string]: any;
 }
 export type UserCreateModelForm = {
-  page?: string;
-  limit?: string;
+  page: string;
+  limit: string;
+  order:string
 }
 export type UserCollectModelForm = {
   [property: string]: any;

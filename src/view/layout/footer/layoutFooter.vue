@@ -1,6 +1,6 @@
 <template>
   <footer class="footer2-wrap" :class="{ hidden: y > 10 }">
-    <div class="footer-copy">© RVC 2023</div>
+    <div class="footer-copy">© RVC 2024</div>
     <div class="footer-center">
       <a class="mantine-1innaxq" type="button" data-button="true" href="/join-us">
         <div class="mantine-3xbgk5 mantine-Button-inner">

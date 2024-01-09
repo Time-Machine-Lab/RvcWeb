@@ -9,7 +9,7 @@ import {storage} from './storage'
 import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
 // import router from '@/router/index.ts'
 import { message } from './message'
-import router from '@/router'
+// import router from '@/router'
 
 
 const request = axios.create({
@@ -66,7 +66,7 @@ request.interceptors.response.use(
   error => {
     const statusTextMap: Record<number, string> = {
       400: '发出的请求有错误，服务器没有进行新建或修改数据的操作',
-      401: '登录失效，请重新登录',
+      401: '用户未登录',
       403: '用户得到授权，但是访问是被禁止的',
       404: '网络请求不存在',
       406: '请求的格式不可得',
@@ -82,9 +82,9 @@ request.interceptors.response.use(
       const statusText = statusTextMap[error.response.status] ?? '其他错误'
       message.error(`${statusText}(${error.response.status})`)
       if (error.response.status === 401) {
-        router.replace({
-          path: '/Login'
-        })
+        // router.replace({
+        //   path: '/Login'
+        // })
         storage.remove('token')
       storage.remove('uid')
       }

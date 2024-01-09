@@ -180,7 +180,17 @@ const like = function () {
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
     z-index: 30;
+    font-family: 'ZCool';
 }
+.more {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 20px;
+    right: 10px;
+    z-index: 20;
+}
+
 .more-window {
     position: absolute;
     right: 40px;
@@ -202,7 +212,7 @@ const like = function () {
     font-size: 14px;
     text-align: left;
     border-radius: 5px;
-
+    font-family: 'ZCool';
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -267,6 +277,7 @@ const like = function () {
     font-size: 16px;
     text-align: left;
     z-index: 1;
+    font-family: 'ZCool';
 }
 
 
@@ -307,6 +318,7 @@ const like = function () {
     color: rgba(255, 255, 255, 1);
     font-size: 16px;
     text-align: left;
+    font-family: 'ZCool';
 }
 
 .user-info__text__creatAt {
@@ -318,7 +330,7 @@ const like = function () {
     color: rgba(255, 255, 255, 0.6);
     z-index: 1;
     text-align: left;
-
+    font-family: 'ZCool';
 }
 
 
@@ -354,16 +366,8 @@ const like = function () {
     line-height: 16px;
     font-size: 14px;
     margin-left: 4px;
+    font-family: 'ZCool';
     color: rgba(255, 255, 255, 0.7);
-}
-
-.more {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 20px;
-    right: 10px;
-    z-index: 20;
 }
 
 .dither-animation {

@@ -159,6 +159,7 @@ const logoutFunc = function () {
     border-radius: 5px;
     text-align: left;
     color: rgba(255, 255, 255, 0.7);
+    font-family: 'ZCool';
 }
 
 .user-more__item:hover {

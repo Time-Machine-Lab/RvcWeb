@@ -6,6 +6,7 @@
 -->
 <script lang="ts" setup>
 import router from "@/router/index.ts";
+import { storage } from "@/utils/storage";
 // import { storage } from "@/utils/storage";
 import BaseInfo from "@/view/user/info/pages/baseInfo.vue";
 import { useUserStore } from "@/view/user/info/userStore.js";
@@ -27,7 +28,7 @@ setTimeout(function () {
     </div>
     <div class="other-info-container">
       <div class="router-link-container">
-        <!-- <div class="user-home__link__item" :style="{
+        <div class="user-home__link__item" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/followUser' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/followUser' ? '2px 2px 1px 1px black' : ''
         }">
@@ -39,8 +40,8 @@ setTimeout(function () {
             </span>
             <span>关注</span>
           </router-link>
-        </div> -->
-        <div class="user-home__link__item" :style="{
+        </div>
+        <div class="user-home__link__item" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/likes' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/likes' ? '2px 2px 1px 1px black' : ''
         }">
@@ -53,7 +54,7 @@ setTimeout(function () {
             <span>喜欢</span>
           </router-link>
         </div>
-        <div class="user-home__link__item" :style="{
+        <div class="user-home__link__item" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/collections' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/collections' ? '2px 2px 1px 1px black' : ''
         }">
@@ -66,7 +67,7 @@ setTimeout(function () {
             <span>收藏</span>
           </router-link>
         </div>
-        <div class="user-home__link__item" :style="{
+        <div class="user-home__link__item" v-if="router.currentRoute.value.query.id == storage.get<string>('uid')" :style="{
           backgroundColor: $router.currentRoute.value.path == '/user/create' ? 'rgba(255,255,255,0.1)' : 'transparent',
           boxShadow: $router.currentRoute.value.path == '/user/create' ? '2px 2px 1px 1px black' : ''
         }">
@@ -76,13 +77,13 @@ setTimeout(function () {
               :style="{ backgroundColor: $router.currentRoute.value.path == '/user/create' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
               <img width="12" height="12" src="/icon/upload.svg" class="vh-center">
             </span>
-            <span>我的</span>
+            <span>发布</span>
           </router-link>
         </div>
 
       </div>
       <div class="router-view-container">
-        <router-view></router-view>
+        <router-view v-if="router.currentRoute.value.query.id == storage.get<string>('uid')"></router-view>
       </div>
     </div>
   </div>
@@ -136,6 +137,7 @@ setTimeout(function () {
   margin-left: 5px;
   cursor: pointer;
   border-radius: 5px;
+  font-family: 'ZCool';
 }
 
 .user-home__link__item span {
@@ -149,7 +151,7 @@ setTimeout(function () {
   text-align: center;
   text-decoration: none;
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1);
-  font-family: '黑体';
+  font-family: 'ZCool';
 }
 
 .user-home__link__item span:hover {

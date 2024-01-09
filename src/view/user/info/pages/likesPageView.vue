@@ -22,7 +22,8 @@ let postForm = ref<UserLikePostForm>({
 })
 let modelForm = ref<UserLikeModelForm>({
     page: page.value as unknown as string,
-    limit: '10'
+    limit: '10',
+    order: '3'
 })
 let disabled = ref(false)
 const handleClickSelect = function () {
@@ -82,7 +83,8 @@ const loadModel = function () {
     disabled.value = true
     modelForm = ref<UserLikeModelForm>({
         limit: '10',
-        page: page.value as unknown as string
+        page: page.value as unknown as string,
+        order: '3'
     })
     getUserLikeModels(modelForm.value).then((res: any) => {
         if (res.code == 200) {
@@ -170,6 +172,7 @@ const loadModel = function () {
     transition: all 0.3s;
     /* text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1); */
     user-select: none;
+    font-family: 'ZCool';
 }
 
 .like-pages__filter__select:hover {
@@ -204,6 +207,7 @@ const loadModel = function () {
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
+    font-family: 'ZCool';
 }
 
 .select-window__item:hover {

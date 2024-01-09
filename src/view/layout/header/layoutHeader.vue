@@ -116,7 +116,7 @@ const handleBlur = function () {
           <!-- <div class="bell__point"></div> -->
           <img src="/icon/bell.svg" width="25" height="25">
         </div>
-        <div class="msg-window" v-show="msgVisibility">
+        <div class="msg-window" style="z-index: 20;" v-show="msgVisibility">
           <div class="msg-window__title">
             <span>通知</span>
           </div>
@@ -146,6 +146,7 @@ const handleBlur = function () {
   height: 100%;
   background-color: rgba(26, 27, 30);
   display: flex;
+  z-index: 20;
   border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
 }
 .logo {
@@ -200,7 +201,7 @@ const handleBlur = function () {
   text-align: center;
   text-decoration: none;
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1);
-  font-family: '黑体';
+  font-family: 'ZCool';
 }
 
 .header__link__item span:hover {
@@ -239,7 +240,6 @@ const handleBlur = function () {
   border-radius: 5px;
   border: rgba(55, 58, 64) 1px solid;
   background-color: rgba(37, 38, 43);
-  z-index: 10;
   user-select: none;
 }
 
@@ -251,6 +251,7 @@ const handleBlur = function () {
   text-align: left;
   color: rgba(255, 255, 255, 0.7);
   line-height: 45px;
+  font-family: 'ZCool';
 }
 
 .msg-window__title span {
@@ -274,6 +275,7 @@ const handleBlur = function () {
   border-radius: 10px;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  font-family: 'ZCool';
 }
 
 .msg-window__content__item:hover {

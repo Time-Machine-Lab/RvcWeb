@@ -9,12 +9,12 @@ import editProfile from "@/view/user/info/pages/editProfile.vue";
 import { UserInfoVO } from "@/api/user/userTypes";
 import { ref } from "vue";
 import { getUserInfoById,followUser } from "@/api/user/userApi.js";
-import { useUserStore } from "@/view/user/info/userStore.js";
+// import { useUserStore } from "@/view/user/info/userStore.js";
 
 import router from "@/router/index.ts";
 import { storage } from "@/utils/storage";
 import { message } from "@/utils/message";
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 let hasFollow = ref(false);
 const loaded = ref(true);
@@ -30,7 +30,15 @@ const open = () => {
   drawer.value = true;
 };
 let userProfile = ref<UserInfoVO>({
-
+avatar: '',
+birthday: '',
+description: '',
+fansNum: '',
+followNum: '',
+nickname: '',
+sex: '',
+uid: "",
+username: ""
 });
 
 const follow = function () {
@@ -54,38 +62,19 @@ const follow = function () {
 };
 
 setTimeout(function () {
-  if (
-    (router.currentRoute.value.query.id as string) == storage.get<string>('uid') ||
-    router.currentRoute.value.query.id == undefined
-  ) {
-    userProfile.value = userStore.getProfile;
-    router.currentRoute.value.query.id = userProfile.value.uid!
-    console.log(userProfile.value.uid);
-    loaded.value = false;
-
-    figures.value = [
-      {
-        desc: "粉丝",
-        number: userStore.getProfile.fansNum!,
-      },
-      {
-        desc: "关注",
-        number: userStore.getProfile.followNum!,
-      },
-    ];
-  } else {
     getUserInfoById(router.currentRoute.value.query.id as string).then((res: any) => {
       if (res.code == 200) {
         userProfile.value = res.data.userInfo
         hasFollow.value = res.data.follow
+        loaded.value = false
         figures.value = [
           {
             desc: "粉丝",
-            number: res.data.fansNum,
+            number: userProfile.value.fansNum,
           },
           {
             desc: "关注",
-            number: res.data.followNum,
+            number: userProfile.value.followNum,
           },
         ];
       } else {
@@ -93,7 +82,6 @@ setTimeout(function () {
       }
     },
     );
-  }
 }, 300);
 </script>
 <template>
@@ -209,9 +197,10 @@ setTimeout(function () {
   line-height: 40px;
   font-size: 16px;
   color: white;
-  font-weight: 700;
+  font-weight: 400;
   cursor: pointer;
   user-select: none;
+  font-family: 'ZCool';
 }
 
 .button-container .greybutton {
@@ -252,6 +241,7 @@ setTimeout(function () {
 .figures-container .figures {
   height: 50px;
   padding: 0 15px;
+  font-family: 'ZCool';
 }
 
 .figures-container .figures .number {

@@ -19,11 +19,21 @@ import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
 import { message } from "@/utils/message";
 // import { storage } from "@/utils/storage";
 import { UserInfoVO } from '@/api/user/userTypes';
-import {storage} from "@/utils/storage.ts";
+import { storage } from "@/utils/storage.ts";
 // import { useUserStore } from '@/view/user/info/userStore.js'
 // const userStore = useUserStore()
 // let userProfile = userStore.getProfile
-let user = ref<UserInfoVO>({})
+let user = ref<UserInfoVO>({
+    avatar: '',
+    birthday: '',
+    description: '',
+    fansNum: '',
+    followNum: '',
+    nickname: '',
+    sex: '',
+    uid: '',
+    username: ''
+})
 let isLike = ref("")
 getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) => {
     if (res.code == 200) {
@@ -32,9 +42,16 @@ getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) 
         user.value = {
             avatar: localModel.value.avatar,
             nickname: localModel.value.nickname,
+            birthday: '',
+            description: '',
+            fansNum: '',
+            followNum: '',
+            sex: '',
+            uid: '',
+            username: ''
         }
-        if(user.value.nickname == null){
-          user.value.nickname = "匿名"
+        if (user.value.nickname == null) {
+            user.value.nickname = "匿名"
         }
     }
 })
@@ -96,28 +113,28 @@ const collect = function () {
     })
 }
 const like = () => {
-  let form = <FavoriteAndCollectionForm>{
-    modelId: (router.currentRoute.value.query.id as string),
-    status: '0'
-  }
-  if (isLike.value == "true"){
-    isLike.value = "false"
-    localModel.value.isLike = "false"
-    form.status = '1'
-  }
-  else if (isLike.value == "false"){
-    isLike.value = "true"
-    localModel.value.isLike = "true"
-    form.status = '0'
-  }
-  console.log(isLike.value)
-  favoriteModel(form).then((res: any) => {
-      if (res.code == 200) {
-          message.success('操作成功')
-      } else {
-          message.error('操作失败')
-      }
-  })
+    let form = <FavoriteAndCollectionForm>{
+        modelId: (router.currentRoute.value.query.id as string),
+        status: '0'
+    }
+    if (isLike.value == "true") {
+        isLike.value = "false"
+        localModel.value.isLike = "false"
+        form.status = '1'
+    }
+    else if (isLike.value == "false") {
+        isLike.value = "true"
+        localModel.value.isLike = "true"
+        form.status = '0'
+    }
+    console.log(isLike.value)
+    favoriteModel(form).then((res: any) => {
+        if (res.code == 200) {
+            message.success('操作成功')
+        } else {
+            message.error('操作失败')
+        }
+    })
 }
 const calcNum = function (num: number) {
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
@@ -135,11 +152,11 @@ const handleClickDetails = function () {
 calcNum(1000)
 const getModelFilesFunc = function () {
     modelFilesvisibility.value = false
-    setTimeout(function(){
+    setTimeout(function () {
         modelFilesvisibility.value = true
-    },1000)
-    if(fileList.value.length !=0)return
-    
+    }, 1000)
+    if (fileList.value.length != 0) return
+
     getModelFiles((router.currentRoute.value.query.id as string)).then((res: any) => {
         if (res.code == 200) {
             let data = res.data
@@ -199,16 +216,16 @@ const getModelFilesFunc = function () {
                     <span>{{ label }}</span>
                 </div>
             </div>
-            <div class="model-content model-page__model__content" >
-              <a href="localModel?.description" target="_blank">
-                <img :src=localModel.picture>
-              </a>
+            <div class="model-content model-page__model__content">
+                <a href="localModel?.description" target="_blank">
+                    <img :src=localModel.picture>
+                </a>
             </div>
 
         </div>
         <div class="model-page__sidebar">
             <div class="button-group">
-                <div class="button-group__item"  @click="getModelFilesFunc">
+                <div class="button-group__item" @click="getModelFilesFunc">
                     <img class="vertical-center" src="/icon/download.svg" height="20" width="20">
                     <div class="button-group__item__msg">
                         下载模型
@@ -229,8 +246,8 @@ const getModelFilesFunc = function () {
 
                 </div>
                 <div class="button-group__item" @click="like">
-                    <img class="vertical-center"
-                        :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'" height="20" width="20">
+                    <img class="vertical-center" :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'"
+                        height="20" width="20">
                     <div class="button-group__item__msg">
                         喜欢
                     </div>
@@ -289,45 +306,45 @@ const getModelFilesFunc = function () {
                     </div>
                 </div>
             </div>
-<!--            <div class="details">-->
-<!--                <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">-->
-<!--                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">-->
-<!--                        <span>模型文件</span>-->
-<!--                        <span>-->
-<!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
-<!--                                :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
-<!--                        </span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="details-content" v-show="modelFilesvisibility">-->
-<!--                    <div class="details-content__item" v-for="(file,index) in fileList" :key="index">-->
-<!--                        <div class="details-content__item__label">-->
-<!--                            文件{{index + 1}}-->
-<!--                        </div>-->
-<!--                        <div class="details-content__item__value">-->
-<!--                            <span class="fileName vertical-center">-->
-<!--                                {{ file.fileName}}-->
-<!--                            </span>-->
-<!--                            <spna class="button vertical-center" @click="download(index)">-->
-<!--                                下载-->
-<!--                            </spna>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    -->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="details">-->
-<!--                <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">-->
-<!--                    <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">-->
-<!--                        <span>模型音频</span>-->
-<!--                        <span>-->
-<!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
-<!--                                :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
-<!--                        </span>-->
-<!--                    </div>-->
-<!--                </div>-->
+            <!--            <div class="details">-->
+            <!--                <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">-->
+            <!--                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">-->
+            <!--                        <span>模型文件</span>-->
+            <!--                        <span>-->
+            <!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
+            <!--                                :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
+            <!--                        </span>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="details-content" v-show="modelFilesvisibility">-->
+            <!--                    <div class="details-content__item" v-for="(file,index) in fileList" :key="index">-->
+            <!--                        <div class="details-content__item__label">-->
+            <!--                            文件{{index + 1}}-->
+            <!--                        </div>-->
+            <!--                        <div class="details-content__item__value">-->
+            <!--                            <span class="fileName vertical-center">-->
+            <!--                                {{ file.fileName}}-->
+            <!--                            </span>-->
+            <!--                            <spna class="button vertical-center" @click="download(index)">-->
+            <!--                                下载-->
+            <!--                            </spna>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                    -->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div class="details">-->
+            <!--                <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">-->
+            <!--                    <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">-->
+            <!--                        <span>模型音频</span>-->
+            <!--                        <span>-->
+            <!--                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"-->
+            <!--                                :class="audiosvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">-->
+            <!--                        </span>-->
+            <!--                    </div>-->
+            <!--                </div>-->
 
-<!--            </div>-->
+            <!--            </div>-->
             <div class="author-box">
                 <userCardComponent :user="user"></userCardComponent>
             </div>
@@ -451,12 +468,13 @@ const getModelFilesFunc = function () {
     width: calc(100% - 40px);
     padding: 10px;
     min-height: 600px;
+
     /* border-bottom: rgba(255, 255, 255, 0.2) 1px solid; */
-  img{
-    width:100%;
-    height:100%;
-    cursor: pointer;
-  }
+    img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
 }
 
 .model-page__model__info__createAt {
@@ -564,7 +582,8 @@ const getModelFilesFunc = function () {
     display: flex;
     justify-content: space-around;
 }
-.fileName{
+
+.fileName {
     position: relative;
     display: inline-block;
     height: 20px;
@@ -573,7 +592,8 @@ const getModelFilesFunc = function () {
     font-size: 12px;
     line-height: 20px;
 }
-.button{
+
+.button {
     position: relative;
     display: inline-block;
     height: 20px;
@@ -589,6 +609,7 @@ const getModelFilesFunc = function () {
 .button:hover {
     background-color: rgba(24, 100, 171);
 }
+
 .details-content__item__value--time {
     line-height: 40px;
     color: white;
@@ -631,5 +652,4 @@ const getModelFilesFunc = function () {
 .revolve-animation {
     transform: rotateZ(180deg);
     transform-origin: 6px 2px;
-}
-</style>
+}</style>

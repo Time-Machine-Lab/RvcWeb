@@ -18,9 +18,15 @@ let childComments = ref<ModelComment[]>([
 
 ])
 let user = ref<UserInfoVO>({
-    avatar: props.comment.picture,
-    nickname: props.comment.nickname,
-    description: props.comment.commentTime
+avatar: props.comment.picture,
+nickname: props.comment.nickname,
+description: props.comment.commentTime,
+birthday: '',
+fansNum: '',
+followNum: '',
+sex: '',
+uid: '',
+username: ''
 })
 let clickMore = ref(false)
 let dialogClickMore = ref(false)
@@ -163,11 +169,10 @@ const sendComment = function () {
                 <div style="display: flex;">
                     <img width="40" height="40" :src="userProfile.avatar!"
                         style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
-                    <input class="input" v-model="inputContent" maxlength="200">
+                    <input class="input" v-model="inputContent" maxlength="300">
                 </div>
                 <div style="text-align: right;">
-                    <span>{{ getLength(inputContent) }}/200</span>
-
+                    <span>{{ getLength(inputContent) }}/300</span>
                 </div>
                 <div class="button-group" v-show="inputContent != ''">
                     <span class="button-group__item" @click="sendComment">
