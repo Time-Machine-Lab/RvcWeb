@@ -24,7 +24,9 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then((res
     } else {
         message.error(res.msg)
     }
-    getH1()
+    setTimeout(()=>{
+        getH1()
+    },1000)
 })
 let userProfile = ref<UserInfoVO>({
     avatar: '',
@@ -90,7 +92,7 @@ let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
 const getH1 = function () {
-    H1Elements.value = document.querySelectorAll(".post-content h1")
+    H1Elements.value = document.querySelectorAll(".post-page__post__content h1")
     userProfile.value = userStore.getProfile
 }
 
@@ -116,7 +118,7 @@ const collect = function () {
         if (res.code == 200) {
             localPost.value.collect = !localPost.value.collect
             localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
-            message.success('')
+            message.success((localPost.value.collect?'':'取消')+'收藏成功')
         } else {
             message.error(res.msg)
         }
@@ -137,7 +139,7 @@ const like = function () {
         if (res.code == 200) {
             localPost.value.like = !localPost.value.like
             localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
-            message.success('')
+            message.success((localPost.value.like?'':'取消')+'点赞成功')
         } else {
             message.error(res.msg)
         }
@@ -358,6 +360,9 @@ const getLength = function (str: string) {
             </div>
         </div>
         <div class="post-page__post__commentBox--row2">
+            <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">
+                <recordingComponnent></recordingComponnent>
+            </div>
             <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')" @click="sendComment">发送</button>
         </div>
     </div>
@@ -700,11 +705,13 @@ const getLength = function (str: string) {
     height: 40px;
     width: 90%;
     margin-top: 5px;
+    display: flex;
+    justify-content: right;
 }
 
 .post-page__post__commentBox--row2 button {
-    position: absolute;
-    right: 10px;
+    /* position: absolute; */
+    /* right: 10px; */
     bottom: 0;
     height: 30px;
     line-height: 30px;
@@ -903,10 +910,11 @@ const getLength = function (str: string) {
     padding-left: 20PX;
     color: rgba(255, 255, 255, 0.8);
     user-select: none;
+    cursor: pointer;
 }
 
 .target-box__target:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(65,68,74);
 }
 
 .dither-animation {

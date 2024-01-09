@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AudioPlayerComponent: typeof import('./src/components/common/audioPlayerComponent.vue')['default']
     CardComponent: typeof import('./src/components/intro/CardComponent.vue')['default']
     CommentComponent: typeof import('./src/components/modelCommunication/commentComponent.vue')['default']
     CommentsComponent: typeof import('./src/components/modelCommunication/commentsComponent.vue')['default']
@@ -45,6 +46,8 @@ declare module 'vue' {
     NoticeBoardComponent: typeof import('./src/components/intro/NoticeBoardComponent.vue')['default']
     PostCardComponentA: typeof import('./src/components/modelCommunication/postCardComponentA.vue')['default']
     PostCardComponentB: typeof import('./src/components/modelCommunication/postCardComponentB.vue')['default']
+    RecordingComponnent: typeof import('./src/components/common/recordingComponnent.vue')['default']
+    RecordingComponnet: typeof import('./src/components/common/recordingComponnet.vue')['default']
     RegisterComponent: typeof import('./src/components/intro/RegisterComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

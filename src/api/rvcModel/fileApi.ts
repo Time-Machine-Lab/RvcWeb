@@ -11,6 +11,14 @@ export function uploadImages(file:File){
         timeout:300000
     })
 }
+//上传音频接口
+export function uploadAudio(file:File){
+    const formData = new FormData();
+    formData.append('file',file);
+    return request({
+        url:'/model/upload'
+    })
+}
 // 模型下载，需要传入modelId。需要判断是否登录
 export function getModelFiles(modelId:string){
     return request({

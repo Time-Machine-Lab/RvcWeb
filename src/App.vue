@@ -22,6 +22,8 @@ onBeforeMount(async () => {
       'https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg',
       'https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg'
     ]
+    console.log(count);
+    
     for (let img of imgs) {
       let image = new Image();
       image.onload = () => {
