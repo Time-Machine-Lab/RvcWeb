@@ -4,7 +4,7 @@ import {favoriteModel, collectModel, delModel} from '@/api/rvcModel/modelApi'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import {storage} from "@/utils/storage.ts";
-import router from "@/router";
+// import router from "@/router";
 let props = defineProps<{
     model: RvcModelVo
 }>()
@@ -80,9 +80,9 @@ const modelDeleteFunc = function () {
     }
   })
 }
-const editModel = function () {
-  router.push('/editModel?id=' + localModel.value.id)
-}
+// const editModel = function () {
+//   router.push('/editModel?id=' + localModel.value.id)
+// }
 </script>
 <template>
     <div class="model-card">
@@ -100,11 +100,11 @@ const editModel = function () {
             </div>
             <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid"
                  @click="modelDeleteFunc">
-              删除贴子
+              删除模型
             </div>
-            <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid" @click="editModel">
+            <!-- <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid" @click="editModel">
               编辑贴子
-            </div>
+            </div> -->
         </div>
         <div class="post-card__user">
             <div class="user-info" @click="$router.push('/user?id=' + localModel.uid)">

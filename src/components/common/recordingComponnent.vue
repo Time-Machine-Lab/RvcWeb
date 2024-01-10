@@ -6,11 +6,12 @@
  * @FilePath: \RvcWeb\src\components\common\recordingComponnent.vue
 -->
 <script lang="ts" setup>
+import { uploadAudio } from '@/api/rvcModel/fileApi';
 import { message } from '@/utils/message';
 import { ref } from 'vue';
-const lamejs = require('lamejs');
+// import lamejs from 'lamejs';
 let props = defineProps<{
-    getUrl: (url:string)=>void
+    getUrl: (url: string) => void
 }>()
 let file = ref<File>()
 let dialogVisible = ref(false)
@@ -22,20 +23,19 @@ const start = function startRecording() {
     startRecord.value = true
     recordedChunks.value = [];
     navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
+        .then((stream: any) => {
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm', audioBitsPerSecond: 128000 });
             mediaRecorder.ondataavailable = (event: any) => {
                 if (event.data.size > 0) {
                     recordedChunks.value.push(event.data);
                 }
             };
             mediaRecorder.onstop = () => {
-                const encoder = new lamejs.Mp3Encoder(1, 44100, 128);
-                const buffer = mergeBuffers(recordedChunks.value);
-                const mp3Data = encoder.encodeBuffer(buffer);
-
-                const audioBlob = new Blob(mp3Data, { type: 'audio/mp3' });
-                file.value = new File([audioBlob],'file.mp3',{ type: 'audio/mp3' })
+                // const encoder = new lamejs.Mp3Encoder(1, 44100, 128);
+                // const buffer = mergeBuffers(recordedChunks.value);
+                // const mp3Data = encoder.encodeBuffer(buffer);
+                const audioBlob = new Blob(recordedChunks.value, { type: 'audio/wav' });
+                file.value = new File([audioBlob], 'file.wav', { type: 'audio/wav' })
                 src.value = URL.createObjectURL(audioBlob);
                 startRecord.value = false
             };
@@ -44,36 +44,51 @@ const start = function startRecording() {
         .catch(error => {
             console.error('获取用户媒体设备失败:', error);
             message.error('获取用户媒体设备失败')
+            startRecord.value = false
         });
 }
 const stop = function () {
     mediaRecorder.stop();
     startRecord.value = false
 }
-const mergeBuffers = function(buffers:any[]) {
-      let offset = 0;
-      const length = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
-      const result = new Float32Array(length);
+// const mergeBuffers = function(buffers:any[]) {
+//       let offset = 0;
+//       const length = buffers.reduce((acc, buffer) => acc + buffer.length, 0);
+//       const result = new Float32Array(length);
 
-      buffers.forEach(buffer => {
-        result.set(buffer, offset);
-        offset += buffer.length;
-      });
+//       buffers.forEach(buffer => {
+//         result.set(buffer, offset);
+//         offset += buffer.length;
+//       });
 
-      return result;
-    }
-const send = function(){
-    props.getUrl('https://media-1318544158.cos.ap-nanjing.myqcloud.com/merry%20christmas.mp3')
+//       return result;
+//     }
+const send = function () {
+    if (file?.value?.size && file.value.size < 5 * 1024 * 1024) {
+        uploadAudio(file.value!).then((res: any) => {
+        if (res.code == 200) {
+            let url = res.data.url
+            // https://media-1318544158.cos.ap-nanjing.myqcloud.com/merry%20christmas.mp3
+            props.getUrl(url)
+        } else {
+            message.error(res.message)
+        }
+    })
+    } else {
+        message.warning('音频不存在或音频过大')
+    } 
 }
 
 </script>
 <template>
     <div class="recordButton" @click="dialogVisible = true">
-        <img class="vhcenter" src="/icon/record.svg">
+        <img style="position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);" src="/icon/record.svg">
     </div>
-    <el-dialog v-model="dialogVisible" title="发送语音" width="30%" style="background-color: rgba(26,27,30);"
+    <el-dialog v-model="dialogVisible" title="语音评论" width="30%" style="background-color: rgba(26,27,30);"
         :append-to-body="true">
-        <audioPlayerComponent :src="src"></audioPlayerComponent>
+        <div style="width: 100%;display: flex;justify-content: center;">
+            <audioPlayerComponent :src="src"></audioPlayerComponent>
+        </div>
         <template #footer>
             <div class="footer">
                 <div class="control-button" v-if="!startRecord" @click="start">
@@ -107,30 +122,36 @@ const send = function(){
     height: 100%;
     cursor: pointer;
 }
+
 .control-button {
     position: relative;
     height: 40px;
     width: 90px;
     border-radius: 5px;
     top: 50%;
-    background-color: rgba(102,102,102,0.2);
+    background-color: rgba(102, 102, 102, 0.2);
     transform: translate(0, -50%);
     display: flex;
     justify-content: center;
     cursor: pointer;
 }
-.control-button:hover{
-    background-color: rgba(65,68,74);
+
+.control-button:hover {
+    background-color: rgba(65, 68, 74);
 }
-.control-buuton__img{
+
+.control-buuton__img {
     position: relative;
 }
-.control-buuton__text{
-    position:relative;
+
+.control-buuton__text {
+    position: relative;
     font-size: 12px;
     color: white;
     line-height: 40px;
+    user-select: none;
 }
+
 .footer {
     position: relative;
     width: 100%;
@@ -138,10 +159,11 @@ const send = function(){
     display: flex;
     justify-content: space-around;
 }
-.send-button{
-    position:relative;
+
+.send-button {
+    position: relative;
     top: 50%;
-    transform: translate(0,-50%);
+    transform: translate(0, -50%);
     width: 80px;
     height: 40px;
     border-radius: 5px;
@@ -150,9 +172,10 @@ const send = function(){
     line-height: 40px;
     text-align: center;
     cursor: pointer;
-    background-color: rgba(25,113,194);
+    background-color: rgba(25, 113, 194);
+    user-select: none;
 }
-.send-button:hover{
-    background-color: rgba(24,100,171);
-}
-</style>
+
+.send-button:hover {
+    background-color: rgba(24, 100, 171);
+}</style>

@@ -95,6 +95,18 @@ export type ModelComment = {
   likes: boolean;
 }
 
+export type ModelChildComment = {
+  id: string;
+  uid: string;
+  nickname: string;
+  picture: string;
+  content: string;
+  likesNum: string;
+  commentTime: string;
+  parentId: string;
+  isLikes: string;
+}
+
 export type GetCommentForm = {
   /**
    * 模型id

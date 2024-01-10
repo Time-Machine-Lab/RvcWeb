@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { GetChildCommentForm, LikeCommentForm, ModelComment, CommentAddForm } from '@/api/rvcModel/modelType';
+import { GetChildCommentForm, LikeCommentForm, ModelComment, CommentAddForm, ModelChildComment } from '@/api/rvcModel/modelType';
 import userCardComponent from '../user/userCardComponent.vue';
 import { UserInfoVO } from '@/api/user/userTypes';
 import { message } from '@/utils/message';
@@ -14,19 +14,19 @@ const props = defineProps<{
 let userProfile = userStore.getProfile
 let inputContent = ref('')
 let localComment = ref<ModelComment>(props.comment)
-let childComments = ref<ModelComment[]>([
+let childComments = ref<ModelChildComment[]>([
 
 ])
 let user = ref<UserInfoVO>({
-avatar: props.comment.picture,
-nickname: props.comment.nickname,
-description: props.comment.commentTime,
-birthday: '',
-fansNum: '',
-followNum: '',
-sex: '',
-uid: '',
-username: ''
+    avatar: props.comment.picture,
+    nickname: props.comment.nickname,
+    description: props.comment.commentTime,
+    birthday: '',
+    fansNum: '',
+    followNum: '',
+    sex: '',
+    uid: '',
+    username: ''
 })
 let clickMore = ref(false)
 let dialogClickMore = ref(false)
@@ -52,13 +52,13 @@ const like = function () {
     likeDisabled.value = true
     let form = <LikeCommentForm>{
         id: localComment.value.id,
-        type: localComment.value.likes?'1':'0'
+        type: localComment.value.likes ? '1' : '0'
     }
     likeComments(form).then((res: any) => {
         if (res.code == 200) {
             localComment.value.likes = !localComment.value.likes
             let num = Number(localComment.value.likesNum)
-            num += (localComment.value.likes? 1 : -1)
+            num += (localComment.value.likes ? 1 : -1)
             localComment.value.likesNum = String(num)
             message.success('')
             likeDisabled.value = false
@@ -109,7 +109,7 @@ const loadChildComment = function () {
                 return
             }
             for (let i = 0; i < data.length; i++) {
-                childComments.value.push(data[i])                
+                childComments.value.push(data[i])
             }
             childCommentDisabled.value = false
             page.value++
@@ -119,18 +119,32 @@ const loadChildComment = function () {
     })
 }
 const sendComment = function () {
-    if(inputContent.value == '')return
+    if (inputContent.value == '') {
+        message.error('评论内容不能为空')
+        return
+    }
     commentAddForm.value.content = inputContent.value
     commentAddForm.value.modelId = localComment.value.modelId
     commentAddForm.value.replyId = localComment.value.id
-    commentAdd(commentAddForm.value).then((res:any)=>{
-        if(res.code==200){
+    commentAdd(commentAddForm.value).then((res: any) => {
+        if (res.code == 200) {
+            inputContent.value = ''
             message.success('评论成功')
-            inputContent.value == ''
-        } else{
+        } else {
             message.error('评论失败')
         }
     })
+}
+
+const getUrl = function (url: string) {
+    inputContent.value = '<audio>' + url + '</audio>'
+    sendComment()
+}
+const isAudio = function (str: string) {
+    return str.includes('<audio>') && str.includes('</audio>')
+}
+const parseUrl = function (str: string) {
+    return str.match(/<audio>(.*?)<\/audio>/)?.[1];
 }
 </script>
 <template>
@@ -153,7 +167,12 @@ const sendComment = function () {
                 </div>
             </div>
             <div class="comment-content">
-                {{ localComment.content }}
+                <span v-if="!isAudio(localComment?.content)">
+                    {{ localComment?.content }}
+                </span>
+                <div style="position: relative;height: 28px;" v-else>
+                    <audioPlayerComponent :src="parseUrl(localComment?.content)"></audioPlayerComponent>
+                </div>
             </div>
             <div style="margin-top: 30px;">
                 <div class="status-item" @click="like">
@@ -174,8 +193,14 @@ const sendComment = function () {
                 <div style="text-align: right;">
                     <span>{{ getLength(inputContent) }}/300</span>
                 </div>
-                <div class="button-group" v-show="inputContent != ''">
-                    <span class="button-group__item" @click="sendComment">
+                <div class="button-group">
+                    <span class="button-group__item">
+                        <div style="width: 30px;height: 40px;">
+                            <recordingComponnent :getUrl="getUrl"></recordingComponnent>
+                        </div>
+                    </span>
+                    <span class="button-group__item" :style="{ cursor: inputContent == '' ? 'not-allowed' : 'pointer' }"
+                        @click="sendComment">
                         发送
                     </span>
                 </div>
@@ -207,7 +232,12 @@ const sendComment = function () {
                 </div>
             </div>
             <div class="model-comment__center__content">
-                {{ props.comment.content }}
+                <span v-if="!isAudio(localComment?.content)">
+                    {{ localComment?.content }}
+                </span>
+                <div style="position: relative;height: 28px;" v-else>
+                    <audioPlayerComponent :src="parseUrl(localComment?.content)"></audioPlayerComponent>
+                </div>
             </div>
             <div class="model-comment__center__bottom">
                 <div class="status-item" @click="like">
@@ -239,7 +269,7 @@ const sendComment = function () {
     position: absolute;
     top: 10px;
     left: 20px;
-    width: 100%;
+    width: 80%;
     height: 80px;
 }
 
@@ -280,6 +310,8 @@ const sendComment = function () {
     height: 50px;
     width: 100%;
     text-align: right;
+    display: flex;
+    justify-content: right;
 }
 
 .button-group__item {
@@ -292,6 +324,8 @@ const sendComment = function () {
     line-height: 40px;
     border-radius: 5px;
     cursor: pointer;
+    margin-left: 20px;
+    display: flex;
     background-color: rgba(51, 154, 240);
 }
 

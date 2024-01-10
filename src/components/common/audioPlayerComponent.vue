@@ -24,7 +24,8 @@ export default {
         }
     },
     methods: {
-        togglePlayPause() {
+        togglePlayPause() {            
+            if((this.$refs.audioPlayer as any).src=='http://localhost:8090/')return
             if (this.isPlaying) {
                 this.audioPlayer.pause();
             } else {
@@ -71,10 +72,10 @@ export default {
         <audio ref="audioPlayer" :src="src" @timeupdate="updateProgress" @ended="audioEnded"></audio>
         <div class="controls">
             <div class="controls-button" @click="togglePlayPause">
-                <img width="24" height="24" :src="isPlaying ? '/icon/pause.svg' : '/icon/play-fill.svg'">
+                <img class="vertical-center" width="20" height="20" :src="isPlaying ? '/icon/pause.svg' : '/icon/play-fill.svg'">
             </div>
-            <!-- <input type="range" v-model="currentTime" :max="duration" @input="seek"> -->
-            <span style="line-height: 28px;">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
+            <input type="range" v-model="currentTime" :max="duration" @input="seek">
+            <span style="line-height: 28px;font-size: 10px">{{ formatTime(currentTime)+'/'+ formatTime(duration)}}</span>
         </div>
     </div>
 </template>
@@ -84,12 +85,14 @@ export default {
 .audio-player {
     position: relative;
     width: 80%;
+    height: 100%;
 }
 
 .controls {
     display: flex;
     justify-content: left;
     width: 100%;
+    height: 100%;
 }
 
 button {
