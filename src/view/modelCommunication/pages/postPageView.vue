@@ -88,7 +88,6 @@ let inputContent = ref<string>('')
 //         number: 0,
 //     }
 // ]);
-let audioUrl = ref<string>('')
 let H1Elements = ref()
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
@@ -201,8 +200,7 @@ const getLength = function (str: string) {
     return str.length
 }
 const getUrl = function(url:string){
-    audioUrl.value = url
-    inputContent.value = '<audio>'+audioUrl.value+'</audio>'
+    inputContent.value = '<audio>'+url+'</audio>'
     sendComment()
 }
 </script>
@@ -357,9 +355,7 @@ const getUrl = function(url:string){
                 <img width="40" height="40" :src="userProfile.avatar!"
                     style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                 <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
-                <div style="right:40px;text-align: right;line-height: 40px;color: rgba(255,255,255,0.4);position:absolute">
-                    <span>{{ getLength(inputContent) }}/300</span>
-                </div>
+                    <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{ getLength(inputContent) }}/300</span>
             </div>
             <div class="post-page__post__commentBox--row1--noLogin" v-else>
                 <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论
@@ -671,7 +667,7 @@ const getUrl = function(url:string){
     display: flex;
 }
 .post-page__post__commentBox--row1--login input {
-    width: calc(90% - 85px);
+    width: calc(100% - 85px);
     height: 30px;
     border-radius: 5px;
     border: rgba(255, 255, 255, 0.2) 1px solid;
@@ -710,7 +706,7 @@ const getUrl = function(url:string){
     left: 50%;
     transform: translate(-50%);
     height: 40px;
-    width: 90%;
+    width: 100%;
     margin-top: 5px;
     display: flex;
     justify-content: right;

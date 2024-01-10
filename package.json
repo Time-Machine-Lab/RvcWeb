@@ -19,7 +19,6 @@
     "axios": "^1.6.2",
     "element-plus": "^2.4.3",
     "eslint": "^8.54.0",
-    "lamejs": "^1.2.1",
     "md-editor-v3": "^4.9.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { CommentVo, CommentForm, LikeCommentForm } from '@/api/post/postType'
 import { commentAdd, likeComment } from '@/api/post/postApi'
 import { message } from '@/utils/message';
+import { storage } from '@/utils/storage';
 let props = defineProps<{
   comment: CommentVo,
   showReply: (index: number) => boolean,
@@ -16,6 +17,10 @@ let inputVisibility = ref(false)
 let inputContent = ref('')
 const input = ref<any>(null)
 const handleReply = function () {
+  if(!storage.get<string>('token')){
+    message.error('未登录')
+    return
+  }
   inputVisibility.value = true
   setTimeout(function () { input!.value!.focus() }, 500)
 }
@@ -72,7 +77,13 @@ const handleBlur2 = function () {
     moreVisibility.value = false
   }, 200)
 }
+const getUrl = function(url:string){
+    inputContent.value = '<audio>'+url+'</audio>'
+    sendComment()
+}
 const isAudio = function (str: string) {
+  console.log(str);
+  
   return str.includes('<audio>') && str.includes('</audio>')
 }
 const parseUrl = function (str: string) {
@@ -80,7 +91,7 @@ const parseUrl = function (str: string) {
 }
 </script>
 <template>
-  <div style="width: 100%;position: relative">
+  <div style="width: 100%;position: relative;display: flex;justify-content: right;">
     <div :class="commentStyle">
       <div class="comment-left">
         <router-link :to="'/user?id=' + currentComment.user?.uid">
@@ -130,10 +141,12 @@ const parseUrl = function (str: string) {
         <div v-show="inputVisibility" class="reply">
           <span style="font-family: 'ZCool';">@{{ currentComment.user?.nickname }}:</span>
           <input class="input" placeholder="" v-model="inputContent" @blur="handleBlur" ref="input">
+          <div style="width: 30px;height: 30px;">
+            <recordingComponnent :getUrl="getUrl"></recordingComponnent>
+          </div>
           <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" style="font-family: 'ZCool';"
             @click="sendComment()">发送</button>
         </div>
-
       </div>
       <div>
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur2"
@@ -228,10 +241,11 @@ const parseUrl = function (str: string) {
 
 .child-comment {
   position: relative;
-  width: 100%;
+  width: calc(100% - 70px);
   display: flex;
-  scale: 0.9;
+  scale: 1;
   margin-top: 20px;
+  justify-content: right;
 }
 
 .comment-left {
@@ -288,7 +302,7 @@ const parseUrl = function (str: string) {
 .status-item {
   height: 20px;
   display: flex;
-  /* margin-left: 15px; */
+  margin-left: 15px;
   cursor: pointer;
 }
 
@@ -336,5 +350,6 @@ const parseUrl = function (str: string) {
 }
 
 .dither-animation {
-  top: 34px;
-}</style>
+  top: 48px;
+}
+</style>
