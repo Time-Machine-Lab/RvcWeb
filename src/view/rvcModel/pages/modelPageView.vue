@@ -19,7 +19,7 @@ import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
 import { message } from "@/utils/message";
 // import { storage } from "@/utils/storage";
 import { UserInfoVO } from '@/api/user/userTypes';
-import { storage } from "@/utils/storage.ts";
+// import { storage } from "@/utils/storage.ts";
 // import { useUserStore } from '@/view/user/info/userStore.js'
 // const userStore = useUserStore()
 // let userProfile = userStore.getProfile
@@ -35,10 +35,12 @@ let user = ref<UserInfoVO>({
     username: ''
 })
 let isLike = ref("")
+let collectDisabled = ref("")
 getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) => {
     if (res.code == 200) {
         localModel.value = res.data
         isLike.value = localModel.value.isLike
+        collectDisabled.value = localModel.value.isCollection
         user.value = {
             avatar: localModel.value.avatar,
             nickname: localModel.value.nickname,
@@ -50,7 +52,7 @@ getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) 
             uid: '',
             username: ''
         }
-        if (user.value.nickname == null) {
+        if (localModel.value.nickname == null) {
             user.value.nickname = "匿名"
         }
     }
@@ -82,35 +84,32 @@ let fileList = ref<{
 }[]>([])
 // let inputContent = ref<string>('')
 
-let collectDisabled = ref(true)
+
 let detailsvisibility = ref(false)
 let modelFilesvisibility = ref(false)
 // let audiosvisibility = ref(false)
+// 收藏
 const collect = function () {
-    if (!collectDisabled.value) return
-    collectDisabled.value = false
-    if (localModel.value.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
-        return
+  let form = <FavoriteAndCollectionForm>{
+    modelId: (router.currentRoute.value.query.id as string),
+    status: '0'
+  }
+  if (collectDisabled.value == "true"){
+    collectDisabled.value = "false"
+    localModel.value.isCollection = "false"
+    form.status = '1'
+  }else if (collectDisabled.value == "false"){
+    collectDisabled.value = "true"
+    localModel.value.isCollection = "true"
+    form.status = '0'
+  }
+  collectModel(form).then((res:any) => {
+    if (res.code == 200) {
+      message.success('操作成功')
+    } else {
+      message.error('操作失败')
     }
-    setTimeout(function () {
-        collectDisabled.value = true
-    }
-        , 2000)
-    let form = <FavoriteAndCollectionForm>{
-        modelId: (router.currentRoute.value.query.id as string),
-        status: localModel.value.isCollection ? '0' : '1'
-    }
-    collectModel(form).then((res: any) => {
-        if (res.code == 200) {
-            localModel.value.isCollection = localModel.value.isCollection == '0' ? '1' : '0'
-            localModel.value.collectionNum = localModel.value.collectionNum + (localModel.value.isCollection == '1' ? 1 : -1)
-            message.success('')
-        } else {
-            message.error(res.msg)
-        }
-
-    })
+  })
 }
 const like = () => {
     let form = <FavoriteAndCollectionForm>{
@@ -236,14 +235,12 @@ const getModelFilesFunc = function () {
                     <div class="button-group__item__msg">
                         试听音频
                     </div>
-
                 </div>
                 <div class="button-group__item">
                     <img class="vertical-center" src="/icon/share.svg" height="20" width="20">
                     <div class="button-group__item__msg">
                         分享
                     </div>
-
                 </div>
                 <div class="button-group__item" @click="like">
                     <img class="vertical-center" :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'"
@@ -251,16 +248,14 @@ const getModelFilesFunc = function () {
                     <div class="button-group__item__msg">
                         喜欢
                     </div>
-
                 </div>
                 <div class="button-group__item" @click="collect">
                     <img class="vertical-center"
-                        :src="localModel.isCollection == '1' ? '/icon/mark-fill.svg' : '/icon/mark.svg'" height="20"
+                        :src="collectDisabled == 'true' ? '/icon/mark-fill.svg' : '/icon/mark.svg'" height="20"
                         width="20">
                     <div class="button-group__item__msg">
                         收藏
                     </div>
-
                 </div>
             </div>
             <div class="details">
