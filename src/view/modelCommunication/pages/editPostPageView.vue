@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import editorComponent from '@/components/editor/editorComponent.vue'
 import "@/assets/css/post/postContent.css"
-import { GetPostDetailsForm, PostForm, RvcCommunicationPostType, PostVo } from '@/api/post/postType'
+import { GetPostDetailsForm, PostForm, RvcCommunicationPostType } from '@/api/post/postType'
 import { getPostType, postAdd, getPostDetails, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import router from '@/router'
@@ -102,15 +102,17 @@ const loadOldPost = function () {
     })
     getPostDetails(form.value).then((res: any) => {
         if (res.code == 200) {
-            let data = ref<PostVo>(res.data)
-            oldPost.value.title = data.value.title
-            oldPost.value.content = data.value.content
-            oldPost.value.tagId = data.value.postType.id
-            oldPost.value.coverId = data.value.cover
-            oldPost.value.tagName = data.value.postType.tagName
+            let data = res.data
+            oldPost.value.title = data.title
+            oldPost.value.content = data.content
+            oldPost.value.tagId = data.postType.id
+            oldPost.value.coverUrl = data.cover
+            oldPost.value.coverId = data.coverId
+            oldPost.value.tagName = data.postType.tagName
             postForm.value.title = oldPost.value.title
             postForm.value.content = oldPost.value.content
             postForm.value.tagId = oldPost.value.tagId
+            postForm.value.coverUrl = oldPost.value.coverUrl
             postForm.value.coverId = oldPost.value.coverId
             postForm.value.tagName = oldPost.value.tagName
         } else {
