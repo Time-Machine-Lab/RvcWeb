@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { ModelChildComment, CommentAddForm, LikeCommentForm } from '@/api/rvcModel/modelType'
 import { commentAdd, likeComments } from '@/api/rvcModel/commentApi'
 import { message } from '@/utils/message';
+import router from '@/router';
 let props = defineProps<{
     comment: ModelChildComment,
     index: number,
@@ -45,7 +46,10 @@ const sendComment = function () {
     })
     commentAdd(form.value).then((res: any) => {
         if (res.code == 200) {
-            message.success('发送成功，等待审核')
+            message.success('发送成功')
+            setTimeout(() => {
+                router.go(0)
+            }, 500);
         } else {
             message.error(res.msg)
         }
