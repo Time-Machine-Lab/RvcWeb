@@ -24,9 +24,9 @@ getPostById((router.currentRoute.value.query.id as unknown as number)).then((res
     } else {
         message.error(res.msg)
     }
-    setTimeout(()=>{
-        getH1()
-    },1000)
+    setTimeout(() => {
+        getDirectory()
+    }, 1000)
 })
 let userProfile = ref<UserInfoVO>({
     avatar: '',
@@ -88,18 +88,34 @@ let inputContent = ref<string>('')
 //         number: 0,
 //     }
 // ]);
-let H1Elements = ref()
+let DirectoryElements = ref<Element[]>([])
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
-const getH1 = function () {
-    H1Elements.value = document.querySelectorAll(".post-page__post__content h1")
+let headings = ref<any[]>([])
+const getDirectory = function () {
+
+    // 获取页面中所有的标题元素 h1 到 h6
+    const allHeadings = document.querySelectorAll('.post-page__post__content h1, h2, h3, h4, h5, h6');
+
+    allHeadings.forEach((heading, index) => {
+        DirectoryElements.value.push(heading)
+        const tagName = heading.tagName.toLowerCase() // 获取标签名，例如 'h1', 'h2', ...
+        const headingLevel = parseInt(tagName[1]) // 获取标题级别
+        let currentLevel = headings.value
+        currentLevel[index] = {
+            level: headingLevel,
+            text: heading.innerHTML.trim(),
+        }
+    })
+    console.log(headings.value);
+    
     userProfile.value = userStore.getProfile
 }
 
 const to = function (index: number) {
-    console.log(H1Elements.value[index].getBoundingClientRect().top);
+    console.log(DirectoryElements.value[index].getBoundingClientRect().top);
 
-    document.querySelector('#appVue .main')!.scrollTo(0, H1Elements.value[index].getBoundingClientRect().top - 200)
+    document.querySelector('#appVue .main')!.scrollTo(0, DirectoryElements.value[index].getBoundingClientRect().top - 200)
 }
 
 const collect = function () {
@@ -118,7 +134,7 @@ const collect = function () {
         if (res.code == 200) {
             localPost.value.collect = !localPost.value.collect
             localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
-            message.success((localPost.value.collect?'':'取消')+'收藏成功')
+            message.success((localPost.value.collect ? '' : '取消') + '收藏成功')
         } else {
             message.error(res.msg)
         }
@@ -139,14 +155,16 @@ const like = function () {
         if (res.code == 200) {
             localPost.value.like = !localPost.value.like
             localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
-            message.success((localPost.value.like?'':'取消')+'点赞成功')
+            message.success((localPost.value.like ? '' : '取消') + '点赞成功')
         } else {
             message.error(res.msg)
         }
     })
 }
 const calcNum = function (num: number) {
+
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
+
 }
 const sendComment = function () {
     if (inputContent.value == '') {
@@ -199,8 +217,8 @@ const handleShare = function () {
 const getLength = function (str: string) {
     return str.length
 }
-const getUrl = function(url:string){
-    inputContent.value = '<audio>'+url+'</audio>'
+const getUrl = function (url: string) {
+    inputContent.value = '<audio>' + url + '</audio>'
     sendComment()
 }
 </script>
@@ -234,11 +252,11 @@ const getUrl = function(url:string){
             </div>
             <div style="position: relative;display: flex;top: 50%;transform: translate(0,-50%);">
                 <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
-                :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
-                <div
-                    style="height: 26px;width:26px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
+                    :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
+                    <div
+                        style="height: 26px;width:26px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <div class="more-window" v-show="moreVisibility">
@@ -304,8 +322,8 @@ const getUrl = function(url:string){
                     <img src="/icon/list.svg" width="28" height="28"
                         style="position: relative;top: 50%;transform: translate(0,-50%);">导航
                 </div>
-                <div class="target-box__target" v-for="(element, index) in H1Elements" :key="index" @click="to(index)">
-                    {{ element.innerText }}
+                <div class="target-box__target" v-for="(heading, index) in headings" :style="{paddingLeft:heading.level*20+'px',width:'calc(100%-'+heading.level*20+'px)',fontSize:19-heading.level+'px'}" :key="index" @click="to(index)">
+                    {{ heading.text }}
                 </div>
             </div>
             <div class="author-box">
@@ -355,7 +373,8 @@ const getUrl = function(url:string){
                 <img width="40" height="40" :src="userProfile.avatar!"
                     style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                 <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
-                    <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{ getLength(inputContent) }}/300</span>
+                <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{
+                    getLength(inputContent) }}/300</span>
             </div>
             <div class="post-page__post__commentBox--row1--noLogin" v-else>
                 <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论
@@ -365,7 +384,8 @@ const getUrl = function(url:string){
             <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">
                 <recordingComponnent :getUrl="getUrl"></recordingComponnent>
             </div>
-            <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')" @click="sendComment">发送</button>
+            <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')"
+                @click="sendComment">发送</button>
         </div>
     </div>
     <div style="padding-bottom:50px;width:70%;position: relative;left: 50%;transform: translate(-50%);">
@@ -661,11 +681,13 @@ const getUrl = function(url:string){
     height: 50px;
     width: 100%;
 }
-.post-page__post__commentBox--row1--login{
+
+.post-page__post__commentBox--row1--login {
     height: 50px;
     width: 100%;
     display: flex;
 }
+
 .post-page__post__commentBox--row1--login input {
     width: calc(100% - 85px);
     height: 30px;
@@ -680,19 +702,22 @@ const getUrl = function(url:string){
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
 }
-.post-page__post__commentBox--row1--login input::placeholder{
+
+.post-page__post__commentBox--row1--login input::placeholder {
     font-family: 'ZCool';
 }
-.post-page__post__commentBox--row1--noLogin{
+
+.post-page__post__commentBox--row1--noLogin {
     width: 100%;
     height: 100%;
-    background-color: rgba(26,45,63);
+    background-color: rgba(26, 45, 63);
     line-height: 50px;
     text-align: center;
     color: white;
     font-family: 'ZCool';
     font-size: 14px;
 }
+
 .post-page__post__commentBox--row1 textarea:hover {
     border: rgba(255, 255, 255, 0.4) 1px solid;
 }
@@ -905,19 +930,18 @@ const getUrl = function(url:string){
 }
 
 .target-box__target {
-    width: calc(100% - 20px);
+    width: 100%;
     height: 40px;
     line-height: 40px;
     font-size: 18px;
     text-align: left;
-    padding-left: 20PX;
     color: rgba(255, 255, 255, 0.8);
     user-select: none;
     cursor: pointer;
 }
 
 .target-box__target:hover {
-    background-color: rgba(65,68,74);
+    background-color: rgba(65, 68, 74);
 }
 
 .dither-animation {
