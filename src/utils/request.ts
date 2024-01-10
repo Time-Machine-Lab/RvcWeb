@@ -75,6 +75,8 @@ request.interceptors.response.use(
       const statusText = statusTextMap[error.response.status] ?? '其他错误'
       message.error(`${statusText}(${error.response.status})`)
       if (error.response.status === 401) {
+        storage.remove('token')
+        storage.remove('uid')
         router.replace({
           path: '/Login'
         })
