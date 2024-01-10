@@ -92,7 +92,7 @@ export type ModelComment = {
   likesNum: string;
   commentTime: string;
   modelId: string;
-  likes: boolean;
+  likes: string;
 }
 
 export type ModelChildComment = {

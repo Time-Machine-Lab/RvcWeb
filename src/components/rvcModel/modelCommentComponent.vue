@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-import { GetChildCommentForm, LikeCommentForm, ModelComment, CommentAddForm, ModelChildComment } from '@/api/rvcModel/modelType';
+import {
+  GetChildCommentForm,
+  LikeCommentForm,
+  ModelComment,
+  CommentAddForm,
+  ModelChildComment
+} from '@/api/rvcModel/modelType';
 import userCardComponent from '../user/userCardComponent.vue';
 import { UserInfoVO } from '@/api/user/userTypes';
 import { message } from '@/utils/message';
@@ -18,22 +24,21 @@ let childComments = ref<ModelChildComment[]>([
 
 ])
 let user = ref<UserInfoVO>({
-    avatar: props.comment.picture,
-    nickname: props.comment.nickname,
-    description: props.comment.commentTime,
-    birthday: '',
-    fansNum: '',
-    followNum: '',
-    sex: '',
-    uid: '',
-    username: ''
+avatar: props.comment.picture,
+nickname: props.comment.nickname,
+description: props.comment.commentTime,
+birthday: '',
+fansNum: '',
+followNum: '',
+sex: '',
+uid: '',
+username: ''
 })
 let clickMore = ref(false)
 let dialogClickMore = ref(false)
 let showCommentDialogVisible = ref(false)
 let moreVisibility = ref(false)
 let dialogMoreVisibility = ref(false)
-let likeDisabled = ref(false)
 let page = ref(1)
 let childCommentDisabled = ref(false)
 let getChildCommentForm = ref<GetChildCommentForm>({
@@ -47,25 +52,36 @@ let commentAddForm = ref<CommentAddForm>({
     modelId: '',
     content: ''
 })
+let likeDisabled = ref("")
+likeDisabled.value = localComment.value.likes
 const like = function () {
-    if (likeDisabled.value) return
-    likeDisabled.value = true
     let form = <LikeCommentForm>{
         id: localComment.value.id,
-        type: localComment.value.likes ? '1' : '0'
+        type: '0'
+    }
+    if (likeDisabled.value == "1"){
+      likeDisabled.value = "0"
+      localComment.value.likes = "0"
+      let likesNumString = localComment.value.likesNum;
+      let likesNum = parseInt(likesNumString);
+      likesNum -= 1;
+      localComment.value.likesNum = likesNum.toString();
+      form.type = '1'
+    } else if (likeDisabled.value == "0"){
+      likeDisabled.value = "1"
+      localComment.value.likes = "1"
+      let likesNumString = localComment.value.likesNum;
+      let likesNum = parseInt(likesNumString);
+      likesNum += 1;
+      localComment.value.likesNum = likesNum.toString();
+      form.type = '0'
     }
     likeComments(form).then((res: any) => {
-        if (res.code == 200) {
-            localComment.value.likes = !localComment.value.likes
-            let num = Number(localComment.value.likesNum)
-            num += (localComment.value.likes ? 1 : -1)
-            localComment.value.likesNum = String(num)
-            message.success('')
-            likeDisabled.value = false
-        } else {
-            message.error(res.msg)
-            likeDisabled.value = false
-        }
+      if (res.code == 200) {
+        message.success('操作成功')
+      } else {
+        message.error('操作失败')
+      }
     })
 }
 const calcNum = function (num: number) {
@@ -109,7 +125,7 @@ const loadChildComment = function () {
                 return
             }
             for (let i = 0; i < data.length; i++) {
-                childComments.value.push(data[i])
+                childComments.value.push(data[i])                
             }
             childCommentDisabled.value = false
             page.value++
@@ -119,38 +135,35 @@ const loadChildComment = function () {
     })
 }
 const sendComment = function () {
-    if (inputContent.value == '') {
-        message.error('评论内容不能为空')
-        return
-    }
-    commentAddForm.value.content = inputContent.value
-    commentAddForm.value.modelId = localComment.value.modelId
-    commentAddForm.value.replyId = localComment.value.id
-    commentAdd(commentAddForm.value).then((res: any) => {
-        if (res.code == 200) {
-            inputContent.value = ''
-            message.success('评论成功')
-        } else {
-            message.error('评论失败')
-        }
-    })
+  if(inputContent.value == '')return
+  commentAddForm.value.content = inputContent.value
+  commentAddForm.value.modelId = localComment.value.modelId
+  commentAddForm.value.replyId = localComment.value.id
+  commentAdd(commentAddForm.value).then((res:any)=>{
+      if(res.code==200){
+          message.success('评论成功')
+          inputContent.value == ''
+      } else{
+          message.error('评论失败')
+      }
+  })
+  refresh()
 }
+const refresh =() => {
+  inputContent.value = ""
+  childCommentDisabled = ref(false)
+  page = ref(1)
+  childComments.value = []
+  setTimeout(() => {
+    loadChildComment()
+  }, 500);
 
-const getUrl = function (url: string) {
-    inputContent.value = '<audio>' + url + '</audio>'
-    sendComment()
-}
-const isAudio = function (str: string) {
-    return str.includes('<audio>') && str.includes('</audio>')
-}
-const parseUrl = function (str: string) {
-    return str.match(/<audio>(.*?)<\/audio>/)?.[1];
 }
 </script>
 <template>
     <div class="model-comment">
         <el-dialog v-model="showCommentDialogVisible" :append-to-body="true"
-            style="background-color: rgba(26,27,30);border-radius: 5px;" width="40%">
+            style="background-color: rgba(26,27,30);border-radius: 5px;" width="600px">
             <div class="user-info">
                 <userCardComponent :user="user"></userCardComponent>
             </div>
@@ -167,18 +180,13 @@ const parseUrl = function (str: string) {
                 </div>
             </div>
             <div class="comment-content">
-                <span v-if="!isAudio(localComment?.content)">
-                    {{ localComment?.content }}
-                </span>
-                <div style="position: relative;height: 28px;" v-else>
-                    <audioPlayerComponent :src="parseUrl(localComment?.content)"></audioPlayerComponent>
-                </div>
+                {{ localComment.content }}
             </div>
             <div style="margin-top: 30px;">
                 <div class="status-item" @click="like">
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: comment.likes ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: localComment.likes ='1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
@@ -194,15 +202,9 @@ const parseUrl = function (str: string) {
                     <span>{{ getLength(inputContent) }}/300</span>
                 </div>
                 <div class="button-group">
-                    <span class="button-group__item">
-                        <div style="width: 30px;height: 40px;">
-                            <recordingComponnent :getUrl="getUrl"></recordingComponnent>
-                        </div>
-                    </span>
-                    <span class="button-group__item" :style="{ cursor: inputContent == '' ? 'not-allowed' : 'pointer' }"
-                        @click="sendComment">
+                    <div class="button-group__item" @click="sendComment">
                         发送
-                    </span>
+                    </div>
                 </div>
             </div>
             <div class="child-comments" v-infinite-scroll="loadChildComment" infinite-scroll-distance="20"
@@ -232,18 +234,13 @@ const parseUrl = function (str: string) {
                 </div>
             </div>
             <div class="model-comment__center__content">
-                <span v-if="!isAudio(localComment?.content)">
-                    {{ localComment?.content }}
-                </span>
-                <div style="position: relative;height: 28px;" v-else>
-                    <audioPlayerComponent :src="parseUrl(localComment?.content)"></audioPlayerComponent>
-                </div>
+                {{ props.comment.content }}
             </div>
             <div class="model-comment__center__bottom">
                 <div class="status-item" @click="like">
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: comment.likes ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        :style="{ backgroundImage: likeDisabled == '1'? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
                     </div>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
@@ -251,7 +248,7 @@ const parseUrl = function (str: string) {
                     <div class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;background-image: url('/icon/chat.svg');">
                     </div>
-                    <span></span>
+                    <span>回复</span>
                 </div>
             </div>
         </div>
@@ -310,27 +307,26 @@ const parseUrl = function (str: string) {
     height: 50px;
     width: 100%;
     text-align: right;
-    display: flex;
-    justify-content: right;
 }
 
-.button-group__item {
-    position: relative;
-    display: inline-block;
-    height: 40px;
-    padding: 0 20px;
-    color: white;
-    font-size: 16px;
-    line-height: 40px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 20px;
-    display: flex;
-    background-color: rgba(51, 154, 240);
+.button-group__item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right:0;
+  height: 30px;
+  width:70px;
+  color: white;
+  font-size: 15px;
+  font-family: ZCool;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(51, 154, 240);
 }
 
 .button-group__item:hover {
-    background-color: rgba(24, 100, 171);
+    background-color: rgb(33, 132, 224);
 }
 
 .child-comments {
@@ -354,21 +350,24 @@ const parseUrl = function (str: string) {
 }
 
 .model-comment__center__bottom {
-    height: 20px;
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
+  height: 25px;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  border-top: solid 1px #727272;
 }
 
 .status-item {
-    height: 20px;
-    display: flex;
-    margin-left: 20px;
-    width: 25px;
-    padding: 0 5px;
-    cursor: pointer;
-    border-radius: 10px;
-    background-color: rgba(40, 42, 47);
+  margin-top: 5px;
+  height: 20px;
+  display: flex;
+  width: 35%;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  span{
+    margin-top:1%;
+  }
 }
 
 .status-item:hover {
