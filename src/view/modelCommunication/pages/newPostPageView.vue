@@ -161,11 +161,6 @@ loadDraft()
   <div class="newPost-page">
     <div class="newPost-page__center">
       <div class="newPost-page__center__left">
-        <el-breadcrumb :separator="'>'">
-          <el-breadcrumb-item :to="{ path: '/rvc/posts' }">交流区</el-breadcrumb-item>
-          <el-breadcrumb-item>新建贴子</el-breadcrumb-item>
-        </el-breadcrumb>
-
         <div class="label">
           标题<span class="important">*</span>
         </div>
@@ -177,7 +172,7 @@ loadDraft()
           内容<span class="important">*</span>
         </div>
         <div style="width: 90%;border-radius: 10px;" :class="formWarning.content ? 'formWarning' : 'formDefault'">
-          <editorComponent :getContent="getContent" :editor-content="postForm.content"></editorComponent>
+          <editorComponent :getContent="getContent" st :editor-content="postForm.content"></editorComponent>
         </div>
       </div>
 
@@ -256,14 +251,14 @@ loadDraft()
   position: relative;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: rgba(26, 27, 30);
 }
 
 .newPost-page__center {
   position: relative;
   width: 60%;
-  height: 95%;
+  height: 100%;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -271,8 +266,10 @@ loadDraft()
 }
 
 .newPost-page__center__left {
-  height: 100%;
+  position: relative;
   width: 70%;
+  overflow: scroll;
+  margin: 50px 0;
 }
 
 .newPost-page__center__right {
@@ -280,7 +277,7 @@ loadDraft()
   width: 25%;
   position: fixed;
   top: 100px;
-  right: 15%;
+  left: calc(30% + 450px);
 }
 
 .newPost-page__center :deep(.el-breadcrumb__inner) {

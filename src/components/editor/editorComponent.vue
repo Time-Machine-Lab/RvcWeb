@@ -26,6 +26,8 @@ let html = ref(props.editorContent)
 
 const editorConfig = {
   placeholder: '请输入内容...',
+  autoFocus: true,
+  scroll: false,
   MENU_CONF: {
     uploadImage: {
       server: '/rvcApi/communication/post/cover',
@@ -77,9 +79,9 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
-    <Toolbar style="border-bottom: 1px solid #ccc;" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: scroll;max-height: 500px;" v-model="html" :defaultConfig="editorConfig"
+  <div style="border-radius:10px;border:rgba(100,100,100) 1px solid;">
+    <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
+    <Editor style="min-height:200px;" v-model="html" :defaultConfig="editorConfig"
       :mode="mode" @onCreated="onCreated" />
   </div>
 </template>
