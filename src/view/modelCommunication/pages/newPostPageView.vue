@@ -99,12 +99,12 @@ const beforeCoverUpload = function (rawFile: File) {
     return false
   }
   uploadCoverLoading.value = true
-  setTimeout(function(){
-    if(postForm.value.coverUrl == ''){
+  setTimeout(function () {
+    if (postForm.value.coverUrl == '') {
       uploadCoverLoading.value = false
       uploadFailed.value = true
     }
-  },100000)
+  }, 100000)
   uploadPicture(rawFile).then((res: any) => {
     if (res.code == 200) {
       uploadCoverLoading.value = false
@@ -196,17 +196,18 @@ loadDraft()
         封面<span class="important">*</span>
       </div>
       <div>
-        <el-upload ref="uploadAudioRef"  class="upload-demo" :class="formWarning.tag ? 'el-formWarning' : 'el-formDefault'" drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload" >
-                <div class="loadding" v-if="uploadCoverLoading"></div>
-                <div class="error" v-if="uploadFailed&&!postForm.coverUrl">×</div>
-                <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl"/>
-                <div class="el-upload__text">
-                    将文件拖拽到此处或点击上传
-                </div>
-                <div class="el-upload__text">
-                    最多可上传1个封面
-                </div>
-            </el-upload>
+        <el-upload ref="uploadAudioRef" class="upload-demo" :class="formWarning.tag ? 'el-formWarning' : 'el-formDefault'"
+          drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
+          <div class="loadding" v-if="uploadCoverLoading"></div>
+          <div class="error" v-if="uploadFailed && !postForm.coverUrl">×</div>
+          <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl" />
+          <div class="el-upload__text">
+            将文件拖拽到此处或点击上传
+          </div>
+          <div class="el-upload__text">
+            最多可上传1个封面
+          </div>
+        </el-upload>
       </div>
       <div class="label">
         标签<span class="important">*</span>
@@ -216,10 +217,10 @@ loadDraft()
           :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
           :class="[clickType ? 'dither-animation' : '', formWarning.tag ? 'formWarning' : 'formDefault']"
           @click="handleClickSort" @blur="handleBlur">
-          <div class="horizontal-center" style="display: flex;">
-            <span style="line-height: 40px;margin-left: 3px;width: 300px;">{{
+          <div class="horizontal-center" style="display: flex;width: 100%;justify-content: space-between;">
+            <span style="line-height: 40px;margin-left: 3px;width: 100px;">{{
               currentTypeIndex != -1 ? tagsOption[currentTypeIndex]?.label : draft?.tagName }}</span>
-            <span>
+            <span style="display:block;position: relative;right: 0;">
               <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
                 :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
             </span>
@@ -238,11 +239,11 @@ loadDraft()
   </div>
 </template>
 <style scoped>
-
 :deep(.upload-demo *) {
-    background-color: transparent;
+  background-color: transparent;
 }
-.upload-demo{
+
+.upload-demo {
   position: relative;
   width: 100%;
 }
@@ -257,7 +258,7 @@ loadDraft()
 
 .newPost-page__center {
   position: relative;
-  width: 60%;
+  width: 80%;
   height: 100%;
   left: 50%;
   top: 50%;
@@ -267,7 +268,7 @@ loadDraft()
 
 .newPost-page__center__left {
   position: relative;
-  width: 70%;
+  width: 60%;
   overflow: scroll;
   margin: 50px 0;
 }
@@ -275,9 +276,10 @@ loadDraft()
 .newPost-page__center__right {
   height: 100%;
   width: 25%;
+  max-width: 400px;
   position: fixed;
   top: 100px;
-  left: calc(30% + 450px);
+  left: calc(40% + 450px);
 }
 
 .newPost-page__center :deep(.el-breadcrumb__inner) {
@@ -289,45 +291,47 @@ loadDraft()
   display: flex;
   justify-content: left;
 }
+
 .loadding {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    height: 34px;
-    width: 34px;
-    border-radius: 17px;
-    background-color: rgba(44, 46, 51);
-    font-size: 20px;
-    line-height: 36px;
-    color: white;
-    font-weight: 700;
-    border-top: rgba(25, 113, 194) 1px solid;
-    margin-bottom: 20px;
-    animation: roll 1s linear infinite;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 34px;
+  width: 34px;
+  border-radius: 17px;
+  background-color: rgba(44, 46, 51);
+  font-size: 20px;
+  line-height: 36px;
+  color: white;
+  font-weight: 700;
+  border-top: rgba(25, 113, 194) 1px solid;
+  margin-bottom: 20px;
+  animation: roll 1s linear infinite;
 }
 
 @keyframes roll {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }
+
 .error {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    height: 36px;
-    width: 36px;
-    border-radius: 18px;
-    background-color: rgba(44, 46, 51);
-    font-size: 20px;
-    line-height: 36px;
-    color: white;
-    font-weight: 700;
-    margin-bottom: 20px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 36px;
+  width: 36px;
+  border-radius: 18px;
+  background-color: rgba(44, 46, 51);
+  font-size: 20px;
+  line-height: 36px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 :deep(.cover-uploader .el-upload) {
@@ -478,7 +482,7 @@ loadDraft()
 
 .revolve-animation {
   transform: rotateZ(180deg);
-  transform-origin: 6px 3.5px;
+  transform-origin: 6px 3px;
 }
 
 .button-group__submit:hover {
@@ -488,13 +492,15 @@ loadDraft()
 .formWarning {
   border: rgba(224, 49, 49) 1px solid;
 }
-:deep(.el-formWarning .el-upload-dragger){
+
+:deep(.el-formWarning .el-upload-dragger) {
   border: rgba(224, 49, 49) 1px dashed;
 }
+
 .formDefault {
   border: rgba(55, 58, 64) 1px solid;
 }
-:deep(.el-formDefault .el-upload-dragger){
+
+:deep(.el-formDefault .el-upload-dragger) {
   border: rgba(55, 58, 64) 1px dashed;
-}
-</style>
+}</style>
