@@ -71,7 +71,7 @@ const send = function () {
             // https://media-1318544158.cos.ap-nanjing.myqcloud.com/merry%20christmas.mp3
             props.getUrl(url)
         } else {
-            message.error(res.message)
+            message.error(res.msg)
         }
     })
     } else {

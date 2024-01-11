@@ -277,11 +277,10 @@ loadDraft()
 
 .newPost-page__center__right {
   height: 100%;
-  width: 350px;
+  width: 25%;
   position: fixed;
   top: 100px;
   right: 15%;
-
 }
 
 .newPost-page__center :deep(.el-breadcrumb__inner) {

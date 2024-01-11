@@ -102,7 +102,7 @@ export type EmailCodeForm = {
   /**
    * 前置验证码
    */
-  code?: string;
+  code: string;
   /**
    * 邮箱账号
    */
@@ -114,7 +114,7 @@ export type EmailCodeForm = {
   /**
    * 前置验证码唯一标识
    */
-  uuid?: string;
+  uuid: string;
   [property: string]: any;
 }
 
@@ -147,5 +147,20 @@ export type LoginForm = {
    * 验证码和密码只传其中一个即可
    */
   password?: null | string;
+  [property: string]: any;
+}
+export type UpdatePasswordForm = {
+  /**
+     * 邮箱
+     */
+  email: string;
+  /**
+   * 邮箱验证码
+   */
+  emailCode: string;
+  /**
+   * 待修改的密码
+   */
+  password: string;
   [property: string]: any;
 }

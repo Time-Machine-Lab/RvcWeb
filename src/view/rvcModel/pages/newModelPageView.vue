@@ -98,7 +98,7 @@ const beforeCoverUpload = function (rawFile: File) {
             modelAddForm.value.picture = res.data.url
             message.success('封面上传成功')
         } else {
-            message.error(res.message)
+            message.error(res.msg)
         }
         uploadModelLoading.value = false
     })
