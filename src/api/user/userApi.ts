@@ -55,7 +55,13 @@ export function getCode(form: EmailCodeForm) {
         params: form
     })
 }
-
+export function getUpdatePasswordCode(form: EmailCodeForm){
+    return request({
+        url:'/user/resetPwdEmailCode',
+        method:'get',
+        params: form
+    })
+}
 export function register(form: RegisterForm) {
     return request({
         url: '/user/register',

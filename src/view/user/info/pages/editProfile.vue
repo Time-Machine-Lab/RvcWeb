@@ -6,7 +6,7 @@
 -->
 <script setup lang="ts">
 import { ref } from "vue";
-import { editUserInfo, getCode, getPreCode, updatePassword, uploadAvatar } from "@/api/user/userApi.ts";
+import { editUserInfo, getUpdatePasswordCode, getPreCode, updatePassword, uploadAvatar } from "@/api/user/userApi.ts";
 import { UserInfoVO, ProfileForm, EmailCodeForm, UpdatePasswordForm } from "@/api/user/userTypes";
 import { message } from "@/utils/message";
 import router from "@/router";
@@ -141,7 +141,7 @@ const getPreCodeFunc = function () {
 const sendCodeFunc = function () {
   emailCodeForm.value.uuid = preCode.value.uuid
   emailCodeForm.value.email = form.value.updatePasswordForm.email
-  getCode(emailCodeForm.value).then((res: any) => {
+  getUpdatePasswordCode(emailCodeForm.value).then((res: any) => {
     if (res.code == 200) {
       message.success("发送成功，请注意查收")
       sendCodeDialogVisible.value = false
