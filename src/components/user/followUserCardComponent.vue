@@ -24,7 +24,7 @@ const follow = function(){
       hasFollow.value = !hasFollow.value
       message.success('')
     } else {
-      message.error(res.message)
+      message.error(res.msg)
     }
   })
 }
