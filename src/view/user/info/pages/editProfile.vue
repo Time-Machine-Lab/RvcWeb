@@ -307,17 +307,17 @@ getPreCodeFunc()
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 验证码 </span>
-        <input v-model="form.updatePasswordForm.emailCode" style="width: 170px;" class="input" placeholder="description"
+        <input v-model="form.updatePasswordForm.emailCode" style="width: 170px;" class="input" placeholder="邮箱验证码"
           :input-style="inputStyle" />
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 密码 </span>
-        <input v-model="form.updatePasswordForm.password" type="password" style="width: 170px;" class="input" placeholder="description"
+        <input v-model="form.updatePasswordForm.password" type="password" style="width: 170px;" class="input" placeholder="密码"
           :input-style="inputStyle" />
       </el-row>
       <el-row :gutter="20" class="row">
         <span class="label"> 确认密码 </span>
-        <input v-model="form.confirmPassword" type="password" style="width: 170px;" class="input" placeholder="description"
+        <input v-model="form.confirmPassword" type="password" style="width: 170px;" class="input" placeholder="确认密码"
           :input-style="inputStyle" />
       </el-row>
     </div>
