@@ -52,6 +52,7 @@ let clickType = ref(false)
 let uploadCoverLoading = ref(false)
 let currentTypeIndex = ref(-1)
 let uploadFailed = ref(false)
+let submitDisabled = ref(false)
 const handleClickSort = function () {
   clickType.value = true
   typeSelectvisibility.value = !typeSelectvisibility.value
@@ -65,6 +66,9 @@ const handleBlur = function () {
   }, 200)
 }
 const submitPost = function () {
+  if(submitDisabled.value){
+    return
+  }
   postForm.value.content = content.value
   console.log(postForm.value);
 
@@ -81,13 +85,14 @@ const submitPost = function () {
     }, 300)
     return
   }
-
+  submitDisabled.value = true
   postAdd(postForm.value).then((res: any) => {
     if (res.code == 200) {
       message.success('发布成功')
       router.back()
     } else {
       message.error(res.msg)
+      submitDisabled.value = false
     }
   })
   storage.remove('postDraft')
@@ -188,7 +193,7 @@ loadDraft()
         <div class="button-group__save" @click="saveDraft">
           保存草稿
         </div>
-        <div class="button-group__submit" @click="submitPost">
+        <div class="button-group__submit" :style="{cursor:submitDisabled?'not-allowed':'pointer'}" @click="submitPost">
           发表
         </div>
       </div>
@@ -246,6 +251,8 @@ loadDraft()
 .upload-demo {
   position: relative;
   width: 100%;
+  max-height: 400px;
+  overflow: scroll;
 }
 
 .newPost-page {
@@ -270,7 +277,7 @@ loadDraft()
   position: relative;
   width: 60%;
   overflow: scroll;
-  margin: 50px 0;
+  margin: 30px 0;
 }
 
 .newPost-page__center__right {
@@ -278,7 +285,7 @@ loadDraft()
   width: 25%;
   max-width: 400px;
   position: fixed;
-  top: 100px;
+  top: 150px;
   left: calc(40% + 450px);
 }
 
@@ -363,7 +370,7 @@ loadDraft()
   color: rgba(255, 255, 255, 0.7);
   font-weight: 700;
   text-align: left;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-bottom: 5px;
 }
 
@@ -392,10 +399,13 @@ loadDraft()
   background-color: rgba(37, 38, 43);
   padding: 5px;
   z-index: 10;
+  max-height: 100px;
+  overflow: scroll;
   user-select: none;
 }
 
 .type-select__item {
+  position:relative;
   padding-left: 15px;
   width: calc(100% - 15px);
   height: 40px;
@@ -435,7 +445,6 @@ loadDraft()
   position: relative;
   /* height: 50px; */
   width: 100%;
-  margin-top: 80px;
 }
 
 .button-group__save {
@@ -453,7 +462,7 @@ loadDraft()
   line-height: 40px;
   cursor: pointer;
   user-select: none;
-  margin-top: 15px;
+  margin-top: 5px;
   transition: all 0.3s;
 }
 
