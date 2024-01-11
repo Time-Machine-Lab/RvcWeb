@@ -129,11 +129,6 @@ loadOldPost()
     <div class="editPost-page">
         <div class="editPost-page__center">
             <div class="editPost-page__center__left">
-                <el-breadcrumb :separator="'>'">
-                    <el-breadcrumb-item :to="{ path: '/rvc/posts' }">交流区</el-breadcrumb-item>
-                    <el-breadcrumb-item>编辑贴子</el-breadcrumb-item>
-                </el-breadcrumb>
-
                 <div class="label">
                     标题
                 </div>
@@ -211,7 +206,7 @@ loadOldPost()
 
 .editPost-page__center {
     position: relative;
-    width: 60%;
+    width: 80%;
     height: 95%;
     left: 50%;
     top: 50%;
@@ -220,16 +215,19 @@ loadOldPost()
 }
 
 .editPost-page__center__left {
-    height: 100%;
-    width: 70%;
+    position: relative;
+    width: 60%;
+    overflow: scroll;
+    margin: 50px 0;
 }
 
 .editPost-page__center__right {
     height: 100%;
-    width: 350px;
-    position: fixed;
-    top: 100px;
-    right: 15%;
+  width: 35%;
+  max-width: 400px;
+  position: fixed;
+  top: 200px;
+  left: calc(40% + 450px);
 
 }
 
