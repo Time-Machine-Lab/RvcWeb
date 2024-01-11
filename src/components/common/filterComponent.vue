@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-const sortMethod = ref(["时间排序", "点赞数量排序", "浏览量排序"])
+const sortMethod = ref(["时间排序", "点赞数量排序", "浏览量排序","收藏量排序"])
 let props = defineProps<{
     tags: {
         id: string | undefined
