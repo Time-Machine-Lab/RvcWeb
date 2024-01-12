@@ -8,6 +8,9 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { storage } from '@/utils/storage';
+import { ImageElement } from '@wangeditor/editor';
+import { message } from '@/utils/message';
+import { uploadImage } from '@/api/post/postApi';
 let props = defineProps<{
   editorContent: string,
   getContent: (html: string) => void
@@ -33,6 +36,7 @@ const editorConfig = {
       server: '/rvcApi/communication/post/cover',
       maxFileSize: 5 * 1024 * 1024,
       maxNumberOfFiles: 20,
+      uploadImgFmSize: 300,
       allowedFileTypes: ['image/*'],
       meta: {},
       metaWithUrl: false,
@@ -54,16 +58,55 @@ const editorConfig = {
       customInsert(res: any, insertFn: any) {
         insertFn(res.data.url)
       },
+      onBeforeUpload(file: any) { // TS 语法
+        // onBeforeUpload(file) {    // JS 语法
+        // file 选中的文件，格式如 { key: file }
+        console.log(file);
+        const dynamicKey = Object.keys(file)[0];
+    const fileData = file[dynamicKey];
+        console.log(fileData.data);
+        
+        uploadImage(fileData.data).then((res: any) => {
+          if (res.code == 200) {
+            const node: ImageElement = {
+              type: 'image',
+              src: res.data.url,
+              style: {
+                width: '30%'
+              },
+              children: [{text: ''}]
+            }
+            editor.value.insertNode(node)
+          } else
+            message.error(res.msg)
+        })
+        return false
+
+        // 可以 return
+        // 1. return file 或者 new 一个 file ，接下来将上传
+        // 2. return false ，不上传这个 file
+      },
+      // 单个文件上传失败
+      onFailed() {   // TS 语法
+        // onFailed(file, res) {           // JS 语法
+      },
+
+      // 上传错误，或者触发 timeout 超时
+      onError() {  // TS 语法
+        // onError(file, err, res) {               // JS 语法
+      },
     },
     color: {
 
-    }
-  },
+    },
+  }
 };
 const mode = 'default';
 
 const onCreated = (createdEditor: any) => {
   editor.value = Object.seal(createdEditor);
+  console.log(editor.value.getConfig());
+
   setInterval(() => {
     props.getContent(html.value)
   }, 2000);
@@ -80,9 +123,9 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div style="border-radius:10px;border:rgba(100,100,100) 1px solid;">
-    <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px;" v-model="html" :defaultConfig="editorConfig"
-      :mode="mode" @onCreated="onCreated" />
+    <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor"
+      :defaultConfig="toolbarConfig" :mode="mode" />
+    <Editor style="min-height:200px;" v-model="html" :defaultConfig="editorConfig" :mode="mode" @onCreated="onCreated" />
   </div>
 </template>
 <style src="@wangeditor/editor/dist/css/style.css"></style>
@@ -93,7 +136,7 @@ onBeforeUnmount(() => {
 }
 
 :deep(.w-e-toolbar) {
-  background-color: transparent
+  background-color: rgba(26, 27, 30);
 }
 
 :deep(.w-e-text-container) {

@@ -4,7 +4,7 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\custom-types.d.ts
  */
-import { SlateDescendant, SlateElement, SlateText } from '@wangeditor/editor'
+import { SlateDescendant, SlateElement, SlateText, ImageElement } from '@wangeditor/editor'
 
 declare module '@wangeditor/editor' {
     // 扩展 Text
@@ -17,5 +17,18 @@ declare module '@wangeditor/editor' {
         type: string
         children: SlateDescendant[]
     }
+    export type ImageStyle = {
+        width?: string
+        height?: string
+    }
+
+    export type ImageElement = {
+        type: 'image'
+        src: string
+        alt?: string
+        href?: string
+        style?: ImageStyle
+        children: EmptyText[]
+    }
 }
-declare module 'lamejs' {}
+declare module 'lamejs' { }

@@ -142,3 +142,14 @@ export function likeComment(form:LikeCommentForm){
         data:form
     })
 }
+
+export function uploadImage(file:File){
+    const form = new FormData()
+    form.append('wangeditor-uploaded-image',file)
+    return request({
+        method:'post',
+        url:'/communication/post/cover',
+        data:form,
+        timeout:300000
+    })
+}
