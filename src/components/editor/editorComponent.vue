@@ -55,20 +55,8 @@ const editorConfig = {
       // onError(file, err, res) {
       //   console.log(err,res);
       // },
-      customInsert(res: any, insertFn: any) {
-        insertFn(res.data.url)
-      },
-      onBeforeUpload(file: any) { // TS 语法
-        // onBeforeUpload(file) {    // JS 语法
-        // file 选中的文件，格式如 { key: file }
-        console.log(file);
-        const dynamicKey = Object.keys(file)[0];
-    const fileData = file[dynamicKey];
-        console.log(fileData.data);
-        
-        uploadImage(fileData.data).then((res: any) => {
-          if (res.code == 200) {
-            const node: ImageElement = {
+      customInsert(res: any) {
+        const node: ImageElement = {
               type: 'image',
               src: res.data.url,
               style: {
@@ -77,14 +65,6 @@ const editorConfig = {
               children: [{text: ''}]
             }
             editor.value.insertNode(node)
-          } else
-            message.error(res.msg)
-        })
-        return false
-
-        // 可以 return
-        // 1. return file 或者 new 一个 file ，接下来将上传
-        // 2. return false ，不上传这个 file
       },
       // 单个文件上传失败
       onFailed() {   // TS 语法
