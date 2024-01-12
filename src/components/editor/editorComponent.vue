@@ -9,8 +9,7 @@ import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { storage } from '@/utils/storage';
 import { ImageElement } from '@wangeditor/editor';
-import { message } from '@/utils/message';
-import { uploadImage } from '@/api/post/postApi';
+
 let props = defineProps<{
   editorContent: string,
   getContent: (html: string) => void
