@@ -2,16 +2,16 @@
 import TagSelectComponent from '@/components/common/tagSelectComponent.vue';
 import ModelEditorComponent from '@/components/editor/modelEditorComponent.vue';
 import { ModelAddForm } from '@/api/rvcModel/modelType'
-import { getModelLabel, modelAdd } from '@/api/rvcModel/modelApi'
+import { getModelDetails, getModelLabel, modelAdd } from '@/api/rvcModel/modelApi'
 import { uploadImages } from '@/api/rvcModel/fileApi.ts'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
+import router from '@/router';
 // import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
 let typeOptions = ref(['RVC'])
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
 let currentTypeIndex = ref(0)
-let content = ref('')
 let coverBase64 = ref('')
 let uploadModelLoading = ref(false)
 let uploadCoverLoading = ref(false)
@@ -33,6 +33,20 @@ let options = ref<{
     value: string,
     label: string
 }[]>([])
+let isEdit = ref(false)
+if(router.currentRoute.value.path == '/editModel')
+    isEdit.value = true
+else
+    modelAddForm.value.description = ' '
+if(isEdit.value){
+    getModelDetails(router.currentRoute.value.query.id as string).then((res:any)=>{
+        if(res.code == 200){
+            modelAddForm.value = res.data
+        } else {
+            message.error(res.msg)
+        }
+    })
+}
 getModelLabel({
     page: '1',
     limit: '20'
@@ -202,9 +216,9 @@ const submit = function () {
 
             </div>
             <span class="label">标签<span class="important">*</span></span>
-            <TagSelectComponent :options="options" :get-value="getValue"></TagSelectComponent>
+            <TagSelectComponent :options="options" :get-value="getValue" :value="modelAddForm.label"></TagSelectComponent>
             <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
-            <ModelEditorComponent :get-content="getContent" :editorContent="content"></ModelEditorComponent>
+            <ModelEditorComponent :get-content="getContent" v-if="!isEdit&&modelAddForm.description" :editorContent="modelAddForm.description"></ModelEditorComponent>
             <span class="label">注意事项<span class="important">*</span></span>
             <input class="input" placeholder="注意事项" v-model="modelAddForm.note">
             <div class="button-group">

@@ -11,7 +11,8 @@ let props = defineProps<{
     options: Array<{
         value: string
         label: string
-    }>
+    }>,
+    value: string[]
     getValue: (tags:string[]) => void
 }>()
 let dynamicTags = ref<{
