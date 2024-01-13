@@ -2,11 +2,11 @@
 import TagSelectComponent from '@/components/common/tagSelectComponent.vue';
 import ModelEditorComponent from '@/components/editor/modelEditorComponent.vue';
 import { ModelAddForm } from '@/api/rvcModel/modelType'
-import { modelAdd } from '@/api/rvcModel/modelApi'
+import { getModelLabel, modelAdd } from '@/api/rvcModel/modelApi'
 import { uploadImages } from '@/api/rvcModel/fileApi.ts'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
-import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
+// import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
 let typeOptions = ref(['RVC'])
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
@@ -17,12 +17,12 @@ let uploadModelLoading = ref(false)
 let uploadCoverLoading = ref(false)
 let modelAddForm = ref<ModelAddForm>({
     description: '',
-    fileId: [],
     label: [],
     name: '',
     note: '',
     picture: '',
-    typeId: 'RVC'
+    typeId: 'RVC',
+    fileUrl: ''
 })
 let process = ref<{
     current: number
@@ -32,19 +32,23 @@ let process = ref<{
 let options = ref<{
     value: string,
     label: string
-}[]>([{
-    value: '123123123',
-    label: '1'
-}, {
-    value: '332222233',
-    label: '2'
-}, {
-    value: '5553412',
-    label: '3'
-}, {
-    value: '333211551',
-    label: '4'
-}])
+}[]>([])
+getModelLabel({
+    page: '1',
+    limit: '20'
+}).then((res: any) => {
+    if (res.code == 200) {
+        let data: any = res.data
+        for (let i = 0; i < data.length; i++) {
+            options.value.push({
+                value: data[i].id,
+                label: data[i].name
+            })
+        }
+    } else {
+        message.error(res.msg)
+    }
+})
 const handleClickSort = function () {
     clickType.value = true
     typeSelectvisibility.value = !typeSelectvisibility.value
@@ -62,7 +66,7 @@ const getContent = function (html: string) {
 }
 const nextStep = function () {
     if (process.value.current == 1) {
-        if (modelAddForm.value.name != '' && modelAddForm.value.typeId != '' && modelAddForm.value.description != '' && modelAddForm.value.label.length != 0) {
+        if (modelAddForm.value.name != '' && modelAddForm.value.typeId != '' && modelAddForm.value.description != '' && modelAddForm.value.label.length != 0 && modelAddForm.value.note != '') {
             process.value.current = process.value.current + 1
         } else {
             message.warning('请填写以上信息')
@@ -77,13 +81,13 @@ const lastStep = function () {
         process.value.current = process.value.current - 1
     }
 }
-const handleModelFileSuccess = function () { };
-const beforeModelFileUpload = function (rawFile: File) {
-    modelFiles.push(rawFile)
-    if (modelFiles.length == 2)
-        // uploadModelFile()
-    return false
-};
+// const handleModelFileSuccess = function () { };
+// const beforeModelFileUpload = function (rawFile: File) {
+//     modelFiles.push(rawFile)
+//     if (modelFiles.length == 2)
+//         // uploadModelFile()
+//     return false
+// };
 
 const handleCoverSuccess = function () { };
 const beforeCoverUpload = function (rawFile: File) {
@@ -104,23 +108,23 @@ const beforeCoverUpload = function (rawFile: File) {
     })
     return false
 };
-const uploadModelRef = ref<UploadInstance>()
+// const uploadModelRef = ref<UploadInstance>()
 // const handleUpload = function () {
 //     modelFiles = []
 //     uploadModelRef?.value?.submit()
 // }
-const getValue = function (value: {
-    value: string
-    label: string
-}[]) {
+const getValue = function (value: string[]) {
+    console.log(value);
+    
     modelAddForm.value.label = []
     for (let i = 0; i < value.length; i++) {
-        modelAddForm.value.label.push(value[i].value)
+        modelAddForm.value.label.push(value[i])
     }
 
 }
 const uploadFinish = function () {
-    return modelAddForm.value.fileId.length == 2 && modelAddForm.value.audioId != ""
+    return modelAddForm.value.fileUrl != ""
+    // return modelAddForm.value.fileId.length == 2 && modelAddForm.value.audioId != ""
 }
 const handleExceed = function () {
     message.warning('超出数量上限')
@@ -137,7 +141,7 @@ const submit = function () {
         }
     })
 }
-let modelFiles: any = []
+// let modelFiles: any = []
 </script>
 <template>
     <div class="new-model">
@@ -201,6 +205,8 @@ let modelFiles: any = []
             <TagSelectComponent :options="options" :get-value="getValue"></TagSelectComponent>
             <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
             <ModelEditorComponent :get-content="getContent" :editorContent="content"></ModelEditorComponent>
+            <span class="label">注意事项<span class="important">*</span></span>
+            <input class="input" placeholder="注意事项" v-model="modelAddForm.note">
             <div class="button-group">
                 <div class="button-group__item" @click="lastStep"
                     :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
@@ -212,7 +218,9 @@ let modelFiles: any = []
             </div>
         </div>
         <div v-show="process.current >= 2">
-            <div class="new-model__title">
+            <span class="label">模型下载链接<span class="important">*</span></span>
+            <input class="input" placeholder="模型下载链接" v-model="modelAddForm.fileUrl">
+            <!-- <div class="new-model__title">
                 上传模型文件
             </div>
             <el-upload ref="uploadModelRef" class="upload-demo" drag :auto-upload="true" :limit="2"
@@ -233,23 +241,21 @@ let modelFiles: any = []
             <div class="new-model__title">
                 上传试听音频
             </div>
-<!--            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"-->
-<!--                :on-exceed="handleExceed" :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"-->
-<!--                :before-remove="beforeRemove" multiple>-->
-<!--                <div class="loadding" v-if="uploadAudioLoading"></div>-->
-<!--                <div class="success" v-else-if="modelAddForm.picture">✓</div>-->
-<!--                <div class="error" v-else>×</div>-->
-<!--                <div class="el-upload__text">-->
-<!--                    将文件拖拽到此处或点击上传-->
-<!--                </div>-->
-<!--                <div class="el-upload__text">-->
-<!--                    最多可上传1个文件-->
-<!--                </div>-->
-<!--            </el-upload>-->
-            <div class="new-model__title">
-                上传封面
-            </div>
-            <el-upload ref="uploadCoverRef" class="upload-demo" drag :auto-upload="false" :limit="1"
+            <el-upload ref="uploadAudioRef" class="upload-demo" drag :auto-upload="true" :limit="1"
+                :on-exceed="handleExceed" :on-success="handleAudioFileSuccess" :before-upload="beforeAudioFileUpload"
+                :before-remove="beforeRemove" multiple>
+                <div class="loadding" v-if="uploadAudioLoading"></div>
+                <div class="success" v-else-if="modelAddForm.picture">✓</div>
+                <div class="error" v-else>×</div>
+                <div class="el-upload__text">
+                    将文件拖拽到此处或点击上传
+                </div>
+                <div class="el-upload__text">
+                    最多可上传1个文件
+                </div>
+            </el-upload> -->
+
+            <el-upload ref="uploadCoverRef" class="upload-demo" drag :auto-upload="true" :limit="1"
                 :on-exceed="handleExceed" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload"
                 :before-remove="beforeRemove" multiple>
                 <div class="loadding" v-if="uploadCoverLoading"></div>
@@ -352,6 +358,7 @@ let modelFiles: any = []
 }
 
 .new-model__title {
+    position: relative;
     height: 70px;
     width: 100%;
     line-height: 70px;
@@ -511,4 +518,5 @@ let modelFiles: any = []
 
 .button-group__item:hover {
     background-color: rgba(24, 100, 171);
-}</style>
+}
+</style>
