@@ -11,13 +11,11 @@ let props = defineProps<{
     options: Array<{
         value: string
         label: string
-    }>
-    getValue: (dynamicTags:{
-        value: string
-        label: string
-    }[]) => void
+    }>,
+    value: string[]
+    getValue: (tags:string[]) => void
 }>()
-const dynamicTags = ref<{
+let dynamicTags = ref<{
         value: string
         label: string
     }[]>([])
@@ -48,7 +46,11 @@ const handleClose = (tag: {
         label: string
     }) => {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
-    props.getValue(dynamicTags.value)
+    let tags:string[]=[]
+    for(let i=0;i<dynamicTags.value.length;i++){
+        tags.push(dynamicTags.value[i].value)
+    }
+    props.getValue(tags)
 }
 
 const showSelect = () => {
@@ -65,7 +67,11 @@ const handleSelectConfirm = (index: number) => {
     }
     if (dynamicTags.value.includes(typeOptions.value[index])) return
     dynamicTags.value.push(typeOptions.value[index])
-    props.getValue(dynamicTags.value)
+    let tags:string[]=[]
+    for(let i=0;i<dynamicTags.value.length;i++){
+        tags.push(dynamicTags.value[i].value)
+    }
+    props.getValue(tags)
     selectVisible.value = false
 }
 </script>
@@ -83,7 +89,7 @@ const handleSelectConfirm = (index: number) => {
                 <span style="position: relative;left:0%;line-height: 20px;width:97%;text-align: left;">{{
                     typeOptions[currentTypeIndex].label }}</span>
                 <span style="position: relative;right:0%;">
-                    <img width="14" height="14" class="vertical-center" style="transition: all 0.2s;"
+                    <img width="10" height="10" style="transition: all 0.2s;line-height: 16px;"
                         :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                 </span>
             </div>
@@ -102,7 +108,7 @@ const handleSelectConfirm = (index: number) => {
     <el-button v-else class="button-new-tag"
         :style="{ backgroundColor: 'rgba(37, 38, 43)', border: 'rgba(55,58,64) 1px solid' }" size="small"
         @click="showSelect">
-        + New Tag
+        + 添加标签
     </el-button>
 </template>
   
@@ -151,6 +157,7 @@ const handleSelectConfirm = (index: number) => {
     height: 21px;
     line-height: 21px;
     font-size: 14px;
+    margin-top: 2px;
     text-align: left;
     border-radius: 5px;
     color: rgba(255, 255, 255, 0.7);
@@ -171,7 +178,7 @@ const handleSelectConfirm = (index: number) => {
 
 .revolve-animation {
     transform: rotateZ(180deg);
-    transform-origin: 6px 2px;
+    transform-origin: 6px 5px;
 }
 </style>
 

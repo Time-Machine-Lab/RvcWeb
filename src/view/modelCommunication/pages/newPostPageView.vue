@@ -99,8 +99,8 @@ const submitPost = function () {
 }
 const handleCoverSuccess = function () { };
 const beforeCoverUpload = function (rawFile: File) {
-  if (rawFile.size / 1024 / 1024 > 10) {
-    message.warning('请上传小于10M的图片')
+  if ((rawFile.size / (1024 * 1024)) > 10) {
+    message.warning('请上传小于20M的图片')
     return false
   }
   uploadCoverLoading.value = true
@@ -210,7 +210,7 @@ loadDraft()
             将文件拖拽到此处或点击上传
           </div>
           <div class="el-upload__text">
-            最多可上传1个封面
+            最多可上传小于20M的图片
           </div>
         </el-upload>
       </div>

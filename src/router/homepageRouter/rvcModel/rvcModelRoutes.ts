@@ -14,6 +14,11 @@ export default[
       path: "/newModel",
       name: "newModel",
       component: () => import('@/view/rvcModel/pages/newModelPageView.vue')
+    },
+    {
+      path: '/editModel',
+      name: 'editModel',
+      component: ()=>import('@/view/rvcModel/pages/newModelPageView.vue')
     }
   
   ];

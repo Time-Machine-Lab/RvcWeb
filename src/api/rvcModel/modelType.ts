@@ -173,7 +173,7 @@ export type ModelAddForm = {
     /**
      * 模型文件id
      */
-    fileId: string[];
+    fileId?: string[];
     /**
      * 标签id
      */
@@ -194,6 +194,7 @@ export type ModelAddForm = {
      * 类型id
      */
     typeId: string;
+    fileUrl: string;
     [property: string]: any;
 
 }
