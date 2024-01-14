@@ -48,7 +48,7 @@ const handleClose = (tag: {
     dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
     let tags:string[]=[]
     for(let i=0;i<dynamicTags.value.length;i++){
-        tags.push(dynamicTags.value[i].value)
+        tags.push(dynamicTags.value[i].label)
     }
     props.getValue(tags)
 }
@@ -69,7 +69,7 @@ const handleSelectConfirm = (index: number) => {
     dynamicTags.value.push(typeOptions.value[index])
     let tags:string[]=[]
     for(let i=0;i<dynamicTags.value.length;i++){
-        tags.push(dynamicTags.value[i].value)
+        tags.push(dynamicTags.value[i].label)
     }
     props.getValue(tags)
     selectVisible.value = false

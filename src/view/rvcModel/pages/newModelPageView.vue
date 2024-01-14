@@ -33,6 +33,7 @@ let options = ref<{
     value: string,
     label: string
 }[]>([])
+let submitDisabled = ref(false)
 let isEdit = ref(false)
 if(router.currentRoute.value.path == '/editModel')
     isEdit.value = true
@@ -147,11 +148,17 @@ const beforeRemove = function () {
     return true
 }
 const submit = function () {
+    if(submitDisabled.value) return
+    submitDisabled.value = true
     modelAddForm.value.typeId = "1734224118915072002"
     modelAdd(modelAddForm.value).then((res: any) => {
         if (res.code == 200) {
             console.log(modelAddForm);
-
+            message.success('发布成功')
+            router.back()
+        } else {
+            submitDisabled.value = false
+            message.error(res.message)
         }
     })
 }

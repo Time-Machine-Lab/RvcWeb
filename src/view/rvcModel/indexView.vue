@@ -26,6 +26,9 @@ const load = function () {
       return
   }
   disabled.value = true
+  setTimeout(()=>{
+    disabled.value = false
+  },5000)
   form.value.page = page.value
   getModels(form.value).then((res: any) => {
     if (res.code == 200) {

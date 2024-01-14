@@ -29,10 +29,6 @@ const collect = function () {
     if (!collectDisabled.value) return
 
     collectDisabled.value = false
-    if (localPost.value.author.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
-        return
-    }
     setTimeout(function () {
         collectDisabled.value = true
     }, 2000)
@@ -53,10 +49,6 @@ const like = function () {
     if (!likeDisabled.value) return
 
     likeDisabled.value = false
-    if (localPost.value.author.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
-        return
-    }
     setTimeout(function () {
         likeDisabled.value = true
     }
