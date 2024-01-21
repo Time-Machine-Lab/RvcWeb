@@ -76,6 +76,7 @@ const getTag = function (index: number) {
         form.value.tagId = tags.value[index]?.id
     }
     form.value.page = '1'
+    page.value = 1
     posts.value = []
     load()
 }
@@ -85,6 +86,7 @@ const getSort = function (index: number) {
         form.value.data = (index as unknown as string)
     }
     form.value.page = '1'
+    page.value = 1
     posts.value = []
     load()
 }

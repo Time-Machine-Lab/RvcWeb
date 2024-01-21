@@ -111,7 +111,7 @@ const check = function () {
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function (rawFile: File) {
     if ((rawFile.size / (1024 * 1024)) > 10) {
-        message.warning('请上传小于20M的图片')
+        message.warning('请上传小于10M的图片')
         return false
     }
     uploadCoverLoading.value = true
