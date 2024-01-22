@@ -52,7 +52,7 @@ const loadPost = function () {
     if (disabled.value) return
     disabled.value = true
     postForm = ref<UserLikePostForm>({
-        limit: '5',
+        limit: '10',
         page: page.value as unknown as string
     })
     getUserCollectPosts(postForm.value).then((res: any) => {

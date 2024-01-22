@@ -23,7 +23,7 @@ onBeforeMount(async () => {
       'https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg'
     ]
     console.log(count);
-    
+
     for (let img of imgs) {
       let image = new Image();
       image.onload = () => {
@@ -60,18 +60,22 @@ onBeforeMount(async () => {
 </template>
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
+
 @font-face {
   font-family: "ZCool";
   src: url("public/font/ZCOOLKuaiLe-Regular.ttf");
 }
+
 @font-face {
   font-family: "OpenSans";
   src: url("public/font/OpenSans-Regular.ttf");
 }
+
 @font-face {
   font-family: "NotoSerif";
   src: url("public/font/NotoSerif-Black.ttf");
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -89,11 +93,11 @@ onBeforeMount(async () => {
 }
 
 .main {
-  position:relative;
-  top:70px;
+  position: relative;
+  top: 70px;
   height: calc(100vh - 110px);
   padding: 0;
-  background-color: rgb(26,27,30);
+  background-color: rgb(26, 27, 30);
 }
 
 .slide-fade-enter-active {
@@ -108,5 +112,4 @@ onBeforeMount(async () => {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
-}
-</style>
+}</style>

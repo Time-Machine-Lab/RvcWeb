@@ -113,6 +113,8 @@ setTimeout(function () {
 .userPage .other-info-container {
   display: inline-block;
   width: 83%;
+  height: 100%;
+  overflow: scroll;
 }
 
 .userPage .other-info-container .router-link-container {
