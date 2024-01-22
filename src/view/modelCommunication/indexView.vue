@@ -96,7 +96,8 @@ const getSort = function (index: number) {
 // }
 </script>
 <template>
-    <div class="communicationView">
+    <el-scrollbar style="height: calc(100vh - 120px)">
+        <div class="communicationView">
         <div class="filter-container">
             <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags">
             </filterComponent>
@@ -110,6 +111,8 @@ const getSort = function (index: number) {
             </waterFallComponent>
         </div>
     </div>
+    </el-scrollbar>
+    
 </template>
 <style scoped>
 :deep(.el-scrollbar__wrap) {

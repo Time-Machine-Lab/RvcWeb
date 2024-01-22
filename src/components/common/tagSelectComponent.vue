@@ -147,7 +147,7 @@ const handleSelectConfirm = (index: number) => {
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
-    z-index: 10;
+    z-index: 20;
     user-select: none;
 }
 
@@ -160,6 +160,7 @@ const handleSelectConfirm = (index: number) => {
     margin-top: 2px;
     text-align: left;
     border-radius: 5px;
+    z-index: 20;
     color: rgba(255, 255, 255, 0.7);
 }
 

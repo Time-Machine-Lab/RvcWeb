@@ -57,7 +57,7 @@ const loadPost = function () {
     disabled.value = true
     postForm = ref<UserLikePostForm>({
         data: '',
-        limit: '5',
+        limit: '10',
         page: page.value as unknown as string
     })
     getUserLikePosts(postForm.value).then((res: any) => {
