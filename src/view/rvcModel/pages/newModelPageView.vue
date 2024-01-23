@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import TagSelectComponent from '@/components/common/tagSelectComponent.vue';
 import ModelEditorComponent from '@/components/editor/modelEditorComponent.vue';
-import { ModelAddForm } from '@/api/rvcModel/modelType'
-import { getModelDetails, getModelLabel, modelAdd } from '@/api/rvcModel/modelApi'
+import { ModelAddForm, UpdateModelForm } from '@/api/rvcModel/modelType'
+import { getModelDetails, getModelLabel, modelAdd, updateModel } from '@/api/rvcModel/modelApi'
 import { uploadImages } from '@/api/rvcModel/fileApi.ts'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
@@ -12,7 +12,6 @@ let typeOptions = ref(['RVC'])
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
 let currentTypeIndex = ref(0)
-let coverBase64 = ref('')
 let uploadModelLoading = ref(false)
 let uploadCoverLoading = ref(false)
 let modelAddForm = ref<ModelAddForm>({
@@ -23,6 +22,13 @@ let modelAddForm = ref<ModelAddForm>({
     picture: '',
     typeId: 'RVC',
     fileUrl: ''
+})
+let updateModelForm = ref<UpdateModelForm>({
+    id: '',
+    name: '',
+    description: '',
+    note: '',
+    picture: ''
 })
 let process = ref<{
     current: number
@@ -81,13 +87,32 @@ const getContent = function (html: string) {
 }
 const nextStep = function () {
     if (process.value.current == 1) {
-        if (modelAddForm.value.name != '' && modelAddForm.value.typeId != '' && modelAddForm.value.description != '' && modelAddForm.value.label.length != 0 && modelAddForm.value.note != '') {
-            process.value.current = process.value.current + 1
-        } else {
-            message.warning('请填写以上信息')
+        if (modelAddForm.value.name == '') {
+            message.warning('请填模型名称')
+            return
         }
-    } else if (process.value.current == 2) {
+        if (modelAddForm.value.typeId == '') {
+            message.warning('请选择模型类型')
+            return
+        }
+        if (modelAddForm.value.description == '<p><br></p>') {
+            message.warning('请添加模型描述')
+            return
+        }
+        if (!isEdit.value == true) {
+            if (modelAddForm.value.label.length == 0) {
+                message.warning('请添加标签')
+                return
+            }
+        }
         process.value.current = process.value.current + 1
+    } else if (process.value.current == 2) {
+        if (modelAddForm.value.fileUrl == '') {
+            message.warning('请填写下载链接')
+            return
+        }
+        process.value.current = process.value.current + 1
+
     }
 
 }
@@ -109,15 +134,10 @@ const beforeCoverUpload = function (rawFile: File) {
     uploadModelLoading.value = true
     uploadImages(rawFile).then((res: any) => {
         if (res.code == 200) {
-            const reader = new FileReader()
-            reader.readAsDataURL(rawFile);
-            reader.onload = function () {
-                coverBase64.value = String(reader.result)
-            }
             modelAddForm.value.picture = res.data.url
             message.success('封面上传成功')
         } else {
-            message.error(res.msg)
+            message.error(res.message)
         }
         uploadModelLoading.value = false
     })
@@ -151,16 +171,34 @@ const submit = function () {
     if (submitDisabled.value) return
     submitDisabled.value = true
     modelAddForm.value.typeId = "1734224118915072002"
-    modelAdd(modelAddForm.value).then((res: any) => {
-        if (res.code == 200) {
-            console.log(modelAddForm);
-            message.success('发布成功')
-            router.back()
-        } else {
-            submitDisabled.value = false
-            message.error(res.message)
-        }
-    })
+    if (isEdit.value == true) {
+        updateModelForm.value.id = modelAddForm.value.id
+        updateModelForm.value.description = modelAddForm.value.description
+        updateModelForm.value.name = modelAddForm.value.name
+        updateModelForm.value.note = modelAddForm.value.note
+        updateModelForm.value.picture = modelAddForm.value.picture
+        updateModel(updateModelForm.value).then((res: any) => {
+            if (res.code == 200) {
+                message.success('修改成功')
+                router.back()
+            } else {
+                submitDisabled.value = false
+                message.error(res.message)
+            }
+        })
+
+    } else {
+        modelAdd(modelAddForm.value).then((res: any) => {
+            if (res.code == 200) {
+                message.success('发布成功')
+                router.back()
+            } else {
+                submitDisabled.value = false
+                message.error(res.message)
+            }
+        })
+    }
+
 }
 // let modelFiles: any = []
 </script>
@@ -168,7 +206,7 @@ const submit = function () {
     <div class="scroll-container">
         <div class="new-model">
             <div class="new-model__title">
-                上传模型
+                {{isEdit?'编辑':'上传'}}模型
             </div>
             <div class="new-model__process">
                 <div class="new-model__process__ball"
@@ -223,16 +261,16 @@ const submit = function () {
                     </div>
 
                 </div>
-                <span class="label">标签<span class="important">*</span></span>
-                <TagSelectComponent :options="options" :get-value="getValue" :value="modelAddForm.label">
+                <span class="label" v-if="!isEdit">标签<span class="important">*</span></span>
+                <TagSelectComponent v-if="!isEdit" :options="options" :get-value="getValue" :value="modelAddForm.label">
                 </TagSelectComponent>
                 <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
                 <div style="margin-bottom: 50px;">
-                    <ModelEditorComponent :get-content="getContent" v-if="!isEdit && modelAddForm.description"
+                    <ModelEditorComponent :get-content="getContent" v-if="(isEdit && modelAddForm.description) || (!isEdit)"
                         :editorContent="modelAddForm.description"></ModelEditorComponent>
                 </div>
 
-                <span class="label">注意事项<span class="important">*</span></span>
+                <span class="label">注意事项</span>
                 <input class="input" placeholder="注意事项" v-model="modelAddForm.note">
                 <div class="button-group">
                     <div class="button-group__item" @click="lastStep"
@@ -286,7 +324,7 @@ const submit = function () {
                     :on-exceed="handleExceed" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload"
                     :before-remove="beforeRemove" multiple>
                     <div class="loadding" v-if="uploadCoverLoading"></div>
-                    <img :src="coverBase64" style="width: 100%;">
+                    <img :src="modelAddForm.picture" style="width: 100%;">
                     <div class="el-upload__text">
                         将文件拖拽到此处或点击上传
                     </div>

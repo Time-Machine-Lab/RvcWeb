@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 23:31:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-24 18:04:00
+ * @LastEditTime: 2024-01-23 21:22:14
  * @FilePath: \RvcWeb\src\router\index.ts
  * @Description:
  *
@@ -20,6 +20,7 @@ import homepageRoutes from '@/router/homepageRouter/index.ts'
 import communicationRoutes from "./homepageRouter/communication/communicationRoutes.ts"
 import userRoutes from "./homepageRouter/user/userRoutes.ts"
 import rvcModelRoutes from "./homepageRouter/rvcModel/rvcModelRoutes.ts";
+import { storage } from "@/utils/storage.ts";
 const routes: RouteRecordRaw[] = [
     {
         path: "/",
@@ -45,6 +46,20 @@ const options: RouterOptions = {
     history: createWebHashHistory(),
     routes
 };
-
 const router: Router = createRouter(options);
+router.beforeEach((to,_from,next)=>{
+    if(to.meta.isAuth&&to.meta.isAuth==true){
+        if(!storage.get<string>('token')){
+            router.push('/login')
+        } else {
+            next()
+        }
+    } else if(to.meta.isAuth&&to.meta.isAuth==false){
+        if(storage.get<string>('token')){
+            router.push('/rvc/posts')
+        }
+    } else {
+        next()
+    }
+})
 export default router;
