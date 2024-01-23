@@ -17,15 +17,21 @@ let form = ref<ModelListForm>({
 let formType = ref<ModelListType>({
   limit: 5, page: 1, sortType: "", typeId: ""
 })
+let disabled = ref(false)
+let choose = ref("0")
+let sortNumber = ref(0)
+let showSort = ref(false)
+const sortMethod = ref(["时间排序", "浏览量排序", "点赞数量排序"])
 const Types = ref<ModelType[]>([{ createTime: "", id: "0", type: "全部" }])
 getModelType().then((res: any) => {
   Types.value = Types.value.concat(res.data)
   // alert(Types.value[1].id)
 })
 const load = function () {
-  if (disabled.value) {
-    return
-  }
+  // if (disabled.value) {
+  //   return
+  // }
+  loaded.value = false
   disabled.value = true
   setTimeout(() => {
     disabled.value = false
@@ -35,9 +41,11 @@ const load = function () {
   getModels(form.value).then((res: any) => {
     if (res.code == 200) {
       let data = res.data.records
+      disabled.value = false
+      loaded.value = true
       if (data.length == 0) {
         disabled.value = true
-        message.warning('没有更多数据了')
+        message.warning('已经滑倒底部了')
         return
       }
       models.value = models.value.concat(data)
@@ -51,6 +59,7 @@ const load = function () {
     }
   })
 }
+load()
 const loadType = function () {
   if (disabled.value) {
     return
@@ -61,7 +70,6 @@ const loadType = function () {
   getModelsByType(formType.value).then((res: any) => {
     if (res.code == 200) {
       let data = res.data.records
-      loaded.value = true
       if (data.length == 0) {
         disabled.value = true
         message.warning('没有更多数据了')
@@ -79,8 +87,7 @@ const loadType = function () {
   })
 }
 
-let disabled = ref(false)
-let choose = ref("0")
+
 const chooseType = function (index: any) {
   choose.value = index
   formType.value.typeId = String(index)
@@ -91,10 +98,6 @@ const chooseType = function (index: any) {
     loadType()
   }
 }
-
-let sortNumber = ref(0)
-let showSort = ref(false)
-const sortMethod = ref(["时间排序", "浏览量排序", "点赞数量排序"])
 const Show = function () {
   showSort.value = !showSort.value
 }
@@ -151,7 +154,7 @@ const refresh = () => {
         <el-empty :image-size="200" v-if="loaded && models.length == 0" style="font-family: 'ZCool';"
           description="这里空空如也~" image="/icon/empty.svg" />
         <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100"
-          :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
+          :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
           <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
           <!-- <el-skeleton style="width: 240px;height: 400px;background-color: rgba(61,63,67);" :loading="disabled" animated>
             <template #template>
@@ -167,9 +170,10 @@ const refresh = () => {
   </el-scrollbar>
 </template>
 <style scoped>
-:deep(.el-skeleton-item){
-  background-color: rgba(61,63,67);
+:deep(.el-skeleton-item) {
+  background-color: rgba(61, 63, 67);
 }
+
 .filter-box__filter {
   position: relative;
   height: 70px;
