@@ -30,7 +30,7 @@ const handleBlur = function () {
     }, 200)
 }
 const handleTagClick = function (index: number) {
-    currentTagsIndex.value = currentTagsIndex.value != index ? index : -1
+    currentTagsIndex.value = currentTagsIndex.value != index ? index : 0
     emit('getTag', currentTagsIndex.value)
 }
 const handleSortClick = function (index:number) {

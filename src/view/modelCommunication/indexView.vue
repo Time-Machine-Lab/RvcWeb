@@ -17,7 +17,7 @@ let loaded = ref(false)
 let tags = ref<{
     id: string | undefined
     name: string | undefined
-}[]>([])
+}[]>([{id:'',name:'全部'}])
 let page = ref(1)
 let form = ref<PostListForm>({
     data: '1',
@@ -56,6 +56,7 @@ const load = function () {
             disabled.value = false
             let data = ref<PostVo[]>(res.data)
             if (data.value.length == 0) {
+                disabled.value = true
                 message.warning('已经滑倒底部了')
                 return
             }
@@ -72,7 +73,7 @@ const load = function () {
 }
 load()
 const getTag = function (index: number) {
-    if (index == -1) {
+    if (index == 0) {
         form.value.tagId = ''
     } else {
         form.value.tagId = tags.value[index]?.id
