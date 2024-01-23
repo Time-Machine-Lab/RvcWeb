@@ -44,7 +44,7 @@ let isEdit = ref(false)
 if (router.currentRoute.value.path == '/editModel')
     isEdit.value = true
 else
-    modelAddForm.value.description = ' '
+    modelAddForm.value.description = ''
 if (isEdit.value) {
     getModelDetails(router.currentRoute.value.query.id as string).then((res: any) => {
         if (res.code == 200) {
@@ -70,6 +70,19 @@ getModelLabel({
         message.error(res.msg)
     }
 })
+let formWarning = ref<{
+    name: boolean,
+    typeId: boolean,
+    description: boolean,
+    label: boolean,
+    fileUrl: boolean,
+}>({
+    name: false,
+    typeId: false,
+    description: false,
+    label: false,
+    fileUrl: false
+})
 const handleClickSort = function () {
     clickType.value = true
     typeSelectvisibility.value = !typeSelectvisibility.value
@@ -88,27 +101,32 @@ const getContent = function (html: string) {
 const nextStep = function () {
     if (process.value.current == 1) {
         if (modelAddForm.value.name == '') {
-            message.warning('请填模型名称')
-            return
+            formWarning.value.name = true
         }
         if (modelAddForm.value.typeId == '') {
-            message.warning('请选择模型类型')
-            return
+            formWarning.value.typeId = true
         }
         if (modelAddForm.value.description == '<p><br></p>') {
-            message.warning('请添加模型描述')
-            return
+            formWarning.value.description = true
         }
         if (!isEdit.value == true) {
             if (modelAddForm.value.label.length == 0) {
-                message.warning('请添加标签')
-                return
+                formWarning.value.label = true
             }
         }
+        setTimeout(()=>{
+            formWarning.value.name = false
+            formWarning.value.typeId = false
+            formWarning.value.description = false
+            formWarning.value.label = false
+
+        },1000)
+        if(formWarning.value.name||formWarning.value.typeId||formWarning.value.description||formWarning.value.label)return
         process.value.current = process.value.current + 1
     } else if (process.value.current == 2) {
         if (modelAddForm.value.fileUrl == '') {
             message.warning('请填写下载链接')
+            formWarning.value.fileUrl = true
             return
         }
         process.value.current = process.value.current + 1
@@ -206,7 +224,7 @@ const submit = function () {
     <div class="scroll-container">
         <div class="new-model">
             <div class="new-model__title">
-                {{isEdit?'编辑':'上传'}}模型
+                {{ isEdit ? '编辑' : '上传' }}模型
             </div>
             <div class="new-model__process">
                 <div class="new-model__process__ball"
@@ -235,14 +253,16 @@ const submit = function () {
                     模型信息
                 </div>
                 <span class="label">模型名称<span class="important">*</span></span>
-                <input class="input" placeholder="模型名称" v-model="modelAddForm.name">
+                <input class="input" placeholder="模型名称" v-model="modelAddForm.name"
+                    :class="formWarning.name ? 'formWarning' : 'formDefault'">
 
                 <span class="label">模型类型<span class="important">*</span></span>
                 <div class="select">
                     <div tabindex="-1" class="type-selecter"
                         :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
-                        :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
-                        <div class="horizontal-center" style="width:100%;display: flex;">
+                        :class="[clickType ? 'dither-animation' : '']" @click="handleClickSort" @blur="handleBlur">
+                        <div class="horizontal-center" :class="formWarning.typeId ? 'formWarning' : 'formDefault'"
+                            style="width:100%;display: flex;">
                             <span style="position: relative;left:0%;line-height: 35px;width:97%;text-align: left;">{{
                                 typeOptions[currentTypeIndex] }}</span>
                             <span style="position: relative;right:0%;">
@@ -262,12 +282,16 @@ const submit = function () {
 
                 </div>
                 <span class="label" v-if="!isEdit">标签<span class="important">*</span></span>
-                <TagSelectComponent v-if="!isEdit" :options="options" :get-value="getValue" :value="modelAddForm.label">
-                </TagSelectComponent>
+                <div :class="formWarning.label ? 'formWarning' : 'formDefault'" style="width: fit-content;border-radius: 5px;">
+                    <TagSelectComponent v-if="!isEdit" :options="options" :get-value="getValue" :value="modelAddForm.label">
+                    </TagSelectComponent>
+                </div>
+
                 <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
-                <div style="margin-bottom: 50px;">
+                <div :class="formWarning.description ? 'formWarning' : 'formDefault'">
                     <ModelEditorComponent :get-content="getContent" v-if="(isEdit && modelAddForm.description) || (!isEdit)"
-                        :editorContent="modelAddForm.description"></ModelEditorComponent>
+                        :editorContent="modelAddForm.description"
+                        ></ModelEditorComponent>
                 </div>
 
                 <span class="label">注意事项</span>
@@ -337,14 +361,10 @@ const submit = function () {
                         :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
                         上一步
                     </div>
-                    <div class="button-group__item" v-if="uploadFinish()" @click="nextStep">
+                    <div class="button-group__item" v-if="uploadFinish()&&process.current != 3" @click="nextStep">
                         下一步
                     </div>
-                </div>
-            </div>
-            <div v-show="process.current == 3">
-                <div style="width: 60%;margin-top: 20px;position: relative;left:50%;transform: translate(-50%);">
-                    <div class="button-group__item" style="text-align: center;" @click="submit">
+                    <div class="button-group__item" v-if="process.current == 3" @click="submit">
                         提交
                     </div>
                 </div>
@@ -598,4 +618,11 @@ const submit = function () {
 .button-group__item:hover {
     background-color: rgba(24, 100, 171);
 }
-</style>
+
+.formWarning {
+    border: rgba(224, 49, 49) 1px solid;
+}
+
+.formDefault {
+    /* border: rgba(55, 58, 64) 1px solid; */
+}</style>
