@@ -9,7 +9,7 @@ import {
     FavoriteAndCollectionForm,
     GetLabelForm,
     ModelAddForm,
-    ModelListForm, ModelListType,
+    ModelListForm, ModelListType, UpdateModelForm,
 } from '@/api/rvcModel/modelType'
 // 获取所有模型列表并按规则排序
 export function getModels(form: ModelListForm) {
@@ -32,9 +32,7 @@ export function getModelDetails(modelId: string) {
     return request({
         url: '/model/getModelMsg',
         method: 'get',
-        params: {
-            modelId
-        }
+        params: {modelId}
     })
 }
 // 动态获取label热度最高的list集合
@@ -53,7 +51,7 @@ export function getModelType() {
     })
 }
 // 模型新建标签
-export function postLabel(label: string) {
+export function modelLabel(label: string) {
     return request({
         url: "/model/label",
         method: "post",
@@ -61,12 +59,18 @@ export function postLabel(label: string) {
     });
 }
 // 模型表单修改。表单目前包括：名称、描述、注意事项、图片
-export function postUpdate(id: string) {
+export function updateModel(form:UpdateModelForm) {
+    const formData = new FormData()
+    formData.append('id', form.id);
+    formData.append('name', form.name);
+    formData.append('description', form.description);
+    formData.append('picture', form.picture);
+    formData.append('note', form.note);
     return request({
-        url: "/model/update",
-        method: "post",
-        params: { id }
-    });
+        url: '/model/update',
+        method: 'post',
+        data: formData
+    })
 }
 // 删除用户创建的模型
 export function delModel(id: string) {
@@ -86,7 +90,7 @@ export function modelAdd(form: ModelAddForm) {
     formData.append('picture', form.picture);
     formData.append('note', form.note);
     for (let i = 0; i < form.label.length; i++) {
-        formData.append('label', form.fileUrl[i]);
+        formData.append('label', form.label[i]);
     }
     // formData.append('audioId', form.audioId);
     return request({
@@ -100,7 +104,7 @@ export function favoriteModel(form: FavoriteAndCollectionForm) {
     return request({
         url: '/model/relative/likes',
         method: 'post',
-        params: form
+        params: form,
     })
 }
 // 用户收藏模型

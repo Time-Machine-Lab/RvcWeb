@@ -156,12 +156,12 @@ export type GetLabelForm = {
   [property: string]: any;
 }
 // 模型表单修改。表单目前包括：名称、描述、注意事项、图片
-export type update = {
+export type UpdateModelForm = {
   id:string;
   name:string;
   description:string;
   note:string;
-  picture:File;
+  picture:string;
 }
 
 export type ModelAddForm = {

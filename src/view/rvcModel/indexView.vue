@@ -8,6 +8,7 @@ import { message } from '@/utils/message'
 
 const models = ref<RvcModelVo[]>([])
 models.value = []
+let loaded = ref(false)
 
 let page = ref(1)
 let form = ref<ModelListForm>({
@@ -28,6 +29,7 @@ const load = function () {
   disabled.value = true
   setTimeout(() => {
     disabled.value = false
+    loaded.value = true
   }, 5000)
   form.value.page = page.value
   getModels(form.value).then((res: any) => {
@@ -53,11 +55,13 @@ const loadType = function () {
   if (disabled.value) {
     return
   }
+  loaded.value = false
   disabled.value = true
   formType.value.page = page.value
   getModelsByType(formType.value).then((res: any) => {
     if (res.code == 200) {
       let data = res.data.records
+      loaded.value = true
       if (data.length == 0) {
         disabled.value = true
         message.warning('没有更多数据了')
@@ -144,15 +148,28 @@ const refresh = () => {
         </div>
       </div>
       <div class="model-list">
+        <el-empty :image-size="200" v-if="loaded && models.length == 0" style="font-family: 'ZCool';"
+          description="这里空空如也~" image="/icon/empty.svg" />
         <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100"
           :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="true">
           <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"></modelCardComponentB>
+          <!-- <el-skeleton style="width: 240px;height: 400px;background-color: rgba(61,63,67);" :loading="disabled" animated>
+            <template #template>
+              <el-skeleton-item variant="image" style="width: 100%; height: 400px" />
+            </template>
+          </el-skeleton> -->
         </waterFallComponent>
+        <div class="loading" v-if="disabled">
+
+        </div>
       </div>
     </div>
   </el-scrollbar>
 </template>
 <style scoped>
+:deep(.el-skeleton-item){
+  background-color: rgba(61,63,67);
+}
 .filter-box__filter {
   position: relative;
   height: 70px;
@@ -265,4 +282,34 @@ const refresh = () => {
   left: 50%;
   margin-top: 5px;
   transform: translate(-50%);
-}</style>
+}
+
+.loading {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: rgba(44, 46, 51);
+  font-size: 20px;
+  line-height: 60px;
+  color: white;
+  font-weight: 700;
+  /* border: transparent 2px solid; */
+  /* border-top: rgba(25, 113, 194) 1px solid; */
+  border-left: rgba(25, 113, 194) 1px solid;
+  margin-bottom: 20px;
+  animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
