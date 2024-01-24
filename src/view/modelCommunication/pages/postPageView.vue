@@ -108,7 +108,7 @@ const getDirectory = function () {
         }
     })
     console.log(headings.value);
-    
+
     userProfile.value = userStore.getProfile
 }
 
@@ -119,8 +119,12 @@ const to = function (index: number) {
 }
 
 const collect = function () {
-    if (!collectDisabled.value) return
+    if (!collectDisabled.value) {
+        message.warning('请稍后再试')
+        return
+    }
     collectDisabled.value = false
+    localPost.value.collect = !localPost.value.collect
 
     setTimeout(function () {
         collectDisabled.value = true
@@ -128,11 +132,10 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.collect ? '0' : '1'
+        type: localPost.value.collect ? '1' : '0'
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.collect = !localPost.value.collect
             localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
             message.success((localPost.value.collect ? '' : '取消') + '收藏成功')
         } else {
@@ -142,18 +145,21 @@ const collect = function () {
     })
 }
 const like = function () {
-    if (!likeDisabled.value) return
+    if (!likeDisabled.value) {
+        message.warning('请稍后再试')
+        return
+    }
+    localPost.value.like = !localPost.value.like
     likeDisabled.value = false
     setTimeout(function () {
         likeDisabled.value = true
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.like ? '0' : '1'
+        type: localPost.value.like ? '1' : '0'
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.like = !localPost.value.like
             localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
             message.success((localPost.value.like ? '' : '取消') + '点赞成功')
         } else {
@@ -322,7 +328,9 @@ const getUrl = function (url: string) {
                     <img src="/icon/list.svg" width="28" height="28"
                         style="position: relative;top: 50%;transform: translate(0,-50%);">导航
                 </div>
-                <div class="target-box__target" v-for="(heading, index) in headings" :style="{paddingLeft:heading.level*20+'px',width:'calc(100%-'+heading.level*20+'px)',fontSize:19-heading.level+'px'}" :key="index" @click="to(index)">
+                <div class="target-box__target" v-for="(heading, index) in headings"
+                    :style="{ paddingLeft: heading.level * 20 + 'px', width: 'calc(100%-' + heading.level * 20 + 'px)', fontSize: 19 - heading.level + 'px' }"
+                    :key="index" @click="to(index)">
                     {{ heading.text }}
                 </div>
             </div>

@@ -17,7 +17,7 @@ let inputVisibility = ref(false)
 let inputContent = ref('')
 const input = ref<any>(null)
 const handleReply = function () {
-  if(!storage.get<string>('token')){
+  if (!storage.get<string>('token')) {
     message.error('未登录')
     return
   }
@@ -58,8 +58,24 @@ const sendComment = function () {
     inputContent.value = ""
 
   })
-
 }
+// const pushComment = function () {
+//   let commentVo = ref<CommentVo>({
+//     postCommentId: '',
+//     content: inputContent.value,
+//     createAt: '现在',
+//     userId: storage.get<string>('uid')!,
+//     postId: currentComment.value.postId,
+//     commentLikeCount: 0,
+//     rootCommentId: '',
+//     toUserId: '-1',
+//     updateAt: '',
+//     user: null,
+//     replayUser: null,
+//     childrenComment: undefined,
+//     like: false
+//   })
+// }
 const calcNum = function (num: number) {
   return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
@@ -77,13 +93,13 @@ const handleBlur2 = function () {
     moreVisibility.value = false
   }, 200)
 }
-const getUrl = function(url:string){
-    inputContent.value = '<audio>'+url+'</audio>'
-    sendComment()
+const getUrl = function (url: string) {
+  inputContent.value = '<audio>' + url + '</audio>'
+  sendComment()
 }
 const isAudio = function (str: string) {
   console.log(str);
-  
+
   return str.includes('<audio>') && str.includes('</audio>')
 }
 const parseUrl = function (str: string) {
