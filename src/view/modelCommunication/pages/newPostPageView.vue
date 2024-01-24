@@ -116,10 +116,13 @@ const beforeCoverUpload = function (rawFile: File) {
       postForm.value.coverId = res.data.id
       postForm.value.coverUrl = res.data.url
       message.success('上传成功')
-    } else {
+    } else if(res.code ==506){
+      message.error('不支持该图片类型')
+    }else {
       uploadCoverLoading.value = false
       uploadFailed.value = true
       message.error('上传失败')
+      message.error(res.msg)
     }
   })
   return false
@@ -201,16 +204,16 @@ loadDraft()
         封面<span class="important">*</span>
       </div>
       <div>
-        <el-upload ref="uploadAudioRef" class="upload-demo" :class="formWarning.tag ? 'el-formWarning' : 'el-formDefault'"
+        <el-upload ref="uploadAudioRef" class="upload-demo" :class="formWarning.cover ? 'el-formWarning' : 'el-formDefault'"
           drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
           <div class="loadding" v-if="uploadCoverLoading"></div>
           <div class="error" v-if="uploadFailed && !postForm.coverUrl">×</div>
           <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl" />
-          <div class="el-upload__text">
+          <div class="el-upload__text" v-if="postForm.coverUrl == ''">
             将文件拖拽到此处或点击上传
           </div>
-          <div class="el-upload__text">
-            最多可上传小于20M的图片
+          <div class="el-upload__text" v-if="postForm.coverUrl == ''">
+            最多可上传小于10M的图片
           </div>
         </el-upload>
       </div>

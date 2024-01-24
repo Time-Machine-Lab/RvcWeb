@@ -24,7 +24,7 @@ export function getModelsByType(form: ModelListType) {
     return request({
         url: "/model/listByType",
         method: "get",
-        params: form
+        params: form,
     });
 }
 // 获取指定模型详细信息
@@ -32,7 +32,7 @@ export function getModelDetails(modelId: string) {
     return request({
         url: '/model/getModelMsg',
         method: 'get',
-        params: {modelId}
+        params: { modelId }
     })
 }
 // 动态获取label热度最高的list集合
@@ -59,7 +59,7 @@ export function modelLabel(label: string) {
     });
 }
 // 模型表单修改。表单目前包括：名称、描述、注意事项、图片
-export function updateModel(form:UpdateModelForm) {
+export function updateModel(form: UpdateModelForm) {
     const formData = new FormData()
     formData.append('id', form.id);
     formData.append('name', form.name);
@@ -105,6 +105,9 @@ export function favoriteModel(form: FavoriteAndCollectionForm) {
         url: '/model/relative/likes',
         method: 'post',
         params: form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 // 用户收藏模型
@@ -112,7 +115,10 @@ export function collectModel(form: FavoriteAndCollectionForm) {
     return request({
         url: '/model/relative/collection',
         method: 'post',
-        params: form
+        params: form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 

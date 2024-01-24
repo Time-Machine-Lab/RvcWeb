@@ -182,9 +182,9 @@ const parseUrl = function (str: string) {
 
 .more-window {
   position: absolute;
-  right: 10px;
-  top: 60px;
-  width: 120px;
+  right: 40px;
+  top: 20px;
+  width: 80px;
   border-radius: 10px;
   border: rgba(55, 58, 64) 1px solid;
   background-color: rgba(37, 38, 43);
@@ -196,12 +196,12 @@ const parseUrl = function (str: string) {
 .more-window__item {
   padding-left: 15px;
   width: calc(100% - 15px);
-  height: 40px;
-  line-height: 40px;
+  height: 30px;
+  line-height: 30px;
   font-size: 14px;
   text-align: left;
   border-radius: 5px;
-
+  z-index: 20;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -350,6 +350,6 @@ const parseUrl = function (str: string) {
 }
 
 .dither-animation {
-  top: 48px;
+  top: 34px;
 }
 </style>
