@@ -12,7 +12,7 @@ let typeOptions = ref(['RVC'])
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
 let currentTypeIndex = ref(0)
-let uploadModelLoading = ref(false)
+// let uploadModelLoading = ref(false)
 let uploadCoverLoading = ref(false)
 let modelAddForm = ref<ModelAddForm>({
     description: '',
@@ -76,12 +76,14 @@ let formWarning = ref<{
     description: boolean,
     label: boolean,
     fileUrl: boolean,
+    note: boolean
 }>({
     name: false,
     typeId: false,
     description: false,
     label: false,
-    fileUrl: false
+    fileUrl: false,
+    note: false
 })
 const handleClickSort = function () {
     clickType.value = true
@@ -109,19 +111,22 @@ const nextStep = function () {
         if (modelAddForm.value.description == '<p><br></p>') {
             formWarning.value.description = true
         }
+        if (modelAddForm.value.note == '') {
+            formWarning.value.note = true
+        }
         if (!isEdit.value == true) {
             if (modelAddForm.value.label.length == 0) {
                 formWarning.value.label = true
             }
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             formWarning.value.name = false
             formWarning.value.typeId = false
             formWarning.value.description = false
             formWarning.value.label = false
-
-        },1000)
-        if(formWarning.value.name||formWarning.value.typeId||formWarning.value.description||formWarning.value.label)return
+            formWarning.value.note = false
+        }, 1000)
+        if (formWarning.value.name || formWarning.value.typeId || formWarning.value.description || formWarning.value.label || formWarning.value.note) return
         process.value.current = process.value.current + 1
     } else if (process.value.current == 2) {
         if (modelAddForm.value.fileUrl == '') {
@@ -149,15 +154,19 @@ const lastStep = function () {
 
 const handleCoverSuccess = function () { };
 const beforeCoverUpload = function (rawFile: File) {
-    uploadModelLoading.value = true
+    if ((rawFile.size / (1024 * 1024)) > 5) {
+        message.warning('请上传小于5M的图片')
+        return false
+    }
+    uploadCoverLoading.value = true
     uploadImages(rawFile).then((res: any) => {
         if (res.code == 200) {
             modelAddForm.value.picture = res.data.url
             message.success('封面上传成功')
-        } else {
+        }else {
             message.error(res.message)
         }
-        uploadModelLoading.value = false
+        uploadCoverLoading.value = false
     })
     return false
 };
@@ -282,7 +291,8 @@ const submit = function () {
 
                 </div>
                 <span class="label" v-if="!isEdit">标签<span class="important">*</span></span>
-                <div :class="formWarning.label ? 'formWarning' : 'formDefault'" style="width: fit-content;border-radius: 5px;">
+                <div :class="formWarning.label ? 'formWarning' : 'formDefault'"
+                    style="width: fit-content;border-radius: 5px;">
                     <TagSelectComponent v-if="!isEdit" :options="options" :get-value="getValue" :value="modelAddForm.label">
                     </TagSelectComponent>
                 </div>
@@ -290,12 +300,12 @@ const submit = function () {
                 <span class="label" style="margin-top: 20px;">介绍<span class="important">*</span></span>
                 <div :class="formWarning.description ? 'formWarning' : 'formDefault'">
                     <ModelEditorComponent :get-content="getContent" v-if="(isEdit && modelAddForm.description) || (!isEdit)"
-                        :editorContent="modelAddForm.description"
-                        ></ModelEditorComponent>
+                        :editorContent="modelAddForm.description"></ModelEditorComponent>
                 </div>
 
-                <span class="label">注意事项</span>
-                <input class="input" placeholder="注意事项" v-model="modelAddForm.note">
+                <span class="label" style="margin-top: 20px;">注意事项<span class="important">*</span></span>
+                <input class="input" placeholder="注意事项" v-model="modelAddForm.note"
+                    :class="formWarning.note ? 'formWarning' : 'formDefault'">
                 <div class="button-group">
                     <div class="button-group__item" @click="lastStep"
                         :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
@@ -349,11 +359,11 @@ const submit = function () {
                     :before-remove="beforeRemove" multiple>
                     <div class="loadding" v-if="uploadCoverLoading"></div>
                     <img :src="modelAddForm.picture" style="width: 100%;">
-                    <div class="el-upload__text">
+                    <div class="el-upload__text" v-if="modelAddForm.picture == ''">
                         将文件拖拽到此处或点击上传
                     </div>
-                    <div class="el-upload__text">
-                        最多可上传1个封面
+                    <div class="el-upload__text" v-if="modelAddForm.picture == ''">
+                        可上传小于5M的封面
                     </div>
                 </el-upload>
                 <div class="button-group">
@@ -361,7 +371,7 @@ const submit = function () {
                         :style="{ visibility: process.current > 1 ? 'visible' : 'hidden' }">
                         上一步
                     </div>
-                    <div class="button-group__item" v-if="uploadFinish()&&process.current != 3" @click="nextStep">
+                    <div class="button-group__item" v-if="uploadFinish() && process.current != 3" @click="nextStep">
                         下一步
                     </div>
                     <div class="button-group__item" v-if="process.current == 3" @click="submit">
@@ -621,8 +631,10 @@ const submit = function () {
 
 .formWarning {
     border: rgba(224, 49, 49) 1px solid;
+    border-radius: 5px;
 }
 
 .formDefault {
-    /* border: rgba(55, 58, 64) 1px solid; */
-}</style>
+    border: transparent 1px solid;
+}
+</style>
