@@ -103,6 +103,10 @@ const beforeCoverUpload = function (rawFile: File) {
     message.warning('请上传小于10M的图片')
     return false
   }
+  if (rawFile.type != 'image/jpeg'&&rawFile.type != 'image/png'){
+    message.error('文件不合法')
+    return false
+  }
   uploadCoverLoading.value = true
   setTimeout(function () {
     if (postForm.value.coverUrl == '') {
@@ -204,7 +208,7 @@ loadDraft()
         封面<span class="important">*</span>
       </div>
       <div>
-        <el-upload ref="uploadAudioRef" class="upload-demo" :class="formWarning.cover ? 'el-formWarning' : 'el-formDefault'"
+        <el-upload ref="uploadAudioRef" accept="image/*" class="upload-demo" :class="formWarning.cover ? 'el-formWarning' : 'el-formDefault'"
           drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
           <div class="loadding" v-if="uploadCoverLoading"></div>
           <div class="error" v-if="uploadFailed && !postForm.coverUrl">×</div>
@@ -213,7 +217,8 @@ loadDraft()
             将文件拖拽到此处或点击上传
           </div>
           <div class="el-upload__text" v-if="postForm.coverUrl == ''">
-            最多可上传小于10M的图片
+            可上传小于10M的图片
+            支持jpg、png格式
           </div>
         </el-upload>
       </div>

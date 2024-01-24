@@ -153,9 +153,14 @@ const lastStep = function () {
 // };
 
 const handleCoverSuccess = function () { };
+let imageType = ['image/jpeg','image/png','image/gif']
 const beforeCoverUpload = function (rawFile: File) {
-    if ((rawFile.size / (1024 * 1024)) > 5) {
-        message.warning('请上传小于5M的图片')
+    if ((rawFile.size / ( 1024)) > 256) {
+        message.warning('请上传小于256KB的图片')
+        return false
+    }
+    if (!imageType.includes(rawFile.type)) {
+        message.error('文件不合法')
         return false
     }
     uploadCoverLoading.value = true
@@ -163,7 +168,7 @@ const beforeCoverUpload = function (rawFile: File) {
         if (res.code == 200) {
             modelAddForm.value.picture = res.data.url
             message.success('封面上传成功')
-        }else {
+        } else {
             message.error(res.message)
         }
         uploadCoverLoading.value = false
@@ -363,7 +368,8 @@ const submit = function () {
                         将文件拖拽到此处或点击上传
                     </div>
                     <div class="el-upload__text" v-if="modelAddForm.picture == ''">
-                        可上传小于5M的封面
+                        可上传小于256k的封面
+                        支持jpg、png、jpeg格式
                     </div>
                 </el-upload>
                 <div class="button-group">
