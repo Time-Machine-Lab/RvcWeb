@@ -368,7 +368,7 @@ const submit = function () {
                         将文件拖拽到此处或点击上传
                     </div>
                     <div class="el-upload__text" v-if="modelAddForm.picture == ''">
-                        可上传小于256k的封面
+                        可上传小于256KB的封面
                         支持jpg、png、jpeg格式
                     </div>
                 </el-upload>
