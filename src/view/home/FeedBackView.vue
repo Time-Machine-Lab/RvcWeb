@@ -114,25 +114,28 @@ const bgColor2 = ref('');
 const color2 = ref('');
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const orderNew = () => {
+  console.log("new")
   scrollbarRef.value!.setScrollTop(0)
   order = "create_at"
   bgColor1.value = '#8f8f8f';
   bgColor2.value = '';
   color1.value = '#ffffff'
   color2.value = ''
-  Feedback = newFeedback
+  Feedback.value = newFeedback.value
   if(newFeedback.value.length<ListItems.value.total){
     load()
   }
 }
 const orderHot = () => {
+  console.log("hot")
   scrollbarRef.value!.setScrollTop(0)
   order = "up_num"
   bgColor2.value = '#8f8f8f';
   bgColor1.value = '';
   color2.value = '#ffffff'
   color1.value = ''
-  Feedback = hotFeedback
+  Feedback.value = hotFeedback.value
+  console.log(hotFeedback.value)
   if(hotFeedback.value.length<ListItems.value.total){
     load()
   }
@@ -155,10 +158,10 @@ const load = () => {
               Feedback.value = Feedback.value.concat(ListItems.value.pageList)
             }else if(order == "create_at"){
               newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
-              Feedback = newFeedback
+              Feedback.value = newFeedback.value
             }else if(order == "up_num"){
               hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
-              Feedback = hotFeedback
+              Feedback.value = hotFeedback.value
             }
           }
         }
