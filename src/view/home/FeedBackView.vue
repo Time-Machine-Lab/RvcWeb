@@ -14,7 +14,7 @@ import {getList, getStatusList, getTypeList} from "@/api/feedback/feedbackAPI.ts
 import { computed } from 'vue'
 import {storage} from "@/utils/storage.ts";
 import {ElScrollbar} from "element-plus";
-
+import {message} from "@/utils/message.ts";
 
 // 创建帖子弹窗的打开关闭
 const isChildComponentVisible = ref(false);
@@ -48,9 +48,9 @@ const closeUpdateComponent = () => {
 };
 
 // 数据获取
-const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
+const Type = ref<TypeListItem[]>([])
 const States = ref<StatesListItem[]>([])
-const ListItems = ref<ListItems>(<ListItems>{page: 1, limit: 10, pageList: [{avatar: "",createAt:"2023-12-12 16:48:11",title:"111"}], total: 9})
+const ListItems = ref<ListItems>(<ListItems>{page: 2, limit: 10, pageList: [{avatar: "",createAt:"2023-12-12 16:48:11",title:"111"}], total: 11})
 let Feedback = ref<FeedbackItem[]>([])
 let newFeedback = ref<FeedbackItem[]>([])
 let hotFeedback = ref<FeedbackItem[]>([])
@@ -65,28 +65,41 @@ const getData = () => {
   getStatusList().then((res: any) => {
     States.value = res.data.list;
   });
-  getList(ListItems.value.page, ListItems.value.limit, "")
+  getList(1, ListItems.value.limit, "")
     .then((res: any) => {
-      // 更新总数
-      ListItems.value = res.data
-      // 更新列表
-      Feedback.value = Feedback.value.concat(ListItems.value.pageList)
+      if(res.code == 200){
+        // 更新总数
+        ListItems.value = res.data
+        // 更新列表
+        Feedback.value = Feedback.value.concat(ListItems.value.pageList)
+      }else{
+        message.error("数据获取失败")
+      }
     })
+  setTimeout(() => {}, 500)
   getList(ListItems.value.page, ListItems.value.limit, "create_at")
     .then((res: any) => {
-      // 更新总数
-      ListItems.value = res.data
-      // 更新列表
-      newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
+      if(res.code == 200){
+        // 更新总数
+        ListItems.value = res.data
+        // 更新列表
+        newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
+      }else{
+        message.error("最新数据获取失败")
+      }
     })
+  setTimeout(() => {}, 500)
   getList(ListItems.value.page, ListItems.value.limit, "up_num")
     .then((res: any) => {
-      // 更新总数
-      ListItems.value = res.data
-      // 更新列表
-      hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
+      if(res.code == 200){
+        // 更新总数
+        ListItems.value = res.data
+        // 更新列表
+        hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
+      }else{
+        message.error("最热数据获取失败")
+      }
     })
-
 }
 
 // 分页获取feedback列表
@@ -101,31 +114,27 @@ const bgColor2 = ref('');
 const color2 = ref('');
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const orderNew = () => {
-  if(order != "create_at"){
-    scrollbarRef.value!.setScrollTop(0)
-    order = "create_at"
-    bgColor1.value = '#8f8f8f';
-    bgColor2.value = '';
-    color1.value = '#ffffff'
-    color2.value = ''
-    Feedback = newFeedback
-    if(newFeedback.value.length<ListItems.value.total){
-      load()
-    }
+  scrollbarRef.value!.setScrollTop(0)
+  order = "create_at"
+  bgColor1.value = '#8f8f8f';
+  bgColor2.value = '';
+  color1.value = '#ffffff'
+  color2.value = ''
+  Feedback = newFeedback
+  if(newFeedback.value.length<ListItems.value.total){
+    load()
   }
 }
 const orderHot = () => {
-  if(order != "up_num"){
-    scrollbarRef.value!.setScrollTop(0)
-    order = "up_num"
-    bgColor2.value = '#8f8f8f';
-    bgColor1.value = '';
-    color2.value = '#ffffff'
-    color1.value = ''
-    Feedback = hotFeedback
-    if(hotFeedback.value.length<ListItems.value.total){
-      load()
-    }
+  scrollbarRef.value!.setScrollTop(0)
+  order = "up_num"
+  bgColor2.value = '#8f8f8f';
+  bgColor1.value = '';
+  color2.value = '#ffffff'
+  color1.value = ''
+  Feedback = hotFeedback
+  if(hotFeedback.value.length<ListItems.value.total){
+    load()
   }
 }
 
@@ -133,27 +142,31 @@ const load = () => {
   loading.value = true
   // 延时不加不行
   setTimeout(() => {
-    ListItems.value.page = Feedback.value.length / 5 + 1
+    ListItems.value.page = Feedback.value.length / ListItems.value.limit + 1
       // 获取分页信息
-    getList(ListItems.value.page, 5, order)
+    getList(ListItems.value.page, ListItems.value.limit, order)
       .then((res: any) => {
-        // 更新总数
-        ListItems.value = res.data
-        // 更新列表
-        if(order == ""){
-          Feedback.value = Feedback.value.concat(ListItems.value.pageList)
-        }else if(order == "create_at"){
-          newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
-          Feedback = newFeedback
-        }else if(order == "up_num"){
-          hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
-          Feedback = hotFeedback
+        if(res.code == 200){
+          // 更新总数
+          if(ListItems.value != res.data){
+            ListItems.value = res.data
+            // 更新列表
+            if(order == ""){
+              Feedback.value = Feedback.value.concat(ListItems.value.pageList)
+            }else if(order == "create_at"){
+              newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
+              Feedback = newFeedback
+            }else if(order == "up_num"){
+              hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
+              Feedback = hotFeedback
+            }
+          }
         }
       })
     setTimeout(() => {
       loading.value = false
     }, 500)
-  }, 1000)
+  }, 2000)
 };
 
 onMounted(() => {
@@ -167,7 +180,7 @@ onMounted(() => {
     <FeedBackComponent :data="selectedItem" v-if="isOpen" @close="closeFeedbackComponent"></FeedBackComponent>
     <!--创建新帖子-->
     <NewFeedback v-if="isChildComponentVisible " @close="closeChildComponent"></NewFeedback>
-    <UpdateComponent :data="update"  v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
+    <UpdateComponent :data="update" :type="Type" v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
     <!--反馈类型选项卡-->
 <!--    <div class="contain-choice">-->
 <!--      <div class="contain-choice__box flex">-->
@@ -242,9 +255,9 @@ onMounted(() => {
                 </div>
               </div>
             </li>
+            <p v-if="noMore" style="color:rgba(204,204,204,0.33);height:50px">No more</p>
           </ul>
         </el-scrollbar>
-        <p v-if="noMore" style="color:rgba(204,204,204,0.33);height:50px">No more</p>
       </div>
       <div class="load" v-show="loading" >
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

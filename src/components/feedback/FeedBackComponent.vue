@@ -13,53 +13,50 @@ const close = () => {
 // 获取的是帖子的fbid
 const { data } = defineProps(['data']);
 const FeedbackData = ref<FeedbackItem>(<FeedbackItem>{})
-const Comment = ref<Comment>({page: "1", limit: "6",total:"7",pageList:[]})
+const Comment = ref<Comment>({page: 1, limit: 6,total:7,pageList:[]})
 let CommentList = ref<CommentList[]>([])
-const loading = ref(true)
+const loading = ref(false)
 const noMore = ref(false)
 const disabled = computed(() => loading.value || noMore.value)
 let isLiked = 0
-Comment.value.page = "1"
+Comment.value.page = 1
 
 // 评论加载
 const load = () => {
   loading.value = true
   setTimeout(() => {
-    const total = parseInt(Comment.value.total);
-    const loadedCommentsCount = CommentList.value.length;
+    const total = Comment.value.total
+    const loadedCommentsCount = CommentList.value.length
     // 如果已加载数量小于总数量，继续加载评论
     if (loadedCommentsCount < total) {
-      getComment(data, parseInt(Comment.value.page), parseInt(Comment.value.limit), "create_at")
-          .then((res: any) => {
-            if (res.code != 200) {
-              loading.value = false;
-            }
-            console.log(res)
-            Comment.value = res.data
-            CommentList.value = CommentList.value.concat(Comment.value.pageList)
-            // 更新当前页数
-            Comment.value.page += 1
-          })
-          .finally(() => {
+      getComment(data, Comment.value.page, Comment.value.limit, "create_at")
+        .then((res: any) => {
+          if (res.code != 200) {
             loading.value = false;
-          });
-    } else {
-      console.log('已加载完所有评论');
-      loading.value = false;
-      noMore.value = true;
+          }
+          Comment.value = res.data
+          CommentList.value = CommentList.value.concat(Comment.value.pageList)
+          // 更新当前页数
+          Comment.value.page += 1
+        })
     }
   }, 1000)
+  loading.value = false
+  noMore.value = true
 }
 
 // 获取数据
 const getData = () => {
   // 根据fb_id获取对应的feedback帖子
   getFeedback(data).then((res: any) => {
-    console.log(res);
-    FeedbackData.value = res.data.feedback;
-    isLiked = FeedbackData.value.hasUp
-    if(FeedbackData.value.nickname == null){
-      FeedbackData.value.nickname = "匿名"
+    if (res.code == 200) {
+      FeedbackData.value = res.data.feedback;
+      isLiked = FeedbackData.value.hasUp
+      if(FeedbackData.value.nickname == null){
+        FeedbackData.value.nickname = "匿名"
+      }
+    } else {
+      message.error('帖子信息获取失败')
     }
   });
 }
@@ -150,7 +147,7 @@ const CommentUnlike = (item:any) => {
 // 刷新
 const refresh = () => {
   CommentList = ref<CommentList[]>([])
-  Comment.value.page = "1"
+  Comment.value.page = 1
   loading.value = true
   noMore.value = false
   load()
@@ -232,7 +229,7 @@ onMounted(() => {
                 </div>
               </ul>
               <p v-if="loading" style="color:#cccccc">Loading...</p>
-              <p v-if="noMore" style="color:#cccccc">No more</p>
+              <p v-if="noMore" style="color:#9f9f9f;font-family: ZCool">评论已经读完啦</p>
             </div>
           </div>
 <!--          回复框-->
