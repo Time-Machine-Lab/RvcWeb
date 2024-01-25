@@ -74,6 +74,7 @@ const saveHtml = (h: string) => {
 
 <template>
   <div class="box flex">
+    <div class="box flex" @click="close"></div>
     <div class="box__center">
       <div class="box-contain flex">
         <button @click="close" class="close flex">X</button>
