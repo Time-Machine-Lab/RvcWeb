@@ -17,7 +17,7 @@ let inputVisibility = ref(false)
 let inputContent = ref('')
 const input = ref<any>(null)
 const handleReply = function () {
-  if(!storage.get<string>('token')){
+  if (!storage.get<string>('token')) {
     message.error('未登录')
     return
   }
@@ -58,8 +58,24 @@ const sendComment = function () {
     inputContent.value = ""
 
   })
-
 }
+// const pushComment = function () {
+//   let commentVo = ref<CommentVo>({
+//     postCommentId: '',
+//     content: inputContent.value,
+//     createAt: '现在',
+//     userId: storage.get<string>('uid')!,
+//     postId: currentComment.value.postId,
+//     commentLikeCount: 0,
+//     rootCommentId: '',
+//     toUserId: '-1',
+//     updateAt: '',
+//     user: null,
+//     replayUser: null,
+//     childrenComment: undefined,
+//     like: false
+//   })
+// }
 const calcNum = function (num: number) {
   return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
@@ -77,13 +93,13 @@ const handleBlur2 = function () {
     moreVisibility.value = false
   }, 200)
 }
-const getUrl = function(url:string){
-    inputContent.value = '<audio>'+url+'</audio>'
-    sendComment()
+const getUrl = function (url: string) {
+  inputContent.value = '<audio>' + url + '</audio>'
+  sendComment()
 }
 const isAudio = function (str: string) {
   console.log(str);
-  
+
   return str.includes('<audio>') && str.includes('</audio>')
 }
 const parseUrl = function (str: string) {
@@ -182,9 +198,9 @@ const parseUrl = function (str: string) {
 
 .more-window {
   position: absolute;
-  right: 10px;
-  top: 60px;
-  width: 120px;
+  right: 40px;
+  top: 20px;
+  width: 80px;
   border-radius: 10px;
   border: rgba(55, 58, 64) 1px solid;
   background-color: rgba(37, 38, 43);
@@ -196,12 +212,12 @@ const parseUrl = function (str: string) {
 .more-window__item {
   padding-left: 15px;
   width: calc(100% - 15px);
-  height: 40px;
-  line-height: 40px;
+  height: 30px;
+  line-height: 30px;
   font-size: 14px;
   text-align: left;
   border-radius: 5px;
-
+  z-index: 20;
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -350,6 +366,6 @@ const parseUrl = function (str: string) {
 }
 
 .dither-animation {
-  top: 48px;
+  top: 34px;
 }
 </style>

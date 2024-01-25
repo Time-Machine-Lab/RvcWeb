@@ -71,7 +71,7 @@ const send = function () {
             // https://media-1318544158.cos.ap-nanjing.myqcloud.com/merry%20christmas.mp3
             props.getUrl(url)
         } else {
-            message.error(res.message)
+            message.error(res.msg)
         }
     })
     } else {
@@ -86,7 +86,7 @@ const send = function () {
     </div>
     <el-dialog v-model="dialogVisible" title="语音评论" width="30%" style="background-color: rgba(26,27,30);"
         :append-to-body="true">
-        <div style="width: 100%;display: flex;justify-content: center;">
+        <div style="position: relative;left: 50%;transform: translate(-50%);width: 200px;">
             <audioPlayerComponent :src="src"></audioPlayerComponent>
         </div>
         <template #footer>

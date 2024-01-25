@@ -41,9 +41,23 @@ getPostType().then(res => {
         })
     }
 })
+let formWarning = ref<{
+    title: boolean,
+    content: boolean,
+    cover: boolean,
+    tag: boolean
+}>({
+    title: false,
+    content: false,
+    cover: false,
+    tag: false
+})
+let uploadCoverLoading = ref(false)
 let typeSelectvisibility = ref(false)
 let clickType = ref(false)
 let currentTypeIndex = ref(-1)
+let uploadFailed = ref(false)
+let saveDisabled = ref(false)
 const handleClickSort = function () {
     clickType.value = true
     typeSelectvisibility.value = !typeSelectvisibility.value
@@ -60,34 +74,63 @@ const postHasChanged = function () {
     return !(postForm.value.content == oldPost.value.content && postForm.value.title == oldPost.value.title && postForm.value.tagId == oldPost.value.tagId && postForm.value.coverId == oldPost.value.coverId)
 }
 const savePost = function () {
+    if (saveDisabled.value) {
+        return
+    }
     if (!postHasChanged()) {
         return
     }
+    if (check()) {
+        formWarning.value.content = postForm.value.content == '<p><br></p>'
+        formWarning.value.title = postForm.value.title == ''
+        formWarning.value.cover = postForm.value.coverUrl == ''
+        formWarning.value.tag = postForm.value.tagId == ''
+        setTimeout(function () {
+            formWarning.value.content = false
+            formWarning.value.title = false
+            formWarning.value.cover = false
+            formWarning.value.tag = false
+        }, 300)
+        return
+    }
     postForm.value.postId = (router.currentRoute.value.query.postId as string)
+    saveDisabled.value = true
     postAdd(postForm.value).then((res: any) => {
         if (res.code == 200) {
             message.success('保存成功')
             router.back()
         } else {
             message.error(res.msg)
+            saveDisabled.value = false
         }
     })
 }
+const check = function () {
+    return postForm.value.title == '' || postForm.value.tagId == '' || postForm.value.content == '<p><br></p>' || postForm.value.coverId == ''
+}
 const handleCoverSuccess = function () { }
 const beforeCoverUpload = function (rawFile: File) {
-    if (rawFile.type !== 'image/jpeg') {
-        return false
-    } else if (rawFile.size / 1024 / 1024 > 10) {
+    if ((rawFile.size / (1024 * 1024)) > 10) {
         message.warning('请上传小于10M的图片')
         return false
     }
+    uploadCoverLoading.value = true
+    setTimeout(function () {
+        if (postForm.value.coverUrl == '') {
+            uploadCoverLoading.value = false
+            uploadFailed.value = true
+        }
+    }, 100000)
     uploadPicture(rawFile).then((res: any) => {
         if (res.code == 200) {
+            uploadCoverLoading.value = false
             postForm.value.coverId = res.data.id
             postForm.value.coverUrl = res.data.url
             message.success('上传成功')
         } else {
-            message.success('上传失败')
+            uploadCoverLoading.value = false
+            uploadFailed.value = true
+            message.error('上传失败')
         }
     })
     return false
@@ -129,21 +172,17 @@ loadOldPost()
     <div class="editPost-page">
         <div class="editPost-page__center">
             <div class="editPost-page__center__left">
-                <el-breadcrumb :separator="'>'">
-                    <el-breadcrumb-item :to="{ path: '/rvc/posts' }">交流区</el-breadcrumb-item>
-                    <el-breadcrumb-item>编辑贴子</el-breadcrumb-item>
-                </el-breadcrumb>
-
                 <div class="label">
                     标题
                 </div>
                 <div style="width: 100%;height: 30px;">
-                    <input class="input" placeholder="标题" v-model="postForm.title">
+                    <input class="input" placeholder="标题" :class="formWarning.title ? 'formWarning' : 'formDefault'"
+                        v-model="postForm.title">
                 </div>
                 <div class="label">
                     内容
                 </div>
-                <div style="width: 90%;">
+                <div style="width: 90%; border-radius: 10px;" :class="formWarning.content ? 'formWarning' : 'formDefault'">
                     <editorComponent v-if="postForm.content" :getContent="getContent" :editorContent="postForm.content">
                     </editorComponent>
                 </div>
@@ -167,10 +206,18 @@ loadOldPost()
                 封面
             </div>
             <div>
-                <el-upload class="cover-uploader" action="/communication/post/cover
-" :show-file-list="false" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
-                    <img v-if="postForm.coverUrl" :src="postForm.coverUrl" class="cover" />
-                    <el-icon v-else class="cover-uploader-icon"> + </el-icon>
+                <el-upload ref="uploadAudioRef" class="upload-demo"
+                    :class="formWarning.tag ? 'el-formWarning' : 'el-formDefault'" drag :auto-upload="true"
+                    :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
+                    <div class="loadding" v-if="uploadCoverLoading"></div>
+                    <div class="error" v-if="uploadFailed && !postForm.coverUrl">×</div>
+                    <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl" />
+                    <div class="el-upload__text">
+                        将文件拖拽到此处或点击上传
+                    </div>
+                    <div class="el-upload__text">
+                        最多可上传小于20M的图片
+                    </div>
                 </el-upload>
             </div>
             <div class="label">
@@ -179,7 +226,8 @@ loadOldPost()
             <div style="text-align: left;">
                 <div tabindex="-1" class="type-selecter"
                     :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
-                    :class="clickType ? 'dither-animation' : ''" @click="handleClickSort" @blur="handleBlur">
+                    :class="[clickType ? 'dither-animation' : '', formWarning.tag ? 'formWarning' : 'formDefault']"
+                    @click="handleClickSort" @blur="handleBlur">
                     <div class="horizontal-center" style="display: flex;">
                         <span style="line-height: 40px;margin-left: 3px;width: 300px;">{{
                             currentTypeIndex != -1 ? tagsOption[currentTypeIndex]?.label : oldPost?.tagName }}</span>
@@ -209,9 +257,58 @@ loadOldPost()
     background-color: rgba(26, 27, 30);
 }
 
+.upload-demo {
+    position: relative;
+    width: 100%;
+    max-height: 400px;
+  overflow: scroll;
+}
+
+.loadding {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 34px;
+    width: 34px;
+    border-radius: 17px;
+    background-color: rgba(44, 46, 51);
+    font-size: 20px;
+    line-height: 36px;
+    color: white;
+    font-weight: 700;
+    border-top: rgba(25, 113, 194) 1px solid;
+    margin-bottom: 20px;
+    animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 36px;
+    width: 36px;
+    border-radius: 18px;
+    background-color: rgba(44, 46, 51);
+    font-size: 20px;
+    line-height: 36px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
 .editPost-page__center {
     position: relative;
-    width: 60%;
+    width: 80%;
     height: 95%;
     left: 50%;
     top: 50%;
@@ -220,16 +317,19 @@ loadOldPost()
 }
 
 .editPost-page__center__left {
-    height: 100%;
-    width: 70%;
+    position: relative;
+    width: 60%;
+    overflow: scroll;
+    margin: 30px 0;
 }
 
 .editPost-page__center__right {
     height: 100%;
-    width: 350px;
+    width: 35%;
+    max-width: 400px;
     position: fixed;
-    top: 100px;
-    right: 15%;
+    top: 150px;
+    left: calc(40% + 450px);
 
 }
 
@@ -277,7 +377,7 @@ loadOldPost()
     color: rgba(255, 255, 255, 0.7);
     font-weight: 700;
     text-align: left;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
@@ -298,15 +398,18 @@ loadOldPost()
     position: absolute;
     margin-top: 10px;
     width: 340px;
-    border-radius: 10px;
+      border-radius: 10px;
     border: rgba(55, 58, 64) 1px solid;
     background-color: rgba(37, 38, 43);
     padding: 5px;
     z-index: 10;
+    max-height: 100px;
+  overflow: scroll;
     user-select: none;
 }
 
 .type-select__item {
+    position:relative;
     padding-left: 15px;
     width: calc(100% - 15px);
     height: 40px;
@@ -365,7 +468,7 @@ loadOldPost()
     line-height: 40px;
     cursor: pointer;
     user-select: none;
-    margin-top: 15px;
+    margin-top: 10px;
     transition: all 0.3s;
 }
 
@@ -384,7 +487,7 @@ loadOldPost()
     line-height: 40px;
     cursor: pointer;
     user-select: none;
-    margin-top: 15px;
+    margin-top: 10px;
     transition: all 0.3s;
 }
 
@@ -397,7 +500,26 @@ loadOldPost()
     transform-origin: 6px 3.5px;
 }
 
+:deep(.upload-demo *) {
+    background-color: transparent;
+}
+
 .button-group__submit:hover {
     background-color: rgba(20, 142, 224);
 }
-</style>
+
+.formWarning {
+    border: rgba(224, 49, 49) 1px solid;
+}
+
+:deep(.el-formWarning .el-upload-dragger) {
+    border: rgba(224, 49, 49) 1px dashed;
+}
+
+.formDefault {
+    border: rgba(55, 58, 64) 1px solid;
+}
+
+:deep(.el-formDefault .el-upload-dragger) {
+    border: rgba(55, 58, 64) 1px dashed;
+}</style>

@@ -44,14 +44,20 @@ export function favoritePost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/favorite',
-        data:form
+        data:form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 export function collectPost(form:FavoriteAndCollectionForm){
     return request({
         method:'put',
         url:'/communication/post/collection',
-        data:form
+        data:form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 export function getCommentList(form:GetCommentListForm){
@@ -139,6 +145,20 @@ export function likeComment(form:LikeCommentForm){
     return request({
         method:'put',
         url:'/communication/comment/favorite',
-        data:form
+        data:form,
+        headers: {
+            isAuth: true
+        }
+    })
+}
+
+export function uploadImage(file:File){
+    const form = new FormData()
+    form.append('wangeditor-uploaded-image',file)
+    return request({
+        method:'post',
+        url:'/communication/post/cover',
+        data:form,
+        timeout:300000
     })
 }

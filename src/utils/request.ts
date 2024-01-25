@@ -5,10 +5,11 @@
  * @FilePath: \RvcWeb\src\utils\request.ts
  */
 import axios from 'axios'
-import {storage} from './storage'
-import { AxiosResponse,InternalAxiosRequestConfig } from 'axios'
+import { storage } from './storage'
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 // import router from '@/router/index.ts'
 import { message } from './message'
+import router from '@/router'
 
 
 const request = axios.create({
@@ -18,20 +19,20 @@ const request = axios.create({
 
 // 请求拦截
 request.interceptors.request.use(
-  (config: InternalAxiosRequestConfig<any> ) => {
-    // 从storage中获取token
+  (config: InternalAxiosRequestConfig<any>) => {
     const token = storage.get<string>('token')
-    // const uid = storage.get<string>('uid')
-    // const username = storage.get<string>('username')
-    console.log(token)
-      // 将token添加到请求头中
-      if(token != ""){
-          config.headers.token = token
+    // 将token添加到请求头中
+    if (config.headers.isAuth == "true") {
+      if (!token) {
+        message.error('用户未登录')
+        router.push('/login')
+        return Promise.reject()
       }
-      // if(uid != ""){
-      //     config.headers.uid = uid
-      // }
-    console.log(config)
+    }
+    if (token != "") {
+      config.headers.token = token
+    }
+
     return config
   },
   error => {
@@ -43,8 +44,8 @@ request.interceptors.request.use(
 // 响应拦截
 request.interceptors.response.use(
   (res: AxiosResponse<any>) => {
-     // 如果是返回的文件
-     if (res.config.responseType === 'blob') {
+    // 如果是返回的文件
+    if (res.config.responseType === 'blob') {
       return res
     }
     // 此处已由res.data.success === true修改成如下

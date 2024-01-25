@@ -26,6 +26,8 @@ let html = ref(props.editorContent)
 
 const editorConfig = {
   placeholder: '请输入内容...',
+  autoFocus: true,
+  scroll: false,
   MENU_CONF: {
     uploadImage: {
       fieldName: 'file',
@@ -78,10 +80,10 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
-    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: hidden" v-model="html" :defaultConfig="editorConfig"
-      :mode="mode" @onCreated="onCreated" />
+  <div style="border-radius:10px;border:rgba(100,100,100) 1px solid;">
+    <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
+    <Editor style="" v-model="html" :defaultConfig="editorConfig"
+      :mode="mode" @onCreated="onCreated"  />
   </div>
 </template>
 <style src="@wangeditor/editor/dist/css/style.css"></style>
@@ -92,11 +94,11 @@ onBeforeUnmount(() => {
 }
 
 :deep(.w-e-toolbar) {
-  background-color: transparent
+  background-color: rgba(26,27,30)
 }
 
 :deep(.w-e-text-container) {
-  background-color: transparent;
+  background-color: rgba(26,27,30);
   text-align: left;
 }
 </style>

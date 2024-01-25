@@ -26,23 +26,22 @@ const handleBlur = function () {
     }, 200)
 }
 const collect = function () {
-    if (!collectDisabled.value) return
-
-    collectDisabled.value = false
-    if (localPost.value.author.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
+    if (!collectDisabled.value) {
+        message.warning('请稍后再试')
         return
     }
+    localPost.value.collect = !localPost.value.collect
+
+    collectDisabled.value = false
     setTimeout(function () {
         collectDisabled.value = true
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.collect ? '0' : '1'
+        type: localPost.value.collect ? '1' : '0'
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.collect = !localPost.value.collect
             localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
         } else {
             message.error(res.msg)
@@ -50,24 +49,22 @@ const collect = function () {
     })
 }
 const like = function () {
-    if (!likeDisabled.value) return
-
-    likeDisabled.value = false
-    if (localPost.value.author.uid == storage.get<string>('uid')) {
-        message.warning('这是你的贴子哦')
+    if (!likeDisabled.value) {
+        message.warning('请稍后再试')
         return
     }
+    localPost.value.like = !localPost.value.like
+    likeDisabled.value = false
     setTimeout(function () {
         likeDisabled.value = true
     }
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.like ? '0' : '1'
+        type: localPost.value.like ? '1' : '0'
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.like = !localPost.value.like
             localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
         } else {
             message.error(res.msg)

@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\api\user\userApi.ts
  */
 import request from '@/utils/request'
-import { ProfileForm, EmailCodeForm, RegisterForm, LoginForm } from '@/api/user/userTypes'
+import { ProfileForm, EmailCodeForm, RegisterForm, LoginForm, UpdatePasswordForm } from '@/api/user/userTypes'
 import { toFormData } from 'axios'
 
 export function editUserInfo(form: ProfileForm) {
@@ -55,7 +55,13 @@ export function getCode(form: EmailCodeForm) {
         params: form
     })
 }
-
+export function getUpdatePasswordCode(form: EmailCodeForm){
+    return request({
+        url:'/user/resetPwdEmailCode',
+        method:'get',
+        params: form
+    })
+}
 export function register(form: RegisterForm) {
     return request({
         url: '/user/register',
@@ -84,10 +90,17 @@ export function getPreCode() {
         method: 'get'
     })
 }
-export function updatePassword(form: any) {
+export function updatePassword(form: UpdatePasswordForm) {
     return request({
         url: '/user/updatePassword',
         method: 'post',
+        data: form
+    })
+}
+export function forgetPassword(form: UpdatePasswordForm){
+    return request({
+        url:'/user/forgotPassword',
+        method:'post',
         data: form
     })
 }

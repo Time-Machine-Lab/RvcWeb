@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2024-01-07 13:48:47
+ * @Description: 
+ * @FilePath: \RvcWeb\src\api\rvcModel\commentApi.ts
+ */
 import request from '@/utils/request.ts'
 import {CommentAddForm, GetChildCommentForm, GetCommentForm} from "@/api/rvcModel/modelType.ts";
 import {LikeCommentForm} from "@/api/post/postType.ts";
@@ -15,7 +21,10 @@ export function likeComments(form:LikeCommentForm){
     return request({
         url:'/model/comment/likes',
         method:'post',
-        params:form
+        params:form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 // 模型一级评论获取

@@ -8,6 +8,8 @@
 import { ref, onBeforeUnmount } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { storage } from '@/utils/storage';
+import { ImageElement } from '@wangeditor/editor';
+
 let props = defineProps<{
   editorContent: string,
   getContent: (html: string) => void
@@ -26,11 +28,14 @@ let html = ref(props.editorContent)
 
 const editorConfig = {
   placeholder: '请输入内容...',
+  autoFocus: true,
+  scroll: false,
   MENU_CONF: {
     uploadImage: {
       server: '/rvcApi/communication/post/cover',
       maxFileSize: 5 * 1024 * 1024,
       maxNumberOfFiles: 20,
+      uploadImgFmSize: 300,
       allowedFileTypes: ['image/*'],
       meta: {},
       metaWithUrl: false,
@@ -49,19 +54,38 @@ const editorConfig = {
       // onError(file, err, res) {
       //   console.log(err,res);
       // },
-      customInsert(res: any, insertFn: any) {
-        insertFn(res.data.url)
+      customInsert(res: any) {
+        const node: ImageElement = {
+              type: 'image',
+              src: res.data.url,
+              style: {
+                width: '30%'
+              },
+              children: [{text: ''}]
+            }
+            editor.value.insertNode(node)
+      },
+      // 单个文件上传失败
+      onFailed() {   // TS 语法
+        // onFailed(file, res) {           // JS 语法
+      },
+
+      // 上传错误，或者触发 timeout 超时
+      onError() {  // TS 语法
+        // onError(file, err, res) {               // JS 语法
       },
     },
     color: {
 
-    }
-  },
+    },
+  }
 };
 const mode = 'default';
 
 const onCreated = (createdEditor: any) => {
   editor.value = Object.seal(createdEditor);
+  console.log(editor.value.getConfig());
+
   setInterval(() => {
     props.getContent(html.value)
   }, 2000);
@@ -77,10 +101,10 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div style="border-radius:10px;overflow:hidden;border:rgba(100,100,100) 1px solid">
-    <Toolbar style="border-bottom: 1px solid #ccc;" :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px; overflow-y: scroll;max-height: 500px;" v-model="html" :defaultConfig="editorConfig"
-      :mode="mode" @onCreated="onCreated" />
+  <div style="border-radius:10px;border:rgba(100,100,100) 1px solid;">
+    <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor"
+      :defaultConfig="toolbarConfig" :mode="mode" />
+    <Editor style="min-height:200px;" v-model="html" :defaultConfig="editorConfig" :mode="mode" @onCreated="onCreated" />
   </div>
 </template>
 <style src="@wangeditor/editor/dist/css/style.css"></style>
@@ -91,7 +115,7 @@ onBeforeUnmount(() => {
 }
 
 :deep(.w-e-toolbar) {
-  background-color: transparent
+  background-color: rgba(26, 27, 30);
 }
 
 :deep(.w-e-text-container) {

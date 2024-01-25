@@ -13,7 +13,18 @@ export default[
     {
       path: "/newModel",
       name: "newModel",
-      component: () => import('@/view/rvcModel/pages/newModelPageView.vue')
+      component: () => import('@/view/rvcModel/pages/newModelPageView.vue'),
+      meta: {
+        isAuth:true
+      }
+    },
+    {
+      path: '/editModel',
+      name: 'editModel',
+      component: ()=>import('@/view/rvcModel/pages/newModelPageView.vue'),
+      meta: {
+        isAuth:true
+      }
     }
   
   ];

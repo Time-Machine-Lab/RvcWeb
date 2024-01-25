@@ -13,11 +13,17 @@ export default [
     {
         path: '/newPost',
         name: 'newPost',
-        component: ()=> import('@/view/modelCommunication/pages/newPostPageView.vue')
+        component: ()=> import('@/view/modelCommunication/pages/newPostPageView.vue'),
+        meta: {
+          isAuth:true
+        }
     },
     {
         path: '/editPost',
         name: 'editPost',
-        component: ()=> import('@/view/modelCommunication/pages/editPostPageView.vue')
+        component: ()=> import('@/view/modelCommunication/pages/editPostPageView.vue'),
+        meta: {
+          isAuth:true
+        }
     }
 ]
