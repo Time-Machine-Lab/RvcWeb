@@ -260,80 +260,10 @@ onMounted(() => {
         </el-scrollbar>
       </div>
       <div class="load" v-show="loading" >
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-          <g transform="rotate(0 50 50)">
-            <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-              <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-1.2762762762762763s" repeatCount="indefinite"></animate>
-            </rect>
-          </g><g transform="rotate(20 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-1.2012012012012012s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(40 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-1.1261261261261262s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(60 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-1.0510510510510511s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(80 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.975975975975976s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(100 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.9009009009009009s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(120 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.8258258258258258s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(140 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.7507507507507507s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(160 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.6756756756756757s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(180 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.6006006006006006s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(200 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.5255255255255256s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(220 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.45045045045045046s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(240 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.37537537537537535s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(260 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.3003003003003003s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(280 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.22522522522522523s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(300 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.15015015015015015s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(320 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="-0.07507507507507508s" repeatCount="indefinite"></animate>
-          </rect>
-        </g><g transform="rotate(340 50 50)">
-          <rect x="40" y="12" rx="10" ry="10" width="20" height="20" fill="#f3f3f3">
-            <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1.3513513513513513s" begin="0s" repeatCount="indefinite"></animate>
-          </rect>
-        </g>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+          <circle cx="50" cy="50" fill="none" stroke="#6a6a6a" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+          </circle>
         </svg>
       </div>
     </div>
@@ -346,7 +276,6 @@ onMounted(() => {
 }
 .load{
   position: absolute;
-  background: rgba(58, 58, 58, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
