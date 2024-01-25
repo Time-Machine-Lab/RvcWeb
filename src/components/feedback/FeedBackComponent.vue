@@ -109,8 +109,7 @@ const like = () => {
   if(FeedbackData.value.hasUp == 0){
     isLiked = 1
     FeedbackData.value.upNum += 1
-  }
-  else{
+  } else {
     isLiked = 0
     FeedbackData.value.upNum -= 1
   }

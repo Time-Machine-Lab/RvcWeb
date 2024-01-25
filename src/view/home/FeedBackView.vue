@@ -165,7 +165,7 @@ const load = () => {
       })
     setTimeout(() => {
       loading.value = false
-    }, 500)
+    }, 200)
   }, 2000)
 };
 
