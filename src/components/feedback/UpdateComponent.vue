@@ -12,22 +12,26 @@ const close = () => {
   emits('close');
 };
 // 获取帖子fbid
-const { data } = defineProps(['data']);
-// 获取数据
-const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
+const props = defineProps(['data','type']);
+// 获取反馈帖子的所有类型
+const Type = ref<TypeListItem[]>([])
+Type.value = props.type
+if(props.type){
+  Type.value = props.type
+}else{
+  getTypeList().then((res: any) => {
+    console.log(res);
+    Type.value = res.data.list;
+  });
+}
 const FeedbackData = ref<FeedbackItem>(<FeedbackItem>{})
 const selectedButtonIndex = ref(0);
 const postTitle = ref("")
 const postContent = ref("")
 const postType = ref(0)
 const getData = () => {
-  // 获取反馈帖子的所有类型
-  getTypeList().then((res: any) => {
-    console.log(res);
-    Type.value = res.data.list;
-  });
   // 根据fb_id获取对应的feedback帖子
-  getFeedback(data).then((res: any) => {
+  getFeedback(props.data).then((res: any) => {
     console.log(res);
     FeedbackData.value = res.data.feedback;
     selectedButtonIndex.value = FeedbackData.value.type
@@ -49,7 +53,7 @@ const submitForm =  () => {
     title: postTitle.value,
     content: postContent.value,
     type: postType.value,
-    fbid: data,  // 如果是添加新帖子，可以忽略这个属性
+    fbid: props.data,  // 如果是添加新帖子，可以忽略这个属性
   };
   postUpdate(formData).then((res: any) => {
     if (res.code == 200) {
@@ -74,6 +78,7 @@ const saveHtml = (h: string) => {
 
 <template>
   <div class="box flex">
+    <div class="box flex" @click="close"></div>
     <div class="box__center">
       <div class="box-contain flex">
         <button @click="close" class="close flex">X</button>
