@@ -3,7 +3,7 @@ import {ref, onMounted, computed } from "vue";
 import {FeedbackItem, postComment, Comment, CommentList} from "@/api/feedback/feedbackTypes.ts";
 import {getComment, getCommentAdd, getCommentLike, getFeedback, getLike} from "@/api/feedback/feedbackAPI.ts";
 import {message} from "@/utils/message.ts";
-
+import { storage } from "@/utils/storage";
 
 const emits = defineEmits();
 const close = () => {
@@ -13,40 +13,40 @@ const close = () => {
 // 获取的是帖子的fbid
 const { data } = defineProps(['data']);
 const FeedbackData = ref<FeedbackItem>(<FeedbackItem>{})
-const Comment = ref<Comment>({page: "1", limit: "6",total:"7",pageList:[]})
+const Comment = ref<Comment>({page: 1, limit: 6,total:7,pageList:[]})
 let CommentList = ref<CommentList[]>([])
-const loading = ref(true)
+const loading = ref(false)
 const noMore = ref(false)
 const disabled = computed(() => loading.value || noMore.value)
 let isLiked = 0
-Comment.value.page = "1"
+Comment.value.page = 1
 
 // 评论加载
 const load = () => {
   loading.value = true
   setTimeout(() => {
-    const total = parseInt(Comment.value.total);
-    const loadedCommentsCount = CommentList.value.length;
+    const total = Comment.value.total
+    const loadedCommentsCount = CommentList.value.length
     // 如果已加载数量小于总数量，继续加载评论
     if (loadedCommentsCount < total) {
-      getComment(data, parseInt(Comment.value.page), parseInt(Comment.value.limit), "create_at")
-          .then((res: any) => {
-            if (res.code != 200) {
-              loading.value = false;
+      getComment(data, Comment.value.page, Comment.value.limit, "create_at")
+        .then((res: any) => {
+          if (res.code != 200) {
+            loading.value = false
+            noMore.value = true
+            message.error("评论获取失败")
+          }
+          Comment.value = res.data
+          CommentList.value = CommentList.value.concat(Comment.value.pageList)
+          // 更新当前页数
+          Comment.value.page += 1
+          setTimeout(() => {
+            if(CommentList.value){
+              loading.value = false
+              noMore.value = true
             }
-            console.log(res)
-            Comment.value = res.data
-            CommentList.value = CommentList.value.concat(Comment.value.pageList)
-            // 更新当前页数
-            Comment.value.page += 1
-          })
-          .finally(() => {
-            loading.value = false;
-          });
-    } else {
-      console.log('已加载完所有评论');
-      loading.value = false;
-      noMore.value = true;
+          }, 100)
+        })
     }
   }, 1000)
 }
@@ -55,11 +55,14 @@ const load = () => {
 const getData = () => {
   // 根据fb_id获取对应的feedback帖子
   getFeedback(data).then((res: any) => {
-    console.log(res);
-    FeedbackData.value = res.data.feedback;
-    isLiked = FeedbackData.value.hasUp
-    if(FeedbackData.value.nickname == null){
-      FeedbackData.value.nickname = "匿名"
+    if (res.code == 200) {
+      FeedbackData.value = res.data.feedback;
+      isLiked = FeedbackData.value.hasUp
+      if(FeedbackData.value.nickname == null){
+        FeedbackData.value.nickname = "匿名"
+      }
+    } else {
+      message.error('帖子信息获取失败')
     }
   });
 }
@@ -81,9 +84,9 @@ const replyComment = () => {
   };
   getCommentAdd(form).then((res: any) => {
     if (res.code == 200) {
-      message.success('操作成功')
+      message.success('发送成功')
     } else {
-      message.error('操作失败')
+      message.error('发送失败')
     }
   });
   refresh()
@@ -99,9 +102,9 @@ const submitForm = async () => {
   };
   getCommentAdd(formData).then((res: any) => {
     if (res.code == 200) {
-      message.success('操作成功')
+      message.success('发送成功')
     } else {
-      message.error('操作失败')
+      message.error('发送失败')
     }
   });
   postContent.value = ""
@@ -150,20 +153,24 @@ const CommentUnlike = (item:any) => {
 // 刷新
 const refresh = () => {
   CommentList = ref<CommentList[]>([])
-  Comment.value.page = "1"
+  Comment.value.page = 1
   loading.value = true
   noMore.value = false
   load()
+}
+let isLogin = true
+if(storage.get<string>('token')){
+  isLogin = false
 }
 onMounted(() => {
   getData()
   load()
 });
-
 </script>
 
 <template>
   <div class="box flex">
+    <div class="box flex" @click="close"></div>
     <div class="box__center">
       <div class="box-contain flex">
         <button class="close" @click="close">X</button>
@@ -172,12 +179,12 @@ onMounted(() => {
           <!--帖子内容-->
           <div class="left-message">
             <h3>{{ FeedbackData.title }}</h3>
-            <div v-html="FeedbackData.content"></div>
+            <div class="left-content" v-html="FeedbackData.content"></div>
           </div>
-          <div class="left-login flex">
+          <div class="left-login flex" v-if="isLogin">
             <p>请进行身份验证以加入对话</p>
             <router-link to="/login" target="_blank" style="color:#3a3a3a;margin-right: 10px" class="flex">
-              <p class="login">使用RVC帐户登录</p>
+              <p class="login-btn">使用RVC帐户登录</p>
               <svg t="1703273172623" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12021" width="20" height="20"><path d="M47.104 453.632q0-43.008 20.992-57.856t66.048-14.848q20.48 0 64.512 0.512t93.696 0.512 96.768 0.512 74.752 0.512q38.912 1.024 61.44-6.656t22.528-35.328q0-20.48 1.536-48.64t1.536-48.64q1.024-35.84 20.48-45.568t49.152 14.848q30.72 24.576 71.68 58.368t84.992 69.12 86.016 69.632 74.752 59.904q29.696 24.576 30.208 46.592t-28.16 45.568q-29.696 24.576-70.144 56.32t-83.968 65.536-85.504 67.072-74.752 58.88q-35.84 28.672-58.88 21.504t-22.016-44.032l0-24.576 0-29.696q0-15.36-0.512-30.208t-0.512-27.136q0-25.6-15.36-32.256t-41.984-6.656q-29.696 0-77.824-0.512t-100.352-0.512-101.376-0.512-79.872-0.512q-13.312 0-27.648-2.56t-26.112-9.728-18.944-20.992-7.168-37.376q0-27.648-0.512-53.248t0.512-57.344z" p-id="12022"></path></svg>
             </router-link>
           </div>
@@ -228,7 +235,7 @@ onMounted(() => {
                 </div>
               </ul>
               <p v-if="loading" style="color:#cccccc">Loading...</p>
-              <p v-if="noMore" style="color:#cccccc">No more</p>
+              <p v-if="noMore" style="color:#9f9f9f;font-family: ZCool">评论已经读完啦</p>
             </div>
           </div>
 <!--          回复框-->
