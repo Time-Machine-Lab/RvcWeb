@@ -59,15 +59,23 @@ const uid = storage.get<string>('uid')
 const getData = () => {
   // 获取反馈帖子的所有类型
   getTypeList().then((res: any) => {
-    Type.value = res.data.list;
+    if(res.code == 200 && res.data){
+      Type.value = res.data.list;
+    }else{
+      message.error("类型数据获取失败")
+    }
   });
   // 获取反馈帖子的状态列表
   getStatusList().then((res: any) => {
-    States.value = res.data.list;
+    if(res.code == 200 && res.data){
+      States.value = res.data.list;
+    }else{
+      message.error("状态数据获取失败")
+    }
   });
   getList(1, ListItems.value.limit, "")
     .then((res: any) => {
-      if(res.code == 200){
+      if(res.code == 200 && res.data){
         // 更新总数
         ListItems.value = res.data
         // 更新列表
@@ -79,7 +87,7 @@ const getData = () => {
   setTimeout(() => {}, 500)
   getList(1, ListItems.value.limit, "create_at")
     .then((res: any) => {
-      if(res.code == 200){
+      if(res.code == 200 && res.data){
         // 更新总数
         ListItems.value = res.data
         // 更新列表
@@ -91,7 +99,7 @@ const getData = () => {
   setTimeout(() => {}, 500)
   getList(1, ListItems.value.limit, "up_num")
     .then((res: any) => {
-      if(res.code == 200){
+      if(res.code == 200 && res.data){
         // 更新总数
         ListItems.value = res.data
         // 更新列表
@@ -122,7 +130,14 @@ const orderNew = () => {
   color1.value = '#ffffff'
   color2.value = ''
   Feedback.value = newFeedback.value
-  if(newFeedback.value.length<ListItems.value.total){
+  console.log(Feedback.value)
+  console.log(newFeedback.value)
+  if(Feedback.value && newFeedback.value){
+    loading.value = true
+    setTimeout(() => {
+      loading.value = false
+    }, 100)
+  }else{
     load()
   }
 }
@@ -135,8 +150,14 @@ const orderHot = () => {
   color2.value = '#ffffff'
   color1.value = ''
   Feedback.value = hotFeedback.value
+  console.log(Feedback.value)
   console.log(hotFeedback.value)
-  if(hotFeedback.value.length<ListItems.value.total){
+  if(Feedback.value && hotFeedback.value){
+    loading.value = true
+    setTimeout(() => {
+      loading.value = false
+    }, 100)
+  }else{
     load()
   }
 }
@@ -168,7 +189,7 @@ const load = () => {
       })
     setTimeout(() => {
       loading.value = false
-    }, 500)
+    }, 100)
   }, 2000)
 };
 
@@ -182,7 +203,7 @@ onMounted(() => {
     <!--打开帖子详情-->
     <FeedBackComponent :data="selectedItem" v-if="isOpen" @close="closeFeedbackComponent"></FeedBackComponent>
     <!--创建新帖子-->
-    <NewFeedback v-if="isChildComponentVisible " @close="closeChildComponent"></NewFeedback>
+    <NewFeedback v-if="isChildComponentVisible " :type="Type" @close="closeChildComponent"></NewFeedback>
     <UpdateComponent :data="update" :type="Type" v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
     <!--反馈类型选项卡-->
 <!--    <div class="contain-choice">-->
@@ -213,7 +234,7 @@ onMounted(() => {
       <!--帖子列表-->
       <div class="infinite-list-wrapper" style="overflow: auto">
         <el-scrollbar ref="scrollbarRef">
-          <ul v-infinite-scroll="load" class="list" :infinite-scroll-disabled="disabled">
+          <ul v-infinite-scroll="load" class="list" :infinite-scroll-disabled="disabled" :infinite-scroll-distance="50">
             <li v-for="(item, index) in Feedback" :key="index" class="contain-invitation__item flex">
               <button class="update flex" v-if="item.uid == uid" @click="openUpdate(item.fbid)">
                 <svg t="1703683064760" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2361" width="30" height="30"><path d="M512 74.666667C270.933333 74.666667 74.666667 270.933333 74.666667 512S270.933333 949.333333 512 949.333333 949.333333 753.066667 949.333333 512 753.066667 74.666667 512 74.666667z m0 810.666666c-204.8 0-373.333333-168.533333-373.333333-373.333333S307.2 138.666667 512 138.666667 885.333333 307.2 885.333333 512 716.8 885.333333 512 885.333333z" fill="#dbdbdb" p-id="2362"></path><path d="M512 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333334 0 42.666667 42.666667 0 1 0-85.333334 0Z" fill="#dbdbdb" p-id="2363"></path><path d="M341.333333 512m-42.666666 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2364"></path><path d="M682.666667 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2365"></path></svg>
