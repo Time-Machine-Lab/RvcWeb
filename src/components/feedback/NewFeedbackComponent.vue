@@ -48,11 +48,16 @@ const submitForm = () => {
   });
 };
 // 获取反馈帖子的所有类型
-const Type = ref<TypeListItem[]>([{id:1,type:"所有"},{id:2,type:"功能请求"},{id:3,type:"bug"}])
-getTypeList().then((res: any) => {
-  console.log(res);
-  Type.value = res.data.list;
-});
+const props = defineProps(['type']);
+const Type = ref<TypeListItem[]>([{id:1,type:"社区开发建议"},{id:2,type:"社区问题反馈"},{id:3,type:"RVC问题反馈"}])
+if(props.type){
+  Type.value = props.type
+}else{
+  getTypeList().then((res: any) => {
+    console.log(res);
+    Type.value = res.data.list;
+  });
+}
 // 富文本编辑器插槽
 const toolbars: ToolbarNames[] =
     ['bold', 'underline', 'italic', 'strikeThrough',
@@ -67,6 +72,7 @@ const saveHtml = (h: string) => {
 
 <template>
   <div class="box flex">
+    <div class="box flex" @click="close"></div>
     <div class="box__center">
       <div class="box-contain flex">
         <button @click="close" class="close flex">X</button>
