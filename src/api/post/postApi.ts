@@ -72,7 +72,10 @@ export function commentAdd(form:CommentForm){
     return request({
         method:'post',
         url:'/communication/comment/add',
-        data:form
+        data:form,
+        headers:{
+            isAuth:true
+        }
     })
 }
 
