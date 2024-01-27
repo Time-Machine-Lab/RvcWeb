@@ -4,12 +4,16 @@ import { CommentVo, CommentForm, LikeCommentForm } from '@/api/post/postType'
 import { commentAdd, likeComment } from '@/api/post/postApi'
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
+import { useUserStore } from '@/view/user/info/userStore.js'
+const userStore = useUserStore()
 let props = defineProps<{
   comment: CommentVo,
   showReply: (index: number) => boolean,
   index: number
 }
 >()
+const emit = defineEmits(["pushComment"]);
+
 let currentComment = ref<CommentVo>(props.comment)
 let commentStyle = ref(props.comment.rootCommentId == '-1' ? 'root-comment' : 'child-comment');
 let showReplyText = ref('查看回复')
@@ -52,6 +56,7 @@ const sendComment = function () {
   commentAdd(form.value).then((res: any) => {
     if (res.code == 200) {
       message.success('发送成功')
+      pushComment(form.value,res.data)
     } else {
       message.error(res.msg)
     }
@@ -59,23 +64,26 @@ const sendComment = function () {
 
   })
 }
-// const pushComment = function () {
-//   let commentVo = ref<CommentVo>({
-//     postCommentId: '',
-//     content: inputContent.value,
-//     createAt: '现在',
-//     userId: storage.get<string>('uid')!,
-//     postId: currentComment.value.postId,
-//     commentLikeCount: 0,
-//     rootCommentId: '',
-//     toUserId: '-1',
-//     updateAt: '',
-//     user: null,
-//     replayUser: null,
-//     childrenComment: undefined,
-//     like: false
-//   })
-// }
+const pushComment = function (form:CommentForm,postCommentId:string) {
+  let newComment = ref<CommentVo>({
+    postCommentId: postCommentId,
+    content: form.content,
+    createAt: '现在',
+    userId: storage.get<string>('uid')!,
+    postId: form.postId!,
+    commentLikeCount: 0,
+    rootCommentId: form.rootCommentId!,
+    toUserId: form.toUserId!,
+    updateAt: '现在',
+    user: userStore.getProfile,
+    replayUser: currentComment.value.rootCommentId=='-1'?null:currentComment.value.user,
+    childrenComment: undefined,
+    like: false
+  })  
+  emit('pushComment', newComment.value)
+  // currentComment = ref<CommentVo>(props.comment)
+
+}
 const calcNum = function (num: number) {
   return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
 }
@@ -98,8 +106,6 @@ const getUrl = function (url: string) {
   sendComment()
 }
 const isAudio = function (str: string) {
-  console.log(str);
-
   return str.includes('<audio>') && str.includes('</audio>')
 }
 const parseUrl = function (str: string) {

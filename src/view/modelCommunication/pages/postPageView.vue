@@ -12,12 +12,13 @@ import { commentAdd, getPostById } from "@/api/post/postApi"
 import { favoritePost, collectPost } from '@/api/post/postApi'
 import { ref } from "vue";
 import router from "@/router";
-import { CommentForm, FavoriteAndCollectionForm, PostVo } from "@/api/post/postType";
+import { CommentForm, CommentVo, FavoriteAndCollectionForm, PostVo } from "@/api/post/postType";
 import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { UserInfoVO } from "@/api/user/userTypes";
 const userStore = useUserStore()
+const postPageCommentsRef = ref<any>(null)
 getPostById((router.currentRoute.value.query.id as unknown as number)).then((res: any) => {
     if (res.code == 200) {
         localPost.value = res.data
@@ -70,24 +71,7 @@ let localPost = ref<PostVo>({
     collect: false
 })
 let inputContent = ref<string>('')
-// let figures = ref([
-//     {
-//         desc: "关注",
-//         number: 0,
-//     },
-//     {
-//         desc: "贴子",
-//         number: 0,
-//     },
-//     {
-//         desc: "粉丝",
-//         number: 0,
-//     },
-//     {
-//         desc: "上传模型",
-//         number: 0,
-//     }
-// ]);
+
 let DirectoryElements = ref<Element[]>([])
 let likeDisabled = ref(true)
 let collectDisabled = ref(true)
@@ -186,9 +170,22 @@ const sendComment = function () {
     commentAdd(form.value).then((res: any) => {
         if (res.code == 200) {
             message.success('发送成功')
-            setTimeout(() => {
-                router.go(0)
-            }, 500)
+            let newComment = ref<CommentVo>({
+                postCommentId: res.data,
+                content: form.value.content,
+                createAt: '刚刚',
+                userId: storage.get<string>('uid')!,
+                postId: form.value.postId!,
+                commentLikeCount: 0,
+                rootCommentId: form.value.rootCommentId!,
+                toUserId: form.value.toUserId!,
+                updateAt: '刚刚',
+                user: userStore.getProfile,
+                replayUser: null,
+                childrenComment: [],
+                like: false
+            })
+            postPageCommentsRef.value!.pushComment(newComment.value)
         } else {
             message.error(res.msg)
         }
@@ -397,7 +394,8 @@ const getUrl = function (url: string) {
         </div>
     </div>
     <div style="padding-bottom:50px;width:70%;position: relative;left: 50%;transform: translate(-50%);">
-        <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)"></postPageCommentsView>
+        <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ref="postPageCommentsRef">
+        </postPageCommentsView>
     </div>
 </template>
 <style scoped>

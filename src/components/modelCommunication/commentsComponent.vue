@@ -20,11 +20,43 @@ let childForm = ref<CommentChildrenListForm[]>([])
 let disalbed = ref(false)
 
 let hasInit = ref(false)
-
+const pushComment = function (comment: CommentVo) {
+    if (!hasInit.value) {
+        for (let i = 0; i < rootComments.value.length; i++) {
+            // rootComments.value[i].childrenComment = []
+            showChildComments.value.push(false)
+            hasChildComments.value.push(true)
+            childForm.value.push({
+                data: rootComments.value[i].postCommentId,
+                limit: '10',
+                page: '1'
+            })
+        }
+        hasInit.value = true
+    }
+    if (comment.rootCommentId == "-1") { //根评论
+        rootComments.value = [comment].concat(rootComments.value)
+        showChildComments.value = [false].concat(showChildComments.value)
+        hasChildComments.value = [false].concat(hasChildComments.value)
+        childForm.value = [{
+            data: comment.postCommentId,
+            limit: '10',
+            page: '1'
+        }].concat(childForm.value)
+    } else { //子评论
+        for (let i = 0; i < rootComments.value.length; i++) {
+            if (rootComments.value[i].postCommentId == comment.rootCommentId) {
+                rootComments.value[i].childrenComment = [comment].concat(rootComments.value[i].childrenComment!)
+                showChildComments.value[i] = false
+                showReply(i)
+            }
+        }
+    }
+}
 const showReply = function (index: number) {
     if (!hasInit.value) {
         for (let i = 0; i < rootComments.value.length; i++) {
-            rootComments.value[i].childrenComment = []
+            // rootComments.value[i].childrenComment = []
             showChildComments.value.push(false)
             hasChildComments.value.push(true)
             childForm.value.push({
@@ -36,7 +68,6 @@ const showReply = function (index: number) {
         hasInit.value = true
     }
     if (rootComments.value[index].childrenComment?.length == 0) {
-        console.log(rootComments.value[index].childrenComment);
 
         getChildCommentsFunc(index)
     }
@@ -52,7 +83,7 @@ const getChildCommentsFunc = function (index: number) {
     setTimeout(function () {
         disalbed.value = false
 
-    }, 5000)    
+    }, 5000)
     getChildComments(childForm.value[index]).then((res: any) => {
         if (res.code == 200) {
             if (res.data.length == 0) {
@@ -63,7 +94,11 @@ const getChildCommentsFunc = function (index: number) {
             disalbed.value = false
             let data = ref<any>(res.data)
             for (let i = 0; i < data.value.length; i++) {
-                rootComments.value[index].childrenComment?.push(data.value[i])
+                if (!rootComments.value[index].childrenComment?.some((item: CommentVo) => {                    
+                    return item.postCommentId == data.value[i].postCommentId
+                })) {
+                    rootComments.value[index].childrenComment?.push(data.value[i])
+                }
             }
             let page = Number(childForm.value[index].page)
             page++
@@ -71,13 +106,24 @@ const getChildCommentsFunc = function (index: number) {
         }
     })
 }
+defineExpose({
+    pushComment,
+    showChildComments,
+    hasChildComments,
+    childForm,
+    hasInit,
+    rootComments
+})
 </script>
 <template>
     <div class="Comments">
-        <div v-for="(comment, index) in rootComments" :key="index">
-            <commentComponent :show-reply="showReply" :index="index" :comment="comment"></commentComponent>
-            <div v-show="showChildComments[index]" v-for="(childComment, index2) in comment.childrenComment" :key="index2">
-                <commentComponent :show-reply="showReply" :index="-1" :comment="childComment"></commentComponent>
+        <div v-for="(comment, index) in rootComments" :key="comment.postCommentId">
+            <commentComponent @push-comment="pushComment" :show-reply="showReply" :index="index" :comment="comment">
+            </commentComponent>
+            <div v-show="showChildComments[index]" v-for="(childComment) in comment.childrenComment"
+                :key="childComment.postCommentId">
+                <commentComponent @push-comment="pushComment" :show-reply="showReply" :index="-1" :comment="childComment">
+                </commentComponent>
             </div>
             <div style="color: white;cursor:pointer;font-size: 14px;text-align: center;font-family: 'ZCool';"
                 @click="getChildCommentsFunc(index)" v-show="showChildComments[index] && hasChildComments[index]">加载更多</div>
