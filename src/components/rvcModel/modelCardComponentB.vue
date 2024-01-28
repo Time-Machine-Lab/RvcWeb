@@ -135,7 +135,7 @@ const editModel = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: collectDisabled == 'true' ? 'url(\'/icon/star-fill.svg\')' : 'url(\'/icon/star.svg\')' }">
+                        :style="{ backgroundImage: collectDisabled == 'true' ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>

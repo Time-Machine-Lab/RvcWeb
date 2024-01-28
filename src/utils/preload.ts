@@ -1,3 +1,9 @@
+/*
+ * @Author: Dhx
+ * @Date: 2023-12-24 05:22:24
+ * @Description: 
+ * @FilePath: \RvcWeb\src\utils\preload.ts
+ */
 // 图片预加载
 
 import {getTeam, getTools} from "@/api/home/introAPI.ts";

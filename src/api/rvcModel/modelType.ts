@@ -82,6 +82,7 @@ export type ModelVo = {
   username: string;
   nickname: string;
   avatar: string;
+  updateTime: string;
 }
 export type ModelComment = {
   id: string;

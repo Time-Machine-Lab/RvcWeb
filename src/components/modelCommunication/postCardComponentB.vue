@@ -31,6 +31,7 @@ const collect = function () {
         return
     }
     localPost.value.collect = !localPost.value.collect
+    localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
 
     collectDisabled.value = false
     setTimeout(function () {
@@ -42,7 +43,7 @@ const collect = function () {
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
+            //
         } else {
             message.error(res.msg)
         }
@@ -54,6 +55,8 @@ const like = function () {
         return
     }
     localPost.value.like = !localPost.value.like
+    localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+
     likeDisabled.value = false
     setTimeout(function () {
         likeDisabled.value = true
@@ -65,7 +68,7 @@ const like = function () {
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+            //
         } else {
             message.error(res.msg)
         }

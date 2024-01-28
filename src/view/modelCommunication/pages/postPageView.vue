@@ -109,6 +109,7 @@ const collect = function () {
     }
     collectDisabled.value = false
     localPost.value.collect = !localPost.value.collect
+    localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
 
     setTimeout(function () {
         collectDisabled.value = true
@@ -120,8 +121,7 @@ const collect = function () {
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
-            message.success((localPost.value.collect ? '' : '取消') + '收藏成功')
+            // message.success((localPost.value.collect ? '' : '取消') + '收藏成功')
         } else {
             message.error(res.msg)
         }
@@ -134,6 +134,8 @@ const like = function () {
         return
     }
     localPost.value.like = !localPost.value.like
+    localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+
     likeDisabled.value = false
     setTimeout(function () {
         likeDisabled.value = true
@@ -144,8 +146,7 @@ const like = function () {
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
-            localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
-            message.success((localPost.value.like ? '' : '取消') + '点赞成功')
+            // message.success((localPost.value.like ? '' : '取消') + '点赞成功')
         } else {
             message.error(res.msg)
         }
