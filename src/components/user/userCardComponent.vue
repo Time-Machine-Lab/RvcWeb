@@ -1,19 +1,26 @@
 <script lang="ts" setup>
 import { UserInfoVO } from '@/api/user/userTypes';
+import router from '@/router';
 
 const props = defineProps<{
-    user:UserInfoVO
+    user: UserInfoVO
 }>()
+const routerGo = function () {
+    if (props.user.uid) {
+        router.push('/user?id=' + props.user.uid)
+    }
+}
 </script>
 <template>
     <div class="user-card horizontal-center">
         <div class="user-card__info vertical-center">
-            <div class="user-card__info__avatar" :style="{ backgroundImage: 'url(\''+props.user.avatar+'\')' }">
+            <div @click="routerGo" class="user-card__info__avatar"
+                :style="{ backgroundImage: 'url(\'' + props.user.avatar + '\')' }">
 
             </div>
             <div class="user-card__info__text">
-                <div class="user-card__info__text__username">
-                    {{props.user.nickname}}
+                <div class="user-card__info__text__username" @click="routerGo">
+                    {{ props.user.nickname }}
                 </div>
                 <div class="user-card__info__text__creatAt">
                     {{ props.user.description }}
@@ -48,6 +55,7 @@ const props = defineProps<{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+    cursor: pointer;
 }
 
 .user-card__info__text {
@@ -63,6 +71,7 @@ const props = defineProps<{
     line-height: 20px;
     text-align: left;
     font-weight: 500;
+    cursor: pointer;
     color: rgba(144, 146, 150);
 }
 
@@ -95,9 +104,12 @@ const props = defineProps<{
     border-radius: 12px;
     cursor: pointer;
 }
-.follow{
-    background-color: rgba(25,113,194)
+
+.follow {
+    background-color: rgba(25, 113, 194)
 }
+
 .follow:hover {
     background-color: rgba(24, 100, 171);
-}</style>
+}
+</style>

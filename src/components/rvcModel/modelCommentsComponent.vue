@@ -15,6 +15,7 @@ import router from '@/router'
 const props = defineProps<{
     modelId: string
 }>()
+const WaterFallComponentRef = ref<any>()
 let sendCommentDialogVisible = ref(false)
 let comments = ref<ModelComment[]>([])
 let page = ref(1)
@@ -101,8 +102,8 @@ onMounted(() => {
         </div>
       </div>
       <div class="model-comments__content">
-        <WaterFallComponent>
-            <modelCommentComponent style="" v-for="(comment, index) in comments" :key="index" :comment="comment">
+        <WaterFallComponent ref="WaterFallComponentRef">
+            <modelCommentComponent style="" v-for="(comment, index) in comments" :key="index" v-show="WaterFallComponentRef.visibility[index]" :comment="comment">
             </modelCommentComponent>
         </WaterFallComponent>
         <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>

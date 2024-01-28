@@ -13,11 +13,12 @@ import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postT
 import { ref } from 'vue';
 import { message } from '@/utils/message'
 const posts = ref<PostVo[]>([])
+const waterFallComponentRef = ref<any>()
 let loaded = ref(false)
 let tags = ref<{
     id: string | undefined
     name: string | undefined
-}[]>([{id:'',name:'全部'}])
+}[]>([{ id: '', name: '全部' }])
 let page = ref(1)
 let form = ref<PostListForm>({
     data: '1',
@@ -46,10 +47,10 @@ const load = function () {
     // if(disabled.value)return
     loaded.value = false
     disabled.value = true
-    setTimeout(()=>{
+    setTimeout(() => {
         loaded.value = true
         disabled.value = false
-    },5000)
+    }, 5000)
     getPosts(form.value).then((res: any) => {
         if (res.code == 200) {
             loaded.value = true
@@ -101,24 +102,24 @@ const getSort = function (index: number) {
 <template>
     <el-scrollbar style="height: calc(100vh - 120px)">
         <div class="communicationView">
-        <div class="filter-container">
-            <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags">
-            </filterComponent>
-        </div>
-        <div class="post-list">
-            <el-empty :image-size="200" v-if="loaded&&posts?.length == 0" style="font-family: 'ZCool';" description="这里空空如也~"
-                image="/icon/empty.svg" />
-            <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
-                <postCardComponentB  v-for="(post, index) in posts" :post="post" :key="index"></postCardComponentB>
-            </waterFallComponent>
-            <div class="loading" v-if="disabled">
+            <div class="filter-container">
+                <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags">
+                </filterComponent>
+            </div>
+            <div class="post-list">
+                <el-empty :image-size="200" v-if="loaded && posts?.length == 0" style="font-family: 'ZCool';"
+                    description="这里空空如也~" image="/icon/empty.svg" />
+                <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
+                    :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false" ref="waterFallComponentRef">
+                    <postCardComponentB v-for="(post,index) in posts" :post="post" :key="post.postId" v-show="waterFallComponentRef.visibility[index]">
+                    </postCardComponentB>
+                </waterFallComponent>
+                <div class="loading" v-if="disabled">
 
-</div>
+                </div>
+            </div>
         </div>
-    </div>
     </el-scrollbar>
-    
 </template>
 <style scoped>
 :deep(.el-scrollbar__wrap) {
@@ -147,32 +148,33 @@ const getSort = function (index: number) {
     margin-top: 5px;
     transform: translate(-50%);
 }
+
 .loading {
-  position: relative;
-  left: 50%;
-  transform: translate(-50%);
-  height: 60px;
-  width: 60px;
-  border-radius: 30px;
-  background-color: rgba(44, 46, 51);
-  font-size: 20px;
-  line-height: 60px;
-  color: white;
-  font-weight: 700;
-  /* border: transparent 2px solid; */
-  /* border-top: rgba(25, 113, 194) 1px solid; */
-  border-left: rgba(25, 113, 194) 1px solid;
-  margin-bottom: 20px;
-  animation: roll 1s linear infinite;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 60px;
+    width: 60px;
+    border-radius: 30px;
+    background-color: rgba(44, 46, 51);
+    font-size: 20px;
+    line-height: 60px;
+    color: white;
+    font-weight: 700;
+    /* border: transparent 2px solid; */
+    /* border-top: rgba(25, 113, 194) 1px solid; */
+    border-left: rgba(25, 113, 194) 1px solid;
+    margin-bottom: 20px;
+    animation: roll 1s linear infinite;
 }
 
 @keyframes roll {
-  0% {
-    transform: rotate(0deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
 
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 </style>

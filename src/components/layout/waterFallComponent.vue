@@ -6,10 +6,9 @@ export default defineComponent({
     minWidth: {
       type: Number,
       default: 250
-    }
+    },
   },
-  setup(props) {
-
+  setup(props, context) {
     const minWidth = ref<number>(props.minWidth)
     const columnCount = ref(6)
     const margin = ref(15)
@@ -18,14 +17,20 @@ export default defineComponent({
     const containerRef = ref<HTMLElement | null>(null)
     let containerElement: HTMLElement | undefined
     let childElements: HTMLCollection | undefined
+    let visibility = ref<boolean[]>([])
 
-
-    const sortElement = function () {      
+    context.expose(
+      {
+        visibility
+      }
+    )
+    const sortElement = function () {
+      visibility.value = []
       height.value.fill(0, 0, 6)
       columnCount.value = 6
       if (containerRef.value) {
         containerElement = containerRef.value as HTMLElement
-        childElements = containerElement.children as HTMLCollection        
+        childElements = containerElement.children as HTMLCollection
       }
       while (columnCount.value) {
         if (containerRef.value) {
@@ -38,6 +43,7 @@ export default defineComponent({
       }
       for (let i = 0; i < (childElements?.length as number); i++) {
         if (childElements) {
+          visibility.value.push(false)
           const currentElement = childElements[i] as HTMLElement;
           currentElement.style.position = 'absolute';
           currentElement.style.display = 'inline-block';
@@ -45,8 +51,8 @@ export default defineComponent({
           const index = getMinIndex(height.value, columnCount.value);
           currentElement.style.left = index * (width.value + margin.value) + 'px';
           currentElement.style.top = height.value[index] + 'px';
-          currentElement.style.visibility = 'visible';
           height.value[index] += currentElement.clientHeight + margin.value;
+          visibility.value[i] = true
         }
       }
       let maxHeight = Math.max(...height.value)
@@ -71,22 +77,17 @@ export default defineComponent({
       const config = { childList: true, subtree: true }
       observer.observe(container as Node, config)
       sortElement()
-      setTimeout(()=>{
-        if (childElements) {        
-          let elementsArray = Array.from(childElements)
-        for (let i = 0; i < elementsArray.length; i++) {          
-          let imgElement = elementsArray[i].querySelectorAll('img');                              
-          if (imgElement.length != 0) {
-            for (let j = 0; j < imgElement.length; j++) {
-              imgElement[j].onload= ()=>{
-                sortElement()
-              }
+      setTimeout(() => {
+        let imgElement = containerRef.value?.getElementsByTagName('img');
+        if (imgElement!.length != 0) {
+          for (let j = 0; j < imgElement!.length; j++) {
+            imgElement![j].onload = () => {
+              sortElement()
             }
           }
         }
-      }
-      },500)
-      
+      }, 1000)
+
     })
     // watch(
     //   () => childElements,
@@ -127,7 +128,7 @@ export default defineComponent({
         for (let i = 0; i < childElements.length; i++) {
           const imgElement = childElements[i].querySelector('img');
           if (imgElement) {
-            imgElement.removeEventListener('load', function () {
+            imgElement.removeEventListener('onload', function () {
               setTimeout(
                 sortElement
                 , 100)
@@ -138,7 +139,7 @@ export default defineComponent({
     })
 
     return { containerRef }
-  }
+  },
 })
 </script>
 
