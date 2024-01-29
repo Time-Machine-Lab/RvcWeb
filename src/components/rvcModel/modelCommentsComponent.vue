@@ -6,12 +6,14 @@
 -->
 <script setup lang="ts">
 import { CommentAddForm, GetCommentForm, ModelComment } from '@/api/rvcModel/modelType'
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import WaterFallComponent from '@/components/layout/waterFallComponent.vue'
 import modelCommentComponent from '@/components/rvcModel/modelCommentComponent.vue'
 import { getRootComments, commentAdd } from '@/api/rvcModel/commentApi.ts'
 import { message } from '@/utils/message'
-import router from '@/router'
+import { storage } from '@/utils/storage'
+import { useUserStore } from '@/view/user/info/userStore.js'
+const userStore = useUserStore()
 const props = defineProps<{
     modelId: string
 }>()
@@ -45,85 +47,95 @@ const load = function () {
                 message.warning('没有更多评论了')
             }
             for (let i = 0; i < data.value.length; i++) {
-                comments.value.push(data.value[i])
+                if (!comments.value.some((item: ModelComment) => {
+                    return item.id == data.value[i].id
+                })) {
+                    comments.value.push(data.value[i])
+                }
             }
             page.value++
         } else {
-          disabled.value = false
+            disabled.value = false
         }
     })
 }
-
+let sendCommentDisabled = ref(false)
 const commentAddFunc = function () {
+    if(sendCommentForm.value.content=='')return
+    if(sendCommentDisabled.value == true){
+        message.warning('请稍后再试')
+        return
+    }
+    sendCommentDisabled.value = true
+    setTimeout(()=>{
     sendCommentDialogVisible.value = false
+    },3000)
     sendCommentForm.value.modelId = props.modelId
     commentAdd(sendCommentForm.value).then((res: any) => {
         if (res.code == 200) {
             message.success('发表成功')
-            setTimeout(()=>{
-                router.go(0)
-            },300)
+            let newComment = ref<ModelComment>({
+                id: res.data,
+                uid: storage.get<string>('uid')!,
+                nickname: userStore.getProfile.nickname,
+                picture: userStore.getProfile.avatar,
+                content: sendCommentForm.value.content,
+                likesNum: '0',
+                commentTime: '刚刚',
+                modelId: props.modelId,
+                likes: '0'
+            })
+            comments.value = [newComment.value].concat(comments.value)
         } else {
             message.error(res.msg)
         }
     })
 }
-const getLength = function(str:string){
+const getLength = function (str: string) {
     return str.length
 }
 onMounted(() => {
-  load()
+    load()
 });
 </script>
 <template>
     <div class="model-comments">
-      <el-dialog v-model="sendCommentDialogVisible" style="background-color: rgba(26,27,30);border-radius: 5px;" width="20%">
-        <div class="dialog-title">添加评论</div>
-        <div class="dialog-input">
-          <input class="input" v-model="sendCommentForm.content" maxlength="300">
-          <div style="text-align: right;">
-            <span>{{ getLength(sendCommentForm.content) }}/300</span>
-          </div>
-        </div>
-        <template #footer>
-          <span class="dialog-footer">
-            <div @click="sendCommentDialogVisible = false" class="dialog-footer__cancel">取消</div>
-            <div type="primary" class="dialog-footer__confirm" @click="commentAddFunc">
-                发表
+        <el-dialog v-model="sendCommentDialogVisible" style="background-color: rgba(26,27,30);border-radius: 5px;"
+            width="20%">
+            <div class="dialog-title">添加评论</div>
+            <div class="dialog-input">
+                <input class="input" v-model="sendCommentForm.content" maxlength="200">
+                <div style="text-align: right;">
+                    <span>{{ getLength(sendCommentForm.content) }}/200</span>
+                </div>
             </div>
-          </span>
-        </template>
-      </el-dialog>
-    
-      <div class="model-comments__title">
-        <span>评论</span>
-        <div class="add-comment" @click="sendCommentDialogVisible = true">
-            发表评论
+            <template #footer>
+                <span class="dialog-footer">
+                    <div @click="sendCommentDialogVisible = false" class="dialog-footer__cancel">取消</div>
+                    <div type="primary" class="dialog-footer__confirm" @click="commentAddFunc">
+                        发表
+                    </div>
+                </span>
+            </template>
+        </el-dialog>
+
+        <div class="model-comments__title">
+            <span>评论</span>
+            <div class="add-comment" @click="sendCommentDialogVisible = true">
+                发表评论
+            </div>
         </div>
-      </div>
-      <div class="model-comments__content">
-        <WaterFallComponent ref="WaterFallComponentRef">
-            <modelCommentComponent style="" v-for="(comment, index) in comments" :key="index" v-show="WaterFallComponentRef.visibility[index]" :comment="comment">
-            </modelCommentComponent>
-        </WaterFallComponent>
-        <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>
-      </div>
+        <div class="model-comments__content">
+            <WaterFallComponent ref="WaterFallComponentRef">
+                <modelCommentComponent style="" v-for="(comment, index) in comments" :key="comment.id"
+                    v-show="WaterFallComponentRef.visibility[index]" :comment="comment">
+                </modelCommentComponent>
+            </WaterFallComponent>
+            <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>
+        </div>
     </div>
 </template>
 <style scoped>
-
-
-
-
-
-
-
-
-
-
-
-
-
 .model-comments {
     width: 100%;
     background-color: rgba(26, 27, 30);
@@ -184,6 +196,7 @@ onMounted(() => {
     border-radius: 5px;
     background-color: rgba(25, 113, 194);
     cursor: pointer;
+    user-select: none;
 }
 
 .dialog-footer__confirm:hover {
@@ -210,28 +223,28 @@ onMounted(() => {
 }
 
 .model-comments__title {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 70%;
-  height: 70px;
-  left: 50%;
-  transform: translate(-50%);
-  color: rgba(193, 194, 197);
-  font-size: 30px;
-  line-height: 70px;
-  font-family: 'ZCool';
-  border-bottom: solid 3px #cccccc;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    height: 70px;
+    left: 50%;
+    transform: translate(-50%);
+    color: rgba(193, 194, 197);
+    font-size: 30px;
+    line-height: 70px;
+    font-family: 'ZCool';
+    border-bottom: solid 3px #cccccc;
 }
 
 .model-comments__content {
-  position: relative;
-  top:30px;
-  width: 75%;
-  min-height: 300px;
-  left: 50%;
-  transform: translate(-50%);
-  padding-bottom: 50px;
+    position: relative;
+    top: 30px;
+    width: 75%;
+    min-height: 300px;
+    left: 50%;
+    transform: translate(-50%);
+    padding-bottom: 50px;
 }
 
 .model-comments__content__more {

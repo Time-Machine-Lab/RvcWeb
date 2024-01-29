@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {
-  GetChildCommentForm,
-  LikeCommentForm,
-  ModelComment,
-  CommentAddForm,
-  ModelChildComment
+    GetChildCommentForm,
+    LikeCommentForm,
+    ModelComment,
+    CommentAddForm,
+    ModelChildComment
 } from '@/api/rvcModel/modelType';
 import userCardComponent from '../user/userCardComponent.vue';
 import { UserInfoVO } from '@/api/user/userTypes';
@@ -13,6 +13,7 @@ import { ref } from 'vue';
 import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/commentApi.ts';
 import { useUserStore } from "@/view/user/info/userStore.js";
 import ModelCommentComponentB from './modelCommentComponentB.vue';
+import { storage } from '@/utils/storage';
 const userStore = useUserStore();
 const props = defineProps<{
     comment: ModelComment
@@ -24,15 +25,15 @@ let childComments = ref<ModelChildComment[]>([
 
 ])
 let user = ref<UserInfoVO>({
-avatar: props.comment.picture,
-nickname: props.comment.nickname,
-description: props.comment.commentTime,
-birthday: '',
-fansNum: '',
-followNum: '',
-sex: '',
-uid: '',
-username: ''
+    avatar: props.comment.picture,
+    nickname: props.comment.nickname,
+    description: props.comment.commentTime,
+    birthday: '',
+    fansNum: '',
+    followNum: '',
+    sex: '',
+    uid: '',
+    username: ''
 })
 let clickMore = ref(false)
 let dialogClickMore = ref(false)
@@ -59,29 +60,29 @@ const like = function () {
         id: localComment.value.id,
         type: '0'
     }
-    if (likeDisabled.value == "1"){
-      likeDisabled.value = "0"
-      localComment.value.likes = "0"
-      let likesNumString = localComment.value.likesNum;
-      let likesNum = parseInt(likesNumString);
-      likesNum -= 1;
-      localComment.value.likesNum = likesNum.toString();
-      form.type = '1'
-    } else if (likeDisabled.value == "0"){
-      likeDisabled.value = "1"
-      localComment.value.likes = "1"
-      let likesNumString = localComment.value.likesNum;
-      let likesNum = parseInt(likesNumString);
-      likesNum += 1;
-      localComment.value.likesNum = likesNum.toString();
-      form.type = '0'
+    if (likeDisabled.value == "1") {
+        likeDisabled.value = "0"
+        localComment.value.likes = "0"
+        let likesNumString = localComment.value.likesNum;
+        let likesNum = parseInt(likesNumString);
+        likesNum -= 1;
+        localComment.value.likesNum = likesNum.toString();
+        form.type = '1'
+    } else if (likeDisabled.value == "0") {
+        likeDisabled.value = "1"
+        localComment.value.likes = "1"
+        let likesNumString = localComment.value.likesNum;
+        let likesNum = parseInt(likesNumString);
+        likesNum += 1;
+        localComment.value.likesNum = likesNum.toString();
+        form.type = '0'
     }
     likeComments(form).then((res: any) => {
-      if (res.code == 200) {
-        message.success('操作成功')
-      } else {
-        message.error('操作失败')
-      }
+        if (res.code == 200) {
+            message.success('操作成功')
+        } else {
+            message.error('操作失败')
+        }
     })
 }
 const calcNum = function (num: number) {
@@ -125,7 +126,11 @@ const loadChildComment = function () {
                 return
             }
             for (let i = 0; i < data.length; i++) {
-                childComments.value.push(data[i])                
+                if (!childComments.value.some((item: ModelChildComment) => {
+                    return item.id == data[i].id
+                })) {
+                    childComments.value.push(data[i])
+                }
             }
             childCommentDisabled.value = false
             page.value++
@@ -135,28 +140,40 @@ const loadChildComment = function () {
     })
 }
 const sendComment = function () {
-  if(inputContent.value == '')return
-  commentAddForm.value.content = inputContent.value
-  commentAddForm.value.modelId = localComment.value.modelId
-  commentAddForm.value.replyId = localComment.value.id
-  commentAdd(commentAddForm.value).then((res:any)=>{
-      if(res.code==200){
-          message.success('评论成功')
-          inputContent.value == ''
-      } else{
-          message.error('评论失败')
-      }
-  })
-  refresh()
+    if (inputContent.value == '') return
+    commentAddForm.value.content = inputContent.value
+    commentAddForm.value.modelId = localComment.value.modelId
+    commentAddForm.value.replyId = localComment.value.id
+    commentAdd(commentAddForm.value).then((res: any) => {
+        if (res.code == 200) {
+            message.success('评论成功')
+            inputContent.value == ''
+            let newComment = ref<ModelChildComment>({
+                id: res.data,
+                uid: storage.get<string>('uid')!,
+                nickname: userStore.getProfile.nickname,
+                picture: userStore.getProfile.avatar,
+                content: commentAddForm.value.content,
+                likesNum: '0',
+                commentTime: '刚刚',
+                parentId: localComment.value.id,
+                isLikes: '0'
+            })
+            childComments.value = [newComment.value].concat(childComments.value)
+        } else {
+            message.error('评论失败')
+        }
+    })
+    refresh()
 }
-const refresh =() => {
-  inputContent.value = ""
-  childCommentDisabled = ref(false)
-  page = ref(1)
-  childComments.value = []
-  setTimeout(() => {
-    loadChildComment()
-  }, 500);
+const refresh = () => {
+    inputContent.value = ""
+    childCommentDisabled = ref(false)
+    page = ref(1)
+    childComments.value = []
+    setTimeout(() => {
+        loadChildComment()
+    }, 500);
 
 }
 </script>
@@ -182,19 +199,19 @@ const refresh =() => {
             <div class="comment-content">
                 {{ localComment.content }}
             </div>
-            <div style="margin-top: 30px;">
+            <div class="comment-buttons">
                 <div class="status-item" @click="like">
-                    <div class="vertical-center"
+                    <span class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: localComment.likes ='1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                    </div>
+                        :style="{ backgroundImage: localComment.likes = '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                    </span>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
             </div>
 
             <div class="dialog-input">
                 <div style="display: flex;">
-                    <img width="40" height="40" :src="userProfile.avatar!"
+                    <img width="50" height="50" :src="userProfile.avatar!"
                         style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                     <input class="input" v-model="inputContent" maxlength="300">
                 </div>
@@ -209,7 +226,7 @@ const refresh =() => {
             </div>
             <div class="child-comments" v-infinite-scroll="loadChildComment" infinite-scroll-distance="20"
                 :infinite-scroll-disabled="childCommentDisabled" :infinite-scroll-immediate="true">
-                <ModelCommentComponentB v-for="(comment, index) in childComments" :key="index" :comment="comment"
+                <ModelCommentComponentB v-for="(comment, index) in childComments" :key="comment.id" :comment="comment"
                     :index="index"></ModelCommentComponentB>
             </div>
         </el-dialog>
@@ -238,10 +255,10 @@ const refresh =() => {
             </div>
             <div class="model-comment__center__bottom">
                 <div class="status-item" @click="like">
-                    <div class="vertical-center"
+                    <span class="vertical-center"
                         style="height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
-                        :style="{ backgroundImage: likeDisabled == '1'? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                    </div>
+                        :style="{ backgroundImage: likeDisabled == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                    </span>
                     <span>{{ calcNum(comment.likesNum as unknown as number) }}</span>
                 </div>
                 <div class="status-item" @click="showChildComment" style="position: absolute;right: 25px;">
@@ -283,6 +300,11 @@ const refresh =() => {
     margin: 15px;
 }
 
+.comment-buttons{
+    height: 25px;
+    width: 100%;
+    display: flex;
+}
 .dialog-input {
     margin-top: 20px;
     width: 100%;
@@ -309,20 +331,20 @@ const refresh =() => {
     text-align: right;
 }
 
-.button-group__item{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right:0;
-  height: 30px;
-  width:70px;
-  color: white;
-  font-size: 15px;
-  font-family: ZCool;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: rgba(51, 154, 240);
+.button-group__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    height: 30px;
+    width: 70px;
+    color: white;
+    font-size: 15px;
+    font-family: ZCool;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: rgba(51, 154, 240);
 }
 
 .button-group__item:hover {
@@ -350,24 +372,25 @@ const refresh =() => {
 }
 
 .model-comment__center__bottom {
-  height: 25px;
-  width: 100%;
-  margin-top: 10px;
-  display: flex;
-  border-top: solid 1px #727272;
+    height: 25px;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    border-top: solid 1px #727272;
 }
 
 .status-item {
-  margin-top: 5px;
-  height: 20px;
-  display: flex;
-  width: 35%;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: 10px;
-  span{
-    margin-top:1%;
-  }
+    margin-top: 5px;
+    height: 20px;
+    display: flex;
+    /* width: 35%; */
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+
+    span {
+        margin-top: 1%;
+    }
 }
 
 .status-item:hover {

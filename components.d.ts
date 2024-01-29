@@ -54,6 +54,7 @@ declare module 'vue' {
     UpdateComponent: typeof import('./src/components/feedback/UpdateComponent.vue')['default']
     UserCardComponent: typeof import('./src/components/user/userCardComponent.vue')['default']
     UserStatus: typeof import('./src/components/user/userStatus.vue')['default']
+    VuetifyPictureComponent: typeof import('./src/components/common/vuetifyPictureComponent.vue')['default']
     WaterFallComponent: typeof import('./src/components/layout/waterFallComponent.vue')['default']
     Welcome: typeof import('./src/components/intro/welcome.vue')['default']
   }

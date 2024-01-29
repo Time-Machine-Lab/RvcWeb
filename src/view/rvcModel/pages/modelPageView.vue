@@ -18,14 +18,10 @@ import router from "@/router";
 import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
 import "@/assets/css/post/postContent.css"
 import { message } from "@/utils/message";
-// import { storage } from "@/utils/storage";
 import { ElMessageBox } from 'element-plus'
 import { UserInfoVO } from '@/api/user/userTypes';
 import { onBeforeRouteLeave } from 'vue-router'
-// import { storage } from "@/utils/storage.ts";
-// import { useUserStore } from '@/view/user/info/userStore.js'
-// const userStore = useUserStore()
-// let userProfile = userStore.getProfile
+
 onBeforeRouteLeave((to, _from, next) => {
     setTimeout(() => {
         if (to.fullPath.substring(1) == location.origin + '/' || to.matched.length != 0) {
@@ -121,10 +117,12 @@ const collect = function () {
         collectDisabled.value = "false"
         localModel.value.isCollection = "false"
         form.status = '1'
+        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
     } else if (collectDisabled.value == "false") {
         collectDisabled.value = "true"
         localModel.value.isCollection = "true"
         form.status = '0'
+        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
     }
     collectModel(form).then((res: any) => {
         if (res.code == 200) {
@@ -143,11 +141,13 @@ const like = () => {
         isLike.value = "false"
         localModel.value.isLike = "false"
         form.status = '1'
+        localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
     }
     else if (isLike.value == "false") {
         isLike.value = "true"
         localModel.value.isLike = "true"
         form.status = '0'
+        localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
     }
     console.log(isLike.value)
     favoriteModel(form).then((res: any) => {
@@ -173,7 +173,7 @@ const handleClickModelFiles = function () {
 // }
 calcNum(1000)
 const getModelFilesFunc = function () {
-    if(fileUrl.value)
+    if (fileUrl.value)
         modelFilesvisibility.value = false
     setTimeout(function () {
         modelFilesvisibility.value = true
@@ -208,6 +208,40 @@ const handleShare = function () {
     document.execCommand("copy");
     body.removeChild(input);
     message.success("已复制链接")
+}
+const handlePicture = function (htmlString: string): string {
+    const imgRegex = /<img[^>]*\ssrc\s*=\s*['"]([^'"]*)['"][^>]*\sstyle\s*=\s*['"][^'"]*width\s*:\s*([^'";]*)[^'"]*['"][^>]*>/g;
+    const imgInfoArray: { src: string; width: string; }[] = [];
+
+    let match;
+    while ((match = imgRegex.exec(htmlString)) !== null) {
+        const [, src, width] = match;
+        imgInfoArray.push({ src, width });
+    }
+    console.log("HTML 字符串:", htmlString);
+
+    console.log("匹配项:", imgInfoArray);
+
+    let replacedHtml = htmlString;
+
+    imgInfoArray.forEach(imgInfo => {
+        const imgTagRegex = new RegExp(
+            `<img[^>]*\\ssrc\\s*=\\s*['"]${imgInfo.src}['"][^>]*\\sstyle\\s*=\\s*['"][^'"]*width\\s*:\\s*${imgInfo.width}[^'"]*['"][^>]*>`,
+            'g'
+        );
+
+        const vImgTag = `<v-img src="${imgInfo.src}" lazy-src="${imgInfo.src}" width="${imgInfo.width}" class="bg-grey-lighten-2">
+                      <template v-slot:placeholder>
+                          <v-row class="fill-height ma-0" align="center" justify="center">
+                              <v-progress-circular indeterminate color="grey-lighten-5"></v-progress-circular>
+                          </v-row>
+                      </template>
+                    </v-img>`;
+
+        replacedHtml = replacedHtml.replace(imgTagRegex, vImgTag);
+    });
+
+    return replacedHtml;
 }
 </script>
 <template>
@@ -257,11 +291,12 @@ const handleShare = function () {
                     {{ localModel?.createTime }}
                 </div>
                 <span class="line">|</span>
-                <div class="model-page__model__info__tags" v-for="(label,index) in localModel?.label" :key="index">
-                    <span>{{ label }}</span>
+                <div class="model-page__model__info__tags" v-for="(label, index) in localModel?.label" :key="index">
+                    <span>{{ label.name }}</span>
                 </div>
             </div>
-            <div class="post-content model-page__model__content" v-html="localModel.description">
+            <div class="post-content model-page__model__content" v-if="localModel.description != ''"
+                v-html="handlePicture(localModel.description)">
 
             </div>
 
@@ -495,6 +530,7 @@ const handleShare = function () {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .other-info {
     position: relative;
     height: 40px;
@@ -511,7 +547,7 @@ const handleShare = function () {
     position: relative;
     top: 50%;
     transform: translate(0, -50%);
-    height: 16px;
+    height: 25px;
     display: flex;
     margin-right: 15px;
     border-radius: 5px;
@@ -519,10 +555,12 @@ const handleShare = function () {
     padding: 5px 5px;
     cursor: pointer;
 }
-.other-info__stats__item:hover > span{
+
+.other-info__stats__item:hover>span {
     color: rgba(77, 122, 143);
 
 }
+
 .other-info__stats__item span {
     display: inline-block;
     height: 16px;
@@ -531,6 +569,7 @@ const handleShare = function () {
     margin-left: 4px;
     color: rgba(255, 255, 255, 0.7);
 }
+
 .model-page__model__info {
     position: relative;
     width: 100%;
@@ -541,6 +580,7 @@ const handleShare = function () {
     flex-grow: 15;
     padding-left: 10px;
 }
+
 .model-page__model__info__author__avatar {
     height: 30px;
     min-width: 30px;
@@ -590,7 +630,7 @@ const handleShare = function () {
     font-family: 'ZCool';
     color: rgba(255, 255, 255, 1);
     text-align: left;
-    padding: 0 4px;
+    padding: 0 8px;
     border-radius: 5px;
     background-color: rgba(52, 58, 64);
 }
@@ -810,11 +850,11 @@ const handleShare = function () {
         transform: rotate(360deg);
     }
 }
+
 .line {
     margin: 0 5px;
     color: rgba(255, 255, 255, 0.4);
     font-size: 16px;
     line-height: 30px;
 }
-
 </style>

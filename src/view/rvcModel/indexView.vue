@@ -13,7 +13,7 @@ let loaded = ref(false)
 
 let page = ref(1)
 let form = ref<ModelListForm>({
-  limit: 5, page: 1, sortType: ""
+  limit: 10, page: 1, sortType: ""
 })
 let formType = ref<ModelListType>({
   limit: 5, page: 1, sortType: "", typeId: ""
@@ -154,7 +154,7 @@ const refresh = () => {
       <div class="model-list">
         <el-empty :image-size="200" v-if="loaded && models.length == 0" style="font-family: 'ZCool';"
           description="这里空空如也~" image="/icon/empty.svg" />
-        <waterFallComponent :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100"
+        <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
           :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false" ref="waterFallComponentRef">
           <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"  v-show="waterFallComponentRef.visibility[index]"></modelCardComponentB>
         </waterFallComponent>

@@ -69,7 +69,7 @@ export type ModelVo = {
   name: string;
   type: string;
   createTime:string;
-  label: Array<string>;
+  label: Array<{id:string;name:string}>;
   picture: string;
   description: string;
   note: string;
