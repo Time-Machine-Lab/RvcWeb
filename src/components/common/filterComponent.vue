@@ -143,7 +143,7 @@ const handleSortClick = function (index:number) {
 
 .sort-select__item {
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 40px;
     line-height: 40px;
     font-size: 14px;

@@ -102,7 +102,7 @@ const handleBlur = function () {
           <div class="select-window__item" v-for="(route, index) in routes" :key="index" @click="router.push(route.to)">
 
             <div class="horizontal-center" style="display: flex;">
-              <img width="16" height="16" class="vertical-center" src="/icon/write.svg">
+              <img width="10" height="10" class="vertical-center" src="/icon/write.svg">
               <span style="line-height: 40px;margin-left: 15px;margin-right: 7px;">{{ route.name }}</span>
 
             </div>
@@ -369,7 +369,7 @@ const handleBlur = function () {
 .select-window__item {
   position: relative;
   padding-left: 15px;
-  width: calc(100% - 15px);
+  width: calc(100% - 0px);
   height: 40px;
   line-height: 40px;
   font-size: 14px;

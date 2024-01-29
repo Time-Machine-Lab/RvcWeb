@@ -16,7 +16,6 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import vuetifyPictureComponentVue from "./components/common/vuetifyPictureComponent.vue";
 const vuetify = createVuetify({
   components,
   directives,
@@ -29,5 +28,4 @@ app.use(ElementPlus);
 app.use(pinia);
 app.use(vuetify);
 // app.use(vueCustomElement);
-app.component('vuetifyPictureComponent',vuetifyPictureComponentVue)
 app.mount("#app");

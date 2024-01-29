@@ -241,10 +241,12 @@ loadDraft()
 
         </div>
         <div class="type-select" v-show="typeSelectvisibility">
-          <div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
+          <el-scrollbar style="height: 150px;"><div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
             @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
             {{ tag.label }}
           </div>
+</el-scrollbar>
+          
         </div>
       </div>
 
@@ -415,7 +417,7 @@ loadDraft()
 .type-select__item {
   position:relative;
   padding-left: 15px;
-  width: calc(100% - 15px);
+  width: calc(100% - 0px);
   height: 40px;
   line-height: 40px;
   font-size: 14px;

@@ -154,7 +154,7 @@ const editModel = function () {
         </div>
     </div>
 </template>
-<style>
+<style scoped>
 .model-card {
     position: relative;
     width: 380px;
@@ -191,7 +191,7 @@ const editModel = function () {
 
 .more-window__item {
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 40px;
     line-height: 40px;
     font-size: 14px;

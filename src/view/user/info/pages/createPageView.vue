@@ -8,7 +8,8 @@ import { message } from '@/utils/message'
 import { RvcModelVo, UserCreateModelForm } from '@/api/rvcModel/modelType'
 import { getUserCreateModels } from '@/api/rvcModel/userApi.ts'
 import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue'
-
+const postWaterFallComponentRef = ref<any>()
+const modelWaterFallComponentRef = ref<any>()
 let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
@@ -42,12 +43,11 @@ const handleBlur = function () {
 }
 const handleOptionChange = function (index: number) {
     if(currentSelectIndex.value == index)return
+    empty.value = false
     currentSelectIndex.value = index
     selectVisibility.value = false
     page.value = 1
     disabled.value = false
-    empty.value = false
-
     if(currentSelectIndex.value == 0){
         loadPost()
     } else if(currentSelectIndex.value == 1){
@@ -66,17 +66,16 @@ const loadPost = function () {
             let data = res.data
             if (data.length == 0) {
                 message.warning('已滑到底部了')
-                disabled.value = true
             }
             for (let i = 0; i < data.length; i++) {
                 posts.value.push(data[i])
             }
             page.value++
-            disabled.value = false
         } else {
             message.error('网络异常')
         }
         empty.value = true
+        disabled.value = false
 
     })
 }
@@ -93,18 +92,16 @@ const loadModel = function(){
             let data = res.data.records
             if (data.length == 0) {
                 message.warning('已滑到底部了')
-                disabled.value = true
             }
             for (let i = 0; i < data.length; i++) {
                 models.value.push(data[i])
             }
             page.value++
-            disabled.value = false
         } else {
             message.error('网络异常')
         }
         empty.value = true
-
+        disabled.value = false
     })
 }
 </script>
@@ -132,12 +129,12 @@ const loadModel = function(){
         <div class="create-pages__content">
             <el-empty :image-size="200" v-if="empty&&posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 0" :infinite-scroll-immediate="true">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
+                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 0" :infinite-scroll-immediate="true" ref="postWaterFallComponentRef">
+                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></postCardComponentB>
             </waterFallComponent>
             <waterFallComponent v-infinite-scroll="loadModel" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 1" :infinite-scroll-immediate="true">
-                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index"></ModelCardComponentB>
+                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 1" :infinite-scroll-immediate="true" ref="modelWaterFallComponentRef">
+                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></ModelCardComponentB>
             </waterFallComponent>
             <div class="loading" v-if="disabled"></div>
         </div>
@@ -204,7 +201,7 @@ const loadModel = function(){
 
 .select-window__item {
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 40px;
     line-height: 40px;
     font-size: 14px;

@@ -174,6 +174,7 @@ setTimeout(function () {
   text-align: left;
   line-height: 32px;
   color: white;
+  font-family: 'ZCool';
 }
 
 .base-info .creatTime-container .creatTime {
@@ -182,12 +183,14 @@ setTimeout(function () {
   position: relative;
   font-size: 14px;
   text-align: left;
+  font-family: 'ZCool';
   color: rgba(255, 255, 255, 0.6);
 }
 .base-info .description-container{
   line-height: 20px;
   font-size: 14px;
   color: rgba(255,255,255,0.6);
+  font-family: 'ZCool';
   text-align: left;
 }
 .base-info .description-container .description{
@@ -210,7 +213,7 @@ setTimeout(function () {
   line-height: 40px;
   font-size: 16px;
   color: white;
-  font-weight: 400;
+  font-weight: 100;
   cursor: pointer;
   user-select: none;
   font-family: 'ZCool';
