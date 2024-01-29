@@ -581,8 +581,9 @@ const submit = function () {
 }
 
 .type-select__item {
+    position: relative;
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 35px;
     line-height: 35px;
     font-size: 14px;

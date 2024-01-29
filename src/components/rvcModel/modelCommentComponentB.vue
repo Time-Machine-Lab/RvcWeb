@@ -175,8 +175,9 @@ const parseUrl = function (str: string) {
 }
 
 .more-window__item {
+    position: relative;
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 40px;
     line-height: 40px;
     font-size: 14px;

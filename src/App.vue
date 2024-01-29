@@ -8,7 +8,7 @@
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
-// import '@/style/scss/index.scss'
+import '@/style/scss/index.scss'
 
 // import { preloadImages } from '@/utils/preload';
 
@@ -113,4 +113,5 @@ onBeforeMount(async () => {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
-}</style>
+}
+</style>

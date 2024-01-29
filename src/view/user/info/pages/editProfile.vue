@@ -294,7 +294,8 @@ getPreCodeFunc()
   <div class="update-password__container" v-else>
     <div class="header">
       <span class="title">修改密码</span>
-      <span class="button" @click="submitUpdatePassword">保存</span>
+      <span class="button" @click="submitUpdatePassword" >保存</span>
+      <span class="button" @click="updatePasswordDialogVisible = false" >返回</span>
     </div>
     <div class="content">
       <el-row :gutter="20" class="row">
@@ -366,6 +367,7 @@ getPreCodeFunc()
   top: 50%;
   transform: translate(0, -50%);
   font-family: 'ZCool';
+  cursor: pointer;
 }
 
 .header .button:hover {
@@ -436,7 +438,7 @@ getPreCodeFunc()
   width: calc(80% - 20px);
   height: 100%;
   outline: none;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 50px;
   border: none;
   border-radius: 10px;
@@ -447,8 +449,10 @@ getPreCodeFunc()
 }
 
 .dialog-content__input::placeholder {
-  font-size: 12px;
+  font-size: 10px;
   text-align: center;
+  font-family: 'ZCool';
+
 }
 
 .dialog-footer {
@@ -539,6 +543,12 @@ getPreCodeFunc()
   background-color: rgba(37, 38, 43);
   color: rgba(255, 255, 255, 0.7);
   padding-left: 10px;
+  font-family: 'ZCool';
+}
+.input::placeholder{
+  font-size: 14px;
+  font-family: 'ZCool';
+
 }
 
 .sex-selecter {

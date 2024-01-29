@@ -155,7 +155,7 @@ const logoutFunc = function () {
 
 .user-more__item {
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 50px;
     font-size: 14px;
     border-radius: 5px;

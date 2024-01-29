@@ -181,7 +181,7 @@ const handleSelectConfirm = (index: number) => {
 .type-select__item {
     position: relative;
     padding-left: 15px;
-    width: calc(100% - 15px);
+    width: calc(100% - 0px);
     height: 22px;
     line-height: 22px;
     font-size: 12px;
