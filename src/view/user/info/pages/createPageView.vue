@@ -14,12 +14,9 @@ let selectOptions = ref(['贴子', '模型'])
 let clickSelect = ref(false)
 let selectVisibility = ref(false)
 let currentSelectIndex = ref(0)
-let postScrollDisabled = ref(false)
-let page = ref(1)
 let posts = ref<PostVo[]>([])
 let models = ref<RvcModelVo[]>([])
-let disabled = ref(false)
-let empty = ref(false)
+let page = ref(1)
 let postForm = ref<UserCreatePostForm>({
     limit: '10',
     page: page.value as unknown as string
@@ -29,6 +26,9 @@ page: page.value as unknown as string,
 limit: '10',
 order: '3'
 })
+let disabled = ref(false)
+let loading = ref(false)
+let empty = ref(false)
 const handleClickSelect = function () {
     clickSelect.value = true
     selectVisibility.value = !selectVisibility.value
@@ -49,59 +49,81 @@ const handleOptionChange = function (index: number) {
     page.value = 1
     disabled.value = false
     if(currentSelectIndex.value == 0){
+        posts.value = []
         loadPost()
     } else if(currentSelectIndex.value == 1){
+        models.value = []
         loadModel()
     }
 }
 const loadPost = function () {
     if (disabled.value) return
     disabled.value = true
+    loading.value = true
     postForm = ref<UserCreatePostForm>({
+        data: '',
         limit: '10',
         page: page.value as unknown as string
     })
     getUserCreatePosts(postForm.value).then((res: any) => {
         if (res.code == 200) {
             let data = res.data
-            if (data.length == 0) {
-                message.warning('已滑到底部了')
-            }
+            // if (data.length == 0) {
+            //     message.warning('已滑到底部了')
+            // }
             for (let i = 0; i < data.length; i++) {
                 posts.value.push(data[i])
             }
             page.value++
+            disabled.value = false
+            empty.value = true
+        } else if(res.code == 304){
+            disabled.value = true
+            loading.value = false
+            empty.value = true
+            message.warning('已滑到底部了')
+            return
         } else {
             message.error('网络异常')
+            setTimeout(()=>{
+                disabled.value = false
+            },30000)
         }
-        empty.value = true
-        disabled.value = false
-
+        loading.value = false
     })
 }
-const loadModel = function(){
+const loadModel = function () {
     if (disabled.value) return
     disabled.value = true
+    loading.value = true
     modelForm = ref<UserCreateModelForm>({
         limit: '10',
         page: page.value as unknown as string,
         order: '3'
     })
-    getUserCreateModels(modelForm.value).then((res:any)=>{
+    getUserCreateModels(modelForm.value).then((res: any) => {
         if (res.code == 200) {
             let data = res.data.records
-            if (data.length == 0) {
-                message.warning('已滑到底部了')
-            }
+            
             for (let i = 0; i < data.length; i++) {
                 models.value.push(data[i])
             }
+            empty.value = true
+            if (data.length != modelForm.value.limit) {
+                message.warning('已滑到底部了')
+                disabled.value = true
+                loading.value = false
+                return
+            }
             page.value++
+            disabled.value = false
         } else {
             message.error('网络异常')
+            setTimeout(()=>{
+                disabled.value = false
+            },30000)
         }
-        empty.value = true
-        disabled.value = false
+        loading.value = false
     })
 }
 </script>
@@ -127,16 +149,16 @@ const loadModel = function(){
             </div>
         </div>
         <div class="create-pages__content">
-            <el-empty :image-size="200" v-if="empty&&posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
+            <el-empty :image-size="200" v-if="empty&&(posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1)" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 0" :infinite-scroll-immediate="true" ref="postWaterFallComponentRef">
+                :infinite-scroll-immediate="true" v-if="currentSelectIndex == 0" ref="postWaterFallComponentRef">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></postCardComponentB>
             </waterFallComponent>
             <waterFallComponent v-infinite-scroll="loadModel" infinite-scroll-distance="100"
-                :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 1" :infinite-scroll-immediate="true" ref="modelWaterFallComponentRef">
-                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></ModelCardComponentB>
+                :infinite-scroll-immediate="true" v-if="currentSelectIndex == 1" ref="modelWaterFallComponentRef">
+                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index" v-show="modelWaterFallComponentRef.visibility[index]"></ModelCardComponentB>
             </waterFallComponent>
-            <div class="loading" v-if="disabled"></div>
+            <div class="loading" v-if="loading"></div>
         </div>
     </div>
 </template>
