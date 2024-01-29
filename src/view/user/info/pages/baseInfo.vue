@@ -92,12 +92,16 @@ setTimeout(function () {
     <div class="information">
       <div class="username-container">
         <span class="username">
-          {{ userProfile.nickname ? userProfile.nickname : "unknow" }}
+          {{ userProfile.nickname ? userProfile.nickname : "unknow" }}<img :src="userProfile.sex =='男'?'/icon/male.svg':'/icon/female.svg'">
         </span>
+      </div>
+      
+      <div class="description-container">
+        <span class="description">个人简介： {{ userProfile.description }}</span>
       </div>
       <div class="creatTime-container">
         <span class="creatTime">
-          {{ userProfile.birthday }}
+          生日： {{ userProfile.birthday }}
         </span>
       </div>
     </div>
@@ -166,11 +170,10 @@ setTimeout(function () {
   margin-left: 15px;
   display: block;
   position: relative;
-  font-size: 26px;
+  font-size: 24px;
   text-align: left;
   line-height: 32px;
-
-  color: rgba(255, 255, 255, 0.6);
+  color: white;
 }
 
 .base-info .creatTime-container .creatTime {
@@ -179,9 +182,19 @@ setTimeout(function () {
   position: relative;
   font-size: 14px;
   text-align: left;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
 }
-
+.base-info .description-container{
+  line-height: 20px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  text-align: left;
+}
+.base-info .description-container .description{
+  margin-left: 15px;
+  word-break:break-all;
+  white-space:pre-wrap;
+}
 .button-container {
   width: 100%;
   padding: 20px 0;

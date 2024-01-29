@@ -14,7 +14,7 @@ import router from '@/router'
 
 const request = axios.create({
   baseURL: '/rvcApi',
-  timeout: 5000
+  timeout: 20000
 })
 
 // 请求拦截

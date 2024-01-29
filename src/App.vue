@@ -8,7 +8,8 @@
 import { onBeforeMount } from 'vue';
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
-import './style.css'
+// import '@/style/scss/index.scss'
+
 // import { preloadImages } from '@/utils/preload';
 
 onBeforeMount(async () => {

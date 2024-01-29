@@ -18,6 +18,7 @@ let page = ref(1)
 let posts = ref<PostVo[]>([])
 let models = ref<RvcModelVo[]>([])
 let disabled = ref(false)
+let empty = ref(false)
 let postForm = ref<UserCreatePostForm>({
     limit: '10',
     page: page.value as unknown as string
@@ -45,6 +46,8 @@ const handleOptionChange = function (index: number) {
     selectVisibility.value = false
     page.value = 1
     disabled.value = false
+    empty.value = false
+
     if(currentSelectIndex.value == 0){
         loadPost()
     } else if(currentSelectIndex.value == 1){
@@ -71,8 +74,10 @@ const loadPost = function () {
             page.value++
             disabled.value = false
         } else {
-            message.error(res.msg)
+            message.error('网络异常')
         }
+        empty.value = true
+
     })
 }
 const loadModel = function(){
@@ -96,8 +101,9 @@ const loadModel = function(){
             page.value++
             disabled.value = false
         } else {
-            message.error(res.msg)
+            message.error('网络异常')
         }
+        empty.value = true
 
     })
 }
@@ -124,7 +130,7 @@ const loadModel = function(){
             </div>
         </div>
         <div class="create-pages__content">
-            <el-empty :image-size="200" v-if="posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
+            <el-empty :image-size="200" v-if="empty&&posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
                 :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 0" :infinite-scroll-immediate="true">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index"></postCardComponentB>
@@ -133,6 +139,7 @@ const loadModel = function(){
                 :infinite-scroll-disabled="postScrollDisabled" v-if="currentSelectIndex == 1" :infinite-scroll-immediate="true">
                 <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index"></ModelCardComponentB>
             </waterFallComponent>
+            <div class="loading" v-if="disabled"></div>
         </div>
     </div>
 </template>
@@ -225,5 +232,33 @@ const loadModel = function(){
     position: absolute;
     height: calc(100% - 70px);
     width: 100%;
+}
+.loading {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: rgba(44, 46, 51);
+  font-size: 20px;
+  line-height: 60px;
+  color: white;
+  font-weight: 700;
+  /* border: transparent 2px solid; */
+  /* border-top: rgba(25, 113, 194) 1px solid; */
+  border-left: rgba(25, 113, 194) 1px solid;
+  margin-bottom: 20px;
+  animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

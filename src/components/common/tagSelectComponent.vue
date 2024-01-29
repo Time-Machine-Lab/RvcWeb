@@ -108,8 +108,7 @@ const handleSelectConfirm = (index: number) => {
             :style="{ border: typeSelectvisibility ? 'rgba(24,100,171) 1px solid' : '' }"
             :class="clickType ? 'dither-animation' : ''" @click="handleClickType">
             <div class="horizontal-center" style="width:100%;display: flex;">
-                <span style="position: relative;left:0%;line-height: 20px;width:97%;text-align: left;">{{
-                    typeOptions[currentTypeIndex].label }}</span>
+                <span style="position: relative;left:0%;line-height: 20px;width:97%;text-align: left;"></span>
                 <span style="position: relative;right:0%;">
                     <img width="10" height="10" style="transition: all 0.2s;line-height: 16px;"
                         :class="typeSelectvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
@@ -152,7 +151,7 @@ const handleSelectConfirm = (index: number) => {
     width: calc(100% - 20px);
     height: 22px;
     padding: 0 15px;
-    transform: translate(0, 1px);
+    transform: translate(0,0);
     border-radius: 5px;
     font-size: 14px;
     background-color: rgba(37, 38, 43);
@@ -174,6 +173,8 @@ const handleSelectConfirm = (index: number) => {
     background-color: rgba(37, 38, 43);
     padding: 5px;
     z-index: 20;
+    max-height: 300px;
+    overflow: scroll;
     user-select: none;
 }
 
@@ -219,10 +220,10 @@ const handleSelectConfirm = (index: number) => {
 
 .select {
     position: relative;
-    width: 60px;
+    width: 100px;
     text-align: left;
     display: inline-block;
-
+    top: 5px;
 }
 
 .revolve-animation {

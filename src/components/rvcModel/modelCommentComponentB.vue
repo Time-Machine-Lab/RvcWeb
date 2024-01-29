@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { ModelChildComment, CommentAddForm, LikeCommentForm } from '@/api/rvcModel/modelType'
 import { commentAdd, likeComments } from '@/api/rvcModel/commentApi'
 import { message } from '@/utils/message';
-import router from '@/router';
 let props = defineProps<{
     comment: ModelChildComment,
     index: number,
@@ -47,9 +46,7 @@ const sendComment = function () {
     commentAdd(form.value).then((res: any) => {
         if (res.code == 200) {
             message.success('发送成功')
-            setTimeout(() => {
-                router.go(0)
-            }, 500);
+            
         } else {
             message.error(res.msg)
         }
@@ -76,10 +73,10 @@ const handleBlur2 = function () {
     }, 200)
 }
 const isAudio = function (str: string) {
-  return str.includes('<audio>') && str.includes('</audio>')
+    return str.includes('<audio>') && str.includes('</audio>')
 }
 const parseUrl = function (str: string) {
-  return str.match(/<audio>(.*?)<\/audio>/)?.[1];
+    return str.match(/<audio>(.*?)<\/audio>/)?.[1];
 }
 </script>
 <template>
@@ -114,10 +111,10 @@ const parseUrl = function (str: string) {
                 <div class="comment-status">
                     {{ currentComment?.commentTime }}
                     <div class="status-item" @click="like">
-                        <div class="vertical-center"
+                        <span class="vertical-center"
                             style="top:100%;transform:translate(0,-100%);height: 12px;width: 12px;background-repeat: no-repeat;background-size: contain;"
                             :style="{ backgroundImage: currentComment.isLikes == '1' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                        </div>
+                        </span>
                         <span>{{ calcNum(currentComment.likesNum as unknown as number) }}</span>
                     </div>
                     <!-- <span style="margin-left: 20px;cursor: pointer" @click="handleReply">
