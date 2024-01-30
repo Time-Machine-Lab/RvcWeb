@@ -21,7 +21,6 @@ import { message } from "@/utils/message";
 import { ElMessageBox } from 'element-plus'
 import { UserInfoVO } from '@/api/user/userTypes';
 import { onBeforeRouteLeave } from 'vue-router'
-import { Editor } from '@wangeditor/editor-for-vue'
 onBeforeRouteLeave((to, _from, next) => {
     setTimeout(() => {
         if (to.fullPath.substring(1) == location.origin + '/' || to.matched.length != 0) {
@@ -241,7 +240,6 @@ const handlePicture = function (htmlString: string) {
     });
     descriptionContent.value = replacedHtml
 }
-const editor = ref<any>(null)
 
 </script>
 <template>
