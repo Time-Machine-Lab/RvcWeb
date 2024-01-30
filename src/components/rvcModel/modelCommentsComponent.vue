@@ -68,7 +68,7 @@ const commentAddFunc = function () {
     }
     sendCommentDisabled.value = true
     setTimeout(()=>{
-    sendCommentDialogVisible.value = false
+        sendCommentDisabled.value = false
     },3000)
     sendCommentForm.value.modelId = props.modelId
     commentAdd(sendCommentForm.value).then((res: any) => {
@@ -85,6 +85,9 @@ const commentAddFunc = function () {
                 modelId: props.modelId,
                 likes: '0'
             })
+            sendCommentDisabled.value = false
+            sendCommentDialogVisible.value = false
+            sendCommentForm.value.content = ''
             comments.value = [newComment.value].concat(comments.value)
         } else {
             message.error(res.msg)
@@ -126,12 +129,13 @@ onMounted(() => {
             </div>
         </div>
         <div class="model-comments__content">
-            <WaterFallComponent ref="WaterFallComponentRef">
+            <WaterFallComponent ref="WaterFallComponentRef" :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100"
+                    :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
                 <modelCommentComponent style="" v-for="(comment, index) in comments" :key="comment.id"
                     v-show="WaterFallComponentRef.visibility[index]" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
-            <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div>
+            <!-- <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div> -->
         </div>
     </div>
 </template>

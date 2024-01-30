@@ -21,7 +21,7 @@ import { message } from "@/utils/message";
 import { ElMessageBox } from 'element-plus'
 import { UserInfoVO } from '@/api/user/userTypes';
 import { onBeforeRouteLeave } from 'vue-router'
-
+import { Editor } from '@wangeditor/editor-for-vue'
 onBeforeRouteLeave((to, _from, next) => {
     setTimeout(() => {
         if (to.fullPath.substring(1) == location.origin + '/' || to.matched.length != 0) {
@@ -57,6 +57,7 @@ let user = ref<UserInfoVO>({
     username: ''
 })
 let isLike = ref("")
+let errorRander = ref(false)
 let collectDisabled = ref("")
 getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) => {
     if (res.code == 200) {
@@ -77,6 +78,7 @@ getModelDetails((router.currentRoute.value.query.id as string)).then((res: any) 
         if (localModel.value.nickname == null) {
             user.value.nickname = "匿名"
         }
+        handlePicture(localModel.value.description)
     }
 })
 
@@ -100,6 +102,7 @@ let localModel = ref<ModelVo>({
     createTime: '',
     updateTime: ''
 })
+let descriptionContent = ref('')
 let fileUrl = ref('')
 // let inputContent = ref<string>('')
 
@@ -209,7 +212,7 @@ const handleShare = function () {
     body.removeChild(input);
     message.success("已复制链接")
 }
-const handlePicture = function (htmlString: string): string {
+const handlePicture = function (htmlString: string) {
     const imgRegex = /<img[^>]*\ssrc\s*=\s*['"]([^'"]*)['"][^>]*\sstyle\s*=\s*['"][^'"]*width\s*:\s*([^'";]*)[^'"]*['"][^>]*>/g;
     const imgInfoArray: { src: string; width: string; }[] = [];
 
@@ -218,10 +221,6 @@ const handlePicture = function (htmlString: string): string {
         const [, src, width] = match;
         imgInfoArray.push({ src, width });
     }
-    console.log("HTML 字符串:", htmlString);
-
-    console.log("匹配项:", imgInfoArray);
-
     let replacedHtml = htmlString;
 
     imgInfoArray.forEach(imgInfo => {
@@ -230,19 +229,20 @@ const handlePicture = function (htmlString: string): string {
             'g'
         );
 
-        const vImgTag = `<v-img src="${imgInfo.src}" lazy-src="${imgInfo.src}" width="${imgInfo.width}" class="bg-grey-lighten-2">
-                      <template v-slot:placeholder>
-                          <v-row class="fill-height ma-0" align="center" justify="center">
-                              <v-progress-circular indeterminate color="grey-lighten-5"></v-progress-circular>
-                          </v-row>
-                      </template>
-                    </v-img>`;
-
+        // const vImgTag = `<v-img src="${imgInfo.src}" lazy-src="${imgInfo.src}" width="${imgInfo.width}" class="bg-grey-lighten-2">
+        //               <template v-slot:placeholder>
+        //                   <v-row class="fill-height ma-0" align="center" justify="center">
+        //                       <v-progress-circular indeterminate color="grey-lighten-5"></v-progress-circular>
+        //                   </v-row>
+        //               </template>
+        //             </v-img>`;
+        const vImgTag = `<img data-src=${imgInfo.src} style="width:${imgInfo.width};height:100px" v-lazy-container="{ selector: 'img' }">`
         replacedHtml = replacedHtml.replace(imgTagRegex, vImgTag);
     });
-
-    return replacedHtml;
+    descriptionContent.value = replacedHtml
 }
+const editor = ref<any>(null)
+
 </script>
 <template>
     <div class="model-page">
@@ -295,11 +295,16 @@ const handlePicture = function (htmlString: string): string {
                     <span>{{ label.name }}</span>
                 </div>
             </div>
-            <div class="post-content model-page__model__content" v-if="localModel.description != ''"
-                v-html="handlePicture(localModel.description)">
-
+            <div class="post-content model-page__model__content" v-if="localModel.description != '' && !errorRander"
+                v-html="descriptionContent" v-lazy-container="{ selector: 'img' }">
             </div>
-
+            <!-- <div class="post-content model-page__model__content" v-if="localModel.description != '' && errorRander"
+                id="postRander">
+                <Editor style="width: 100%;height: 100%;background-color: transparent;" v-model="localModel.description" :defaultConfig="{ readOnly: true }" :mode="'default'"
+                    @onCreated="(createdEditor: any) => {
+                        editor = Object.seal(createdEditor);
+                    }" />
+            </div> -->
         </div>
         <div class="model-page__sidebar">
             <div class="button-group">
