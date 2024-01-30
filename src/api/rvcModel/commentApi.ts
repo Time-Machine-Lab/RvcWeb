@@ -13,7 +13,10 @@ export function commentAdd(form:CommentAddForm){
     return request({
         url:'/model/comment',
         method:'post',
-        data:form
+        data:form,
+        headers: {
+            isAuth: true
+        }
     })
 }
 // 点赞取消点赞模型 √

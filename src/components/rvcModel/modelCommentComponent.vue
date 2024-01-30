@@ -300,11 +300,12 @@ const refresh = () => {
     margin: 15px;
 }
 
-.comment-buttons{
+.comment-buttons {
     height: 25px;
     width: 100%;
     display: flex;
 }
+
 .dialog-input {
     margin-top: 20px;
     width: 100%;
@@ -384,7 +385,7 @@ const refresh = () => {
     height: 20px;
     display: flex;
     /* width: 35%; */
-    padding: 5px 10px;
+    padding: 0px 5px;
     cursor: pointer;
     border-radius: 10px;
 
@@ -401,9 +402,10 @@ const refresh = () => {
     display: inline-block;
     font-weight: 700;
     height: 20px;
-    /* line-height: 20px; */
     font-size: 12px;
+    line-height: 20px;
     margin-left: 4px;
+    font-family: 仿宋;
     color: rgba(255, 255, 255, 0.7);
 }
 

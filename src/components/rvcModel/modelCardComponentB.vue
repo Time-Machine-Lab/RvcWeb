@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { RvcModelVo, FavoriteAndCollectionForm } from '@/api/rvcModel/modelType'
-import {favoriteModel, collectModel, delModel} from '@/api/rvcModel/modelApi'
+import { favoriteModel, collectModel, delModel } from '@/api/rvcModel/modelApi'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
-import {storage} from "@/utils/storage.ts";
+import { storage } from "@/utils/storage.ts";
 import router from "@/router";
 let props = defineProps<{
     model: RvcModelVo
@@ -23,71 +23,93 @@ const handleBlur = function () {
         moreVisibility.value = false
     }, 200)
 }
+let collectDisabled = ref(false)
+let likeDisabled = ref(false)
 // 收藏
-let collectDisabled = ref("")
-collectDisabled.value = localModel.value.isCollection
+let isCollect = ref("")
+isCollect.value = localModel.value.isCollection
 const collect = function () {
-  let form = <FavoriteAndCollectionForm>{
-    modelId: localModel.value.id,
-    status: '0'
-  }
-  if (collectDisabled.value == "true"){
-    collectDisabled.value = "false"
-    localModel.value.isCollection = "false"
-    form.status = '1'
-  }else if (collectDisabled.value == "false"){
-    collectDisabled.value = "true"
-    localModel.value.isCollection = "true"
-    form.status = '0'
-  }
-  collectModel(form).then((res:any) => {
-    if (res.code == 200) {
-      message.success('操作成功')
-    } else {
-      message.error('操作失败')
+    if (collectDisabled.value) {
+        message.warning('请稍后再试')
+        return
     }
-  })
+    collectDisabled.value = true
+    let form = <FavoriteAndCollectionForm>{
+        modelId: localModel.value.id,
+        status: '0'
+    }
+    if (isCollect.value == "true") {
+        isCollect.value = "false"
+        localModel.value.isCollection = "false"
+        form.status = '1'
+        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
+    } else if (isCollect.value == "false") {
+        isCollect.value = "true"
+        localModel.value.isCollection = "true"
+        form.status = '0'
+        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
+    }
+    setTimeout(()=>{
+        collectDisabled.value = false
+    },5000)
+    collectModel(form).then((res: any) => {
+        if (res.code == 200) {
+            //   message.success('操作成功')
+        } else {
+            message.error(res.message)
+        }
+    })
 }
 // 点赞
 let isLike = ref("")
 isLike.value = localModel.value.isLike
 const like = () => {
-  let form = <FavoriteAndCollectionForm>{
-    modelId: localModel.value.id,
-    status: '0'
-  }
-  if (isLike.value == "true"){
-    isLike.value = "false"
-    localModel.value.isLike = "false"
-    form.status = '1'
-  } else if (isLike.value == "false"){
-    isLike.value = "true"
-    localModel.value.isLike = "true"
-    form.status = '0'
-  }
-  favoriteModel(form).then((res: any) => {
-    if (res.code == 200) {
-      message.success('操作成功')
-    } else {
-      message.error('操作失败')
+    if (likeDisabled.value) {
+        message.warning('请稍后再试')
+        return
     }
-  })
+    likeDisabled.value = true
+    let form = <FavoriteAndCollectionForm>{
+        modelId: localModel.value.id,
+        status: '0'
+    }
+    if (isLike.value == "true") {
+        isLike.value = "false"
+        localModel.value.isLike = "false"
+        form.status = '1'
+        localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
+    } else if (isLike.value == "false") {
+        isLike.value = "true"
+        localModel.value.isLike = "true"
+        form.status = '0'
+        localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
+    }
+    setTimeout(()=>{
+        likeDisabled.value = false
+    },5000)
+    favoriteModel(form).then((res: any) => {
+        if (res.code == 200) {
+            //   message.success('操作成功')
+        } else {
+            message.error(res.message)
+        }
+    })
 }
 const modelDeleteFunc = function () {
-  delModel(localModel.value.id).then((res: any) => {
-    if (res.code == 200) {
-      message.success('删除成功')
-    }
-  })
+    delModel(localModel.value.id).then((res: any) => {
+        if (res.code == 200) {
+            message.success('删除成功')
+        }
+    })
 }
 const editModel = function () {
-  router.push('/editModel?id=' + localModel.value.id)
+    router.push('/editModel?id=' + localModel.value.id)
 }
 </script>
 <template>
     <div class="model-card">
-        <img  :src="localModel.picture!" class="model-card__cover" 
-            @click="$router.push('/model?id=' + localModel.id)" style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
+        <img :src="localModel.picture!" class="model-card__cover" @click="$router.push('/model?id=' + localModel.id)"
+            style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
             :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
             <div
@@ -98,12 +120,11 @@ const editModel = function () {
             <div class="more-window__item" @click="message.warning('敬请期待')">
                 举报
             </div>
-            <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid"
-                 @click="modelDeleteFunc">
-              删除模型
+            <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid" @click="modelDeleteFunc">
+                删除模型
             </div>
             <div class="more-window__item" v-show="storage.get<string>('uid') == localModel.uid" @click="editModel">
-              编辑模型
+                编辑模型
             </div>
         </div>
         <div class="post-card__user">
@@ -135,7 +156,7 @@ const editModel = function () {
                 </div>
                 <div class="other-info__stats__item" @click="collect()">
                     <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: collectDisabled == 'true' ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
+                        :style="{ backgroundImage: isCollect == 'true' ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
                     </div>
                     <span>{{ localModel.collectionNum }}</span>
                 </div>
@@ -164,7 +185,8 @@ const editModel = function () {
     overflow: hidden;
     border: rgba(255, 255, 255, 0.1) 1px solid;
 }
-.model-card__cover{
+
+.model-card__cover {
     width: 100%;
     background-size: cover;
     background-position: center center;
@@ -359,6 +381,20 @@ const editModel = function () {
     top: 20px;
     right: 10px;
     z-index: 20;
+}
+
+.tag {
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    left: 10px;
+    top: 70px;
+    font-size: 12px;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    z-index: 30;
 }
 
 .dither-animation {

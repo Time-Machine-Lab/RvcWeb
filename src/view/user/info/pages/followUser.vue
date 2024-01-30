@@ -14,12 +14,13 @@ import { storage } from '@/utils/storage';
 import { message } from '@/utils/message';
 let followUsers = ref<UserInfoVO[]>();
 let loading = ref(false)
+let loaded = ref(false)
 if ((router.currentRoute.value.query.id as string) == storage.get<string>('uid')) {
   loading.value = true
   getFollowUsers().then((res:any) => {
     if(res.code==200){
       followUsers.value = res.data;
-      console.log(followUsers);
+      loaded.value = true
     } else{
       message.error('获取关注列表失败')
     }
@@ -43,6 +44,8 @@ const scroll = function () {
           <FollowUserCard :user="followUser"></FollowUserCard>
         </li>
       </ul>
+      <el-empty :image-size="200" v-if="loaded && (!followUsers || followUsers?.length == 0)" style="font-family: 'ZCool';"
+                    description="还未关注用户" image="/icon/person-empty.svg" />
       <div class="loading" v-if="loading"></div>
     </el-scrollbar>
   </div>

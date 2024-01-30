@@ -10,6 +10,7 @@ import "./style.css";
 import "./style/scss/index.scss"
 import '@mdi/font/css/materialdesignicons.css'
 // import vueCustomElement from 'vue-custom-element';
+import VueLazyload from 'vue-lazyload'  //引入这个懒加载插件
 
 import { inject } from '@vercel/analytics';
 import 'vuetify/styles'
@@ -27,5 +28,11 @@ app.use(router);
 app.use(ElementPlus);
 app.use(pinia);
 app.use(vuetify);
+app.use(VueLazyload, {
+  preLoad: 1,
+  error:'/logo/rvc.png',
+  loading: '/icon/picture.svg',
+  attempt: 2,
+})
 // app.use(vueCustomElement);
 app.mount("#app");

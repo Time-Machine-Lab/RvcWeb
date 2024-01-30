@@ -28,6 +28,9 @@ export function getModelFiles(modelId:string){
         method:'post',
         params: {
             modelId: modelId
+        },
+        headers: {
+            isAuth: true
         }
     })
 }
