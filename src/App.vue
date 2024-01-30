@@ -52,7 +52,9 @@ onBeforeMount(async () => {
       </el-header>
       <el-main class="main">
         <Transition name="slide-fade">
-          <RouterView :key="($router.currentRoute.value.query.id as string)" />
+          <!-- <el-scrollbar> -->
+            <RouterView :key="($router.currentRoute.value.query.id as string)" />
+          <!-- </el-scrollbar> -->
         </Transition>
       </el-main>
       <LayoutFooter></LayoutFooter>
@@ -99,6 +101,7 @@ onBeforeMount(async () => {
   height: calc(100vh - 110px);
   padding: 0;
   background-color: rgb(26, 27, 30);
+  overflow: hidden;
 }
 
 .slide-fade-enter-active {

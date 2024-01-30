@@ -66,7 +66,7 @@ const handleBlur = function () {
   }, 200)
 }
 const submitPost = function () {
-  if(submitDisabled.value){
+  if (submitDisabled.value) {
     return
   }
   postForm.value.content = content.value
@@ -103,7 +103,7 @@ const beforeCoverUpload = function (rawFile: File) {
     message.warning('请上传小于10M的图片')
     return false
   }
-  if (rawFile.type != 'image/jpeg'&&rawFile.type != 'image/png'){
+  if (rawFile.type != 'image/jpeg' && rawFile.type != 'image/png') {
     message.error('文件不合法')
     return false
   }
@@ -120,9 +120,9 @@ const beforeCoverUpload = function (rawFile: File) {
       postForm.value.coverId = res.data.id
       postForm.value.coverUrl = res.data.url
       message.success('上传成功')
-    } else if(res.code ==506){
+    } else if (res.code == 506) {
       message.error('不支持该图片类型')
-    }else {
+    } else {
       uploadCoverLoading.value = false
       uploadFailed.value = true
       message.error('上传失败')
@@ -172,7 +172,8 @@ loadDraft()
 <template>
   <div class="newPost-page">
     <div class="newPost-page__center">
-      <div class="newPost-page__center__left">
+      <el-scrollbar>
+        <div class="newPost-page__center__left">
         <div class="label">
           标题<span class="important">*</span>
         </div>
@@ -187,6 +188,8 @@ loadDraft()
           <editorComponent :getContent="getContent" st :editor-content="postForm.content"></editorComponent>
         </div>
       </div>
+      </el-scrollbar>
+      
 
     </div>
     <div class="newPost-page__center__right">
@@ -200,7 +203,7 @@ loadDraft()
         <div class="button-group__save" @click="saveDraft">
           保存草稿
         </div>
-        <div class="button-group__submit" :style="{cursor:submitDisabled?'not-allowed':'pointer'}" @click="submitPost">
+        <div class="button-group__submit" :style="{ cursor: submitDisabled ? 'not-allowed' : 'pointer' }" @click="submitPost">
           发表
         </div>
       </div>
@@ -208,8 +211,9 @@ loadDraft()
         封面<span class="important">*</span>
       </div>
       <div>
-        <el-upload ref="uploadAudioRef" accept="image/*" class="upload-demo" :class="formWarning.cover ? 'el-formWarning' : 'el-formDefault'"
-          drag :auto-upload="true" :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
+        <el-upload ref="uploadAudioRef" accept="image/*" class="upload-demo"
+          :class="formWarning.cover ? 'el-formWarning' : 'el-formDefault'" drag :auto-upload="true"
+          :on-success="handleCoverSuccess" :before-upload="beforeCoverUpload">
           <div class="loadding" v-if="uploadCoverLoading"></div>
           <div class="error" v-if="uploadFailed && !postForm.coverUrl">×</div>
           <img v-if="postForm.coverUrl" style="width: 100%;" :src="postForm.coverUrl" />
@@ -241,12 +245,13 @@ loadDraft()
 
         </div>
         <div class="type-select" v-show="typeSelectvisibility">
-          <el-scrollbar style="height: 150px;"><div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
-            @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
-            {{ tag.label }}
-          </div>
-</el-scrollbar>
-          
+          <el-scrollbar style="height: 150px;">
+            <div class="type-select__item" v-for="(tag, index) in tagsOption" :key="index"
+              @click="currentTypeIndex = index; typeSelectvisibility = false; postForm.tagId = tagsOption[currentTypeIndex]?.value!">
+              {{ tag.label }}
+            </div>
+          </el-scrollbar>
+
         </div>
       </div>
 
@@ -268,6 +273,7 @@ loadDraft()
 .newPost-page {
   position: relative;
   height: 100%;
+  min-height: 80vh;
   width: 100%;
   /* overflow: hidden; */
   background-color: rgba(26, 27, 30);
@@ -275,19 +281,20 @@ loadDraft()
 
 .newPost-page__center {
   position: relative;
-  width: 80%;
+  width: 55%;
   height: 100%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 10%;
+  /* top: 50%; */
+  /* transform: translate(-50%, 0); */
+  padding-bottom: 30px;
   display: flex;
 }
 
 .newPost-page__center__left {
   position: relative;
-  width: 60%;
+  width: 95%;
   overflow: scroll;
-  margin: 30px 0;
+
 }
 
 .newPost-page__center__right {
@@ -415,7 +422,7 @@ loadDraft()
 }
 
 .type-select__item {
-  position:relative;
+  position: relative;
   padding-left: 15px;
   width: calc(100% - 0px);
   height: 40px;

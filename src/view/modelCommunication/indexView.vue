@@ -12,6 +12,7 @@ import { getPostType, getPosts } from '@/api/post/postApi'
 import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postType'
 import { ref } from 'vue';
 import { message } from '@/utils/message'
+import LoadingComponent from '@/components/common/loadingComponent.vue'
 const posts = ref<PostVo[]>([])
 const waterFallComponentRef = ref<any>()
 let loaded = ref(false)
@@ -114,9 +115,7 @@ const getSort = function (index: number) {
                     <postCardComponentB v-for="(post,index) in posts" :post="post" :key="post.postId" v-show="waterFallComponentRef.visibility[index]">
                     </postCardComponentB>
                 </waterFallComponent>
-                <div class="loading" v-if="disabled">
-
-                </div>
+                <LoadingComponent :diameter="60" :loading="disabled"></LoadingComponent>
             </div>
         </div>
     </el-scrollbar>
@@ -149,32 +148,4 @@ const getSort = function (index: number) {
     transform: translate(-50%);
 }
 
-.loading {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%);
-    height: 60px;
-    width: 60px;
-    border-radius: 30px;
-    background-color: rgba(44, 46, 51);
-    font-size: 20px;
-    line-height: 60px;
-    color: white;
-    font-weight: 700;
-    /* border: transparent 2px solid; */
-    /* border-top: rgba(25, 113, 194) 1px solid; */
-    border-left: rgba(25, 113, 194) 1px solid;
-    margin-bottom: 20px;
-    animation: roll 1s linear infinite;
-}
-
-@keyframes roll {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
 </style>

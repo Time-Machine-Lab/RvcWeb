@@ -8,10 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AudioPlayerComponent: typeof import('./src/components/common/audioPlayerComponent.vue')['default']
+    BackTopComponent: typeof import('./src/components/common/backTopComponent.vue')['default']
+    BackToTopComponent: typeof import('./src/components/common/backToTopComponent.vue')['default']
     CardComponent: typeof import('./src/components/intro/CardComponent.vue')['default']
     CommentComponent: typeof import('./src/components/modelCommunication/commentComponent.vue')['default']
     CommentsComponent: typeof import('./src/components/modelCommunication/commentsComponent.vue')['default']
     EditorComponent: typeof import('./src/components/editor/editorComponent.vue')['default']
+    ElBacktop: typeof import('element-plus/es')['ElBacktop']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
@@ -28,6 +31,7 @@ declare module 'vue' {
     FeedBackComponent: typeof import('./src/components/feedback/FeedBackComponent.vue')['default']
     FilterComponent: typeof import('./src/components/common/filterComponent.vue')['default']
     FollowUserCardComponent: typeof import('./src/components/user/followUserCardComponent.vue')['default']
+    LoadingComponent: typeof import('./src/components/common/loadingComponent.vue')['default']
     LoginComponent: typeof import('./src/components/intro/LoginComponent.vue')['default']
     ModelCardComponent: typeof import('./src/components/rvcModel/modelCardComponent.vue')['default']
     ModelCardComponentB: typeof import('./src/components/rvcModel/modelCardComponentB.vue')['default']

@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
   <div style="border-radius:10px;border:rgba(100,100,100) 1px solid;">
     <Toolbar style="border-bottom: 1px solid #ccc;position: sticky;width: 100%;z-index: 10;top: 0" :editor="editor"
       :defaultConfig="toolbarConfig" :mode="mode" />
-    <Editor style="min-height:200px;" v-model="html" :defaultConfig="editorConfig" :mode="mode" @onCreated="onCreated" />
+    <Editor style="min-height:200px;;position: sticky;bottom: 20px;" v-model="html" :defaultConfig="editorConfig" :mode="mode" @onCreated="onCreated" />
   </div>
 </template>
 <style src="@wangeditor/editor/dist/css/style.css"></style>

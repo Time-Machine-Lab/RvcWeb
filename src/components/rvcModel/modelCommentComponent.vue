@@ -79,9 +79,9 @@ const like = function () {
     }
     likeComments(form).then((res: any) => {
         if (res.code == 200) {
-            message.success('操作成功')
+            // message.success('操作成功')
         } else {
-            message.error('操作失败')
+            message.error(res.message)
         }
     })
 }

@@ -152,7 +152,7 @@ const loadModel = function () {
         </div>
         <div class="like-pages__content">
             <el-empty :image-size="200" v-if="empty&&(posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1)" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
-            <waterFallComponent v-infinite-scroll="loadPost" infinite-scroll-distance="100"
+            <waterFallComponent :min-width="280" v-infinite-scroll="loadPost" infinite-scroll-distance="100"
                 :infinite-scroll-immediate="true" v-if="currentSelectIndex == 0" ref="postWaterFallComponentRef">
                 <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></postCardComponentB>
             </waterFallComponent>
@@ -168,7 +168,7 @@ const loadModel = function () {
 .like-pages {
     position: relative;
     height: 100%;
-    width: 90%;
+    width: calc(100% - 40px);
     left: 50%;
     transform: translate(-50%);
 }
