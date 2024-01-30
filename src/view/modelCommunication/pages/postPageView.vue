@@ -8,6 +8,7 @@
 <script lang="ts" setup>
 import "@/assets/css/post/postContent.css"
 import postPageCommentsView from "./postPageCommentsView.vue"
+import backTopComponent from "@/components/common/backTopComponent.vue"
 import { commentAdd, getPostById } from "@/api/post/postApi"
 import { favoritePost, collectPost } from '@/api/post/postApi'
 import { ref } from "vue";
@@ -17,6 +18,8 @@ import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { UserInfoVO } from "@/api/user/userTypes";
+import { Editor } from '@wangeditor/editor-for-vue'
+const scrollbarRef = ref<any>()
 const userStore = useUserStore()
 const postPageCommentsRef = ref<any>(null)
 getPostById((router.currentRoute.value.query.id as unknown as number)).then((res: any) => {
@@ -71,6 +74,7 @@ let localPost = ref<PostVo>({
     collect: false
 })
 let inputContent = ref<string>('')
+const editor = ref<any>(null)
 
 let DirectoryElements = ref<Element[]>([])
 let likeDisabled = ref(true)
@@ -97,9 +101,8 @@ const getDirectory = function () {
 }
 
 const to = function (index: number) {
-    console.log(DirectoryElements.value[index].getBoundingClientRect().top);
-
-    document.querySelector('#appVue .main')!.scrollTo(0, DirectoryElements.value[index].getBoundingClientRect().top - 200)
+    scrollbarRef.value.scrollTo(0, DirectoryElements.value[index].getBoundingClientRect().top - 200)
+    document.querySelector('#appVue .main')!.scrollTo()
 }
 
 const collect = function () {
@@ -218,145 +221,155 @@ const handleShare = function () {
     body.removeChild(input);
     message.success("已复制链接")
 }
-const getLength = function (str: string) {
-    return str.length
-}
+// const getLength = function (str: string) {
+//     return str.length
+// }
 const getUrl = function (url: string) {
     inputContent.value = '<audio>' + url + '</audio>'
     sendComment()
 }
 </script>
 <template>
-    <div class="post-page__header">
-        <div class="post-page__header__title">
-            <span class="scroll-text">
-                {{ localPost?.title }}
-            </span>
-        </div>
-        <div class="post-page__header__button">
-            <div class="operation-item" @click="collect">
-                <div class="vertical-center"
-                    style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                    :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
-                </div>
-                <span>{{ calcNum(localPost.collectNum) }}</span>
+    <el-scrollbar ref="scrollbarRef" style="position: relative;">
+        <div class="post-page__header">
+            <div class="post-page__header__title">
+                <span class="scroll-text">
+                    {{ localPost?.title }}
+                </span>
             </div>
-            <div class="operation-item" @click="like">
-                <div class="vertical-center"
-                    style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                    :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+            <div class="post-page__header__button">
+                <div class="operation-item" @click="collect">
+                    <div class="vertical-center"
+                        style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                        :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
+                    </div>
+                    <span>{{ calcNum(localPost.collectNum) }}</span>
                 </div>
-                <span>{{ calcNum(localPost.likeNum) }}</span>
-            </div>
-            <div class="operation-item">
-                <div class="vertical-center"
-                    style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;background-image: url('/icon/share.svg');"
-                    @click="handleShare">
+                <div class="operation-item" @click="like">
+                    <div class="vertical-center"
+                        style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                        :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                    </div>
+                    <span>{{ calcNum(localPost.likeNum) }}</span>
                 </div>
-            </div>
-            <div style="position: relative;display: flex;top: 50%;transform: translate(0,-50%);">
-                <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
-                    :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
-                    <div
-                        style="height: 26px;width:26px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
+                <div class="operation-item">
+                    <div class="vertical-center"
+                        style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;background-image: url('/icon/share.svg');"
+                        @click="handleShare">
+                    </div>
+                </div>
+                <div style="position: relative;display: flex;top: 50%;transform: translate(0,-50%);">
+                    <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
+                        :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
+                        <div
+                            style="height: 26px;width:26px;background-image: url('/icon/more.svg');background-repeat: no-repeat;background-position: center center;background-size: contain;">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="more-window" v-show="moreVisibility">
-            <div class="more-window__item" @click="message.warning('开发中')">
-                举报
+            <div class="more-window" v-show="moreVisibility">
+                <div class="more-window__item" @click="message.warning('开发中')">
+                    举报
+                </div>
             </div>
         </div>
-    </div>
-    <div class="post-page__post__info">
-        <div class="post-page__post__info__author__avatar" @click="router.push('/user?id=' + localPost?.author.uid)"
-            :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
+        <div class="post-page__post__info">
+            <div class="post-page__post__info__author__avatar" @click="router.push('/user?id=' + localPost?.author.uid)"
+                :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
 
-        </div>
-        <div class="post-page__post__info__author__username" @click="router.push('/user?id=' + localPost?.author.uid)">
-            <div class="post-page__post__info__author__text__username">
-                {{ localPost?.author.nickname }}
             </div>
-            <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
+            <div class="post-page__post__info__author__username" @click="router.push('/user?id=' + localPost?.author.uid)">
+                <div class="post-page__post__info__author__text__username">
+                    {{ localPost?.author.nickname }}
+                </div>
+                <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
                                 注册于 {{ localPost? }}
                             </div> -->
+            </div>
+            <span class="line">|</span>
+            <div class="post-page__post__info__createAt">
+                {{ localPost?.createAt }}
+            </div>
+            <span class="line">|</span>
+            <div class="post-page__post__info__tags">
+                <span>{{ localPost?.postType?.tagName }}</span>
+            </div>
         </div>
-        <span class="line">|</span>
-        <div class="post-page__post__info__createAt">
-            {{ localPost?.createAt }}
-        </div>
-        <span class="line">|</span>
-        <div class="post-page__post__info__tags">
-            <span>{{ localPost?.postType?.tagName }}</span>
-        </div>
-    </div>
-    <div class="post-page">
-        <div class="post-page__post">
+        <div class="post-page">
+            <div class="post-page__post">
 
-            <div class="post-content post-page__post__content" v-html="localPost?.content">
+                <div class="post-content post-page__post__content">
+                    <Editor style="width: 100%;background-color: transparent;" v-model="localPost.content"
+                        :defaultConfig="{ readOnly: true, scroll: false }" :mode="'default'" @onCreated="(createdEditor: any) => {
+                            editor = Object.seal(createdEditor);
+                        }" />
+
+                </div>
+                <div class="post-page__post__footer">
+                    <div class="post-page__post__footer__editTime">
+                        最后编辑于:{{ localPost?.updateAt }}
+                    </div>
+                    <div class="post-page__post__footer__operation">
+                        <div class="operation-item" @click="collect">
+                            <div class="vertical-center"
+                                style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                                :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
+                            </div>
+                            <span>{{ calcNum(localPost.collectNum) }}</span>
+                        </div>
+                        <div class="operation-item" @click="like">
+                            <div class="vertical-center"
+                                style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
+                                :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                            </div>
+                            <span>{{ calcNum(localPost.likeNum) }}</span>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-            <div class="post-page__post__footer">
-                <div class="post-page__post__footer__editTime">
-                    最后编辑于:{{ localPost?.updateAt }}
-                </div>
-                <div class="post-page__post__footer__operation">
-                    <div class="operation-item" @click="collect">
-                        <div class="vertical-center"
-                            style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                            :style="{ backgroundImage: localPost.collect ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
-                        </div>
-                        <span>{{ calcNum(localPost.collectNum) }}</span>
-                    </div>
-                    <div class="operation-item" @click="like">
-                        <div class="vertical-center"
-                            style="height: 20px;width: 20px;background-repeat: no-repeat;background-size: contain;"
-                            :style="{ backgroundImage: localPost.like ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
-                        </div>
-                        <span>{{ calcNum(localPost.likeNum) }}</span>
-                    </div>
-                </div>
-            </div>
-
+            
         </div>
         <div class="post-page__sidebar">
-            <div class="target-box">
-                <div class="target-box__title">
-                    <img src="/icon/list.svg" width="28" height="28"
-                        style="position: relative;top: 50%;transform: translate(0,-50%);">导航
-                </div>
-                <div class="target-box__target" v-for="(heading, index) in headings"
-                    :style="{ paddingLeft: heading.level * 20 + 'px', width: 'calc(100%-' + heading.level * 20 + 'px)', fontSize: 19 - heading.level + 'px' }"
-                    :key="index" @click="to(index)">
-                    {{ heading.text }}
-                </div>
-            </div>
-            <div class="author-box">
-                <div class="author-box__userInfo">
-                    <div class="author-box__userInfo__baseInfo">
-                        <div class="author-box__userInfo__baseInfo__avatar"
-                            @click="router.push('/user?id=' + localPost?.author.uid)"
-                            :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
+                <div class="target-box">
 
+                    <div class="target-box__title">
+                        <img src="/icon/list.svg" width="28" height="28"
+                            style="position: relative;top: 50%;transform: translate(0,-50%);">导航
+                    </div>
+                    <el-scrollbar style="height:400px">
+                        <div class="target-box__target" v-for="(heading, index) in headings"
+                            :style="{ paddingLeft: heading.level * 20 + 'px', width: 'calc(100%-' + heading.level * 20 + 'px)', fontSize: 19 - heading.level + 'px' }"
+                            :key="index" @click="to(index)" v-html="heading.text">
                         </div>
-                        <div class="author-box__userInfo__baseInfo__username"
-                            @click="router.push('/user?id=' + localPost?.author.uid)">
-                            <div class="author-box__userInfo__baseInfo__text__username">
-                                {{ localPost?.author.nickname }}
+                    </el-scrollbar>
+
+                </div>
+                <div class="author-box">
+                    <div class="author-box__userInfo">
+                        <div class="author-box__userInfo__baseInfo">
+                            <div class="author-box__userInfo__baseInfo__avatar"
+                                @click="router.push('/user?id=' + localPost?.author.uid)"
+                                :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
+
                             </div>
-                            <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
+                            <div class="author-box__userInfo__baseInfo__username"
+                                @click="router.push('/user?id=' + localPost?.author.uid)">
+                                <div class="author-box__userInfo__baseInfo__text__username">
+                                    {{ localPost?.author.nickname }}
+                                </div>
+                                <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
                                 注册于 {{ localPost? }}
                             </div> -->
-                        </div>
+                            </div>
 
-                    </div>
-                    <!-- <div class="author-box__userInfo__button">
+                        </div>
+                        <!-- <div class="author-box__userInfo__button">
                         <div class="author-box__userInfo__button--item">
                             关注
                         </div>
                     </div> -->
-                    <!-- <div class="author-box__userInfo__data">
+                        <!-- <div class="author-box__userInfo__data">
                         <div class="author-box__userInfo__data__item" v-for="(figure, index) in figures" :key="index">
                             <div class="author-box__userInfo__data__item--number">
                                 {{ figure.number }}
@@ -366,21 +379,18 @@ const getUrl = function (url: string) {
                             </div>
                         </div>
                     </div> -->
+                    </div>
                 </div>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="comment">评论</div>
+                <backTopComponent class="backTop" @click="scrollbarRef.scrollTo(0,0)"></backTopComponent>
+            </div><div class="comment">评论</div>
     <div class="post-page__post__commentBox">
         <div class="post-page__post__commentBox--row1">
             <div class="post-page__post__commentBox--row1--login" v-if="storage.get<string>('token')">
                 <img width="40" height="40" :src="userProfile.avatar!"
                     style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
                 <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
-                <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{
-                    getLength(inputContent) }}/300</span>
+                <!-- <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{
+                    getLength(inputContent) }}/300</span> -->
             </div>
             <div class="post-page__post__commentBox--row1--noLogin" v-else>
                 <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论
@@ -398,6 +408,9 @@ const getUrl = function (url: string) {
         <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ref="postPageCommentsRef">
         </postPageCommentsView>
     </div>
+    </el-scrollbar>
+
+    
 </template>
 <style scoped>
 .post-page {
@@ -430,10 +443,19 @@ const getUrl = function (url: string) {
 }
 
 .post-page__sidebar {
-    width: 35%;
-    min-width: 250px;
+    width: 20%;
+    min-width: 10%;
     /* background-color: rgba(0,0,0,0.1); */
     margin-left: 10px;
+    position: fixed;
+    top: 150px;
+    height: calc(100% - 250px);
+    right: 15%;
+}
+.backTop{
+    position: absolute;
+    right: -60%;
+    bottom: 10px;
 }
 
 .post-page__header {
@@ -488,6 +510,7 @@ const getUrl = function (url: string) {
     width: calc(100% - 30px);
     padding: 10px;
     min-height: 600px;
+    overflow: hidden;
     border-bottom: rgba(255, 255, 255, 0.2) 1px solid;
 }
 
@@ -919,8 +942,8 @@ const getUrl = function (url: string) {
     margin-top: 10px;
     border: rgba(55, 58, 64) 1px solid;
     padding: 0 0;
-    max-height: 400px;
-    overflow: scroll;
+    max-height: 500px;
+    /* overflow: scroll; */
 }
 
 .target-box__title {
@@ -934,17 +957,21 @@ const getUrl = function (url: string) {
     color: rgba(255, 255, 255, 0.8);
     text-align: left;
     font-family: 'ZCool';
+    /* position: sticky; */
+    top: 0;
 }
 
 .target-box__target {
     width: 100%;
-    height: 40px;
+    /* height: 40px; */
     line-height: 40px;
     font-size: 18px;
     text-align: left;
     color: rgba(255, 255, 255, 0.8);
     user-select: none;
     cursor: pointer;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .target-box__target:hover {

@@ -13,6 +13,7 @@ import { getRootComments, commentAdd } from '@/api/rvcModel/commentApi.ts'
 import { message } from '@/utils/message'
 import { storage } from '@/utils/storage'
 import { useUserStore } from '@/view/user/info/userStore.js'
+import LoadingComponent from '../common/loadingComponent.vue'
 const userStore = useUserStore()
 const props = defineProps<{
     modelId: string
@@ -21,6 +22,7 @@ const WaterFallComponentRef = ref<any>()
 let sendCommentDialogVisible = ref(false)
 let comments = ref<ModelComment[]>([])
 let page = ref(1)
+let loading = ref(false)
 let getCommentsForm = ref<GetCommentForm>({
     id: '',
     page: '',
@@ -33,19 +35,16 @@ let sendCommentForm = ref<CommentAddForm>({
     content: ''
 })
 let disabled = ref(false)
+let loaded = ref(false)
 const load = function () {
     if (disabled.value) return
     disabled.value = true
     getCommentsForm.value.page = String(page.value)
+    loading.value = true
     getCommentsForm.value.id = props.modelId
     getRootComments(getCommentsForm.value).then((res: any) => {
         if (res.code == 200) {
             let data = ref<ModelComment[]>(res.data.records)
-            if (data.value.length != 0) disabled.value = false
-            else {
-                disabled.value = true
-                message.warning('没有更多评论了')
-            }
             for (let i = 0; i < data.value.length; i++) {
                 if (!comments.value.some((item: ModelComment) => {
                     return item.id == data.value[i].id
@@ -53,23 +52,36 @@ const load = function () {
                     comments.value.push(data.value[i])
                 }
             }
+            if (data.value.length != 0) {
+                //
+            }
+            else {
+                disabled.value = true
+                loading.value = false
+                message.warning('没有更多评论了')
+                return
+            }
+
             page.value++
         } else {
-            disabled.value = false
+            //
         }
+        loaded.value = true
+        disabled.value = false
+        loading.value = false
     })
 }
 let sendCommentDisabled = ref(false)
 const commentAddFunc = function () {
-    if(sendCommentForm.value.content=='')return
-    if(sendCommentDisabled.value == true){
+    if (sendCommentForm.value.content == '') return
+    if (sendCommentDisabled.value == true) {
         message.warning('请稍后再试')
         return
     }
     sendCommentDisabled.value = true
-    setTimeout(()=>{
+    setTimeout(() => {
         sendCommentDisabled.value = false
-    },3000)
+    }, 3000)
     sendCommentForm.value.modelId = props.modelId
     commentAdd(sendCommentForm.value).then((res: any) => {
         if (res.code == 200) {
@@ -129,12 +141,15 @@ onMounted(() => {
             </div>
         </div>
         <div class="model-comments__content">
-            <WaterFallComponent ref="WaterFallComponentRef" :minWidth="240" v-infinite-scroll="load" infinite-scroll-distance="100"
-                    :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
+            <WaterFallComponent ref="WaterFallComponentRef" :minWidth="240" v-infinite-scroll="load"
+                infinite-scroll-distance="100" :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false">
                 <modelCommentComponent style="" v-for="(comment, index) in comments" :key="comment.id"
                     v-show="WaterFallComponentRef.visibility[index]" :comment="comment">
                 </modelCommentComponent>
             </WaterFallComponent>
+            <el-empty :image-size="200" v-if="loaded&&comments.length == 0" style="font-family: 'ZCool';" description="暂无评论"
+                image="/icon/comment-empty.svg" />
+            <LoadingComponent :diameter="60" :loading="loading"></LoadingComponent>
             <!-- <div class="model-comments__content__more" v-show="!disabled" @click="load">加载更多</div> -->
         </div>
     </div>
@@ -254,6 +269,5 @@ onMounted(() => {
 .model-comments__content__more {
     cursor: pointer;
     color: white;
-
 }
 </style>

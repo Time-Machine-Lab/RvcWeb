@@ -10,7 +10,7 @@ export default defineComponent({
   },
   setup(props, context) {
     const minWidth = ref<number>(props.minWidth)
-    const columnCount = ref(6)
+    const columnCount = ref(10)
     const margin = ref(15)
     const width = ref(0)
     const height = ref([0, 0, 0, 0, 0])
@@ -26,8 +26,8 @@ export default defineComponent({
     )
     const sortElement = function () {
       visibility.value = []
-      height.value.fill(0, 0, 6)
-      columnCount.value = 6
+      height.value.fill(0, 0, 10)
+      columnCount.value = 10
       if (containerRef.value) {
         containerElement = containerRef.value as HTMLElement
         childElements = containerElement.children as HTMLCollection
@@ -36,7 +36,10 @@ export default defineComponent({
         if (containerRef.value) {
           width.value = containerRef.value.clientWidth / columnCount.value - margin.value
         }
-        if (width.value > minWidth.value) {
+        if (width.value > minWidth.value) {   
+          console.log('columnCount:'+columnCount.value);
+          console.log('width:'+width.value);
+
           break
         }
         columnCount.value--

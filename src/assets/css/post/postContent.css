@@ -4,17 +4,28 @@
  * @Description: 
  * @FilePath: \RvcWeb\src\assets\css\post\postContent.css
  */
-.post-content{
-    word-wrap: break-word;
-}
-.post-content *{
+.post-content {
+    word-break: break-word !important;
+    word-wrap: break-word !important;}
+
+.post-content * {
     text-align: left;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
-.post-content img{
+
+.post-content img {
     max-width: 100% !important;
     height: auto !important;
 }
-.post-content * a{
+
+.post-content * a {
     /* text-decoration: none; */
+}
+code * {
+    width: 100% !important;
+    word-break: break-word !important;
+    word-wrap: break-word !important;
+    display: block !important;
+    overflow: hidden !important;
+    white-space: normal !important;
 }
