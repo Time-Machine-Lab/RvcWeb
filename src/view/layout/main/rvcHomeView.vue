@@ -5,11 +5,17 @@
  * @FilePath: \RvcWeb\src\view\layout\main\rvcHomeView.vue
 -->
 <script lang="ts" setup>
+
 </script>
 <template>
     <div class="rvc-home">
         <div class="rvc-home__view">
-            <RouterView></RouterView>
+            <RouterView v-if="$route.meta.KeepAlive" v-slot="{ Component }">
+                <KeepAlive :include="['post-list']">
+                    <component :is="Component"></component>
+                </KeepAlive>
+            </RouterView>
+            <RouterView v-if="!$route.meta.KeepAlive"></RouterView>
         </div>
     </div>
 </template>
@@ -63,6 +69,4 @@
     width: 100%;
     height: calc(100% - 100px);
 }
-
-
 </style>

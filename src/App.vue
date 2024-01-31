@@ -51,11 +51,13 @@ onBeforeMount(async () => {
         <LayoutHeader></LayoutHeader>
       </el-header>
       <el-main class="main">
-        <Transition name="slide-fade">
-          <!-- <el-scrollbar> -->
-            <RouterView :key="($router.currentRoute.value.query.id as string)" />
-          <!-- </el-scrollbar> -->
-        </Transition>
+        <!-- <el-scrollbar> -->
+        <RouterView  v-slot="{Component}" :key="$route.fullPath">
+          <Transition name="slide-fade">
+            <component :is="Component"></component>
+          </Transition>
+        </RouterView>
+        <!-- </el-scrollbar> -->
       </el-main>
       <LayoutFooter></LayoutFooter>
     </el-container>

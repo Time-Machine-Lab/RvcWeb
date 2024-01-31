@@ -2,7 +2,7 @@
  * @Author: Dhx
  * @Date: 2023-12-07 19:25:18
  * @Description: 
- * @FilePath: \RvcWeb\src\router\communicationRoutes.ts
+ * @FilePath: \RvcWeb\src\router\homepageRouter\communication\communicationRoutes.ts
  */
 export default [
     {
