@@ -245,7 +245,7 @@ onMounted(() => {
     position: relative;
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 75%;
     height: 70px;
     left: 50%;
     transform: translate(-50%);
