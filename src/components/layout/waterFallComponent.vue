@@ -13,7 +13,7 @@ export default defineComponent({
     const columnCount = ref(10)
     const margin = ref(15)
     const width = ref(0)
-    const height = ref([0, 0, 0, 0, 0])
+    const height = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     const containerRef = ref<HTMLElement | null>(null)
     let containerElement: HTMLElement | undefined
     let childElements: HTMLCollection | undefined
@@ -36,9 +36,9 @@ export default defineComponent({
         if (containerRef.value) {
           width.value = containerRef.value.clientWidth / columnCount.value - margin.value
         }
-        if (width.value > minWidth.value) {   
-          console.log('columnCount:'+columnCount.value);
-          console.log('width:'+width.value);
+        if (width.value > minWidth.value) {
+          console.log('columnCount:' + columnCount.value);
+          console.log('width:' + width.value);
 
           break
         }

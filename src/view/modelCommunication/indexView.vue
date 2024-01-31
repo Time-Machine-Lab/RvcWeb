@@ -13,6 +13,10 @@ import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postT
 import { ref } from 'vue';
 import { message } from '@/utils/message'
 import LoadingComponent from '@/components/common/loadingComponent.vue'
+// import { onBeforeRouteLeave } from 'vue-router'
+defineOptions({
+    name:'post-list'
+})
 const posts = ref<PostVo[]>([])
 const waterFallComponentRef = ref<any>()
 let loaded = ref(false)
@@ -28,7 +32,10 @@ let form = ref<PostListForm>({
     tagId: ''
 })
 let disabled = ref(false)
-
+// onBeforeRouteLeave((_to,from,next)=>{
+//     from.meta.KeepAlive = false
+//     next()
+// })
 getPostType().then((res: any) => {
     if (res.code == 200) {
         let data = ref<RvcCommunicationPostType[]>(res.data)

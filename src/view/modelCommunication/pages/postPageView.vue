@@ -19,9 +19,20 @@ import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { UserInfoVO } from "@/api/user/userTypes";
 import { Editor } from '@wangeditor/editor-for-vue'
+// import { onBeforeRouteLeave } from "vue-router"
 const scrollbarRef = ref<any>()
 const userStore = useUserStore()
 const postPageCommentsRef = ref<any>(null)
+// onBeforeRouteLeave((to,_from,next)=>{
+//     if(to.path == '/rvc/posts'){
+//         console.log(to.path);
+        
+//         to.meta.KeepAlive = true
+//     } else {
+//         to.meta.KeepAlive = false
+//     }
+//     next()
+// })
 getPostById((router.currentRoute.value.query.id as unknown as number)).then((res: any) => {
     if (res.code == 200) {
         localPost.value = res.data
