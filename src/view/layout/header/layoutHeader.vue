@@ -59,7 +59,7 @@ const handleBlur = function () {
             :style="{ backgroundColor: $router.currentRoute.value.path == '/rvc/posts' ? 'rgba(0,0,0,0.6)' : 'transparent' }">
             <img width="12" height="12" src="/icon/post.svg" class="vh-center">
           </span>
-          <span class="tab">贴子</span>
+          <span class="tab">交流</span>
         </router-link>
       </div>
       <div class="header__link__item" :style="{

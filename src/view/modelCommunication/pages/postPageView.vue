@@ -328,48 +328,48 @@ const getUrl = function (url: string) {
                 </div>
 
             </div>
-            
+
         </div>
-        <div class="post-page__sidebar">
-                <div class="target-box">
+        <div class="post-page__sidebar" style="z-index: 5;">
+            <div class="target-box">
 
-                    <div class="target-box__title">
-                        <img src="/icon/list.svg" width="28" height="28"
-                            style="position: relative;top: 50%;transform: translate(0,-50%);">导航
-                    </div>
-                    <el-scrollbar style="height:400px">
-                        <div class="target-box__target" v-for="(heading, index) in headings"
-                            :style="{ paddingLeft: heading.level * 20 + 'px', width: 'calc(100%-' + heading.level * 20 + 'px)', fontSize: 19 - heading.level + 'px' }"
-                            :key="index" @click="to(index)" v-html="heading.text">
-                        </div>
-                    </el-scrollbar>
-
+                <div class="target-box__title">
+                    <img src="/icon/list.svg" width="28" height="28"
+                        style="position: relative;top: 50%;transform: translate(0,-50%);">导航
                 </div>
-                <div class="author-box">
-                    <div class="author-box__userInfo">
-                        <div class="author-box__userInfo__baseInfo">
-                            <div class="author-box__userInfo__baseInfo__avatar"
-                                @click="router.push('/user?id=' + localPost?.author.uid)"
-                                :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
+                <el-scrollbar style="height:200px">
+                    <div class="target-box__target" v-for="(heading, index) in headings"
+                        :style="{ paddingLeft: heading.level * 20 + 'px', width: 'calc(100%-' + heading.level * 20 + 'px)', fontSize: 19 - heading.level + 'px' }"
+                        :key="index" @click="to(index)" v-html="heading.text">
+                    </div>
+                </el-scrollbar>
 
+            </div>
+            <div class="author-box">
+                <div class="author-box__userInfo">
+                    <div class="author-box__userInfo__baseInfo">
+                        <div class="author-box__userInfo__baseInfo__avatar"
+                            @click="router.push('/user?id=' + localPost?.author.uid)"
+                            :style="{ backgroundImage: 'url(\'' + localPost?.author.avatar + '\')' }">
+
+                        </div>
+                        <div class="author-box__userInfo__baseInfo__username"
+                            @click="router.push('/user?id=' + localPost?.author.uid)">
+                            <div class="author-box__userInfo__baseInfo__text__username">
+                                {{ localPost?.author.nickname }}
                             </div>
-                            <div class="author-box__userInfo__baseInfo__username"
-                                @click="router.push('/user?id=' + localPost?.author.uid)">
-                                <div class="author-box__userInfo__baseInfo__text__username">
-                                    {{ localPost?.author.nickname }}
-                                </div>
-                                <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
+                            <!-- <div class="author-box__userInfo__baseInfo__text__createAt">
                                 注册于 {{ localPost? }}
                             </div> -->
-                            </div>
-
                         </div>
-                        <!-- <div class="author-box__userInfo__button">
+
+                    </div>
+                    <!-- <div class="author-box__userInfo__button">
                         <div class="author-box__userInfo__button--item">
                             关注
                         </div>
                     </div> -->
-                        <!-- <div class="author-box__userInfo__data">
+                    <!-- <div class="author-box__userInfo__data">
                         <div class="author-box__userInfo__data__item" v-for="(figure, index) in figures" :key="index">
                             <div class="author-box__userInfo__data__item--number">
                                 {{ figure.number }}
@@ -379,38 +379,37 @@ const getUrl = function (url: string) {
                             </div>
                         </div>
                     </div> -->
-                    </div>
                 </div>
-                <backTopComponent class="backTop" @click="scrollbarRef.scrollTo(0,0)"></backTopComponent>
-            </div><div class="comment">评论</div>
-    <div class="post-page__post__commentBox">
-        <div class="post-page__post__commentBox--row1">
-            <div class="post-page__post__commentBox--row1--login" v-if="storage.get<string>('token')">
-                <img width="40" height="40" :src="userProfile.avatar!"
-                    style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
-                <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
-                <!-- <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{
+            </div>
+            <backTopComponent class="backTop" @click="scrollbarRef.scrollTo(0, 0)"></backTopComponent>
+        </div>
+        <div class="comment">评论</div>
+        <div class="post-page__post__commentBox">
+            <div class="post-page__post__commentBox--row1">
+                <div class="post-page__post__commentBox--row1--login" v-if="storage.get<string>('token')">
+                    <img width="40" height="40" :src="userProfile.avatar!"
+                        style="border-radius: 20px;margin-right: 20px;object-fit: cover;">
+                    <input maxlength="300" placeholder="发表你的评论" v-model="inputContent">
+                    <!-- <span style="position:absolute;color: rgba(255,255,255,0.4);left: calc(100% - 80px);line-height: 40px;">{{
                     getLength(inputContent) }}/300</span> -->
+                </div>
+                <div class="post-page__post__commentBox--row1--noLogin" v-else>
+                    <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论
+                </div>
             </div>
-            <div class="post-page__post__commentBox--row1--noLogin" v-else>
-                <a @click="router.push('/login')" style="color: cornflowerblue;">登录</a>后发送评论
+            <div class="post-page__post__commentBox--row2">
+                <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">
+                    <recordingComponnent :getUrl="getUrl"></recordingComponnent>
+                </div>
+                <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }"
+                    v-if="storage.get<string>('token')" @click="sendComment">发送</button>
             </div>
         </div>
-        <div class="post-page__post__commentBox--row2">
-            <div style="width: 30px;height: 30px;" v-if="storage.get<string>('token')">
-                <recordingComponnent :getUrl="getUrl"></recordingComponnent>
-            </div>
-            <button :style="{ cursor: inputContent != '' ? 'pointer' : 'not-allowed' }" v-if="storage.get<string>('token')"
-                @click="sendComment">发送</button>
+        <div class="post-page__comments">
+            <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ref="postPageCommentsRef">
+            </postPageCommentsView>
         </div>
-    </div>
-    <div style="padding-bottom:50px;width:70%;position: relative;left: 50%;transform: translate(-50%);">
-        <postPageCommentsView :post_id="(router.currentRoute.value.query.id as string)" ref="postPageCommentsRef">
-        </postPageCommentsView>
-    </div>
     </el-scrollbar>
-
-    
 </template>
 <style scoped>
 .post-page {
@@ -452,7 +451,8 @@ const getUrl = function (url: string) {
     height: calc(100% - 250px);
     right: 15%;
 }
-.backTop{
+
+.backTop {
     position: absolute;
     right: -60%;
     bottom: 10px;
@@ -703,7 +703,10 @@ const getUrl = function (url: string) {
     height: 100px;
     margin-top: 30px;
     border-radius: 5px;
+    z-index: 10;
     /* border: rgba(255, 255, 255, 0.2) 1px solid; */
+    background-color: rgba(26,27,30);
+
 }
 
 
@@ -719,8 +722,8 @@ const getUrl = function (url: string) {
 }
 
 .post-page__post__commentBox--row1--login input {
-    width: calc(100% - 85px);
-    height: 30px;
+    width: calc(100%);
+    height: 50px;
     border-radius: 5px;
     border: rgba(255, 255, 255, 0.2) 1px solid;
     resize: none;
@@ -728,7 +731,7 @@ const getUrl = function (url: string) {
     background-color: rgba(26, 27, 30);
     transition: all 0.2s;
     padding: 5px;
-    padding-right: 80px;
+    /* padding-right: 80px; */
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
 }
@@ -811,6 +814,9 @@ const getUrl = function (url: string) {
     font-weight: 700;
     color: white;
     font-family: 'ZCool';
+    margin-top: 50px;
+    z-index: 10;
+    /* background-color: rgba(26,27,30); */
 }
 
 .author-box__userInfo {
@@ -980,5 +986,15 @@ const getUrl = function (url: string) {
 
 .dither-animation {
     top: 41px;
+}
+
+.post-page__comments {
+    padding-bottom: 50px;
+    width: 70%;
+    position: relative;
+    left: 50%;
+    z-index: 30;
+    transform: translate(-50%);
+    background-color: rgba(26, 27, 30);
 }
 </style>

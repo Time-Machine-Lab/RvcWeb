@@ -90,6 +90,7 @@ const handleSortClick = function (index:number) {
     height: 70px;
     width: 30%;
     display: flex;
+    margin-right: 15px;
     justify-content: right;
 }
 
@@ -161,7 +162,7 @@ const handleSortClick = function (index:number) {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    padding: 15px;
+    padding: 15px 0;
     justify-content: left;
 }
 

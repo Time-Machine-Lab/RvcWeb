@@ -243,159 +243,162 @@ const handlePicture = function (htmlString: string) {
 
 </script>
 <template>
-    <div class="model-page">
+    <el-scrollbar>
+        <div class="model-page">
 
-        <div class="model-page__model">
-            <!-- <el-breadcrumb :separator="'>'">
+            <div class="model-page__model">
+                <!-- <el-breadcrumb :separator="'>'">
                 <el-breadcrumb-item :to="{ path: '/rvc/models' }">模型区</el-breadcrumb-item>
                 <el-breadcrumb-item>模型</el-breadcrumb-item>
             </el-breadcrumb> -->
-            <div class="model-page__model__title">
-                <span class="scroll-text">
-                    {{ localModel?.name }}
-                </span>
-            </div>
-            <div class="other-info">
-                <div class="other-info__stats__item">
-                    <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/eye.svg\')' }">
-                    </div>
-                    <span>{{ localModel.viewNum }}</span>
+                <div class="model-page__model__title">
+                    <span class="scroll-text">
+                        {{ localModel?.name }}
+                    </span>
                 </div>
-                <div class="other-info__stats__item" @click="collect()">
-                    <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: collectDisabled == 'true' ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
+                <div class="other-info">
+                    <div class="other-info__stats__item">
+                        <div style="height: 16px;width: 16px;" :style="{ backgroundImage: 'url(\'/icon/eye.svg\')' }">
+                        </div>
+                        <span>{{ localModel.viewNum }}</span>
                     </div>
-                    <span>{{ localModel.collectionNum }}</span>
-                </div>
-                <div class="other-info__stats__item" @click="like()">
-                    <div style="height: 16px;width: 16px;"
-                        :style="{ backgroundImage: isLike == 'true' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                    <div class="other-info__stats__item" @click="collect()">
+                        <div style="height: 16px;width: 16px;"
+                            :style="{ backgroundImage: collectDisabled == 'true' ? 'url(\'/icon/mark-fill.svg\')' : 'url(\'/icon/mark.svg\')' }">
+                        </div>
+                        <span>{{ localModel.collectionNum }}</span>
                     </div>
-                    <span>{{ localModel.likesNum }}</span>
+                    <div class="other-info__stats__item" @click="like()">
+                        <div style="height: 16px;width: 16px;"
+                            :style="{ backgroundImage: isLike == 'true' ? 'url(\'/icon/heart-fill.svg\')' : 'url(\'/icon/heart.svg\')' }">
+                        </div>
+                        <span>{{ localModel.likesNum }}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="model-page__model__info">
-                <div class="model-page__model__info__author__avatar" @click="router.push('/user?id=' + localModel?.uid)"
-                    :style="{ backgroundImage: 'url(\'' + localModel?.avatar + '\')' }">
+                <div class="model-page__model__info">
+                    <div class="model-page__model__info__author__avatar" @click="router.push('/user?id=' + localModel?.uid)"
+                        :style="{ backgroundImage: 'url(\'' + localModel?.avatar + '\')' }">
 
-                </div>
-                <div class="model-page__model__info__author__username" @click="router.push('/user?id=' + localModel?.uid)">
-                    <div class="model-page__model__info__author__text__username">
-                        {{ localModel?.nickname }}
+                    </div>
+                    <div class="model-page__model__info__author__username"
+                        @click="router.push('/user?id=' + localModel?.uid)">
+                        <div class="model-page__model__info__author__text__username">
+                            {{ localModel?.nickname }}
+                        </div>
+                    </div>
+                    <span class="line">|</span>
+                    <div class="model-page__model__info__createAt">
+                        {{ localModel?.createTime }}
+                    </div>
+                    <span class="line">|</span>
+                    <div class="model-page__model__info__tags" v-for="(label, index) in localModel?.label" :key="index">
+                        <span>{{ label.name }}</span>
                     </div>
                 </div>
-                <span class="line">|</span>
-                <div class="model-page__model__info__createAt">
-                    {{ localModel?.createTime }}
+                <div class="post-content model-page__model__content" v-if="localModel.description != '' && !errorRander"
+                    v-html="descriptionContent" v-lazy-container="{ selector: 'img' }">
                 </div>
-                <span class="line">|</span>
-                <div class="model-page__model__info__tags" v-for="(label, index) in localModel?.label" :key="index">
-                    <span>{{ label.name }}</span>
-                </div>
-            </div>
-            <div class="post-content model-page__model__content" v-if="localModel.description != '' && !errorRander"
-                v-html="descriptionContent" v-lazy-container="{ selector: 'img' }">
-            </div>
-            <!-- <div class="post-content model-page__model__content" v-if="localModel.description != '' && errorRander"
+                <!-- <div class="post-content model-page__model__content" v-if="localModel.description != '' && errorRander"
                 id="postRander">
                 <Editor style="width: 100%;height: 100%;background-color: transparent;" v-model="localModel.description" :defaultConfig="{ readOnly: true }" :mode="'default'"
                     @onCreated="(createdEditor: any) => {
                         editor = Object.seal(createdEditor);
                     }" />
             </div> -->
-        </div>
-        <div class="model-page__sidebar">
-            <div class="button-group">
-                <div class="button-group__item" @click="getModelFilesFunc">
-                    <img class="vertical-center" src="/icon/download.svg" height="20" width="20">
-                    <div class="button-group__item__msg">
-                        下载模型
-                    </div>
-                </div>
-                <div class="button-group__item" @click="message.warning('开发中')">
-                    <img class="vertical-center" src="/icon/play.svg" height="30" width="30">
-                    <div class="button-group__item__msg">
-                        试听音频
-                    </div>
-                </div>
-                <div class="button-group__item" @click="handleShare">
-                    <img class="vertical-center" src="/icon/share.svg" height="20" width="20">
-                    <div class="button-group__item__msg">
-                        分享
-                    </div>
-                </div>
-                <div class="button-group__item" @click="like">
-                    <img class="vertical-center" :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'"
-                        height="20" width="20">
-                    <div class="button-group__item__msg">
-                        喜欢
-                    </div>
-                </div>
-                <div class="button-group__item" @click="collect">
-                    <img class="vertical-center" :src="collectDisabled == 'true' ? '/icon/mark-fill.svg' : '/icon/mark.svg'"
-                        height="20" width="20">
-                    <div class="button-group__item__msg">
-                        收藏
-                    </div>
-                </div>
             </div>
-            <div class="details">
-                <div tabindex="-1" class="details-switch" @click="handleClickDetails">
-                    <div :style="{ backgroundColor: detailsvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span>模型信息</span>
-                        <span>
-                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
-                                :class="detailsvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                        </span>
+            <div class="model-page__sidebar">
+                <div class="button-group">
+                    <div class="button-group__item" @click="getModelFilesFunc">
+                        <img class="vertical-center" src="/icon/download.svg" height="20" width="20">
+                        <div class="button-group__item__msg">
+                            下载模型
+                        </div>
+                    </div>
+                    <div class="button-group__item" @click="message.warning('开发中')">
+                        <img class="vertical-center" src="/icon/play.svg" height="30" width="30">
+                        <div class="button-group__item__msg">
+                            试听音频
+                        </div>
+                    </div>
+                    <div class="button-group__item" @click="handleShare">
+                        <img class="vertical-center" src="/icon/share.svg" height="20" width="20">
+                        <div class="button-group__item__msg">
+                            分享
+                        </div>
+                    </div>
+                    <div class="button-group__item" @click="like">
+                        <img class="vertical-center" :src="isLike == 'true' ? '/icon/heart-fill.svg' : '/icon/heart.svg'"
+                            height="20" width="20">
+                        <div class="button-group__item__msg">
+                            喜欢
+                        </div>
+                    </div>
+                    <div class="button-group__item" @click="collect">
+                        <img class="vertical-center"
+                            :src="collectDisabled == 'true' ? '/icon/mark-fill.svg' : '/icon/mark.svg'" height="20"
+                            width="20">
+                        <div class="button-group__item__msg">
+                            收藏
+                        </div>
                     </div>
                 </div>
-                <div class="details-content" v-show="!detailsvisibility">
-                    <div class="details-content__item">
-                        <div class="details-content__item__label">
-                            类型
-                        </div>
-                        <div class="details-content__item__value">
-                            <span class="model_type">
-                                {{ localModel?.type }}
+                <div class="details">
+                    <div tabindex="-1" class="details-switch" @click="handleClickDetails">
+                        <div :style="{ backgroundColor: detailsvisibility ? 'rgba(26,27,30)' : '' }">
+                            <span>模型信息</span>
+                            <span>
+                                <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
+                                    :class="detailsvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
                             </span>
                         </div>
                     </div>
-                    <div class="details-content__item">
-                        <div class="details-content__item__label">
-                            上传时间
-                        </div>
-                        <div class="details-content__item__value">
-                            <div class="details-content__item__value--time">
-                                {{ localModel.createTime }}
+                    <div class="details-content" v-show="!detailsvisibility">
+                        <div class="details-content__item">
+                            <div class="details-content__item__label">
+                                类型
+                            </div>
+                            <div class="details-content__item__value">
+                                <span class="model_type">
+                                    {{ localModel?.type }}
+                                </span>
                             </div>
                         </div>
-                    </div>
-                    <div class="details-content__item">
-                        <div class="details-content__item__label">
-                            更新时间
+                        <div class="details-content__item">
+                            <div class="details-content__item__label">
+                                上传时间
+                            </div>
+                            <div class="details-content__item__value">
+                                <div class="details-content__item__value--time">
+                                    {{ localModel.createTime }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="details-content__item__value">
-                            <div class="details-content__item__value--time">
-                                {{ localModel.updateTime }}
+                        <div class="details-content__item">
+                            <div class="details-content__item__label">
+                                更新时间
+                            </div>
+                            <div class="details-content__item__value">
+                                <div class="details-content__item__value--time">
+                                    {{ localModel.updateTime }}
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="details">
-                <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">
-                    <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
-                        <span>下载链接</span>
-                        <span>
-                            <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
-                                :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
-                        </span>
+                <div class="details">
+                    <div tabindex="-1" class="details-switch" @click="handleClickModelFiles">
+                        <div :style="{ backgroundColor: modelFilesvisibility ? 'rgba(26,27,30)' : '' }">
+                            <span>下载链接</span>
+                            <span>
+                                <img width="12" height="12" class="vertical-center" style="transition: all 0.2s;"
+                                    :class="modelFilesvisibility ? 'revolve-animation' : ''" src="/icon/arrow-down.svg">
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="details-content" v-show="modelFilesvisibility">
-                    <div class="details-content__item">
-                        <!-- <div class="details-content__item__label">
+                    <div class="details-content" v-show="modelFilesvisibility">
+                        <div class="details-content__item">
+                            <!-- <div class="details-content__item__label">
                             文件
                         </div>
                         <div class="details-content__item__value">
@@ -406,13 +409,13 @@ const handlePicture = function (htmlString: string) {
                                 <a>fileUrl</a>
                             </spna>
                         </div> -->
-                        <a v-if="fileUrl != ''" class="fileUrl" @click="download()">{{ fileUrl }}</a>
-                        <div v-else class="loading"></div>
-                    </div>
+                            <a v-if="fileUrl != ''" class="fileUrl" @click="download()">{{ fileUrl }}</a>
+                            <div v-else class="loading"></div>
+                        </div>
 
+                    </div>
                 </div>
-            </div>
-            <!-- <div class="details">
+                <!-- <div class="details">
                 <div tabindex="-1" class="details-switch" @click="handleClickAudiosFiles">
                     <div :style="{ backgroundColor: audiosvisibility ? 'rgba(26,27,30)' : '' }">
                         <span>模型音频</span>
@@ -424,15 +427,16 @@ const handlePicture = function (htmlString: string) {
                 </div>
 
             </div> -->
-            <div class="author-box">
-                <userCardComponent :user="user"></userCardComponent>
+                <div class="author-box">
+                    <userCardComponent :user="user"></userCardComponent>
+                </div>
+
             </div>
 
         </div>
-
-    </div>
-    <!-- <suggestedModelsComponent></suggestedModelsComponent> -->
-    <modelCommentsComponent :model-id="(router.currentRoute.value.query.id as string)"></modelCommentsComponent>
+        <!-- <suggestedModelsComponent></suggestedModelsComponent> -->
+        <modelCommentsComponent :model-id="(router.currentRoute.value.query.id as string)"></modelCommentsComponent>
+    </el-scrollbar>
 </template>
 <style scoped>
 .model-page {
