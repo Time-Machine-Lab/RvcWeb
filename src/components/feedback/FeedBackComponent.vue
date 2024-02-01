@@ -71,7 +71,7 @@ let replyMessage = ref("")
 let replyName = ref("")
 const innerRef = ref<HTMLDivElement>()
 const max = ref(0)
-const scroll = ({ scrollTop }) => {
+const scroll = ({ scrollTop }:any) => {
   max.value = innerRef.value!.clientHeight
   value.value = scrollTop
 }
