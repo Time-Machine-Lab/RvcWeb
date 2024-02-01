@@ -165,7 +165,7 @@ const loadModel = function () {
 .like-pages {
     position: relative;
     height: 100%;
-    width: 90%;
+    width: calc(100% - 40px);
     left: 50%;
     transform: translate(-50%);
 }
