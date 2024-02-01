@@ -127,11 +127,8 @@ const like = () => {
   }
   FeedbackData.value.hasUp = isLiked
   getLike(data,isLiked).then((res: any) => {
-    if (res.code == 200) {
-      CommentList.value[1] = CommentList.value[0]
-      CommentList.value[0] = res.data
-    } else {
-      message.error('操作失败')
+    if (res.code != 200) {
+      message.error('点赞失败')
     }
   });
 };
