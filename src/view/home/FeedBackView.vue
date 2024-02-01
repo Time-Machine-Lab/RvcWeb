@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@/assets/css/Feedback/FeedbackComponent.css'
 import FeedBackComponent from "@/components/feedback/FeedBackComponent.vue";
 import NewFeedback from '@/components/feedback/NewFeedbackComponent.vue'
 import UpdateComponent from "@/components/feedback/UpdateComponent.vue";
@@ -15,6 +14,8 @@ import { computed } from 'vue'
 import {storage} from "@/utils/storage.ts";
 import {ElScrollbar} from "element-plus";
 import {message} from "@/utils/message.ts";
+import {useUserStore} from "@/view/user/info/userStore.ts";
+import {UserInfoVO} from "@/api/user/userTypes.ts";
 
 // 创建帖子弹窗的打开关闭
 const isChildComponentVisible = ref(false);
@@ -24,7 +25,16 @@ const closeChildComponent = () => {
 const openNew = () => {
   isChildComponentVisible.value = true;
 };
-
+const post = (value:any) => {
+  const userStore = useUserStore()
+  let userProfile = ref<UserInfoVO>()
+  userProfile.value = userStore.getProfile
+  Feedback.value[1] = Feedback.value[0]
+  Feedback.value[0] = value
+  Feedback.value[0].avatar = userProfile.value?.avatar
+  Feedback.value[0].nickname = userProfile.value?.nickname
+  console.log(Feedback.value)
+};
 // 帖子详情弹窗
 const selectedItem = ref(0)
 const isOpen = ref(false);
@@ -37,11 +47,16 @@ const openFeedback = (id:any) => {
 };
 
 // 编辑帖子的弹窗
-const update = ref(0)
+const update = ref<FeedbackItem>()
+const updateIndex = ref()
+const updataFeedback = (updateContent:any) => {
+  Feedback.value[updateIndex.value] = updateContent.value
+};
 const isUpdate = ref(false)
-const openUpdate = (id:any) => {
+const openUpdate = (index:any) => {
+  updateIndex.value = index
   isUpdate.value = true;
-  update.value = id
+  update.value = Feedback.value[index]
 };
 const closeUpdateComponent = () => {
   isUpdate.value = false;
@@ -71,43 +86,33 @@ const getData = () => {
       States.value = res.data.list;
     }else{
       message.error("状态数据获取失败")
+      getStatusList().then((res: any) => {
+        States.value = res.data.list
+      })
     }
   });
-  getList(1, ListItems.value.limit, "")
-    .then((res: any) => {
-      if(res.code == 200 && res.data){
-        // 更新总数
-        ListItems.value = res.data
-        // 更新列表
-        Feedback.value = Feedback.value.concat(ListItems.value.pageList)
-      }else{
-        message.error("数据获取失败")
-      }
-    })
-  setTimeout(() => {}, 500)
   getList(1, ListItems.value.limit, "create_at")
-    .then((res: any) => {
-      if(res.code == 200 && res.data){
-        // 更新总数
-        ListItems.value = res.data
-        // 更新列表
-        newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
-      }else{
-        message.error("最新数据获取失败")
-      }
-    })
-  setTimeout(() => {}, 500)
+      .then((res: any) => {
+        if(res.code == 200 && res.data){
+          // 更新总数
+          ListItems.value = res.data
+          // 更新列表
+          newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
+        }else{
+          message.error("最新数据获取失败")
+        }
+      })
   getList(1, ListItems.value.limit, "up_num")
-    .then((res: any) => {
-      if(res.code == 200 && res.data){
-        // 更新总数
-        ListItems.value = res.data
-        // 更新列表
-        hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
-      }else{
-        message.error("最热数据获取失败")
-      }
-    })
+      .then((res: any) => {
+        if(res.code == 200 && res.data){
+          // 更新总数
+          ListItems.value = res.data
+          // 更新列表
+          hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
+        }else{
+          message.error("最热数据获取失败")
+        }
+      })
 }
 
 // 分页获取feedback列表
@@ -130,15 +135,13 @@ const orderNew = () => {
   color1.value = '#ffffff'
   color2.value = ''
   Feedback.value = newFeedback.value
-  console.log(Feedback.value)
-  console.log(newFeedback.value)
-  if(Feedback.value && newFeedback.value){
+  if(Feedback.value.length == 0){
+    load()
+  }else{
     loading.value = true
     setTimeout(() => {
       loading.value = false
-    }, 100)
-  }else{
-    load()
+    }, 50)
   }
 }
 const orderHot = () => {
@@ -150,13 +153,11 @@ const orderHot = () => {
   color2.value = '#ffffff'
   color1.value = ''
   Feedback.value = hotFeedback.value
-  console.log(Feedback.value)
-  console.log(hotFeedback.value)
-  if(Feedback.value && hotFeedback.value){
+  if(Feedback.value.length != 0){
     loading.value = true
     setTimeout(() => {
       loading.value = false
-    }, 100)
+    }, 50)
   }else{
     load()
   }
@@ -167,29 +168,29 @@ const load = () => {
   // 延时不加不行
   setTimeout(() => {
     ListItems.value.page = Feedback.value.length / ListItems.value.limit + 1
-      // 获取分页信息
+    // 获取分页信息
     getList(ListItems.value.page, ListItems.value.limit, order)
-      .then((res: any) => {
-        if(res.code == 200){
-          // 更新总数
-          if(ListItems.value != res.data){
-            ListItems.value = res.data
-            // 更新列表
-            if(order == ""){
-              Feedback.value = Feedback.value.concat(ListItems.value.pageList)
-            }else if(order == "create_at"){
-              newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
-              Feedback.value = newFeedback.value
-            }else if(order == "up_num"){
-              hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
-              Feedback.value = hotFeedback.value
+        .then((res: any) => {
+          if(res.code == 200){
+            // 更新总数
+            if(ListItems.value != res.data){
+              ListItems.value = res.data
+              // 更新列表
+              if(order == ""){
+                Feedback.value = Feedback.value.concat(ListItems.value.pageList)
+              }else if(order == "create_at"){
+                newFeedback.value = newFeedback.value.concat(ListItems.value.pageList)
+                Feedback.value = newFeedback.value
+              }else if(order == "up_num"){
+                hotFeedback.value = hotFeedback.value.concat(ListItems.value.pageList)
+                Feedback.value = hotFeedback.value
+              }
             }
+            setTimeout(() => {
+              loading.value = false
+            }, 500)
           }
-        }
-      })
-    setTimeout(() => {
-      loading.value = false
-    }, 100)
+        })
   }, 2000)
 };
 
@@ -203,20 +204,20 @@ onMounted(() => {
     <!--打开帖子详情-->
     <FeedBackComponent :data="selectedItem" v-if="isOpen" @close="closeFeedbackComponent"></FeedBackComponent>
     <!--创建新帖子-->
-    <NewFeedback v-if="isChildComponentVisible " :type="Type" @close="closeChildComponent"></NewFeedback>
-    <UpdateComponent :data="update" :type="Type" v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
+    <NewFeedback v-if="isChildComponentVisible " :type="Type" @close="closeChildComponent" @post="post"></NewFeedback>
+    <UpdateComponent @data="updataFeedback" :data="update" :type="Type" v-if="isUpdate " @close="closeUpdateComponent"></UpdateComponent>
     <!--反馈类型选项卡-->
-<!--    <div class="contain-choice">-->
-<!--      <div class="contain-choice__box flex">-->
-<!--        <div class="choice-item flex"><h3 style="color:#cccccc">社区开发建议</h3></div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="contain-choice">-->
+    <!--      <div class="contain-choice__box flex">-->
+    <!--        <div class="choice-item flex"><h3 style="color:#cccccc">社区开发建议</h3></div>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div class="contain flex">
-<!--        <div class="contain-say flex">-->
-<!--          <h3 style="margin-bottom: 10px;color:#ffffff">有话要说吗？</h3>-->
-<!--          <p style="color:#ffffff">告诉 RVC 他们如何使产品对您更有用。</p>-->
-<!--        </div>-->
-        <!--排序-->
+      <!--        <div class="contain-say flex">-->
+      <!--          <h3 style="margin-bottom: 10px;color:#ffffff">有话要说吗？</h3>-->
+      <!--          <p style="color:#ffffff">告诉 RVC 他们如何使产品对您更有用。</p>-->
+      <!--        </div>-->
+      <!--排序-->
       <div class="contain-search flex">
         <button @click="orderNew" :style="{ backgroundColor: bgColor1 }" class="contain-search__item flex">
           <svg t="1703268766158" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4201" width="20" height="20"><path d="M10.432 1024.064L6.4-0.128h935.872v1023.936l-468.544-245.696-463.296 245.952z m462.912-365.76l362.944 190.208V105.856H112.832l2.88 742.336 357.632-189.888z" fill="#F98064" p-id="4202"></path><path d="M199.104 304.704h46.528l47.296 90.944 18.624 42.176h1.28c-2.56-20.224-6.144-47.552-6.144-70.272v-62.848h43.392v190.08h-46.464l-47.04-91.712-18.624-41.728h-1.28c2.048 21.248 5.888 47.296 5.888 70.336v63.104h-43.456v-190.08zM394.176 304.704h120.64v37.76h-74.88v35.264h63.616v38.336h-63.616v40.384h77.696v38.336H394.176v-190.08zM536.64 304.704h46.72l12.032 86.592 7.68 60.288h1.024c3.648-20.16 7.424-40.64 11.264-60.288l19.392-86.592h38.4l19.968 86.592c3.84 19.392 7.104 39.872 10.944 60.288h1.344c2.304-20.416 4.8-40.64 7.104-60.288l12.288-86.592h43.392l-32.96 190.08h-57.472l-17.28-82.752a524.992 524.992 0 0 1-7.36-44.16h-1.28c-2.304 14.272-4.608 29.568-7.424 44.16L627.84 494.784h-56.448l-34.752-190.08z" fill="#FC632D" p-id="4203"></path></svg>
@@ -236,7 +237,8 @@ onMounted(() => {
         <el-scrollbar ref="scrollbarRef">
           <ul v-infinite-scroll="load" class="list" :infinite-scroll-disabled="disabled" :infinite-scroll-distance="50">
             <li v-for="(item, index) in Feedback" :key="index" class="contain-invitation__item flex">
-              <button class="update flex" v-if="item.uid == uid" @click="openUpdate(item.fbid)">
+              <!--编辑帖子-->
+              <button class="update flex" v-if="item.uid == uid" @click="openUpdate(index)">
                 <svg t="1703683064760" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2361" width="30" height="30"><path d="M512 74.666667C270.933333 74.666667 74.666667 270.933333 74.666667 512S270.933333 949.333333 512 949.333333 949.333333 753.066667 949.333333 512 753.066667 74.666667 512 74.666667z m0 810.666666c-204.8 0-373.333333-168.533333-373.333333-373.333333S307.2 138.666667 512 138.666667 885.333333 307.2 885.333333 512 716.8 885.333333 512 885.333333z" fill="#dbdbdb" p-id="2362"></path><path d="M512 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333334 0 42.666667 42.666667 0 1 0-85.333334 0Z" fill="#dbdbdb" p-id="2363"></path><path d="M341.333333 512m-42.666666 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2364"></path><path d="M682.666667 512m-42.666667 0a42.666667 42.666667 0 1 0 85.333333 0 42.666667 42.666667 0 1 0-85.333333 0Z" fill="#dbdbdb" p-id="2365"></path></svg>
               </button>
               <!--用于判断是否展示-->
@@ -245,8 +247,8 @@ onMounted(() => {
                 <!--帖子上部信息-->
                 <div class="invitation__outline">
                   <div class="status flex">
-                    <p>{{item.statusName}}</p>
-                    <p>{{item.typeName}}</p>
+                    <p>{{States[item.status].status}}</p>
+                    <p>{{Type[item.type].type}}</p>
                   </div>
                   <h3 style="margin-top:10px">{{item.title}}</h3>
                   <div class="invitation__text" v-html="item.content"></div>
@@ -283,6 +285,7 @@ onMounted(() => {
           </ul>
         </el-scrollbar>
       </div>
+      <!--      加载动画-->
       <div class="load" v-show="loading" >
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
           <circle cx="50" cy="50" fill="none" stroke="#6a6a6a" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
@@ -314,15 +317,17 @@ onMounted(() => {
   top:10px;
   border: none;
   transition-duration: 0.3s;
+
 }
 .update:hover{
   transform: scale(1.1);
 }
 .infinite-list-wrapper {
+  padding: 8px 0;
   position: relative;
   text-align: center;
   width:100%;
-  height:70vh;
+  height:calc(100% - 100px);
   background: rgb(68, 69, 72);
   box-shadow:0 0 30px 1px #3f3f3f;
   border-radius: 10px;
@@ -332,25 +337,10 @@ onMounted(() => {
   margin: 0;
   list-style: none;
 }
-
-.infinite-list-wrapper .list-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: var(--el-color-danger);
-}
-.infinite-list-wrapper .list-item + .list-item {
-  margin-top: 10px;
-}
 button{
+  background: transparent;
   cursor: pointer;
 }
-.fade-leave-to {
-  transition-duration: .3s;
-  transform: scale(90%);
-}
-
 .home{
   background-size: cover;
   background-color: rgb(26,27,30);
@@ -358,53 +348,13 @@ button{
   width:100%;
   height:100%;
 }
-.contain-choice{
-  top:70px;
-  position: fixed;
-  width:100%;
-  height:80px;
-  box-shadow: 6px 6px 10px #363638;
-  z-index: 1;
-  background: rgb(29, 29, 30);
-  align-items: end;
-}
-.contain-choice__box{
-  position: relative;
-  align-items: end;
-  bottom: 0;
-  height:100%;
-  justify-content: left;
-}
-.choice-item{
-  background-color: rgb(66, 66, 68);
-  width:150px;
-  height:45px;
-  border-radius: 10px 10px 0 0;
-  color: #a4a4a4;
-  margin-left:10px;
-  cursor: pointer;
-}
 .contain{
-  padding: 20px;
   position: relative;
-  top:0;
   flex-direction: column;
   margin:auto;
   width:1100px;
-  height:78vh;
+  height:calc(100vh - 130px);
   z-index: 0;
-}
-.contain-choice__box{
-  margin:auto;
-  width:1100px;
-}
-.contain-say{
-  flex-direction: column;
-  width:100%;
-  height:100px;
-  background: rgba(44, 67, 108, 0.44);
-  border-radius: 10px;
-  border:solid 1px #7191a9;
 }
 .contain-search{
   width:100%;
@@ -413,7 +363,7 @@ button{
   .contain-search__item{
     font-family: 方正粗黑宋简体;
     letter-spacing: 1px;
-    padding: 5px 20px;
+    padding: 3px 15px;
     border-radius: 8px;
     background: #3a3a3a;
     margin-right: 10px;
@@ -424,6 +374,7 @@ button{
   .contain-search__item p{
     margin-top:8px;
     margin-left: 4px;
+    font-size: 16px;
   }
   .contain-search__item:hover{
     background: #72767b;

@@ -171,7 +171,7 @@ export interface CommentList {
     /**
      * 评论id
      */
-    cmid: number;
+    cmid: string;
     /**
      * 评论内容
      */

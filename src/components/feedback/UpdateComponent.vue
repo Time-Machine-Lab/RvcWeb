@@ -3,11 +3,12 @@ import { ref } from 'vue'
 import {MdEditor, ToolbarNames} from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import {FeedbackItem, TypeListItem, Update} from '@/api/feedback/feedbackTypes.ts'
-import {getFeedback, getTypeList, postUpdate} from '@/api/feedback/feedbackAPI.ts'
+import {getTypeList, postUpdate} from '@/api/feedback/feedbackAPI.ts'
 import {onMounted} from "vue";
 import {message} from "@/utils/message.ts";
+import TurndownService from 'turndown'
 // 关闭弹窗
-const emits = defineEmits();
+const emits = defineEmits(['data','close']);
 const close = () => {
   emits('close');
 };
@@ -30,15 +31,15 @@ const postTitle = ref("")
 const postContent = ref("")
 const postType = ref(0)
 const getData = () => {
-  // 根据fb_id获取对应的feedback帖子
-  getFeedback(props.data).then((res: any) => {
-    console.log(res);
-    FeedbackData.value = res.data.feedback;
-    selectedButtonIndex.value = FeedbackData.value.type
-    postTitle.value = FeedbackData.value.title
-    postContent.value = FeedbackData.value.content
-    postType.value = FeedbackData.value.type
-  });
+  FeedbackData.value = props.data
+  let Service = new TurndownService();
+  let markdown = Service.turndown( FeedbackData.value.content);
+  FeedbackData.value.content = markdown
+
+  selectedButtonIndex.value = FeedbackData.value.type
+  postTitle.value = FeedbackData.value.title
+  postContent.value = FeedbackData.value.content
+  postType.value = FeedbackData.value.type
 };
 // 交换按钮样式
 const setType = (index: number) => {
@@ -46,18 +47,20 @@ const setType = (index: number) => {
   postType.value = index;
 };
 // 提交表单
-
-
-const submitForm =  () => {
+const submitForm = () => {
   const formData: Update = {
     title: postTitle.value,
     content: postContent.value,
     type: postType.value,
-    fbid: props.data,  // 如果是添加新帖子，可以忽略这个属性
+    fbid: props.data.fbid,  // 如果是添加新帖子，可以忽略这个属性
   };
   postUpdate(formData).then((res: any) => {
     if (res.code == 200) {
       message.success('修改成功')
+      FeedbackData.value.title = postTitle.value
+      FeedbackData.value.content = postContent.value
+      FeedbackData.value.type = postType.value
+      emits('data',FeedbackData.value)
     } else {
       message.error('修改失败')
     }
@@ -68,7 +71,7 @@ onMounted(() => {
   getData()
 });
 const toolbars: ToolbarNames[] =
-    ['bold', 'underline', 'italic', 'strikeThrough',
+    ['bold', 'underline', 'italic',
       'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
       'preview', 'htmlPreview']
 const saveHtml = (h: string) => {

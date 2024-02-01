@@ -6,7 +6,7 @@ import {Add, TypeListItem} from '@/api/feedback/feedbackTypes.ts'
 import {getTypeList, postAdd} from '@/api/feedback/feedbackAPI.ts'
 import {message} from "@/utils/message.ts";
 
-const emits = defineEmits();
+const emits = defineEmits(['close','post']);
 const close = () => {
   emits('close');
 };
@@ -40,10 +40,11 @@ const submitForm = () => {
   };
   postAdd(formData).then((res: any) => {
     if (res.code == 200) {
-      message.success('操作成功')
-      emits('close');
+      message.success('提交成功')
+      emits('close')
+      emits('post',res.data);
     } else {
-      message.error('操作失败')
+      message.error('创建失败')
     }
   });
 };
@@ -60,9 +61,9 @@ if(props.type){
 }
 // 富文本编辑器插槽
 const toolbars: ToolbarNames[] =
-    ['bold', 'underline', 'italic', 'strikeThrough',
-  'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
-  'preview', 'htmlPreview']
+    ['bold', 'underline', 'italic',
+      'quote', 'codeRow', 'code', 'link', 'pageFullscreen',
+      'preview', 'htmlPreview']
 const html = ref("")
 const saveHtml = (h: string) => {
   html.value = h
@@ -219,6 +220,7 @@ button{
         overflow-y: scroll;
       }
       .submit{
+        margin-top: 10px;
         border: solid 1px #9d9d9d;
         background: #6e6f70;
         color: rgba(255, 255, 255, 0.98);
