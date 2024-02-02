@@ -2,14 +2,14 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 14:34:13
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2023-12-14 14:53:38
+ * @LastEditTime: 2024-02-02 23:29:58
  * @FilePath: \RvcWeb\src\view\home\HomePageView.vue
  * @Description: 
  * 
  * Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 -->
 <script setup lang="ts">
-import Model from '@/view/user/info/pages/likeModels.vue'
+// import Model from '@/view/user/info/pages/likeModels.vue'
 import WaterFall from '@/components/layout/waterFallComponent.vue'
 import {ref} from 'vue'
 // 选择器
