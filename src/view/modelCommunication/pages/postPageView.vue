@@ -26,7 +26,7 @@ const postPageCommentsRef = ref<any>(null)
 // onBeforeRouteLeave((to,_from,next)=>{
 //     if(to.path == '/rvc/posts'){
 //         console.log(to.path);
-        
+
 //         to.meta.KeepAlive = true
 //     } else {
 //         to.meta.KeepAlive = false
@@ -122,8 +122,6 @@ const collect = function () {
         return
     }
     collectDisabled.value = false
-    localPost.value.collect = !localPost.value.collect
-    localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
 
     setTimeout(function () {
         collectDisabled.value = true
@@ -131,7 +129,7 @@ const collect = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.collect ? '1' : '0'
+        type: localPost.value.collect ? '0' : '1'
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
@@ -141,14 +139,18 @@ const collect = function () {
         }
 
     })
+    setTimeout(() => {
+
+    localPost.value.collect = !localPost.value.collect
+    localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
+}, 200)
+
 }
 const like = function () {
     if (!likeDisabled.value) {
         message.warning('请稍后再试')
         return
     }
-    localPost.value.like = !localPost.value.like
-    localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
 
     likeDisabled.value = false
     setTimeout(function () {
@@ -156,7 +158,7 @@ const like = function () {
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.like ? '1' : '0'
+        type: localPost.value.like ? '0' : '1'
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
@@ -165,6 +167,13 @@ const like = function () {
             message.error(res.msg)
         }
     })
+    setTimeout(() => {
+
+        localPost.value.like = !localPost.value.like
+        localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+    }, 200)
+
+
 }
 const calcNum = function (num: number) {
 
@@ -716,7 +725,7 @@ const getUrl = function (url: string) {
     border-radius: 5px;
     z-index: 10;
     /* border: rgba(255, 255, 255, 0.2) 1px solid; */
-    background-color: rgba(26,27,30);
+    background-color: rgba(26, 27, 30);
 
 }
 

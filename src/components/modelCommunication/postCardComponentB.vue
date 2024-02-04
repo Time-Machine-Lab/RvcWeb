@@ -30,8 +30,6 @@ const collect = function () {
         message.warning('请稍后再试')
         return
     }
-    localPost.value.collect = !localPost.value.collect
-    localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
 
     collectDisabled.value = false
     setTimeout(function () {
@@ -39,7 +37,7 @@ const collect = function () {
     }, 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.collect ? '1' : '0'
+        type: localPost.value.collect ? '0' : '1'
     }
     collectPost(form).then((res: any) => {
         if (res.code == 200) {
@@ -48,14 +46,18 @@ const collect = function () {
             message.error(res.msg)
         }
     })
+    setTimeout(() => {
+        localPost.value.collect = !localPost.value.collect
+        localPost.value.collectNum = localPost.value.collectNum + (localPost.value.collect ? 1 : -1)
+    }, 200)
+
 }
 const like = function () {
     if (!likeDisabled.value) {
         message.warning('请稍后再试')
         return
     }
-    localPost.value.like = !localPost.value.like
-    localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+
 
     likeDisabled.value = false
     setTimeout(function () {
@@ -64,7 +66,7 @@ const like = function () {
         , 2000)
     let form = <FavoriteAndCollectionForm>{
         id: (localPost.value.postId as unknown as string),
-        type: localPost.value.like ? '1' : '0'
+        type: localPost.value.like ? '0' : '1'
     }
     favoritePost(form).then((res: any) => {
         if (res.code == 200) {
@@ -74,6 +76,11 @@ const like = function () {
         }
 
     })
+    setTimeout(() => {
+        localPost.value.like = !localPost.value.like
+        localPost.value.likeNum = localPost.value.likeNum + (localPost.value.like ? 1 : -1)
+    }, 200)
+
 }
 // const getimg = function (index: number) {
 //     const img = [
@@ -105,7 +112,8 @@ const editPost = function () {
 </script>
 <template>
     <div class="post-card">
-        <div style="position: absolute;width: 100%;height: 100%;" @click="$router.push('/post?id=' + localPost.postId)"></div>
+        <div style="position: absolute;width: 100%;height: 100%;" @click="$router.push('/post?id=' + localPost.postId)">
+        </div>
         <img :src="localPost.cover!" @click="$router.push('/post?id=' + localPost.postId)"
             style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
@@ -374,8 +382,11 @@ const editPost = function () {
     height: 16px;
     display: flex;
     margin-right: 15px;
+    transition: all 1s;
 }
-
+.other-info__stats__item:nth-child(n+1):nth-child(n+2):hover > div{
+    scale: 1.1;
+}
 .other-info__stats__item span {
     display: inline-block;
     height: 16px;
