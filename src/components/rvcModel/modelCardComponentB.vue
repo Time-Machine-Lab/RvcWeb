@@ -38,20 +38,10 @@ const collect = function () {
         modelId: localModel.value.id,
         status: '0'
     }
-    if (isCollect.value == "true") {
-        isCollect.value = "false"
-        localModel.value.isCollection = "false"
-        form.status = '1'
-        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
-    } else if (isCollect.value == "false") {
-        isCollect.value = "true"
-        localModel.value.isCollection = "true"
-        form.status = '0'
-        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
-    }
-    setTimeout(()=>{
+
+    setTimeout(() => {
         collectDisabled.value = false
-    },5000)
+    }, 5000)
     collectModel(form).then((res: any) => {
         if (res.code == 200) {
             //   message.success('操作成功')
@@ -59,6 +49,21 @@ const collect = function () {
             message.error(res.message)
         }
     })
+    setTimeout(() => {
+
+        if (isCollect.value == "true") {
+            isCollect.value = "false"
+            localModel.value.isCollection = "false"
+            form.status = '1'
+            localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
+        } else if (isCollect.value == "false") {
+            isCollect.value = "true"
+            localModel.value.isCollection = "true"
+            form.status = '0'
+            localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
+        }
+    }, 300)
+
 }
 // 点赞
 let isLike = ref("")
@@ -73,20 +78,10 @@ const like = () => {
         modelId: localModel.value.id,
         status: '0'
     }
-    if (isLike.value == "true") {
-        isLike.value = "false"
-        localModel.value.isLike = "false"
-        form.status = '1'
-        localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
-    } else if (isLike.value == "false") {
-        isLike.value = "true"
-        localModel.value.isLike = "true"
-        form.status = '0'
-        localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
-    }
-    setTimeout(()=>{
+
+    setTimeout(() => {
         likeDisabled.value = false
-    },5000)
+    }, 5000)
     favoriteModel(form).then((res: any) => {
         if (res.code == 200) {
             //   message.success('操作成功')
@@ -94,6 +89,21 @@ const like = () => {
             message.error(res.message)
         }
     })
+    setTimeout(() => {
+
+        if (isLike.value == "true") {
+            isLike.value = "false"
+            localModel.value.isLike = "false"
+            form.status = '1'
+            localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
+        } else if (isLike.value == "false") {
+            isLike.value = "true"
+            localModel.value.isLike = "true"
+            form.status = '0'
+            localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
+        }
+    }, 300)
+
 }
 const modelDeleteFunc = function () {
     delModel(localModel.value.id).then((res: any) => {

@@ -115,17 +115,7 @@ const collect = function () {
         modelId: (router.currentRoute.value.query.id as string),
         status: '0'
     }
-    if (collectDisabled.value == "true") {
-        collectDisabled.value = "false"
-        localModel.value.isCollection = "false"
-        form.status = '1'
-        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
-    } else if (collectDisabled.value == "false") {
-        collectDisabled.value = "true"
-        localModel.value.isCollection = "true"
-        form.status = '0'
-        localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
-    }
+
     collectModel(form).then((res: any) => {
         if (res.code == 200) {
             message.success('操作成功')
@@ -133,24 +123,28 @@ const collect = function () {
             message.error('操作失败')
         }
     })
+    setTimeout(() => {
+
+        if (collectDisabled.value == "true") {
+            collectDisabled.value = "false"
+            localModel.value.isCollection = "false"
+            form.status = '1'
+            localModel.value.collectionNum = String(Number(localModel.value.collectionNum) - 1)
+        } else if (collectDisabled.value == "false") {
+            collectDisabled.value = "true"
+            localModel.value.isCollection = "true"
+            form.status = '0'
+            localModel.value.collectionNum = String(Number(localModel.value.collectionNum) + 1)
+        }
+    }, 200)
+
 }
 const like = () => {
     let form = <FavoriteAndCollectionForm>{
         modelId: (router.currentRoute.value.query.id as string),
         status: '0'
     }
-    if (isLike.value == "true") {
-        isLike.value = "false"
-        localModel.value.isLike = "false"
-        form.status = '1'
-        localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
-    }
-    else if (isLike.value == "false") {
-        isLike.value = "true"
-        localModel.value.isLike = "true"
-        form.status = '0'
-        localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
-    }
+
     console.log(isLike.value)
     favoriteModel(form).then((res: any) => {
         if (res.code == 200) {
@@ -159,6 +153,22 @@ const like = () => {
             message.error('操作失败')
         }
     })
+    setTimeout(() => {
+
+        if (isLike.value == "true") {
+            isLike.value = "false"
+            localModel.value.isLike = "false"
+            form.status = '1'
+            localModel.value.likesNum = String(Number(localModel.value.likesNum) - 1)
+        }
+        else if (isLike.value == "false") {
+            isLike.value = "true"
+            localModel.value.isLike = "true"
+            form.status = '0'
+            localModel.value.likesNum = String(Number(localModel.value.likesNum) + 1)
+        }
+    }, 200)
+
 }
 const calcNum = function (num: number) {
     return num < 1000 ? (num as unknown as string) : (num / 1000 + 'k' as string)
