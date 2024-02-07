@@ -44,7 +44,6 @@ request.interceptors.request.use(
 // 响应拦截
 request.interceptors.response.use(
   (res: AxiosResponse<any>) => {
-    console.log('response')
     // 如果是返回的文件
     if (res.config.responseType === 'blob') {
       return res

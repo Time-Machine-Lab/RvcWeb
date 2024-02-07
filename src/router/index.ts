@@ -2,7 +2,7 @@
  * @Author: LisianthusLeaf 3106334435@qq.com
  * @Date: 2023-12-06 23:31:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2024-01-28 15:38:08
+ * @LastEditTime: 2024-02-07 19:25:16
  * @FilePath: \RvcWeb\src\router\index.ts
  * @Description:
  *
@@ -17,9 +17,9 @@ import {
 } from "vue-router";
 import introRoute from './introRoutes.ts'
 import homepageRoutes from '@/router/homepageRouter/index.ts'
-import communicationRoutes from "./homepageRouter/communication/communicationRoutes.ts"
+// import communicationRoutes from "./homepageRouter/communication/communicationRoutes.ts"
 import userRoutes from "./homepageRouter/user/userRoutes.ts"
-import rvcModelRoutes from "./homepageRouter/rvcModel/rvcModelRoutes.ts";
+// import rvcModelRoutes from "./homepageRouter/rvcModel/rvcModelRoutes.ts";
 import { storage } from "@/utils/storage.ts";
 const routes: RouteRecordRaw[] = [
     {
@@ -38,9 +38,9 @@ const routes: RouteRecordRaw[] = [
     },
     ...homepageRoutes,
     ...introRoute,
-    ...communicationRoutes,
     ...userRoutes,
-    ...rvcModelRoutes
+    // ...communicationRoutes,
+    // ...rvcModelRoutes
 ];
 const options: RouterOptions = {
     history: createWebHashHistory(),
@@ -56,7 +56,7 @@ router.beforeEach((to,_from,next)=>{
         }
     } else if(to.meta.isAuth&&to.meta.isAuth==false){
         if(storage.get<string>('token')){
-            router.push('/rvc/posts')
+            router.push('posts')
         }
     } else {
         next()

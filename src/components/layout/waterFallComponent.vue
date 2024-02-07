@@ -19,11 +19,7 @@ export default defineComponent({
     let childElements: HTMLCollection | undefined
     let visibility = ref<boolean[]>([])
 
-    context.expose(
-      {
-        visibility
-      }
-    )
+
     const sortElement = function () {
       visibility.value = []
       height.value.fill(0, 0, 10)
@@ -37,8 +33,8 @@ export default defineComponent({
           width.value = containerRef.value.clientWidth / columnCount.value - margin.value
         }
         if (width.value > minWidth.value) {
-          console.log('columnCount:' + columnCount.value);
-          console.log('width:' + width.value);
+          // console.log('columnCount:' + columnCount.value);
+          // console.log('width:' + width.value);
 
           break
         }
@@ -140,7 +136,12 @@ export default defineComponent({
         }
       }
     })
-
+    context.expose(
+      {
+        visibility,
+        sortElement
+      }
+    )
     return { containerRef }
   },
 })

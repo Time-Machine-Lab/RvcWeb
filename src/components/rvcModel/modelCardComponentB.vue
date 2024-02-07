@@ -113,12 +113,12 @@ const modelDeleteFunc = function () {
     })
 }
 const editModel = function () {
-    router.push('/editModel?id=' + localModel.value.id)
+    router.push('/rvc/editModel?id=' + localModel.value.id)
 }
 </script>
 <template>
     <div class="model-card">
-        <img :src="localModel.picture!" class="model-card__cover" @click="$router.push('/model?id=' + localModel.id)"
+        <img :src="localModel.picture!" class="model-card__cover" @click="$router.push('/rvc/model?id=' + localModel.id)"
             style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
             :class="clickMore ? 'dither-animation' : ''" style="z-index: 10;">
@@ -144,7 +144,7 @@ const editModel = function () {
                     <div class="user-info__text__usename">
                         {{ localModel.nickname }}
                     </div>
-                    <div class="user-info__text__creatAt" @click="$router.push('/post?id=' + localModel.id)">
+                    <div class="user-info__text__creatAt" @click="$router.push('/rvc/post?id=' + localModel.id)">
                         {{ localModel.createTime }}
                     </div>
                 </div>
@@ -154,7 +154,7 @@ const editModel = function () {
             {{ localModel.type }}
         </div>
         <div class="post-card__info">
-            <div class="post-card__info__title" @click="$router.push('/post?id=' + localModel.id)">
+            <div class="post-card__info__title" @click="$router.push('/rvc/post?id=' + localModel.id)">
                 {{ localModel.name }}
             </div>
 

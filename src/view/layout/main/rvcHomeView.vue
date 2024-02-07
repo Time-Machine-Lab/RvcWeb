@@ -10,12 +10,12 @@
 <template>
     <div class="rvc-home">
         <div class="rvc-home__view">
-            <RouterView v-if="$route.meta.KeepAlive" v-slot="{ Component }">
-                <KeepAlive :include="['post-list']">
+            <RouterView v-slot="{ Component }">
+                <KeepAlive :include="['post-list','model-list']">
                     <component :is="Component"></component>
                 </KeepAlive>
             </RouterView>
-            <RouterView v-if="!$route.meta.KeepAlive"></RouterView>
+            <!-- <RouterView v-if="!$route.meta.KeepAlive"></RouterView> -->
         </div>
     </div>
 </template>

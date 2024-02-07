@@ -6,12 +6,12 @@
  */
 export default [
     {
-        path: '/post',
+        path: 'post',
         name: 'postPageView',
         component: ()=> import('@/view/modelCommunication/pages/postPageView.vue'),
     },
     {
-        path: '/newPost',
+        path: 'newPost',
         name: 'newPost',
         component: ()=> import('@/view/modelCommunication/pages/newPostPageView.vue'),
         meta: {
@@ -19,7 +19,7 @@ export default [
         }
     },
     {
-        path: '/editPost',
+        path: 'editPost',
         name: 'editPost',
         component: ()=> import('@/view/modelCommunication/pages/editPostPageView.vue'),
         meta: {
