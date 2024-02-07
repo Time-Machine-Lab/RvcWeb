@@ -10,7 +10,7 @@ import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import filterComponent from '@/components/common/filterComponent.vue'
 import { getPostType, getPosts } from '@/api/post/postApi'
 import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postType'
-import { ref } from 'vue';
+import { onActivated, ref } from 'vue';
 import { message } from '@/utils/message'
 import LoadingComponent from '@/components/common/loadingComponent.vue'
 // import { onBeforeRouteLeave } from 'vue-router'
@@ -36,6 +36,9 @@ let disabled = ref(false)
 //     from.meta.KeepAlive = false
 //     next()
 // })
+onActivated(()=>{
+    waterFallComponentRef.value.sortElement()
+})
 getPostType().then((res: any) => {
     if (res.code == 200) {
         let data = ref<RvcCommunicationPostType[]>(res.data)

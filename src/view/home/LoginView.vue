@@ -230,7 +230,7 @@ export default defineComponent({
       }
     }, 1000)
     if (storage.get<string>('token')) {
-      this.$router.replace('/rvc/posts')
+      this.$router.replace('posts')
     }
   },
 });

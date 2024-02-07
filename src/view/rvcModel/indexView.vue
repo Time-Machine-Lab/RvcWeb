@@ -3,14 +3,16 @@ import modelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import { getModels, getModelsByType, getModelType } from '@/api/rvcModel/modelApi'
 import { RvcModelVo, ModelListForm, ModelType, ModelListType } from '@/api/rvcModel/modelType'
-import { ref } from 'vue';
+import { onActivated, ref } from 'vue';
 import { message } from '@/utils/message'
 
 const models = ref<RvcModelVo[]>([])
 models.value = []
 const waterFallComponentRef = ref<any>()
 let loaded = ref(false)
-
+defineOptions({
+    name:'model-list'
+})
 let page = ref(1)
 let form = ref<ModelListForm>({
   limit: 10, page: 1, sortType: ""
@@ -27,6 +29,16 @@ const Types = ref<ModelType[]>([{ createTime: "", id: "0", type: "全部" }])
 getModelType().then((res: any) => {
   Types.value = Types.value.concat(res.data)
   // alert(Types.value[1].id)
+})
+
+const scrollbarRef = ref<any>()
+let scrollTop = ref<number>(0)
+const scroll = (position:any) => {  
+  scrollTop.value = position.scrollTop
+}
+onActivated(()=>{
+    waterFallComponentRef.value.sortElement()    
+    scrollbarRef.value.setScrollTop(scrollTop.value)
 })
 const load = function () {
   // if (disabled.value) {
@@ -119,7 +131,7 @@ const refresh = () => {
 }
 </script>
 <template>
-  <el-scrollbar style="height: calc(100vh - 120px)">
+  <el-scrollbar ref="scrollbarRef" @scroll="scroll" style="height: calc(100vh - 120px)">
 
     <div class="modellistView">
       <div class="filter-container">

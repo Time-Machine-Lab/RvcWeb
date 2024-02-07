@@ -46,7 +46,7 @@ export default defineComponent({
   },
   mounted(){
     if(storage.get<string>('token')!=''){
-      this.$router.push('/rvc/posts')
+      this.$router.push('posts')
     }
   }
 });

@@ -10,6 +10,7 @@ import { storage } from "@/utils/storage";
 // import { storage } from "@/utils/storage";
 import BaseInfo from "@/view/user/info/pages/baseInfo.vue";
 import { useUserStore } from "@/view/user/info/userStore.js";
+import { onBeforeRouteUpdate } from "vue-router";
 const userStore = useUserStore();
 
 setTimeout(function () {
@@ -20,6 +21,19 @@ setTimeout(function () {
     router.push({ query: { id: userStore.getProfile.uid } });
   }
 }, 1000);
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.query.id != from.query.id) {
+    next()
+    setTimeout(() => {
+      router.go(0)
+    }, 100)
+  } else {
+    next()
+
+  }
+
+
+})
 </script>
 <template>
   <div class="userPage">
@@ -159,14 +173,15 @@ setTimeout(function () {
 .user-home__link__item span:hover {
   color: rgba(255, 255, 255, 1);
 }
+
 .img_back {
-    position: relative;
-    display: block;
-    top: 50%;
-    transform: translate(0, -50%);
-    height: 30px;
-    width: 30px;
-    margin-left: 10px;
-    border-radius: 5px;
+  position: relative;
+  display: block;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: 30px;
+  width: 30px;
+  margin-left: 10px;
+  border-radius: 5px;
 }
 </style>

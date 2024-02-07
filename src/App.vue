@@ -52,7 +52,7 @@ onBeforeMount(async () => {
       </el-header>
       <el-main class="main">
         <!-- <el-scrollbar> -->
-        <RouterView  v-slot="{Component}" :key="($route.query.id as string)">
+        <RouterView  v-slot="{Component}" >
           <Transition name="slide-fade">
             <component :is="Component"></component>
           </Transition>

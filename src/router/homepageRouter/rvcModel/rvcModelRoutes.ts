@@ -6,12 +6,12 @@
  */
 export default[
     {
-      path: "/model",
+      path: "model",
       name: "modelPage",
       component: () => import("@/view/rvcModel/pages/modelPageView.vue"),
     },
     {
-      path: "/newModel",
+      path: "newModel",
       name: "newModel",
       component: () => import('@/view/rvcModel/pages/newModelPageView.vue'),
       meta: {
@@ -19,7 +19,7 @@ export default[
       }
     },
     {
-      path: '/editModel',
+      path: 'editModel',
       name: 'editModel',
       component: ()=>import('@/view/rvcModel/pages/newModelPageView.vue'),
       meta: {

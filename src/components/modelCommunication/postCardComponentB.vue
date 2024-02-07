@@ -107,14 +107,14 @@ const postDeleteFunc = function () {
     })
 }
 const editPost = function () {
-    router.push('/editPost?postId=' + localPost.value.postId)
+    router.push('/rvc/editPost?postId=' + localPost.value.postId)
 }
 </script>
 <template>
     <div class="post-card">
-        <div style="position: absolute;width: 100%;height: 100%;" @click="$router.push('/post?id=' + localPost.postId)">
+        <div style="position: absolute;width: 100%;height: 100%;" @click="$router.push('/rvc/post?id=' + localPost.postId)">
         </div>
-        <img :src="localPost.cover!" @click="$router.push('/post?id=' + localPost.postId)"
+        <img :src="localPost.cover!" @click="$router.push('/rvc/post?id=' + localPost.postId)"
             style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;">
         <!-- style="min-height:400px;object-fit: cover;position:relative;left:50%;transform:translate(-50%);width:100%;margin: 0;padding: 0;"> -->
         <div tabindex="-1" class="more" @click="handleClickMore" @blur="handleBlur"
@@ -146,7 +146,7 @@ const editPost = function () {
                     <div class="user-info__text__usename">
                         {{ localPost.author?.nickname }}
                     </div>
-                    <div class="user-info__text__creatAt" @click="$router.push('/post?id=' + localPost.postId)">
+                    <div class="user-info__text__creatAt" @click="$router.push('/rvc/post?id=' + localPost.postId)">
                         {{ localPost.createAt }}
                     </div>
                 </div>
@@ -156,7 +156,7 @@ const editPost = function () {
             {{ localPost.postType.tagName }}
         </div>
         <div class="post-card__info">
-            <div class="post-card__info__title" @click="$router.push('/post?id=' + localPost.postId)">
+            <div class="post-card__info__title" @click="$router.push('/rvc/post?id=' + localPost.postId)">
                 {{ localPost.title }}
             </div>
 

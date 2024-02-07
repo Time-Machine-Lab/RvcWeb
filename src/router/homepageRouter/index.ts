@@ -1,3 +1,6 @@
+import communicationRoutes from './communication/communicationRoutes';
+import rvcModelRoutes from './rvcModel/rvcModelRoutes';
+
 /*
  * @Author: Dhx
  * @Date: 2023-12-18 15:46:58
@@ -16,7 +19,7 @@ export default [
         children: [
             {
                 path: 'posts',
-                name: 'posts',
+                name: 'post-list',
                 component: () => import('@/view/modelCommunication/indexView.vue'),
                 meta: {
                     keepAlive: true
@@ -24,12 +27,15 @@ export default [
             },
             {
                 path: 'models',
-                name: 'models',
+                name: 'model-list',
                 component: () => import('@/view/rvcModel/indexView.vue'),
                 meta: {
                     keepAlive: true
                 }
             },
+            ...communicationRoutes,
+            ...rvcModelRoutes
+
         ]
     },
 
