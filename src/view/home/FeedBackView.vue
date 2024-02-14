@@ -29,11 +29,12 @@ const post = (value:any) => {
   const userStore = useUserStore()
   let userProfile = ref<UserInfoVO>()
   userProfile.value = userStore.getProfile
-  Feedback.value[1] = Feedback.value[0]
-  Feedback.value[0] = value
-  Feedback.value[0].avatar = userProfile.value?.avatar
-  Feedback.value[0].nickname = userProfile.value?.nickname
-  console.log(Feedback.value)
+  let newContent = ref<FeedbackItem>(<FeedbackItem>{})
+  newContent.value = value
+  newContent.value.avatar = userProfile.value?.avatar
+  newContent.value.nickname = userProfile.value?.nickname
+  Feedback.value.unshift(newContent.value)
+  newFeedback.value.unshift(newContent.value)
 };
 // 帖子详情弹窗
 const selectedItem = ref(0)

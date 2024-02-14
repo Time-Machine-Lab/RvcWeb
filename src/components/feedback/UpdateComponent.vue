@@ -48,6 +48,14 @@ const setType = (index: number) => {
 };
 // 提交表单
 const submitForm = () => {
+  if(!postTitle.value) {
+    message.error("标题不能为空")
+    return
+  }
+  if(!postContent.value){
+    message.error("内容不能为空")
+    return
+  }
   const formData: Update = {
     title: postTitle.value,
     content: postContent.value,
@@ -228,6 +236,7 @@ button{
         overflow-y: scroll;
       }
       .submit{
+        margin-top: 10px;
         border: solid 1px #9d9d9d;
         background: #6e6f70;
         color: rgba(255, 255, 255, 0.98);

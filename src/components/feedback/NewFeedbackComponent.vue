@@ -24,11 +24,11 @@ const postType = ref<number | null>(2);
 
 const submitForm = () => {
   if(!postTitle.value) {
-    alert("标题不能为空")
+    message.error("标题不能为空")
     return
   }
   if(!postContent.value){
-    alert("内容不能为空")
+    message.error("内容不能为空")
     return
   }
   postContent.value = html.value

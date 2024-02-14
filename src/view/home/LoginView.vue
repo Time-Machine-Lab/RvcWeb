@@ -239,111 +239,106 @@ export default defineComponent({
 <template>
   <div class="login flex">
     <div class="contain flex">
-      <div class="left flex">
-        <div class="title">Welcome!</div>
-        <div class="discover">Register to discover us</div>
-      </div>
-      <div class="right">
-        <div class="flex right-top">
-          <TransitionGroup name="list">
-            <div v-if="!LoginStatus" @click="Back()" :key="1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
-                class="bi bi-arrow-left Back" viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-              </svg>
-            </div>
-            <div class="right-title">
-              <Transition :key="2" mode="out-in">
-                <span v-if="LoginStatus">LOGIN</span>
-                <span v-else>Register</span>
-              </Transition>
-            </div>
-          </TransitionGroup>
-        </div>
-        <form>
-          <TransitionGroup name="list">
-            <TransitionGroup name="list" tag="div" class="flex" :key="1" style="flex-direction: column">
-              <TransitionGroup name="list" tag="div" class="flex" style="display: flex; width: 100%">
-                <input class="right-input" type="email" v-model="form.email" placeholder="Email address"
-                  :style="{ width: LoginStatus ? '' : '50%' }" :key="3" />
-                <div v-if="!LoginStatus" class="GetCode" :key="4">
-                  <Transition name="Register" mode="out-in">
-                    <span v-if="!hasSendCode" @click="sendCode">发送验证码</span>
-                    <input class="right-input" v-else v-model="form.code" placeholder="验证码" style="margin-top: 0" />
-                  </Transition>
-
-                  <span style="margin-right: 12px" v-show="hasSendCode">{{
-                    preCode.time
-                  }}</span>
-                </div>
-              </TransitionGroup>
-
-              <input class="right-input" type="password" placeholder="Password" :key="2" v-model="form.password" />
-            </TransitionGroup>
-
-            <Transition name="list" :key="3">
-              <input v-if="!LoginStatus" class="right-input" type="password" placeholder="Confirm Password" :key="2"
-                v-model="form.repeatPassword" />
-            </Transition>
-
-            <Transition name="Register" :key="4" mode="out-in">
-              <div v-if="LoginStatus" class="Forget-password" @click="ForgetPassword">
-                忘记密码?
-              </div>
-              <div v-else class="Forget-password">
-                <input type="checkbox" v-model="isChecked" class="codestatus" style="transform: scale(1.4)" />
-                <span class="myCheckbox">同意用户协议</span>
-              </div>
-            </Transition>
-            <TransitionGroup name="list" tag="div" class="right-button" :key="5">
-              <button v-if="LoginStatus" type="button" class="right-button-item" @click="loginFunc">
-                登录
-              </button>
-              <button class="right-button-item" @click="registerFunc()">
-                注册
-              </button>
-            </TransitionGroup>
-          </TransitionGroup>
-        </form>
-      </div>
-    </div>
-  </div>
-  <el-dialog v-model="centerDialogVisible" width="30%" align-center>
-    <template #header>
-      <span class="Dialog-header">{{ DialogTitle }}</span>
-    </template>
-    <div class="flex" v-loading="loadingStatus" :element-loading-text="`R\nV\nC`">
-      <div v-if="DialogTitle == '验证码'">
-        <div class="flex" style="width: 100%">
-          <img :src="'data:image/png;base64,' + preCode.base64"
-            style="cursor: pointer; height: 6vh; width: 30%; margin-right: 6%" @load="loadImage"
-            @click="getPreCodeFunc" />
-          <input class="right-input loading-input" type="text" v-model="preCode.inputCode" placeholder="验证码"
-            style="margin-top: 0; width: 50%" />
-        </div>
-      </div>
-      <div v-else style="width: 100%">
-        <div class="flex">
-          <input class="right-input loading-input" type="text" placeholder="Email address" style="width: 50%"
-            v-model="form.email" />
-          <div class="GetCode loading-input">
-            <Transition name="Register" mode="out-in">
-              <span v-if="true" @click="sendCode('Forget Password')">{{preCode.time==0?'发送验证码':preCode.time}}</span>
+       b bm,
+      <div class="flex right-top">
+        <TransitionGroup name="list">
+          <div v-if="!LoginStatus" @click="Back()" :key="1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+              class="bi bi-arrow-left Back" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+            </svg>
+          </div>
+          <div class="right-title">
+            <Transition  mode="out-in">
+              <span v-if="LoginStatus">LOGIN</span>
+              <span v-else>Register</span>
             </Transition>
           </div>
-        </div>
-        <input class="right-input loading-input" v-model="form.code" placeholder="验证码" />
-        <input class="right-input loading-input" type="password" placeholder="Password" v-model="form.password" />
+        </TransitionGroup>
       </div>
-    </div>
+      <form>
+        <TransitionGroup name="list">
+          <TransitionGroup name="list" tag="div" class="flex" :key="1" style="flex-direction: column">
+            <TransitionGroup name="list" tag="div" class="flex" style="display: flex; width: 100%">
+              <input class="right-input" type="email" v-model="form.email" placeholder="Email address"
+                :style="{ width: LoginStatus ? '' : '50%' }" :key="3" />
+              <div v-if="!LoginStatus" class="GetCode" :key="4">
+                <Transition name="Register" mode="out-in">
+                  <span v-if="!hasSendCode" @click="sendCode">发送验证码</span>
+                  <input class="right-input" v-else v-model="form.code" placeholder="验证码" style="margin-top: 0" />
+                </Transition>
 
-    <template #footer>
+                <span style="margin-right: 12px" v-show="hasSendCode">{{
+                  preCode.time
+                }}</span>
+              </div>
+            </TransitionGroup>
+
+            <input class="right-input" type="password" placeholder="Password" :key="2" v-model="form.password" />
+          </TransitionGroup>
+
+          <Transition name="list">
+            <input v-if="!LoginStatus" class="right-input" type="password" placeholder="Confirm Password" :key="2"
+              v-model="form.repeatPassword" />
+          </Transition>
+
+          <Transition name="Register" mode="out-in">
+            <div v-if="LoginStatus" class="Forget-password" @click="ForgetPassword">
+              忘记密码?
+            </div>
+            <div v-else class="Forget-password">
+              <input type="checkbox" v-model="isChecked" class="codestatus" style="transform: scale(1.4)" />
+              <span class="myCheckbox">同意用户协议</span>
+            </div>
+          </Transition>
+          <TransitionGroup name="list" tag="div" class="right-button" :key="5">
+            <button v-if="LoginStatus" type="button" class="right-button-item" @click="loginFunc">
+              登录
+            </button>
+            <button class="right-button-item" @click="registerFunc">
+              注册
+            </button>
+          </TransitionGroup>
+        </TransitionGroup>
+      </form>
+    </div>
+    <el-dialog v-model="centerDialogVisible" width="30%" align-center>
+      <template #header>
+        <span class="Dialog-header">{{ DialogTitle }}</span>
+      </template>
+      <div class="flex" v-loading="loadingStatus" :element-loading-text="`R\nV\nC`">
+        <div v-if="DialogTitle == '验证码'">
+          <div class="flex" style="width: 100%">
+            <img :src="'data:image/png;base64,' + preCode.base64"
+                 style="cursor: pointer; height: 6vh; width: 30%; margin-right: 6%" @load="loadImage"
+                 @click="getPreCodeFunc" />
+            <input class="right-input loading-input" type="text" v-model="preCode.inputCode" placeholder="验证码"
+                   style="margin-top: 0; width: 50%" />
+          </div>
+        </div>
+        <div v-else style="width: 100%">
+          <div class="flex">
+            <input class="right-input loading-input" type="text" placeholder="Email address" style="width: 50%"
+                   v-model="form.email" />
+            <div class="GetCode loading-input">
+              <Transition name="Register" mode="out-in">
+                <span v-if="true" @click="sendCode('Forget Password')">{{preCode.time==0?'发送验证码':preCode.time}}</span>
+              </Transition>
+            </div>
+          </div>
+          <input class="right-input loading-input" v-model="form.code" placeholder="验证码" />
+          <input class="right-input loading-input" type="password" placeholder="Password" v-model="form.password" />
+        </div>
+      </div>
+
+      <template #footer>
       <span class="dialog-button">
         <button class="right-button-item" @click="handleComfirm">确定</button>
       </span>
-    </template>
-  </el-dialog>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <style scoped>
