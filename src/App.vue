@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutNight from './view/layout/Layout-night.vue';
+import '@/style/scss/index.scss'
 
 // import { preloadImages } from '@/utils/preload';
 

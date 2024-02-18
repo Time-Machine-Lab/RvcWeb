@@ -7,8 +7,6 @@
 <script setup lang="ts">
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
-import '@/style/scss/index.scss'
-
 </script>
 <template>
   <el-container>
@@ -27,3 +25,29 @@ import '@/style/scss/index.scss'
     <LayoutFooter></LayoutFooter>
   </el-container>
 </template>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header {
+  height: 70px;
+  width: 100%;
+  min-width: 1080px;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+}
+
+.main {
+  position: relative;
+  top: 70px;
+  height: calc(100vh - 110px);
+  padding: 0;
+  background-color: rgb(26, 27, 30);
+  overflow: hidden;
+}
+</style>
