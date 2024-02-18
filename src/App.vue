@@ -6,9 +6,7 @@
 -->
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
-import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
-import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
-import '@/style/scss/index.scss'
+import LayoutNight from './view/layout/Layout-night.vue';
 
 // import { preloadImages } from '@/utils/preload';
 
@@ -42,25 +40,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <!--  <div>-->
-  <!--    <RouterView :key="$router.currentRoute.value.query.id as string" />-->
-  <!--  </div>-->
   <div id="appVue" style="height: 100vh;width: 100vw;min-width: 1080px;">
-    <el-container>
-      <el-header class="header">
-        <LayoutHeader></LayoutHeader>
-      </el-header>
-      <el-main class="main">
-        <!-- <el-scrollbar> -->
-        <RouterView  v-slot="{Component}" >
-          <Transition name="slide-fade">
-            <component :is="Component"></component>
-          </Transition>
-        </RouterView>
-        <!-- </el-scrollbar> -->
-      </el-main>
-      <LayoutFooter></LayoutFooter>
-    </el-container>
+    <LayoutNight></LayoutNight>
   </div>
 </template>
 <style scoped>

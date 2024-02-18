@@ -1,0 +1,117 @@
+.like-pages {
+    position: relative;
+    height: 100%;
+    width: calc(100% - 40px);
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.like-pages__filter {
+    position: absolute;
+    top: -70px;
+    height: 70px;
+    width: 30%;
+    right: 0;
+}
+
+.like-pages__filter__select {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0,-50%);
+    height: 40px;
+    padding: 0 5px;
+    border-radius: 20px;
+    margin-left: 10px;
+    background-color: rgba(52, 58, 64);
+    cursor: pointer;
+    display: flex;
+    color: white;
+    transition: all 0.3s;
+    /* text-shadow: 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1), 0 0 5px rgba(255, 255, 255, 0.1); */
+    user-select: none;
+    font-family: 'ZCool';
+}
+
+.like-pages__filter__select:hover {
+    background-color: rgba(33, 37, 41);
+}
+
+.like-pages__filter__select {
+    height: 40px;
+    width: 100px;
+}
+
+.select-window {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 100px;
+    border-radius: 10px;
+    border: rgba(55, 58, 64) 1px solid;
+    background-color: rgba(37, 38, 43);
+    padding: 5px;
+    z-index: 30;
+    user-select: none;
+}
+
+.select-window__item {
+    padding-left: 15px;
+    width: calc(100% - 0px);
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: left;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-family: 'ZCool';
+}
+
+.select-window__item:hover {
+    background-color: rgba(56, 58, 64);
+}
+
+.dither-animation {
+    top: 36px;
+}
+
+.revolve-animation {
+    transform: rotateZ(180deg);
+    transform-origin: 6px 3.5px;
+}
+
+.like-pages__content {
+    position: absolute;
+    height: calc(100% - 70px);
+    width: 100%;
+    /* overflow: scroll; */
+}
+.loading {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+  background-color: rgba(44, 46, 51);
+  font-size: 20px;
+  line-height: 60px;
+  color: white;
+  font-weight: 700;
+  /* border: transparent 2px solid; */
+  /* border-top: rgba(25, 113, 194) 1px solid; */
+  border-left: rgba(25, 113, 194) 1px solid;
+  margin-bottom: 20px;
+  animation: roll 1s linear infinite;
+}
+
+@keyframes roll {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

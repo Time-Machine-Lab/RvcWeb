@@ -13,6 +13,7 @@ import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postT
 import { onActivated, ref } from 'vue';
 import { message } from '@/utils/message'
 import LoadingComponent from '@/components/common/loadingComponent.vue'
+import "@/view/modelCommunication/style/index.css"
 // import { onBeforeRouteLeave } from 'vue-router'
 defineOptions({
     name:'post-list'
@@ -111,7 +112,7 @@ const getSort = function (index: number) {
 // }
 </script>
 <template>
-    <el-scrollbar style="height: calc(100vh - 120px)">
+    <el-scrollbar>
         <div class="communicationView">
             <div class="filter-container">
                 <filterComponent @getTag="getTag" @getSort="getSort" style="font-family: 'ZCool';" :tags="tags">
@@ -130,32 +131,3 @@ const getSort = function (index: number) {
         </div>
     </el-scrollbar>
 </template>
-<style scoped>
-:deep(.el-scrollbar__wrap) {
-    background-color: transparent;
-}
-
-.communicationView {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.filter-container {
-    position: relative;
-    /* min-height: 100px; */
-    width: 100%;
-    display: flex;
-}
-
-
-.post-list {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    left: 50%;
-    margin-top: 5px;
-    transform: translate(-50%);
-}
-
-</style>
