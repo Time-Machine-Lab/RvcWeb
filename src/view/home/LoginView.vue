@@ -253,9 +253,8 @@ export default defineComponent({
         </g>
       </svg>
     </div>
-    <div class="contain flex">
+    <div class="login-contain flex">
       <div class="flex right-top">
-        <TransitionGroup name="list">
           <div class="right-title">
             <Transition  mode="out-in">
               <span v-if="LoginStatus">LOGIN</span>
@@ -265,7 +264,6 @@ export default defineComponent({
           <div @click="Return()" :key="1" class="return-btn">
             <svg xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" width="100px" height="100px"><g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(0.8, 0.8);"><g class="ldl-ani"><g class="ldl-layer"><g class="ldl-ani" style="transform: scale(0.91); transform-origin: 50px 50px; animation: 1.11111s linear -0.740741s infinite normal forwards running breath-22a0af47-da9e-4e12-81ea-61c54fa6b026;"><circle stroke-miterlimit="10" stroke-width="8" stroke="#333" fill="none" r="40" cy="50" cx="50" style="stroke: rgba(161,164,196,0.96);"></circle></g></g><g class="ldl-layer"><g class="ldl-ani" style="transform: scale(0.91); transform-origin: 50px 50px; animation: 1.11111s linear -0.925926s infinite normal forwards running breath-22a0af47-da9e-4e12-81ea-61c54fa6b026;"><path fill="#77a4bd" d="M75 54.9l-7.8-8.2-8.2 7.7 4.5.1c-1.6 4.8-5.7 8.5-10.8 9.5-3.7.7-7.5 0-10.7-2.2l-3.7 5.5c3.5 2.3 7.5 3.6 11.6 3.6 1.3 0 2.7-.1 4-.4 8.1-1.6 14.4-7.7 16.3-15.7l4.8.1z" style="fill: rgb(255,182,182);"></path></g></g><g class="ldl-layer"><g class="ldl-ani" style="transform: scale(0.91); transform-origin: 50px 50px; animation: 1.11111s linear -1.11111s infinite normal forwards running breath-22a0af47-da9e-4e12-81ea-61c54fa6b026;"><path fill="#a0c8d7" d="M46 29.5c-8.1 1.6-14.4 7.7-16.3 15.7l-4.7-.1 7.8 8.2 8.2-7.8-4.5-.1c1.6-4.8 5.7-8.5 10.8-9.5 3.7-.7 7.5 0 10.7 2.2l3.7-5.5c-4.7-3-10.2-4.1-15.7-3.1z" style="fill: rgb(238,163,208);"></path></g></g></g></g></svg>
           </div>
-        </TransitionGroup>
       </div>
       <form class="right">
         <TransitionGroup name="list">
@@ -302,7 +300,7 @@ export default defineComponent({
               <span class="myCheckbox"><router-link to="/service" target="_blank" class="myCheckbox">同意《用户协议》</router-link></span>
             </div>
           </Transition>
-          <TransitionGroup name="list" tag="div" class="login-button" :key="5">
+          <TransitionGroup name="list" tag="div" class="login-btn" :key="5">
             <button v-if="LoginStatus" type="button" class="right-button" @click="loginFunc">
               登录
             </button>
