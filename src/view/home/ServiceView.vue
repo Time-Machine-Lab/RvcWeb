@@ -217,7 +217,7 @@ export default defineComponent({
 <style scoped>
 .home{
   width:100%;
-  height:100vh;
+  height:100%;
   background-color: rgb(66, 66, 68);
 }
 .contain{
@@ -232,10 +232,11 @@ export default defineComponent({
 }
 .contain-text{
   position: relative;
+  bottom: 60px;
   overflow: scroll;
   text-align: left;
   width:90%;
-  height:90%;
+  height:80%;
   color: #e0e0e0;
 }
 h1{
