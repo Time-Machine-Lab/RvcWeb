@@ -1,0 +1,29 @@
+:deep(.el-scrollbar__wrap) {
+    background-color: transparent;
+}
+el-scrollbar {
+    height: calc(100vh - 120px)
+}
+.communicationView {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.filter-container {
+    position: relative;
+    /* min-height: 100px; */
+    width: 100%;
+    display: flex;
+}
+
+
+.post-list {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    left: 50%;
+    margin-top: 5px;
+    transform: translate(-50%);
+}
+

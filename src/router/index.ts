@@ -56,7 +56,7 @@ router.beforeEach((to,_from,next)=>{
         }
     } else if(to.meta.isAuth&&to.meta.isAuth==false){
         if(storage.get<string>('token')){
-            router.push('posts')
+            router.push('/rvc/posts')
         }
     } else {
         next()
