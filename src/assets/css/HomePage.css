@@ -5,11 +5,12 @@
 }
 .intro {
   background: #212121;
-  position: absolute;
+  top:0;
   display: flex;
   flex-flow: column;
-  width: 100%;
-  overflow: hidden;
+  width: 100vw;
+  height:1000vh;
+  overflow: scroll;
 }
 .intro-back{
   position: fixed;

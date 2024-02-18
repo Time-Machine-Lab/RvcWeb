@@ -174,6 +174,6 @@ onMounted(() => {
 //   }, 15000);
 // });
 </script>
-<style lang="scss" scoped>
-@import "@/style/scss/intro/_intro.scss";
+<style scoped>
+@import "@/assets/css/HomePage.css";
 </style>
