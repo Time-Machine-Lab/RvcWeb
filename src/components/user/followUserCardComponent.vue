@@ -9,7 +9,6 @@ import { followUser } from '@/api/user/userApi';
 import { UserInfoVO } from '@/api/user/userTypes'
 import { message } from '@/utils/message';
 import { ref } from 'vue';
-import "@/components/user/style/followUserCard.css"
 const props = defineProps<{
   user: UserInfoVO;
 }>();
@@ -58,3 +57,6 @@ let hasFollow = ref(true)
     </div>
   </div>
 </template>
+<style scoped>
+@import "@/components/user/style/followUserCard.css";
+</style>

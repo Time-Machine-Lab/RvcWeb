@@ -139,7 +139,6 @@ const handleBlur = function () {
         <userStatus></userStatus>
       </div>
     </div>
-
   </div>
 </template>
 <style scoped>

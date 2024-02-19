@@ -7,7 +7,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import LayoutNight from './view/layout/Layout-night.vue';
-import '@/style/scss/index.scss'
 
 // import { preloadImages } from '@/utils/preload';
 
@@ -46,6 +45,7 @@ onBeforeMount(async () => {
   </div>
 </template>
 <style scoped>
+@import '@/style/scss/index.scss';
 @import url("https://fonts.googleapis.com/css2?family=Titan+One&display=swap");
 
 @font-face {
