@@ -5,7 +5,7 @@
  * @FilePath: \RvcWeb\src\view\modelCommunication\indexView.vue
 -->
 <script lang="ts" setup>
-import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue'
+import postCardComponentWaterFall from '@/components/modelCommunication/postCardComponent-waterFall.vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import filterComponent from '@/components/common/filterComponent.vue'
 import { getPostType, getPosts } from '@/api/post/postApi'
@@ -123,8 +123,8 @@ const getSort = function (index: number) {
                     description="这里空空如也~" image="/icon/empty.svg" />
                 <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
                     :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false" ref="waterFallComponentRef">
-                    <postCardComponentB v-for="(post,index) in posts" :post="post" :key="post.postId" v-show="waterFallComponentRef.visibility[index]">
-                    </postCardComponentB>
+                    <postCardComponentWaterFall v-for="(post,index) in posts" :post="post" :key="post.postId" v-show="waterFallComponentRef.visibility[index]">
+                    </postCardComponentWaterFall>
                 </waterFallComponent>
                 <LoadingComponent :diameter="60" :loading="disabled"></LoadingComponent>
             </div>

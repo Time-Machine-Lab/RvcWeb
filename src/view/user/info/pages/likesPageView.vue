@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
-import postCardComponentB from '@/components/modelCommunication/postCardComponentB.vue';
+import postCardComponentWaterFall from '@/components/modelCommunication/postCardComponent-waterFall.vue';
 import { PostVo, UserLikePostForm } from '@/api/post/postType';
 import { getUserLikePosts } from '@/api/post/postApi';
 import { message } from '@/utils/message';
 import { RvcModelVo, UserLikeModelForm } from '@/api/rvcModel/modelType';
 import { getUserLikeModels } from '@/api/rvcModel/userApi.ts';
-import ModelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue';
+import modelCardComponent from '@/components/rvcModel/modelCardComponent.vue';
 import "@/view/user/info/style/likesPage.css"
 const postWaterFallComponentRef = ref<any>()
 const modelWaterFallComponentRef = ref<any>()
@@ -155,11 +155,11 @@ const loadModel = function () {
             <el-empty :image-size="200" v-if="empty&&(posts.length == 0&&currentSelectIndex == 0||models.length ==0&&currentSelectIndex == 1)" style="font-family: 'ZCool';" description="这里空空如也~" image="/icon/empty.svg" />
             <waterFallComponent :min-width="280" v-infinite-scroll="loadPost" infinite-scroll-distance="100"
                 :infinite-scroll-immediate="true" v-if="currentSelectIndex == 0" ref="postWaterFallComponentRef">
-                <postCardComponentB v-for="(post, index) in posts" :post="post" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></postCardComponentB>
+                <postCardComponentWaterFall v-for="(post, index) in posts" :post="post" style="" :key="index" v-show="postWaterFallComponentRef.visibility[index]"></postCardComponentWaterFall>
             </waterFallComponent>
             <waterFallComponent v-infinite-scroll="loadModel"  v-if="currentSelectIndex == 1"  infinite-scroll-distance="100"
                 :infinite-scroll-immediate="true" ref="modelWaterFallComponentRef">
-                <ModelCardComponentB v-for="(model, index) in models" :model="model" style="" :key="index" v-show="modelWaterFallComponentRef.visibility[index]"></ModelCardComponentB>
+                <modelCardComponent v-for="(model, index) in models" :model="model" style="" :key="index" v-show="modelWaterFallComponentRef.visibility[index]"></modelCardComponent>
             </waterFallComponent>
             <div class="loading" v-if="loading"></div>
         </div>

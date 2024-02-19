@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import modelCardComponentB from '@/components/rvcModel/modelCardComponentB.vue'
+import modelCardComponent from '@/components/rvcModel/modelCardComponent.vue'
 import waterFallComponent from '@/components/layout/waterFallComponent.vue'
 import { getModels, getModelsByType, getModelType } from '@/api/rvcModel/modelApi'
 import { RvcModelVo, ModelListForm, ModelType, ModelListType } from '@/api/rvcModel/modelType'
@@ -169,7 +169,7 @@ const refresh = () => {
           description="这里空空如也~" image="/icon/empty.svg" />
         <waterFallComponent :minWidth="320" v-infinite-scroll="load" infinite-scroll-distance="100"
           :infinite-scroll-disabled="disabled" :infinite-scroll-immediate="false" ref="waterFallComponentRef">
-          <modelCardComponentB v-for="(model, index) in models" :model="model" :key="index"  v-show="waterFallComponentRef.visibility[index]"></modelCardComponentB>
+          <modelCardComponent v-for="(model, index) in models" :model="model" :key="index"  v-show="waterFallComponentRef.visibility[index]"></modelCardComponent>
         </waterFallComponent>
         <div class="loading" v-if="disabled">
 
