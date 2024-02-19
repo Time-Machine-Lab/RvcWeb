@@ -10,7 +10,6 @@ import { UserInfoVO } from "@/api/user/userTypes";
 import { ref } from "vue";
 import { getUserInfoById, followUser } from "@/api/user/userApi.js";
 // import { useUserStore } from "@/view/user/info/userStore.js";
-import "@/view/user/info/style/baseInfo.css"
 import router from "@/router/index.ts";
 import { storage } from "@/utils/storage";
 import { message } from "@/utils/message";
@@ -171,3 +170,6 @@ setTimeout(function () {
     </el-drawer>
   </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/baseInfo.css"
+</style>

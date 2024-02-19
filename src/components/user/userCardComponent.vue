@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { UserInfoVO } from '@/api/user/userTypes';
 import router from '@/router';
-import "@/components/user/style/userCard.css"
 const props = defineProps<{
     user: UserInfoVO
 }>()
@@ -34,3 +33,6 @@ const routerGo = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/user/style/userCard.css";
+</style>

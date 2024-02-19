@@ -11,7 +11,6 @@ import { storage } from "@/utils/storage";
 import BaseInfo from "@/view/user/info/pages/baseInfo.vue";
 import { useUserStore } from "@/view/user/info/userStore.js";
 import { onBeforeRouteUpdate } from "vue-router";
-import "@/view/user/info/style/userPage.css"
 
 const userStore = useUserStore();
 
@@ -104,3 +103,6 @@ onBeforeRouteUpdate((to, from, next) => {
     </div>
   </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/userPage.css";
+</style>

@@ -10,7 +10,6 @@ import { CommentVo, CommentChildrenListForm } from '@/api/post/postType'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { getChildComments } from '@/api/post/postApi';
-import "@/components/modelCommunication/style/comments.css"
 let props = defineProps<{
     commentList: CommentVo[]
 }>()
@@ -131,3 +130,6 @@ defineExpose({
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/modelCommunication/style/comments.css";
+</style>

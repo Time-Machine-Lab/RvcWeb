@@ -12,7 +12,6 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 import router from '@/router';
-import "@/components/user/style/userStatus.css"
 const userStore = useUserStore()
 let userProfile = ref<UserInfoVO>()
 let userStatusVisibility = ref(false)
@@ -85,3 +84,6 @@ const logoutFunc = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/user/style/userStatus.css";
+</style>

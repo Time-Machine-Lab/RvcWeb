@@ -10,7 +10,6 @@ import { editUserInfo, getUpdatePasswordCode, getPreCode, updatePassword, upload
 import { UserInfoVO, ProfileForm, EmailCodeForm, UpdatePasswordForm } from "@/api/user/userTypes";
 import { message } from "@/utils/message";
 import router from "@/router";
-import "@/view/user/info/style/editProfile.css"
 const props = defineProps<{
   userProfile: UserInfoVO;
 }>();
@@ -325,3 +324,6 @@ getPreCodeFunc()
     </div>
   </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/editProfile.css";
+</style>

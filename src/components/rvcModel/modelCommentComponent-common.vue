@@ -14,7 +14,6 @@ import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/comme
 import { useUserStore } from "@/view/user/info/userStore.js";
 import modelCommentComponentWaterFall from './modelCommentComponent-waterFall.vue';
 import { storage } from '@/utils/storage';
-import "@/components/rvcModel/style/modelComment-common.css"
 const userStore = useUserStore();
 const props = defineProps<{
     comment: ModelComment
@@ -272,3 +271,6 @@ const refresh = () => {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/rvcModel/style/modelComment-common.css";
+</style>

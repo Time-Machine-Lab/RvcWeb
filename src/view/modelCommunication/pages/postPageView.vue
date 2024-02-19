@@ -19,7 +19,6 @@ import { storage } from "@/utils/storage";
 import { useUserStore } from '@/view/user/info/userStore.js'
 import { UserInfoVO } from "@/api/user/userTypes";
 import { Editor } from '@wangeditor/editor-for-vue'
-import "@/view/modelCommunication/style/postPage.css"
 // import { onBeforeRouteLeave } from "vue-router"
 const scrollbarRef = ref<any>()
 const userStore = useUserStore()
@@ -428,3 +427,6 @@ const getUrl = function (url: string) {
         </div>
     </el-scrollbar>
 </template>
+<style scoped>
+@import "@/view/modelCommunication/style/postPage.css";
+</style>

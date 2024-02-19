@@ -8,7 +8,6 @@ import { message } from '@/utils/message';
 import { RvcModelVo, UserLikeModelForm } from '@/api/rvcModel/modelType';
 import { getUserLikeModels } from '@/api/rvcModel/userApi.ts';
 import modelCardComponent from '@/components/rvcModel/modelCardComponent.vue';
-import "@/view/user/info/style/likesPage.css"
 const postWaterFallComponentRef = ref<any>()
 const modelWaterFallComponentRef = ref<any>()
 let selectOptions = ref(['贴子', '模型'])
@@ -165,3 +164,6 @@ const loadModel = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/likesPage.css";
+</style>

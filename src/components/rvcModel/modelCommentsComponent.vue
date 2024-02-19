@@ -14,7 +14,6 @@ import { message } from '@/utils/message'
 import { storage } from '@/utils/storage'
 import { useUserStore } from '@/view/user/info/userStore.js'
 import LoadingComponent from '../common/loadingComponent.vue'
-import "@/components/rvcModel/style/modelComments.css"
 const userStore = useUserStore()
 const props = defineProps<{
     modelId: string
@@ -155,3 +154,6 @@ onMounted(() => {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/rvcModel/style/modelComments.css";
+</style>
