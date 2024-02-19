@@ -5,7 +5,6 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 import router from '@/router';
-import "@/components/modelCommunication/style/postCardComponent-waterFall.css"
 let props = defineProps<{
     post: PostVo
 }>()
@@ -188,3 +187,6 @@ const editPost = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/modelCommunication/style/postCardComponent-waterFall.css";
+</style>

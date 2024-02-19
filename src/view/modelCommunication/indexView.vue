@@ -13,7 +13,6 @@ import { PostVo, RvcCommunicationPostType, PostListForm } from '@/api/post/postT
 import { onActivated, ref } from 'vue';
 import { message } from '@/utils/message'
 import LoadingComponent from '@/components/common/loadingComponent.vue'
-import "@/view/modelCommunication/style/index.css"
 // import { onBeforeRouteLeave } from 'vue-router'
 defineOptions({
     name:'post-list'
@@ -131,3 +130,6 @@ const getSort = function (index: number) {
         </div>
     </el-scrollbar>
 </template>
+<style scoped>
+@import "@/view/modelCommunication/style/index.css";
+</style>

@@ -5,7 +5,6 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from "@/utils/storage.ts";
 import router from "@/router";
-import "@/components/rvcModel/style/modelCard.css"
 let props = defineProps<{
     model: RvcModelVo
 }>()
@@ -186,3 +185,6 @@ const editModel = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/components/rvcModel/style/modelCard.css";
+</style>

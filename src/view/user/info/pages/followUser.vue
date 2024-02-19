@@ -12,7 +12,6 @@ import router from "@/router/index.ts";
 import { ref } from "vue";
 import { storage } from '@/utils/storage';
 import { message } from '@/utils/message';
-import "@/view/user/info/style/followUser.css"
 let followUsers = ref<UserInfoVO[]>();
 let loading = ref(false)
 let loaded = ref(false)
@@ -51,3 +50,6 @@ const scroll = function () {
     </el-scrollbar>
   </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/followUser.css";
+</style>

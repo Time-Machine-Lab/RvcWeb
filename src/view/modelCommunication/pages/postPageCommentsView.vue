@@ -76,4 +76,5 @@ defineExpose({
         :comment-list="commentList" :key="commentList.length">
     </commentsComponent>
 </template>
-<style scoped></style>
+<style scoped>
+</style>

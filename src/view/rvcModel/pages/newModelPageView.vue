@@ -7,7 +7,6 @@ import { uploadImages } from '@/api/rvcModel/fileApi.ts'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import router from '@/router';
-import "@/view/rvcModel/style/newModel.css"
 // import { UploadInstance } from 'element-plus/es/components/upload/src/upload';
 let typeOptions = ref(['RVC'])
 let typeSelectvisibility = ref(false)
@@ -389,3 +388,6 @@ const submit = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/view/rvcModel/style/newModel.css";
+</style>

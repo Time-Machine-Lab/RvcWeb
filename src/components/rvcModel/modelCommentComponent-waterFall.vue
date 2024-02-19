@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ModelChildComment, CommentAddForm, LikeCommentForm } from '@/api/rvcModel/modelType'
-import { commentAdd, likeComments } from '@/api/rvcModel/commentApi.ts'
+import { commentAdd, likeComments } from '@/api/rvcModel/commentApi'
 import { message } from '@/utils/message';
 let props = defineProps<{
     comment: ModelChildComment,
@@ -146,5 +146,5 @@ const parseUrl = function (str: string) {
     </div>
 </template>
 <style scoped>
-@import "./style/modelComment-waterFall.css";
+@import "@/components/rvcModel/style/modelComment-waterFall.css";
 </style>

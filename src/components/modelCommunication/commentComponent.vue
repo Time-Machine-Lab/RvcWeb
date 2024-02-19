@@ -5,7 +5,6 @@ import { commentAdd, likeComment } from '@/api/post/postApi'
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 import { useUserStore } from '@/view/user/info/userStore.js'
-import "@/components/modelCommunication/style/comment.css"
 const userStore = useUserStore()
 let props = defineProps<{
   comment: CommentVo,
@@ -187,3 +186,6 @@ const parseUrl = function (str: string) {
     </div>
   </div>
 </template>
+<style scoped>
+@import "@/components/modelCommunication/style/comment.css";
+</style>
