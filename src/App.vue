@@ -69,25 +69,6 @@ onBeforeMount(async () => {
   list-style: none;
 }
 
-.header {
-  height: 70px;
-  width: 100%;
-  min-width: 1080px;
-  position: fixed;
-  margin: 0;
-  padding: 0;
-  z-index: 2;
-}
-
-.main {
-  position: relative;
-  top: 70px;
-  height: calc(100vh - 110px);
-  padding: 0;
-  background-color: rgb(26, 27, 30);
-  overflow: hidden;
-}
-
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }

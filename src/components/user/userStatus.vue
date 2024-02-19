@@ -12,6 +12,7 @@ import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { storage } from '@/utils/storage';
 import router from '@/router';
+import "@/components/user/style/userStatus.css"
 const userStore = useUserStore()
 let userProfile = ref<UserInfoVO>()
 let userStatusVisibility = ref(false)
@@ -84,92 +85,3 @@ const logoutFunc = function () {
         </div>
     </div>
 </template>
-<style scoped>
-.user-status {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    border-left: rgba(255, 255, 255, 0.1) 1px solid;
-
-}
-
-.user-status .login-button {
-    position: relative;
-    height: 30px;
-    width: 70px;
-    background-color: transparent;
-    border: rgba(237, 130, 201) 1px solid;
-    left: 50%;
-    top: 50%;
-    color: rgba(237, 130, 201);
-    transform: translate(-50%, -50%);
-    line-height: 30px;
-    font-weight: 700;
-    border-radius: 8px;
-    user-select: none;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.user-status .login-button:hover {
-    border: rgba(217, 110, 181) 1px solid;
-    color: rgba(217, 110, 181);
-}
-
-.user-status .avatar-container {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    left: 50%;
-    top: 50%;
-    cursor: pointer;
-    border-radius: 20px;
-    /* overflow: hidden; */
-    transform: translate(-50%, -50%);
-}
-
-.user-status .avatar {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    border-radius: 20px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: all 0.5s;
-}
-
-.user-more {
-    position: absolute;
-    top: 65px;
-    right: 0px;
-    width: 200px;
-    border-radius: 5px;
-    border: rgba(55, 58, 64) 1px solid;
-    background-color: rgba(37, 38, 43);
-    padding: 5px;
-    z-index: 10;
-    user-select: none;
-}
-
-.user-more__item {
-    padding-left: 15px;
-    width: calc(100% - 0px);
-    height: 50px;
-    font-size: 14px;
-    border-radius: 5px;
-    text-align: left;
-    color: rgba(255, 255, 255, 0.7);
-    font-family: 'ZCool';
-}
-
-.user-more__item:hover {
-    background-color: rgba(56, 58, 64);
-    cursor: pointer;
-}
-
-/* .user-status .avatar:hover {
-    scale: 1.1;
-} */
-</style>

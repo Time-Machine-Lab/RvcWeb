@@ -10,6 +10,7 @@ import { CommentVo, CommentChildrenListForm } from '@/api/post/postType'
 import { ref } from 'vue';
 import { message } from '@/utils/message';
 import { getChildComments } from '@/api/post/postApi';
+import "@/components/modelCommunication/style/comments.css"
 let props = defineProps<{
     commentList: CommentVo[]
 }>()
@@ -130,37 +131,3 @@ defineExpose({
         </div>
     </div>
 </template>
-  
-  
-<style scoped>
-* {
-    text-align: left;
-}
-
-.Comments {
-    /* height: 85%; */
-    width: 100%;
-    margin: auto;
-    bottom: 0;
-}
-
-.info {
-    height: 50px;
-    line-height: 50px;
-    font-size: 16px;
-    color: white;
-    text-align: left;
-}
-
-.showMore {
-    position: relative;
-    width: 90%;
-    text-align: center;
-    font-size: 12px;
-    height: 30px;
-    line-height: 30px;
-    cursor: pointer;
-    color: white;
-}
-</style>
-  

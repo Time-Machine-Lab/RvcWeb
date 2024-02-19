@@ -7,9 +7,11 @@
 <script setup lang="ts">
 import LayoutHeader from '@/view/layout/header/layoutHeader.vue'
 import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
+import '@/style/scss/index.scss'
+
 </script>
 <template>
-  <el-container>
+  <el-container style="height: 100%;">
     <el-header class="header">
       <LayoutHeader></LayoutHeader>
     </el-header>
@@ -25,7 +27,7 @@ import LayoutFooter from '@/view/layout/footer/layoutFooter.vue'
     <LayoutFooter></LayoutFooter>
   </el-container>
 </template>
-<style>
+<style scoped>
 * {
   margin: 0;
   padding: 0;

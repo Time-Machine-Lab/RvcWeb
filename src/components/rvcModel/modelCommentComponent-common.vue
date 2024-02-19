@@ -12,8 +12,9 @@ import { message } from '@/utils/message';
 import { ref } from 'vue';
 import { getChildComments, likeComments, commentAdd } from '@/api/rvcModel/commentApi.ts';
 import { useUserStore } from "@/view/user/info/userStore.js";
-import ModelCommentComponentB from './modelCommentComponentB.vue';
+import modelCommentComponentWaterFall from './modelCommentComponent-waterFall.vue';
 import { storage } from '@/utils/storage';
+import "@/components/rvcModel/style/modelComment-common.css"
 const userStore = useUserStore();
 const props = defineProps<{
     comment: ModelComment
@@ -226,8 +227,8 @@ const refresh = () => {
             </div>
             <div class="child-comments" v-infinite-scroll="loadChildComment" infinite-scroll-distance="20"
                 :infinite-scroll-disabled="childCommentDisabled" :infinite-scroll-immediate="true">
-                <ModelCommentComponentB v-for="(comment, index) in childComments" :key="comment.id" :comment="comment"
-                    :index="index"></ModelCommentComponentB>
+                <modelCommentComponentWaterFall v-for="(comment, index) in childComments" :key="comment.id" :comment="comment"
+                    :index="index"></modelCommentComponentWaterFall>
             </div>
         </el-dialog>
         <div class="model-comment__center">
@@ -271,184 +272,3 @@ const refresh = () => {
         </div>
     </div>
 </template>
-<style scoped>
-.model-comment {
-    width: 280px;
-    background-color: rgba(37, 38, 43);
-    border-radius: 10px;
-    border: rgba(55, 58, 64) 1px solid;
-}
-
-.user-info {
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    width: 80%;
-    height: 80px;
-}
-
-.comment-content {
-    width: calc(100%);
-    word-break: break-all;
-    color: rgba(193, 194, 197);
-    font-size: 14px;
-    margin-top: 50px;
-    text-align: left;
-}
-
-.model-comment__center {
-    margin: 15px;
-}
-
-.comment-buttons {
-    height: 25px;
-    width: 100%;
-    display: flex;
-}
-
-.dialog-input {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.input {
-    outline: none;
-    width: calc(100% - 30px);
-    height: 50px;
-    line-height: 50px;
-    padding: 0 15px;
-    background-color: rgba(26, 27, 30);
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    border: rgba(55, 58, 64) 1px solid;
-}
-
-.button-group {
-    margin-top: 10px;
-    position: relative;
-    height: 50px;
-    width: 100%;
-    text-align: right;
-}
-
-.button-group__item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 0;
-    height: 30px;
-    width: 70px;
-    color: white;
-    font-size: 15px;
-    font-family: ZCool;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: rgba(51, 154, 240);
-}
-
-.button-group__item:hover {
-    background-color: rgb(33, 132, 224);
-}
-
-.child-comments {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.model-comment__center__top {
-    height: 40px;
-    width: 100%;
-    display: flex;
-}
-
-.model-comment__center__content {
-    width: calc(100% - 10px);
-    padding: 10px 5px;
-    word-wrap: break-word;
-    text-align: left;
-    font-size: 12px;
-    color: rgba(193, 194, 197);
-}
-
-.model-comment__center__bottom {
-    height: 25px;
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    border-top: solid 1px #727272;
-}
-
-.status-item {
-    margin-top: 5px;
-    height: 20px;
-    display: flex;
-    /* width: 35%; */
-    padding: 0px 5px;
-    cursor: pointer;
-    border-radius: 10px;
-
-    span {
-        margin-top: 1%;
-    }
-}
-
-.status-item:hover {
-    background-color: rgba(46, 48, 54);
-}
-
-.status-item span {
-    display: inline-block;
-    font-weight: 700;
-    height: 20px;
-    font-size: 12px;
-    line-height: 20px;
-    margin-left: 4px;
-    font-family: 仿宋;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.more {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 25px;
-    right: 10px;
-    cursor: pointer;
-}
-
-.more-window {
-    position: absolute;
-    right: 30px;
-    top: 50px;
-    width: 70px;
-    border-radius: 10px;
-    border: rgba(55, 58, 64) 1px solid;
-    background-color: rgba(37, 38, 43);
-    padding: 5px;
-    z-index: 10;
-    user-select: none;
-}
-
-.more-window__item {
-    padding-left: 15px;
-    width: calc(100% - 0px);
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    text-align: left;
-    border-radius: 5px;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.more-window__item:hover {
-    background-color: rgba(56, 58, 64);
-    cursor: pointer;
-}
-
-.dither-animation {
-    top: 26px;
-}
-</style>

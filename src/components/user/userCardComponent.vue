@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { UserInfoVO } from '@/api/user/userTypes';
 import router from '@/router';
-
+import "@/components/user/style/userCard.css"
 const props = defineProps<{
     user: UserInfoVO
 }>()
@@ -34,82 +34,3 @@ const routerGo = function () {
         </div>
     </div>
 </template>
-<style scoped>
-.user-card {
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    display: flex;
-}
-
-.user-card__info {
-    height: 80%;
-    width: 80%;
-    display: flex;
-}
-
-.user-card__info__avatar {
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    cursor: pointer;
-}
-
-.user-card__info__text {
-    width: calc(100% - 20px);
-    height: 100%;
-}
-
-.user-card__info__text__username {
-    padding: 0 5px;
-    width: calc(100% - 10px);
-    height: 50%;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: left;
-    font-weight: 500;
-    cursor: pointer;
-    color: rgba(144, 146, 150);
-}
-
-.user-card__info__text__creatAt {
-    padding: 0 5px;
-    width: calc(100% - 10px);
-    height: 50%;
-    font-size: 10px;
-    text-align: left;
-    word-wrap: normal;
-    color: rgba(144, 146, 150);
-
-}
-
-.user-card__button {
-    height: 100%;
-    width: 20%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.user-card__button__item {
-    position: relative;
-    display: inline-block;
-    height: 25px;
-    padding: 0 15px;
-    line-height: 25px;
-    font-size: 12px;
-    color: white;
-    border-radius: 12px;
-    cursor: pointer;
-}
-
-.follow {
-    background-color: rgba(25, 113, 194)
-}
-
-.follow:hover {
-    background-color: rgba(24, 100, 171);
-}
-</style>
