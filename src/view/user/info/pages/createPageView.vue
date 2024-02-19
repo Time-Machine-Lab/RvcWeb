@@ -8,7 +8,6 @@ import { message } from '@/utils/message'
 import { RvcModelVo, UserCreateModelForm } from '@/api/rvcModel/modelType'
 import { getUserCreateModels } from '@/api/rvcModel/userApi.ts'
 import modelCardComponent from '@/components/rvcModel/modelCardComponent.vue'
-import "@/view/user/info/style/createPage.css"
 const postWaterFallComponentRef = ref<any>()
 const modelWaterFallComponentRef = ref<any>()
 let selectOptions = ref(['贴子', '模型'])
@@ -163,3 +162,6 @@ const loadModel = function () {
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/view/user/info/style/createPage.css";
+</style>

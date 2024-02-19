@@ -9,19 +9,16 @@
 import userCardComponent from '@/components/user/userCardComponent.vue'
 // import suggestedModelsComponent from '@/components/rvcModel/suggestedModelsComponent.vue'
 import modelCommentsComponent from '@/components/rvcModel/modelCommentsComponent.vue'
-import "@/assets/css/post/postContent.css"
 import { getModelDetails } from "@/api/rvcModel/modelApi"
 import { getModelFiles } from "@/api/rvcModel/fileApi.ts"
 import { favoriteModel, collectModel } from '@/api/rvcModel/modelApi'
 import { ref } from "vue";
 import router from "@/router";
 import { FavoriteAndCollectionForm, ModelVo } from "@/api/rvcModel/modelType";
-import "@/assets/css/post/postContent.css"
 import { message } from "@/utils/message";
 import { ElMessageBox } from 'element-plus'
 import { UserInfoVO } from '@/api/user/userTypes';
 import { onBeforeRouteLeave } from 'vue-router'
-import "@/view/rvcModel/style/modelPage.css"
 onBeforeRouteLeave((to, _from, next) => {
     setTimeout(() => {
         if (to.fullPath.substring(1) == location.origin + '/' || to.matched.length != 0) {
@@ -447,3 +444,7 @@ const handlePicture = function (htmlString: string) {
         <modelCommentsComponent :model-id="(router.currentRoute.value.query.id as string)"></modelCommentsComponent>
     </el-scrollbar>
 </template>
+<style scoped>
+@import "@/view/rvcModel/style/modelPage.css";
+@import "@/assets/css/post/postContent.css";
+</style>

@@ -5,7 +5,6 @@ import { GetPostDetailsForm, PostForm, RvcCommunicationPostType } from '@/api/po
 import { getPostType, postAdd, getPostDetails, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import router from '@/router'
-import "@/view/modelCommunication/style/editPost.css"
 import { message } from '@/utils/message'
 let tagsOption = ref<{
     value: string | undefined
@@ -253,3 +252,6 @@ loadOldPost()
         </div>
     </div>
 </template>
+<style scoped>
+@import "@/view/modelCommunication/style/editPost.css";
+</style>

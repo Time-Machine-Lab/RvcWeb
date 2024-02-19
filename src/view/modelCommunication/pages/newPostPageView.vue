@@ -6,7 +6,6 @@ import { getPostType, postAdd, uploadPicture } from '@/api/post/postApi'
 import { ref } from 'vue'
 import { storage } from '@/utils/storage'
 import { message } from '@/utils/message'
-import "@/view/modelCommunication/style/newPost.css"
 import router from '@/router'
 let tagsOption = ref<{
   value: string | undefined
@@ -253,3 +252,6 @@ loadDraft()
     </div>
   </div>
 </template>
+<style scoped>
+@import "@/view/modelCommunication/style/newPost.css";
+</style>

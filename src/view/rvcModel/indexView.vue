@@ -5,8 +5,6 @@ import { getModels, getModelsByType, getModelType } from '@/api/rvcModel/modelAp
 import { RvcModelVo, ModelListForm, ModelType, ModelListType } from '@/api/rvcModel/modelType'
 import { onActivated, ref } from 'vue';
 import { message } from '@/utils/message'
-import "@/view/rvcModel/style/index.css"
-
 const models = ref<RvcModelVo[]>([])
 models.value = []
 const waterFallComponentRef = ref<any>()
@@ -178,3 +176,6 @@ const refresh = () => {
     </div>
   </el-scrollbar>
 </template>
+<style scoped>
+@import "@/view/rvcModel/style/index.css";
+</style>
