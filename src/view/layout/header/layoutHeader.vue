@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import userStatus from "@/components/user/userStatus.vue"
 import searchComponent from "@/components/common/searchComponent.vue"
-import { ref } from "vue";
+import {ref} from "vue";
 import router from "@/router";
 let clickBell = ref(false)
 let msgVisibility = ref(false)
@@ -43,6 +43,7 @@ const handleBlur = function () {
     selectVisibility.value = false
   }, 200)
 }
+
 </script>
 <template>
   <div class="header">
