@@ -114,11 +114,11 @@ input:-webkit-autofill{
     transition-duration: 0.2s;
   }
 }
-.codestatus{
+.codeStatus{
   cursor: pointer;
 }
 /* 添加用户隐私同意动画效果 */
-.codestatus:checked {
+.codeStatus:checked {
   animation: scaleUp 0.3s ease;
   /* 设置动画效果，可以根据需要调整动画时长和缓动函数 */
 }
@@ -181,7 +181,6 @@ input:-webkit-autofill{
   background-color: #897bbb;
   color: #ffffff;
 }
-
 .GetCode:hover {
   background-color: #7769ab;
 }
@@ -191,10 +190,29 @@ input:-webkit-autofill{
   font-size: 46px;
   letter-spacing: 2px;
 }
-
-/* 弹窗input样式 */
+.code{
+  justify-content: space-around;
+  width:350px;
+  height:80px;
+}
 .loading-input {
-  background-color: #eceff7 !important;
+  width: 50%;
+  height: 60px;
+  font-size: 16px;
+  font-family: 微软雅黑;
+  border: solid 2px #d3cee7;
+  border-radius: 10px;
+  color: rgb(58, 58, 58);
+  /*-webkit-text-fill-color: #000000;*/
+  padding:20px
+  /* transition: 0.6s; */
+}
+.loading-input:focus {
+  outline: none;
+  border: solid 2px #897bbb;
+}
+.loading-input::placeholder{
+  color: rgb(140, 140, 140);
 }
 
 

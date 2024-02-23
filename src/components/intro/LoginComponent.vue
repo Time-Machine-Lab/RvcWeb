@@ -32,8 +32,28 @@ let preCode = {
   inputCode: "",
   time: 0,
 }
-let emailType = ref(0);
-let preCodeDisabled = ref(false);
+let emailType = ref(1);
+
+// 登陆注册转换
+let Return = () => {
+  if (!LoginStatus.value) {
+    // 登录
+    form.password = ""
+    form.repeatPassword = ""
+    form.code = ""
+    form.email = ""
+    LoginStatus.value = true
+    emailType.value = 1
+  } else {
+    // 注册
+    form.password = ""
+    form.repeatPassword = ""
+    form.code = ""
+    form.email = ""
+    LoginStatus.value = false
+    emailType.value = 0
+  }
+};
 // 登录
 let loginFunc = () => {
   if (!form.email) {
@@ -63,18 +83,22 @@ let loginFunc = () => {
     }
   });
 };
-
+// 注册
 let registerFunc = () => {
+  if (!form.email) {
+    message.warning("请输入邮箱");
+    return;
+  }
+  if (!form.code) {
+    message.warning("请验证邮箱");
+    return;
+  }
   if (!form.password || !form.repeatPassword) {
     message.warning("请输入密码");
     return;
   }
   if (form.password !== form.repeatPassword) {
     message.warning("两次密码输入不一致");
-    return;
-  }
-  if (!form.code) {
-    message.warning("请输入验证码");
     return;
   }
   if (!isChecked.value) {
@@ -90,32 +114,23 @@ let registerFunc = () => {
     if (res.code === 200) {
       message.success("注册成功");
       storage.set("token", res.data.token);
-      router.go(0);
+      Return()
+      form.email = registerData.email
+      form.password = registerData.password
     } else {
       message.error(res.msg);
     }
   });
 };
-
-let Return = () => {
-  if (!LoginStatus.value) {
-    form.repeatPassword = "";
-    form.password = "";
-    LoginStatus.value = true;
-  } else {
-    form.password = "";
-    LoginStatus.value = false;
-    emailType.value = 0;
-  }
-};
-
+// 忘记密码
 let ForgetPassword = () => {
   DialogTitle.value = "Forget";
   centerDialogVisible.value = true;
+  emailType.value = 3;
 };
-
-
-let sendCode = (values: any) => {
+// 发送验证码
+let sendCode = (type:any) => {
+  emailType.value = type
   if (preCode.time !== 0) return;
   if (!form.email) {
     message.warning("请输入邮箱");
@@ -125,29 +140,27 @@ let sendCode = (values: any) => {
     message.warning("邮箱格式错误");
     return;
   }
-  emailType.value = values === "Forget Password" ? 3 : 0;
+  // 打开验证码弹窗
   preCode.inputCode = "";
   DialogTitle.value = "Get code";
   centerDialogVisible.value = true;
+  // 获取验证码图片
   getPreCodeFunc();
 };
-
-let checkEmail = (email: string) => {
+// 检查邮箱
+const checkEmail = (email: string) => {
   return /^([a-zA-Z]|[0-9])(\w|\\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(email);
 };
-
-let getPreCodeFunc = () => {
-  if (preCodeDisabled.value) {
-    return;
-  }
+// 获取验证码图片
+const getPreCodeFunc = () => {
   getPreCode().then((res) => {
     preCode.uuid = res.data.uuid;
     preCode.base64 = res.data.base64;
-    preCodeDisabled.value = false;
   });
 };
-
+// 确认按钮
 const handleConfirm = () => {
+  // 验证码弹窗
   if (DialogTitle.value === "Get code") {
     if (!preCode.inputCode) {
       message.warning("请输入图片验证码");
@@ -160,35 +173,42 @@ const handleConfirm = () => {
       code: preCode.inputCode,
     };
     getCode(formData).then((res: any) => {
+      // 验证成功
       if (res.code === 200) {
-        message.success("发送成功");
+        message.success("验证成功");
+        // 控制发送验证码按钮
         hasSendCode.value = true;
+        // 60秒倒计时
         preCode.time = 60;
-        setTimeout(() => {
-          hasSendCode.value = false;
-        }, 60000);
+        setInterval(() => {
+          if (preCode.time > 0) {
+            preCode.time--;
+          }
+        }, 1000);
+        // 关闭弹窗
         centerDialogVisible.value = false;
+        // 如果是忘记密码前置验证，打开忘记密码弹窗
         if (emailType.value === 3) {
           ForgetPassword();
         }
       } else {
-        getPreCodeFunc();
-        if (res.code === 529) {
-          preCode.inputCode = "";
-          message.error(res.msg);
-        } else {
-          centerDialogVisible.value = false;
-          message.error(res.msg);
-        }
+        // 验证失败
+        message.error(res.msg)
+        // 刷新验证码
+        getPreCodeFunc()
+        // 清空输入框
+        preCode.inputCode = ""
       }
     });
-  } else {
+  }
+  // 忘记密码弹窗
+  if (DialogTitle.value === "Forget"){
     if (!form.code) {
       message.warning("请输入验证码");
       return;
     }
     if (!form.password) {
-      message.warning("请输入密码");
+      message.warning("请输入新密码");
       return;
     }
     let formData = {
@@ -200,7 +220,7 @@ const handleConfirm = () => {
       if (res.code === 200) {
         message.success("修改成功");
         centerDialogVisible.value = false;
-        router.go(0);
+        emailType.value = 1
       } else {
         message.error(res.msg);
       }
@@ -209,11 +229,11 @@ const handleConfirm = () => {
 };
 
 onMounted(() => {
-  setInterval(() => {
-    if (preCode.time !== 0) {
-      preCode.time--;
-    }
-  }, 1000);
+  // setInterval(() => {
+  //   if (preCode.time !== 0) {
+  //     preCode.time--;
+  //   }
+  // }, 1000);
   if (storage.get<string>('token')) {
     router.replace('posts');
   }
@@ -248,13 +268,9 @@ onMounted(() => {
                      :style="{ width: LoginStatus ? '' : '70%' }" :key="3" />
               <div v-if="!LoginStatus" class="GetCode" :key="4">
                 <Transition name="Register" mode="out-in">
-                  <span v-if="!hasSendCode" @click="sendCode">发送验证码</span>
-                  <input class="right-input" v-else v-model="form.code" placeholder="验证码" style="margin-top: 0" />
+                  <span v-if="!hasSendCode" @click="sendCode(0)">发送验证码</span>
+                  <span v-else>{{ preCode.time }}</span>
                 </Transition>
-
-                <span style="margin-right: 12px" v-show="hasSendCode">{{
-                    preCode.time
-                  }}</span>
               </div>
             </TransitionGroup>
 
@@ -271,7 +287,7 @@ onMounted(() => {
               忘记密码?
             </div>
             <div v-else class="Forget-password">
-              <input type="checkbox" v-model="isChecked" class="codestatus" style="transform: scale(1.4)" />
+              <input type="checkbox" v-model="isChecked" class="codeStatus" style="transform: scale(1.4)" />
               <span class="myCheckbox">同意<router-link to="/service" target="_blank" class="service">《用户协议》</router-link></span>
             </div>
           </Transition>
@@ -286,34 +302,33 @@ onMounted(() => {
         </TransitionGroup>
       </form>
     </div>
-    <el-dialog v-model="centerDialogVisible" width="30%" align-center>
+    <el-dialog v-model="centerDialogVisible" width="400px" align-center>
       <template #header>
         <span class="Dialog-header">{{ DialogTitle }}</span>
       </template>
       <div class="flex">
 <!--        验证码-->
         <div v-if="DialogTitle == 'Get code'">
-          <div class="flex" style="width: 100%">
+          <div class="flex code">
             <img :src="'data:image/png;base64,' + preCode.base64"
-                 style="cursor: pointer; height: 6vh; width: 30%; margin-right: 6%"
+                 style="cursor: pointer; height: 60px; width: 40%"
                  @click="getPreCodeFunc" />
-            <input class="right-input loading-input" type="text" v-model="preCode.inputCode" placeholder="验证码"
-                   style="margin-top: 0; width: 50%" />
+            <input class="loading-input" type="text" v-model="preCode.inputCode" placeholder="验证码"/>
           </div>
         </div>
 <!--        忘记密码-->
         <div v-else style="width: 100%">
           <div class="flex">
-            <input class="right-input loading-input" type="text" placeholder="邮箱地址" style="width: 70%"
+            <input class="right-input" type="text" placeholder="邮箱地址" style="width: 70%"
                    v-model="form.email" />
             <div class="GetCode">
               <Transition name="Register" mode="out-in">
-                <span v-if="true" @click="sendCode('Forget')">{{preCode.time==0?'发送验证码':preCode.time}}</span>
+                <span v-if="true" @click="sendCode(3)">{{preCode.time==0?'发送验证码':preCode.time}}</span>
               </Transition>
             </div>
           </div>
-          <input class="right-input loading-input" v-model="form.code" placeholder="验证码" />
-          <input class="right-input loading-input" type="password" placeholder="新密码" v-model="form.password" />
+          <input class="right-input" style="width:48%;" v-model="form.code" placeholder="验证码" />
+          <input class="right-input" style="width:48%;margin-left:4%" type="password" placeholder="新密码" v-model="form.password" />
         </div>
       </div>
 
