@@ -95,6 +95,9 @@ input:-webkit-autofill{
   color: rgb(140, 140, 140);
 }
 .Forget-password {
+  width:50%;
+  position: relative;
+  left:50%;
   color: #000000;
   display: flex;
   justify-content: flex-end;
@@ -263,40 +266,5 @@ input:-webkit-autofill{
 
   100% {
     transform: scale(1.4);
-  }
-}
-
-/* 登录页Loading样式 */
-:deep .el-loading-spinner .circular {
-  display: none !important;
-}
-
-/* 登录页Loading字体样式 */
-:deep .el-loading-spinner .el-loading-text {
-  color: #eea1d7 !important;
-  font-size: 36px;
-  font-weight: bold;
-  display: inline-block;
-  animation: jump 1s infinite;
-  text-shadow: 2px 6px 0px rgba(130, 179, 243, 0.5);
-}
-
-/* 登录页Loading动画样式 */
-@keyframes jump {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-
-  40% {
-    transform: translateY(-10px);
-  }
-
-  60% {
-    transform: translateY(-5px);
   }
 }

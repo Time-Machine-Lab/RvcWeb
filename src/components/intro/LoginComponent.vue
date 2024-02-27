@@ -30,7 +30,7 @@ let preCode = {
   uuid: "",
   base64: "",
   inputCode: "",
-  time: 0,
+  time: ref(0),
 }
 let emailType = ref(1);
 
@@ -127,11 +127,13 @@ let ForgetPassword = () => {
   DialogTitle.value = "Forget";
   centerDialogVisible.value = true;
   emailType.value = 3;
+  form.password = ""
+  form.code = ""
 };
 // 发送验证码
 let sendCode = (type:any) => {
   emailType.value = type
-  if (preCode.time !== 0) return;
+  if (preCode.time.value !== 0) return;
   if (!form.email) {
     message.warning("请输入邮箱");
     return;
@@ -179,10 +181,13 @@ const handleConfirm = () => {
         // 控制发送验证码按钮
         hasSendCode.value = true;
         // 60秒倒计时
-        preCode.time = 60;
-        setInterval(() => {
-          if (preCode.time > 0) {
-            preCode.time--;
+        preCode.time.value = 60;
+        const timer = setInterval(() => {
+          console.log(preCode.time.value)
+          preCode.time.value--;
+          if (preCode.time.value === 0) {
+            clearInterval(timer);
+            hasSendCode.value = false;
           }
         }, 1000);
         // 关闭弹窗
@@ -283,9 +288,7 @@ onMounted(() => {
           </Transition>
 
           <Transition name="Register" mode="out-in">
-            <div v-if="LoginStatus" class="Forget-password" @click="ForgetPassword">
-              忘记密码?
-            </div>
+            <div v-if="LoginStatus" class="Forget-password" @click="ForgetPassword">忘记密码?</div>
             <div v-else class="Forget-password">
               <input type="checkbox" v-model="isChecked" class="codeStatus" style="transform: scale(1.4)" />
               <span class="myCheckbox">同意<router-link to="/service" target="_blank" class="service">《用户协议》</router-link></span>
@@ -323,7 +326,7 @@ onMounted(() => {
                    v-model="form.email" />
             <div class="GetCode">
               <Transition name="Register" mode="out-in">
-                <span v-if="true" @click="sendCode(3)">{{preCode.time==0?'发送验证码':preCode.time}}</span>
+                <button v-if="true" @click="sendCode(3)">{{preCode.time.value==0?'发送验证码':preCode.time.value}}</button>
               </Transition>
             </div>
           </div>

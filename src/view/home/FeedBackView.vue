@@ -329,8 +329,8 @@ onMounted(() => {
   text-align: center;
   width:100%;
   height:calc(100% - 100px);
-  background: rgb(68, 69, 72);
-  box-shadow:0 0 30px 1px #3f3f3f;
+  background: rgb(45, 45, 45);
+  box-shadow:0 0 30px 1px #000000;
   border-radius: 10px;
 }
 .infinite-list-wrapper .list {
