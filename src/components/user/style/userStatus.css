@@ -1,35 +1,26 @@
-.user-status {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    border-left: rgba(255, 255, 255, 0.1) 1px solid;
-
+.flex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-.user-status .login-button {
-    position: relative;
-    height: 30px;
+.login-button {
+    height: 35px;
     width: 70px;
     background-color: transparent;
-    border: rgba(237, 130, 201) 1px solid;
-    left: 50%;
-    top: 50%;
+    border: rgba(237, 130, 201) 2px solid;
     color: rgba(237, 130, 201);
-    transform: translate(-50%, -50%);
-    line-height: 30px;
-    font-weight: 700;
-    border-radius: 8px;
-    user-select: none;
+    font-family: ZCool;
+    font-size: 18px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s;
 }
 
-.user-status .login-button:hover {
+.login-button:hover {
     border: rgba(217, 110, 181) 1px solid;
     color: rgba(217, 110, 181);
 }
 
-.user-status .avatar-container {
+.avatar-container {
     position: relative;
     height: 40px;
     width: 40px;
@@ -41,7 +32,7 @@
     transform: translate(-50%, -50%);
 }
 
-.user-status .avatar {
+.avatar {
     position: relative;
     height: 40px;
     width: 40px;
