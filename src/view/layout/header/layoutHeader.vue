@@ -127,7 +127,7 @@ const handleBlur = function () {
           </div>
         </div>
       </div>
-<!--      用户菜单组件-->
+      <!--用户菜单组件-->
       <div class="user-status">
         <userStatus></userStatus>
       </div>
@@ -172,12 +172,12 @@ const handleBlur = function () {
 }
 .search {
   height: 80%;
-  width: 30%;
+  width: 35%;
 }
 
 .header__right {
   height:80%;
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: right;
 
