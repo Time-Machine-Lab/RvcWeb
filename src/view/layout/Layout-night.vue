@@ -15,7 +15,7 @@ import '@/style/scss/index.scss'
     <el-header class="header">
       <LayoutHeader></LayoutHeader>
     </el-header>
-    <el-main class="main">
+    <div class="main">
       <!-- <el-scrollbar> -->
       <RouterView v-slot="{ Component }">
         <Transition name="slide-fade">
@@ -23,7 +23,7 @@ import '@/style/scss/index.scss'
         </Transition>
       </RouterView>
       <!-- </el-scrollbar> -->
-    </el-main>
+    </div>
     <LayoutFooter></LayoutFooter>
   </el-container>
 </template>
@@ -47,7 +47,7 @@ import '@/style/scss/index.scss'
 .main {
   position: relative;
   top: 70px;
-  height: calc(100vh - 110px);
+  height: calc(100% -  125px);
   padding: 0;
   background-color: rgb(26, 27, 30);
   overflow: hidden;

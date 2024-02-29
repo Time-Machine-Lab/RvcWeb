@@ -13,7 +13,7 @@ import router from '@/router'
 
 
 const request = axios.create({
-  baseURL: 'http://1.94.28.8:9400/',
+  baseURL: '/rvcApi',
   timeout: 20000
 })
 

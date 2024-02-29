@@ -1,3 +1,4 @@
+import chatRoomRoutes from './chatRoom/chatRoomRoutes';
 import communicationRoutes from './communication/communicationRoutes';
 import rvcModelRoutes from './rvcModel/rvcModelRoutes';
 
@@ -33,6 +34,7 @@ export default [
                     keepAlive: true
                 }
             },
+            ...chatRoomRoutes,
             ...communicationRoutes,
             ...rvcModelRoutes
 

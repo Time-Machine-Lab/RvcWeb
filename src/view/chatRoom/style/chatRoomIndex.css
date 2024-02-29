@@ -1,0 +1,23 @@
+/*
+ * @Author: Dhx
+ * @Date: 2024-02-27 13:48:32
+ * @Description: 
+ * @FilePath: \RvcWeb\src\view\chatRoom\style\chatRoomIndex.css
+ */
+.chatRoomView{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+.chatRoomView__sideBar{
+    width: 30%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.3);
+    box-shadow: 1px 0px 6px 0px black;
+}
+.chatRoomView__room{
+    width: 70%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.3);
+}

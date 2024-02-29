@@ -95,6 +95,11 @@ const handleBlur = function () {
     </div>
     <div class="header__right">
       <div class="button-group">
+        <router-link to="/rvc/chat" style="display: block;height: 100%;width: 50px;">
+          <span style="font-size: 20px;color:red;line-height: 70px;">
+            🔞
+          </span>
+        </router-link>
         <div tabindex="-1" class="new" @click="handleClickSelect" @blur="handleBlur">
           <img width="30" height="30" src="/icon/plus.svg" style="position:absolute;left:0;transition: all 0.3s;"
             :class="selectVisibility ? 'roll-animation' : ''">
@@ -316,8 +321,8 @@ const handleBlur = function () {
 .button-group {
   position: absolute;
   height: 100%;
-  width: 70%;
-  width: 200px;
+  /* width: 70%; */
+  width: 400px;
   right: 120px;
   display: flex;
   justify-content: end;
