@@ -23,7 +23,7 @@
 .rvc-home {
     position: relative;
     width: 90%;
-    height: 100%;
+    height: calc(100%);
     left: 50%;
     transform: translate(-50%);
 }
@@ -67,6 +67,6 @@
 
 .rvc-home__view {
     width: 100%;
-    height: calc(100% - 100px);
+    height: 100%;
 }
 </style>

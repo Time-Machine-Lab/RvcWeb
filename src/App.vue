@@ -16,17 +16,17 @@ onBeforeMount(async () => {
     // console.log("loadingDom: ", loadingDom.parentElement);
     // 图片预加载
     // await preloadImages();
-    let count = 0;
+    // let count = 0;
     let imgs = [
       'https://s2.loli.net/2023/12/13/xVG4Cd62hlYikuH.jpg',
       'https://s2.loli.net/2023/12/14/OFlkw3KranCL7bH.jpg'
     ]
-    console.log(count);
+    // console.log(count);
 
     for (let img of imgs) {
       let image = new Image();
       image.onload = () => {
-        count++;
+        // count++;
       };
       image.src = img;
     }

@@ -90,6 +90,23 @@ const handleBlur = function () {
 <!--    用户中心-->
     <div class="header__right">
       <div class="button-group">
+        <router-link to="/rvc/chat" style="display: block;height: 100%;width: 50px;">
+          <span style="font-size: 20px;color:red;line-height: 70px;">
+            🔞
+          </span>
+        </router-link>
+        <div tabindex="-1" class="new" @click="handleClickSelect" @blur="handleBlur">
+          <img width="30" height="30" src="/icon/plus.svg" style="position:absolute;left:0;transition: all 0.3s;"
+            :class="selectVisibility ? 'roll-animation' : ''">
+        </div>
+        <div class="select-window" v-show="selectVisibility">
+          <div class="select-window__item" v-for="(route, index) in routes" :key="index" @click="router.push(route.to)">
+
+            <div class="horizontal-center" style="display: flex;">
+              <img width="10" height="10" class="vertical-center" src="/icon/write.svg">
+              <span style="line-height: 40px;margin-left: 15px;margin-right: 7px;">{{ route.name }}</span>
+
+            </div>
 <!--        新建按钮-->
         <div class="new flex">
           <div tabindex="-1" class="new-btn" @click="handleClickSelect" @blur="handleBlur">
@@ -341,5 +358,207 @@ const handleBlur = function () {
   color: rgba(255, 255, 255, 1);
 }
 
+
+.bell {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 25px;
+  height: 25px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.dither-animation {
+  top: 36px;
+}
+
+.bell__point {
+  position: absolute;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
+  background-color: rgba(224, 49, 49);
+  top: 1px;
+  right: 1px;
+}
+
+.msg-window {
+  position: absolute;
+  top: 65px;
+  width: 250px;
+  border-radius: 5px;
+  border: rgba(55, 58, 64) 1px solid;
+  background-color: rgba(37, 38, 43);
+  user-select: none;
+}
+
+.msg-window__title {
+  width: 100%;
+  height: 45px;
+  border-bottom: rgba(55, 58, 64) 1px solid;
+  font-size: 14px;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 45px;
+  font-family: 'ZCool';
+}
+
+.msg-window__title span {
+  padding-left: 15px;
+}
+
+.msg-window__content {
+  width: calc(100% - 10px);
+  padding: 5px;
+}
+
+.msg-window__content__item {
+  position: relative;
+  padding-left: 15px;
+  overflow: hidden;
+  width: calc(100% - 15px);
+  /* height: 80px; */
+  line-height: 40px;
+  font-size: 14px;
+  text-align: left;
+  display: flex;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  font-family: 'ZCool';
+}
+
+.msg-window__content__item:hover {
+  background-color: rgba(56, 58, 64);
+}
+
+
+.msg-window__item:hover {
+  background-color: rgba(56, 58, 64);
+  cursor: pointer;
+}
+
+.newPost:hover {
+  background-color: rgba(26, 52, 76);
+}
+
+.search {
+  position: relative;
+  height: 100%;
+  width: 40%;
+}
+
+.header__right {
+  position: absolute;
+  width: calc(30% - 500px);
+  right: 0;
+  min-width: 300px;
+  height: 100%;
+  display: flex;
+  justify-content: right;
+}
+
+.button-group {
+  position: absolute;
+  height: 100%;
+  /* width: 70%; */
+  width: 400px;
+  right: 120px;
+  display: flex;
+  justify-content: end;
+}
+
+.new {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: rgba(25, 113, 194);
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: black;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.new span {
+  display: inline-block;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.new:hover {
+  background-color: rgba(24, 100, 171);
+}
+
+.select-window {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 120px;
+  border-radius: 10px;
+  border: rgba(55, 58, 64) 1px solid;
+  background-color: rgba(37, 38, 43);
+  padding: 5px;
+  z-index: 30;
+  user-select: none;
+}
+
+.select-window__item {
+  position: relative;
+  padding-left: 15px;
+  width: calc(100% - 0px);
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  text-align: left;
+  display: flex;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.select-window__item:hover {
+  background-color: rgba(56, 58, 64);
+}
+
+.user-status {
+  position: relative;
+  height: 100%;
+  width: 30%;
+  min-width: 80px;
+  margin-right: 10px;
+}
+
+.page-link {
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+
+.page-link__item {
+  height: 100%;
+  width: 80px;
+  line-height: 50px;
+  color: #fb7299;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Zcool';
+  text-align: center;
+}
+
+.roll-animation {
+  transform: rotateZ(90deg);
+  transform-origin: 52% 50%;
+}
 
 </style>
