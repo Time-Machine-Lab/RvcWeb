@@ -9,12 +9,12 @@ import { ref } from 'vue';
 
 var myoffer = ref('')
 var myanswer = ref('')
-var otheranswer = ref('')
 var otheroffer = ref('')
-var yourConn:any;
-var stream:any;
+var otheranswer = ref('')
+var yourConn: any;
+var stream: any;
 // var RTCSessionDescription:any;
-var PeerConnection:any;
+var PeerConnection: any;
 // var isVideo = false;
 // var isCaller = false;
 // var currentUserInfo = {};
@@ -57,7 +57,7 @@ function initWebRTC() {
     navigator.getUserMedia(mediaOpts, successFunc, errorFunc);
 
 
-    function successFunc(myStream:any) {
+    function successFunc(myStream: any) {
         stream = myStream;
         //displaying local video stream on the page
         localVideo.value.srcObject = stream;
@@ -76,19 +76,8 @@ function initWebRTC() {
 
         // setup stream listening
         yourConn.addStream(stream);
-        yourConn.createOffer(function (offer:any) {
-
-            yourConn.setLocalDescription(offer);
-            setTimeout(() => {
-                myoffer.value = yourConn.localDescription
-
-            }, 4000)
-        }, function (error:any) {
-            console.log(error)
-            alert("Error when creating an offer");
-        });
         //when a remote user adds stream to the peer connection, we display it
-        yourConn.onaddstream = function (e:any) {
+        yourConn.onaddstream = function (e: any) {
             remoteVideo.value.srcObject = e.stream;
 
         };
@@ -96,7 +85,7 @@ function initWebRTC() {
         //     yourConn.addTrack(track, stream);
         // });
         // Setup ice handling
-        yourConn.onicecandidate = function (event:any) {
+        yourConn.onicecandidate = function (event: any) {
             if (event.candidate) {
                 // websocket.send(JSON.stringify({
                 //     from: currentUserInfo.userName,
@@ -106,14 +95,14 @@ function initWebRTC() {
                 // }));
             }
         };
-        yourConn.ontrack = function (evt:any) {
+        yourConn.ontrack = function (evt: any) {
             console.log(evt);
             remoteVideo.value!.srcObject = evt.streams[0];
             remoteVideo.value.muted = true
         }
 
     }
-    function errorFunc(err:any) {
+    function errorFunc(err: any) {
         if ("NotFoundError" == err.name) {
             console.log("设备不具备视频、音频条件或没有音视频权限");
         } else {
@@ -130,20 +119,33 @@ setTimeout(() => {
 
 }, 4000);
 
-const link = function () {
-    yourConn.setRemoteDescription(JSON.parse(otheroffer.value));
+const createOffer = function () {
     //create an answer to an offer
-    yourConn.createAnswer(function (answer:any) {
+    yourConn.createOffer(function (offer: any) {
+
+        yourConn.setLocalDescription(offer);
+        setTimeout(() => {
+            myoffer.value = yourConn.localDescription
+
+        }, 4000)
+    }, function (error: any) {
+        console.log(error)
+        alert("Error when creating an offer");
+    });
+}
+const handleOffer = function () {
+    yourConn.setRemoteDescription(new RTCSessionDescription(JSON.parse(otheroffer.value)));
+    yourConn.createAnswer(function (answer: any) {
         yourConn.setLocalDescription(answer);
         console.log(answer)
         myanswer.value = answer
-    }, function (error:any) {
+    }, function (error: any) {
         console.log(error)
         alert("Error when creating an answer");
     });
 }
-const answeroffer = function () {
-    yourConn.setRemoteDescription(JSON.parse(otheranswer.value));
+const handleAnswer = function () {
+    yourConn.setRemoteDescription(new RTCSessionDescription(JSON.parse(otheranswer.value)))
 }
 </script>
 <template>
@@ -151,21 +153,22 @@ const answeroffer = function () {
         <div>local</div>
         <audio ref="localVideo" controls style="height: 100px;"></audio>
         <div>remote</div>
-        <input style="border: black 1px solid;" v-model="otheroffer" placeholder="offer"><button
-            @click="link()">offer</button>
-        <input style="border: black 1px solid;" v-model="otheranswer" placeholder="answer"><button
-            @click="answeroffer()">answer</button>
+        <button @click="createOffer()">createoffer</button>
+        <button @click="handleOffer()">createanswer</button>
+        <input style="border: black 1px solid;" v-model="otheroffer" placeholder="offer">
+        <button @click="handleAnswer()">answer</button>
+        <input style="border: black 1px solid;" v-model="otheranswer" placeholder="answer">
         <audio ref="remoteVideo" controls style="height: 100px;"></audio>
         <div style="display: flex;">
             <div style="width: 50%;">
-            <textarea v-text="JSON.stringify(myoffer)" style="height: 200px;width:100%;border:black 1px solid;"></textarea>
-        </div>
-        <div style="width: 50%;">
-            <textarea v-text="JSON.stringify(myanswer)" style="height: 200px;width:100%;border:black 1px solid;"></textarea>
-        </div>
+                <textarea v-text="JSON.stringify(myoffer)"
+                    style="height: 200px;width:100%;border:black 1px solid;"></textarea>
+            </div>
+            <div style="width: 50%;">
+                <textarea v-text="JSON.stringify(myanswer)"
+                    style="height: 200px;width:100%;border:black 1px solid;"></textarea>
+            </div>
         </div>
     </div>
 </template>
-<style scoped>
-@import "@/view/chatRoom/style/room.css";
-</style>
+<style scoped>@import "@/view/chatRoom/style/room.css";</style>
