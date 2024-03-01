@@ -47,7 +47,7 @@ import '@/style/scss/index.scss'
 .main {
   position: relative;
   top: 70px;
-  height: calc(100% -  125px);
+  height: calc(100% -  120px);
   padding: 0;
   background-color: rgb(26, 27, 30);
   overflow: hidden;
