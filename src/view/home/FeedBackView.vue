@@ -5,7 +5,7 @@ import UpdateComponent from "@/components/feedback/UpdateComponent.vue";
 import {onMounted, ref} from 'vue'
 import {
   FeedbackItem,
-  ListItems,
+  ListItemsType,
   StatesListItem,
   TypeListItem
 } from '@/api/feedback/feedbackTypes.ts'
@@ -66,7 +66,7 @@ const closeUpdateComponent = () => {
 // 数据获取
 const Type = ref<TypeListItem[]>([])
 const States = ref<StatesListItem[]>([])
-const ListItems = ref<ListItems>(<ListItems>{page: 2, limit: 10, pageList: [{avatar: "",createAt:"2023-12-12 16:48:11",title:"111"}], total: 11})
+const ListItems = ref<ListItemsType>(<ListItemsType>{page: 2, limit: 10, pageList: [{avatar: "",createAt:"2023-12-12 16:48:11",title:"111"}], total: 11})
 let Feedback = ref<FeedbackItem[]>([])
 let newFeedback = ref<FeedbackItem[]>([])
 let hotFeedback = ref<FeedbackItem[]>([])

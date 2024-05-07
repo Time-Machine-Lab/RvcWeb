@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted, computed } from "vue";
-import {FeedbackItem, postComment, Comment, CommentList} from "@/api/feedback/feedbackTypes.ts";
+import {FeedbackItem, postComment, CommentType, CommentListType} from "@/api/feedback/feedbackTypes.ts";
 import {getComment, getCommentAdd, getCommentLike, getFeedback, getLike} from "@/api/feedback/feedbackAPI.ts";
 import {message} from "@/utils/message.ts";
 import { storage } from "@/utils/storage";
@@ -36,8 +36,8 @@ const FeedbackData = ref<FeedbackItem>(<FeedbackItem>{
   uid: "",
   upNum: 0
 })
-const Comment = ref<Comment>({page: 2, limit: 10,total:10000,pageList:[]})
-let CommentList = ref<CommentList[]>([])
+const Comment = ref<CommentType>({page: 2, limit: 10,total:10000,pageList:[]})
+let CommentList = ref<CommentListType[]>([])
 const loading = ref(false)
 const noMore = ref(false)
 const disabled = computed(() => loading.value || noMore.value)
@@ -118,7 +118,7 @@ const replyComment = () => {
       let userProfile = ref<UserInfoVO>()
       userProfile.value = userStore.getProfile
 
-      let commentContent = ref<CommentList>(<CommentList>{})
+      let commentContent = ref<CommentListType>(<CommentListType>{})
       commentContent.value = res.data
       commentContent.value.avatar = userProfile.value?.avatar
       commentContent.value.nickname = userProfile.value?.nickname

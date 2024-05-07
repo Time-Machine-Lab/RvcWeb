@@ -58,7 +58,7 @@ export interface StatesListItem {
     [property: string]: any;
 }
 // 分页获取feedback列表
-export interface ListItems {
+export interface ListItemsType {
     /**
      * 一页的内容
      */
@@ -140,7 +140,7 @@ export interface FeedbackItem {
     [property: string]: any;
 }
 // 获取某个帖子的评论列表
-export interface Comment {
+export interface CommentType {
     /**
      * 一页的内容
      */
@@ -152,14 +152,14 @@ export interface Comment {
     /**
      * 一页数据
      */
-    pageList: CommentList[];
+    pageList: CommentListType[];
     /**
      * 总共数据
      */
     total:number;
     [property: string]: any;
 }
-export interface CommentList {
+export interface CommentListType {
     /**
      * 是否点赞
      */
