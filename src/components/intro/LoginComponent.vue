@@ -10,6 +10,7 @@ import {
 import { message } from "@/utils/message";
 import { storage } from "@/utils/storage";
 import router from "@/router";
+
 const emits = defineEmits(['close','login']);
 const close = () => {
   emits('close');
@@ -115,8 +116,8 @@ let registerFunc = () => {
       message.success("注册成功");
       storage.set("token", res.data.token);
       Return()
-      form.email = registerData.email
-      form.password = registerData.password
+      form.email = window.btoa(registerData.email)
+      form.password = window.btoa(registerData.password)
     } else {
       message.error(res.msg);
     }

@@ -41,6 +41,11 @@ const routes: RouteRecordRaw[] = [
         name: "top100",
         component: () => import("../view/top100/indexView.vue"),
     },
+    {
+        path: "/search",
+        name: "search",
+        component: () => import("../view/search/indexView.vue"),
+    },
     ...homepageRoutes,
     ...introRoute,
     ...userRoutes,

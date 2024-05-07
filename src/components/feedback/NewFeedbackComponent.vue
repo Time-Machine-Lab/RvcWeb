@@ -5,6 +5,7 @@ import 'md-editor-v3/lib/style.css'
 import {Add, TypeListItem} from '@/api/feedback/feedbackTypes.ts'
 import {getTypeList, postAdd} from '@/api/feedback/feedbackAPI.ts'
 import {message} from "@/utils/message.ts";
+import xss from "xss";
 
 const emits = defineEmits(['close','post']);
 const close = () => {
@@ -34,7 +35,7 @@ const submitForm = () => {
   postContent.value = html.value
   const formData: Add = {
     title: postTitle.value,
-    content: postContent.value,
+    content: xss(postContent.value),
     type: Number(postType.value),
     fbid: "",  // 如果是添加新帖子，可以忽略这个属性
   };

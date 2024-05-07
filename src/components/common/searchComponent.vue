@@ -96,7 +96,7 @@ const isFilled = (index: number,score:number) => {
               </div>
             </div>
           </div>
-          <router-link to="/top" class="watchMore flex">查看更多结果</router-link>
+          <router-link to="/search" class="watchMore flex">查看更多结果</router-link>
         </div>
         <!--搜索按钮-->
         <div class="search-box__button">
