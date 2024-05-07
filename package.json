@@ -27,7 +27,8 @@
     "vue": "^3.3.8",
     "vue-lottie-player": "^0.1.9",
     "vue-router": "^4.2.5",
-    "vuetify": "3.4.8"
+    "vuetify": "3.4.8",
+    "xss": "^1.0.15"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
