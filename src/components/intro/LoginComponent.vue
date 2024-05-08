@@ -70,8 +70,8 @@ let loginFunc = () => {
     return;
   }
   let loginData = {
-    email: form.email,
-    password: form.password,
+    email: window.btoa(form.email),
+    password: window.btoa(form.password),
   };
   login(loginData).then((res: any) => {
     if (res.code == 200) {
