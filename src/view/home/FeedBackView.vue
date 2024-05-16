@@ -127,9 +127,13 @@ const color1 = ref('');
 const bgColor2 = ref('');
 const color2 = ref('');
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+let NewTop = ref();
+let HotTop = ref();
 const orderNew = () => {
   console.log("new")
-  scrollbarRef.value!.setScrollTop(0)
+  // 这里没有用sessionStorage是因为希望页面刷新之后就重新向后端获取最新数据
+  scrollbarRef.value!.setScrollTop(NewTop)
+  HotTop.value = scrollbarRef.value
   order = "create_at"
   bgColor1.value = '#8f8f8f';
   bgColor2.value = '';
@@ -147,7 +151,8 @@ const orderNew = () => {
 }
 const orderHot = () => {
   console.log("hot")
-  scrollbarRef.value!.setScrollTop(0)
+  scrollbarRef.value!.setScrollTop(HotTop)
+  NewTop.value = scrollbarRef.value
   order = "up_num"
   bgColor2.value = '#8f8f8f';
   bgColor1.value = '';
